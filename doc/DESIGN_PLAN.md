@@ -135,7 +135,21 @@ The method signatures will not reveal the implementation of datastructures, etc.
    step will essentially call the update function once and then effectively hit "stop"
 
 ### Alisha's Use Cases
-1. 
+1. Scenario: user clicks on about page of the simulation
+```java
+//in controller
+simulation.pauseUpdate(); //simulation will pause calling updateState
+sceneManager.loadInfoView(simulationName); //Simulation driver will call the scene manager to load the scene for about page
+//info view will get the text corresponding to the simulation name from a config file
+```
+2. Scenario: user changes speed of simulation
+```java
+//in controller class
+simulation.setSpeed(newSpeed);
+//insimulation.setSpeed
+this.speed = newSpeed;
+//then the simulation will know to call update at its new speed.
+```
 
 ## Design Considerations
 
