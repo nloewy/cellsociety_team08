@@ -94,6 +94,45 @@ __About Page:__
 
 ## Design Considerations
 
+When developing our overarching design plan, there were multiple difficult decisions that we were
+forced to make. When making these design choices, we convened as a group, either via zoom or in
+person, and discussed all possible options, weighed the pros and cons of each option, as well as
+potential use cases, before picking what we believed to be the most viable solution. When making
+these decisions, we tried to frame them using the DESIGN requirements noted in the specification for
+this assignment. In particular, we wanted to ensure that our code was fully encapsulated,
+extendable, and adherent to open-close principles.
+
+One example of a design choice that we were prompted to make involved the relationship between the
+cells and the grid. We first observed that all of the simulations involve a large number of cells
+located on a 2-dimensional grid, and each timestep corresponds to a simultaneous transition. This
+led to an important question: should each cell have a fixated position, and be responsible for
+keeping track of its changing state? Or, should there be a mutable grid object, perhaps through the
+use of a multi-dimensional list or hashmap. If we were to keep cell positions constant with changing
+states, then it would allow for more encapsulated code, and avoid repeated calls to a getGrid method
+or getNeighbors method, as we would be able to store them during initialization, reducing intimacy
+between classes. On the other hand, this could be difficult for certain simulations, such as the
+Segregation simulation, where technically agents are moving between cells. The alternative in this
+scenario, having a mutable grid, would be advantageous as the could would be cleaner overall, and
+state changes would involve simply looping through the 2d grid of cells every time. However, this
+creates a sense of intimacy between classes which is a code smell, so we ultimately decided against
+this.
+
+A second design dilemma that we faced early on in our planning stage involved the abstraction of
+neighborhoods. We recognized early on that the creation of a getNeighbors function can be
+abstracted, as the neighbors may not necessarily always be the 8 adjacent cells. For example, when I
+took CS201 in Fall 2021 and completed the percolation assignment, we only considered the cardinally
+adjacent cells from the main cell in question. Another potential use case is bigger neighborhoods,
+where one may want to consider their neighbors to be any cell that is within 2 cells of the center
+cell. Regardless, we wanted to implement some sort of a getNeighbors function, but were unsure if it
+should be located in the Cell class, or in a separate neighborhood class. The advantage to keeping
+getNeighbors in the cells class would be encapsulation, as we could simply create a mapping from
+cells to their neighbors during initialization. (However, this can still be done using the
+alternative method, just with some added abstractions). On the contrary, including this method in
+the cell class would hinder ones ability to change neighborhood types, as it would need to be
+hardcoded. Having a separate Neighborhood class allows for more abstraction and adheres to the
+Single Responsibility Principle, enabling you to change neighborhood types without modifying the
+Cell class, promoting a more modular and maintainable design. However, this can greatly increase the
+size of the codebase, making it more complex.
 
 ## Team Responsibilities
 
