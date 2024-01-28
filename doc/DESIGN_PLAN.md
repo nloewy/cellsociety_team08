@@ -108,7 +108,7 @@ The method signatures will not reveal the implementation of datastructures, etc.
 ```
 4. Switch simulations: load a new simulation from a data file, replacing the current running simulation with the newly loaded one
 ```java
-
+   
 ```
 5. Set a simulation parameter: set the value of a parameter, probCatch, for a simulation, Fire, based on the value given in a data file
 ```java

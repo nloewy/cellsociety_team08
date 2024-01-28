@@ -1,13 +1,13 @@
 # cell society
-## TEAM NUMBER
-## NAMES
+## TEAM 8
+## Noah Loewy, Judy He, Alisha Zhang
 
 
 This project implements a cellular automata simulator.
 
 ### Timeline
 
- * Start Date: 
+ * Start Date: January 27, 2024
 
  * Finish Date: 
 
