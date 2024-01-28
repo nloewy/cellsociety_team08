@@ -84,6 +84,8 @@ __About Page:__
 
 
 ## Design Details
+![crc design cards](images/crcCards.png "crc cards")
+
 - **Neighborhood** is an abstract class because it shows the way neighbourhoods are determined (For example, in Conway’s Game of Life, all eight surrounding cells are considered neighbors, but in Spreading of Fire, only the four adjacent cells are.) For each distinct way of determining neighborhood there will be a subclass extending the superclass with a corresponding ```getNeighbors()``` method
 - **Simulation** contains the model of is an abstract class because each simulation has a different set of finite states and rules controlling state change. Therefore, each simulation will have a corresponding subclass extending this abstract class and implementing the ```transitionFunction()``` method and specifying the states.
 
