@@ -91,6 +91,28 @@ __About Page:__
 
 ## Use Cases
 
+### Provided Use Cases:
+1. Apply the rules to a middle cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle (i.e., with all its neighbors)
+```java
+   
+```
+2. Apply the rules to an edge cell: set the next state of a cell to live by counting its number of neighbors using the Game of Life rules for a cell on the edge (i.e., with some of its neighbors missing)
+```java
+   
+```
+3. Move to the next generation: update all cells in a simulation from their current state to their next state and display the result graphically
+```java
+
+```
+4. Switch simulations: load a new simulation from a data file, replacing the current running simulation with the newly loaded one
+```java
+
+```
+5. Set a simulation parameter: set the value of a parameter, probCatch, for a simulation, Fire, based on the value given in a data file
+```java
+
+```
+
 ### Noah's Use Cases:
 
 1. One potential use case that comes to mind is the user wants to stop the simulation midway
