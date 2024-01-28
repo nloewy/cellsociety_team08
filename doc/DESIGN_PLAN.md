@@ -53,7 +53,7 @@ __Select pattern page:__
 - clicking on other buttons goes to simulation page
 
 
-__Upload custom configuration file page:__
+__Upload custom configuration file page (extension feature):__
 
 
 ![upload custom xml](images/upload-file.png "upload custom xml configuration file")
@@ -68,8 +68,7 @@ __Simulation Page:__
 
 ![Simulation](images/simulation.png "simulation page")
 
-
-- clicking on ```back``` goes back to select simulation page
+- clicking on ```New Simulation``` stops current simulation goes back to select simulation page for user to load new simulation
 - clicking on ```about``` pauses current simulation and goes to the about page
 - clicking on ```restart``` restarts the current simulation
 - user is able to change the simulation speed and save simulation on this page
@@ -77,9 +76,7 @@ __Simulation Page:__
 
 __About Page:__
 
-
 ![simulation info](images/about.png "simulation info page")
-
 
 - clicking on ```back``` goes back to simulation
 
@@ -87,14 +84,19 @@ __About Page:__
 
 
 ## Design Details
+- **Neighborhood** is an abstract class because it shows the way neighbourhoods are determined (For example, in Conway’s Game of Life, all eight surrounding cells are considered neighbors, but in Spreading of Fire, only the four adjacent cells are.) For each distinct way of determining neighborhood there will be a subclass extending the superclass with a corresponding ```getNeighbors()``` method
+- **Simulation** contains the model of is an abstract class because each simulation has a different set of finite states and rules controlling state change. Therefore, each simulation will have a corresponding subclass extending this abstract class and implementing the ```transitionFunction()``` method and specifying the states.
 
+Both of these will need the information read by the XMLParser to know which simulation it's on in order to extend according to the rules for a specific simulation.
+
+The method signatures will not reveal the implementation of datastructures, etc. For grid, we will be using a grid class, and iterating through the grid to set states will be done through getNext() methods, so that the data structure of the grid is not revealed. For file format, XMLParser will be responsible for getting and reading the file, and it will return the results to other classes. Therefore there would not be a public method that includes the file format.
 
 ## Use Cases
 
 ### Provided Use Cases:
 1. Apply the rules to a middle cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle (i.e., with all its neighbors)
 ```java
-   
+
 ```
 2. Apply the rules to an edge cell: set the next state of a cell to live by counting its number of neighbors using the Game of Life rules for a cell on the edge (i.e., with some of its neighbors missing)
 ```java
@@ -102,7 +104,7 @@ __About Page:__
 ```
 3. Move to the next generation: update all cells in a simulation from their current state to their next state and display the result graphically
 ```java
-
+   
 ```
 4. Switch simulations: load a new simulation from a data file, replacing the current running simulation with the newly loaded one
 ```java
@@ -131,6 +133,9 @@ __About Page:__
    this could be implemented is to have a separate button for "play" and "step", where "play" will
    call the update function repeatedly at a given time interval until "stop" is pressed, whereas
    step will essentially call the update function once and then effectively hit "stop"
+
+### Alisha's Use Cases
+1. 
 
 ## Design Considerations
 
