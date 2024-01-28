@@ -91,6 +91,24 @@ __About Page:__
 
 ## Use Cases
 
+### Noah's Use Cases:
+
+1. One potential use case that comes to mind is the user wants to stop the simulation midway
+   through, and save the current state of the configuration. This would involve the User Interface
+   having a "stop simulation button", which would signal to the Simulation class that the update
+   method should no longer be called, and all cells should remain in their current state. Then, a
+   window should pop up with an option to save your current simulation. This would involve the
+   XMLWriter creating a file with all of the simulations parameters (likely would be the same as the
+   ones that were passed in), as well as the current states of all the cells (which likely have
+   significantly changed from the ones that were passed in). This simulation would then be able to
+   be uploaded and restarted later, as the entire configuration would have been saved.
+2. A second potential use case that comes to mind is to step through a singular simulation update.
+   Perhaps a user would like the option to control when the updates occur, (maybe they want to make
+   observations after each transition). A feature that allows the user to "press this button to
+   update", as opposed to having to press play and adjust the speed, could be quite useful. One way
+   this could be implemented is to have a separate button for "play" and "step", where "play" will
+   call the update function repeatedly at a given time interval until "stop" is pressed, whereas
+   step will essentially call the update function once and then effectively hit "stop"
 
 ## Design Considerations
 
