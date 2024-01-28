@@ -1,6 +1,6 @@
 # Cell Society Design Plan
 ### Team 8
-### Names
+### Judy Lee, Noah Loewy, Alisha Zheng
 
 
 #### Examples
