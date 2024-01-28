@@ -11,7 +11,7 @@ public class Cell {
    */
   private String myCurrentState;
   private String myNextState;
-  private ArrayList<Cell> myNeighbors;
+  private List<Cell> myNeighbors;
   private int myX;
   private int myY;
 
