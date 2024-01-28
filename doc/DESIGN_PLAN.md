@@ -171,8 +171,7 @@ where one may want to consider their neighbors to be any cell that is within 2 c
 cell. Regardless, we wanted to implement some sort of a getNeighbors function, but were unsure if it
 should be located in the Cell class, or in a separate neighborhood class. The advantage to keeping
 getNeighbors in the cells class would be encapsulation, as we could simply create a mapping from
-cells to their neighbors during initialization. (However, this can still be done using the
-alternative method, just with some added abstractions). On the contrary, including this method in
+cells to their neighbors during initialization. On the contrary, including this method in
 the cell class would hinder ones ability to change neighborhood types, as it would need to be
 hardcoded. Having a separate Neighborhood class allows for more abstraction and adheres to the
 Single Responsibility Principle, enabling you to change neighborhood types without modifying the
