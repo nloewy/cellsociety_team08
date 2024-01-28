@@ -102,4 +102,3 @@ __About Page:__
  * Team Member #2
 
  * Team Member #3
-trying something
