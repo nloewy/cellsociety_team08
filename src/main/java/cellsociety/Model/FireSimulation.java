@@ -15,17 +15,19 @@ public class FireSimulation extends Simulation{
   public final int TREE = 1;
   public final int BURNING = 2;
 
+
   private double probTreeIgnites;
   private double probTreeCreated;
-
   private int neighborsToIgnite;
+
   public FireSimulation(int row, int col, Neighborhood neighborhoodType, List<Cell> gridList){
 
     super(row,col,neighborhoodType, gridList);
+
+    //these will be parameters, as opposed to hardcoded
     neighborsToIgnite=1;
     probTreeIgnites=.1;
     probTreeCreated=.3;
-
   }
 
   /**

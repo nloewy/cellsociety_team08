@@ -2,11 +2,10 @@ package cellsociety.Model;
 
 import java.util.*;
 
-public class GameOfLifeSimulation extends Simulation{
+public class GameOfLifeSimulation extends Simulation {
 
   /**
-   * This cellular automata simulation represents Conway's Game of Life.
-   * author @noah loewy
+   * This cellular automata simulation represents Conway's Game of Life. author @noah loewy
    */
   public final int ALIVE = 1;
   public final int DEAD = 0;
@@ -16,11 +15,12 @@ public class GameOfLifeSimulation extends Simulation{
   private int deadToAliveMin;
   private int deadToAliveMax;
 
-  public GameOfLifeSimulation(int row, int col, Neighborhood neighborhoodType, List<Cell> gridList){
+  public GameOfLifeSimulation(int row, int col, Neighborhood neighborhoodType,
+      List<Cell> gridList) {
 
-    super(row,col,neighborhoodType, gridList);
+    super(row, col, neighborhoodType, gridList);
 
-    //the below values will become parameterized later on
+    //these will be parameters, as opposed to hardcoded
     aliveToAliveMin = 2;
     aliveToAliveMax = 3;
     deadToAliveMin = 3;

@@ -59,6 +59,7 @@ public class Cell {
 
   /**
    * Updates myNextState instance variable
+   *
    * @param nextState, new value of myNextState, calculated by transition function
    */
   public void setNextState(int nextState) {

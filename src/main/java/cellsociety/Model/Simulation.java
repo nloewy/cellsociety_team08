@@ -70,14 +70,15 @@ public abstract class Simulation {
   /**
    * Given a list of cells, and an integer representing a state, determines the number of cells in
    * the list that are currently at that state
+   *
    * @param neighbors, a list of cells, representing the neighbors of a central cell
-   * @param state, an integer, representing the state to check for
+   * @param state,     an integer, representing the state to check for
    * @return an integer, representing the number of cells in neighbors where myCurrentState == state
    */
-  public int countNeighborsInState(List<Cell> neighbors, int state){
+  public int countNeighborsInState(List<Cell> neighbors, int state) {
     int count = 0;
-    for(Cell c : neighbors){
-      if (c.getCurrentState()==state){
+    for (Cell c : neighbors) {
+      if (c.getCurrentState() == state) {
         count++;
       }
     }
@@ -88,7 +89,7 @@ public abstract class Simulation {
     Iterator<Cell> iterator2 = myGrid.iterator();
     int count = 0;
     while (iterator2.hasNext()) {
-      if(count%12==0){
+      if (count % 12 == 0) {
         System.out.println();
       }
       Cell c = iterator2.next();
