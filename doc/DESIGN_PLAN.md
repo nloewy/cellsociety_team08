@@ -98,7 +98,16 @@ The method signatures will not reveal the implementation of datastructures, etc.
 ### Provided Use Cases:
 1. Apply the rules to a middle cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle (i.e., with all its neighbors)
 ```java
-
+    int aliveNeighborCount = 0;
+    for ( xycoordinate : cell.getNeighborhood.getNeighbors()){
+        Cell neighbor = grid.getCellAt(xcoord, ycoord);
+        if (neighbor.state == 1){
+            aliveNeighborCount ++; 
+        }
+    }
+    if (aliveNeighborCount > 3 || aliveNeighborCount < 2){
+        cell.setState(0);
+    }
 ```
 2. Apply the rules to an edge cell: set the next state of a cell to live by counting its number of neighbors using the Game of Life rules for a cell on the edge (i.e., with some of its neighbors missing)
 ```java
@@ -110,11 +119,13 @@ The method signatures will not reveal the implementation of datastructures, etc.
 ```
 4. Switch simulations: load a new simulation from a data file, replacing the current running simulation with the newly loaded one
 ```java
-   
+//in controller
+endSimulation();
+NewSimulation(simulationName); //name taken from the button user clicked
 ```
 5. Set a simulation parameter: set the value of a parameter, probCatch, for a simulation, Fire, based on the value given in a data file
 ```java
-
+   
 ```
 
 ### Noah's Use Cases:
