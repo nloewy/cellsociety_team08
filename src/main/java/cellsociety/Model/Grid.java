@@ -21,10 +21,10 @@ public class Grid {
    * @param rows is the number of rows in the grid
    * @param cols is the number of columns in the grid
    */
-  public Grid(int rows, int cols) {
+  public Grid(int rows, int cols, List<Cell> gridList) {
     myNumRows = rows;
     myNumCols = cols;
-    myGrid = new ArrayList<>();
+    myGrid = new ArrayList<>(gridList);
   }
 
   /**

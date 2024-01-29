@@ -8,9 +8,9 @@ public abstract class Simulation {
    * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
    * transitionFunction() based on the rules of the simulation
    */
-  private Neighborhood neighborhood;
-  private Grid myGrid;
-  private List<Cell> myCells;
+  protected Neighborhood myNeighborhood;
+  protected Grid myGrid;
+
 
   /**
    * Constructs a basic Simulation object
@@ -18,8 +18,10 @@ public abstract class Simulation {
    * @param rows, the number of rows in the 2-dimensional grid
    * @param cols, the number of columns in the 2-dimensional grid
    */
-  public Simulation(int rows, int cols) {
-    myGrid = new Grid(rows, cols);
+  public Simulation(int rows, int cols, Neighborhood neighborhoodType, List<Cell> gridList) {
+    myGrid = new Grid(rows, cols, gridList);
+
+    myNeighborhood = neighborhoodType;
   }
 
   /**
@@ -33,11 +35,15 @@ public abstract class Simulation {
    * transition function
    */
   public void processUpdate() {
+    printForDebugging();
+
     Iterator<Cell> iterator = myGrid.iterator();
     while (iterator.hasNext()) {
       Cell c = iterator.next();
       c.updateStates();
     }
+
+
   }
 
   /**
@@ -49,15 +55,30 @@ public abstract class Simulation {
    */
   public List<Cell> getNeighbors(Cell c) {
     List<Cell> neighboringCells = new ArrayList<>();
-    List<Point> neighboringCoordinates = neighborhood.getNeighborCoordinates(c.getLocation());
+    List<Point> neighboringCoordinates = myNeighborhood.getNeighborCoordinates(c.getLocation());
     for (Point p : neighboringCoordinates) {
-      Cell neighbor = myGrid.getCellAtLocation(p);
       try {
+        Cell neighbor = myGrid.getCellAtLocation(p);
         neighboringCells.add(neighbor);
       } catch (IndexOutOfBoundsException e) {
         continue;
       }
     }
     return neighboringCells;
+  }
+
+
+  private void printForDebugging() {
+    Iterator<Cell> iterator2 = myGrid.iterator();
+    int count = 0;
+    while (iterator2.hasNext()) {
+      if(count%12==0){
+        System.out.println();
+      }
+      Cell c = iterator2.next();
+      count++;
+      System.out.print(c.getCurrentState() + " ");
+
+    }
   }
 }

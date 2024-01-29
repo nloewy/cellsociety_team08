@@ -10,9 +10,9 @@ public class Cell {
    *
    * @author Noah Loewy
    */
-  private String myCurrentState;
-  private String myNextState;
-  private List<Cell> myNeighbors;
+  private static final int PLACEHOLDER_STATE = -1;
+  private int myCurrentState;
+  private int myNextState;
   private Point myLocation;
 
   /**
@@ -23,19 +23,20 @@ public class Cell {
    * @param x            is the x-coordinate of the cell on the 2-dimensional grid
    * @param y            is the y-coordinate of the cell on the 2-dimensional grid
    */
-  public Cell(String initialState, int x, int y) {
+  public Cell(int initialState, int x, int y) {
     myCurrentState = initialState;
-    myNextState = null;
+    myNextState = PLACEHOLDER_STATE;
     myLocation = new Point(x, y);
   }
 
   /**
    * This function updates the state of the cell after calling the transition function. The new
-   * currentState takes the value of the nextState placeholder, and nextState is set to null.
+   * currentState takes the value of the nextState placeholder, and nextState is set to placeholder
+   * value.
    */
   public void updateStates() {
     myCurrentState = myNextState;
-    myNextState = null;
+    myNextState = PLACEHOLDER_STATE;
   }
 
   /**
@@ -43,7 +44,7 @@ public class Cell {
    *
    * @return myCurrentState, the current state of the cell object.
    */
-  public String getCurrentState() {
+  public int getCurrentState() {
     return myCurrentState;
   }
 
@@ -56,4 +57,11 @@ public class Cell {
     return myLocation;
   }
 
+  /**
+   * Updates myNextState instance variable
+   * @param nextState, new value of myNextState, calculated by transition function
+   */
+  public void setNextState(int nextState) {
+    myNextState = nextState;
+  }
 }
