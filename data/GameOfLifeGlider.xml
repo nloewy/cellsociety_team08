@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://en.wikipedia.org/wiki/Conway's_Game_of_Life-->
+<simulation>
+    <type>Game of Life</type>
+    <title>Conway's Game of Life Simulation: Glider</title>
+    <author>Judy He</author>
+    <file_description>This file configures the glider structure as part of the Game of Life Simulation.</file_description>
+    <display_description>This demonstration the glider structure from Conway's Game of Life simulation</display_description>
+    <dimensions>
+        <width>10</width>
+        <height>10</height>
+    </dimensions>
+    <initial_states>
+        <!-- 0 - DEAD
+             1 - ALIVE -->
+        0 0 0 0 0 0 0 0 0 0
+        0 0 1 0 0 0 0 0 0 0
+        1 0 1 0 0 0 0 0 0 0
+        0 1 1 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0
+    </initial_states>
+    <parameters>
+    </parameters>
+</simulation>

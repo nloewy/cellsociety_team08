@@ -1,6 +1,6 @@
 # Cell Society Design Plan
 ### Team 8
-### Judy Lee, Noah Loewy, Alisha Zheng
+### Judy He, Noah Loewy, Alisha Zheng
 
 
 #### Examples
@@ -82,6 +82,9 @@ __About Page:__
 
 ## Configuration File Format
 
+[Game of Life Glider Structure XML Configuration File](../data/GameOfLifeGlider.xml)
+
+[Spreading of Fire XML Configuration File](../data/Fire.xml)
 
 ## Design Details
 ![crc design cards](images/crcCards.png "crc cards")
@@ -125,7 +128,34 @@ NewSimulation(simulationName); //name taken from the button user clicked
 ```
 5. Set a simulation parameter: set the value of a parameter, probCatch, for a simulation, Fire, based on the value given in a data file
 ```java
-   
+Document doc = XMLparser.readFile("File Path"); // XMLparser will be a custom static class for reading/writing XML configuration files 
+NodeList nList = doc.getElementsByTagName("parameters");
+Map<String, String> paramMap = new HashMap<>(); // mapping parameter names to values
+// loop through nList, obtain each given parameter
+for (int i = 0; i < nList.getLength(); i++) {...}
+// loop through paramMap, setting the value of each existing parameter for the Simulation object.
+for (String param: paraMap.keySet()) {
+    simulation.setParameter(param, paraMap.get(param));
+}
+```
+### Judy's Use Cases:
+
+1. Exit a simulation when it is still running, saving the simulation's current state as an XML configuration file.
+```java
+simulation.stop();
+Cell[] data = simulation.getCurrentStat();
+XML.writeFile(data, "file name")
+```
+
+2. Check/Retrieve previously saved state for before starting a specific simulation from the beginning
+```java
+public Cell[] retrieveState() {
+    String filename = checkSavedState();
+    if (filename.length != 0) {
+        return XML.readFile(filename);
+    }
+    return null;
+}
 ```
 
 ### Noah's Use Cases:
@@ -206,9 +236,26 @@ Cell class, promoting a more modular and maintainable design. However, this can 
 size of the codebase, making it more complex.
 
 ## Team Responsibilities
+_This section describes the parts of the program each team member plans to take primary and secondary responsibility for and a rough schedule of how the team will complete the program._
 
- * Team Member #1
+**Team Member #1: Judy He**
+* Primary responsibilities: 
+  * XML-Based Simulation Configuration (CELL-16)
+  * XML Configuration files for testing all simulations (CELL 01-05)
+  * Test Configurations: Game of Life Known Patterns (CELL-06)
+  * XML Parser Java method: Reading XML files, Writing XML files
+    * Save Simulation State as XML (CELL-23)
+  * Ensure configuration files that are formatted as XML should not be known to any part of the program except the part that explicitly handles loading the file (DESIGN-10)
+* Secondary responsibilities: Refactor, Debug any XML-related code
 
- * Team Member #2
+**Team Member #2: Noah Loewy**
+* Primary responsibilities:
+  * Implement Core functionalities (CELL 01-06)
+  * Refactor, debug code
+* Secondary responsibilities: Integrate code for core functionalities with GUI-related methods.
 
- * Team Member #3
+**Team Member #3: Alisha Zheng**
+* Primary responsibilities:
+  * Implement all GUI-related methods (CELL 17-25)
+  * Refactor, debug code
+* Secondary responsibilities: Integrate XML parser into GUI-related methods.  
