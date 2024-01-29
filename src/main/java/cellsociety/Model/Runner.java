@@ -39,6 +39,19 @@ public class Runner {
 
      fire test
     */
+
+    Integer[] arr = { 1,2,0,0,2,2,0,2,2,2,2,2,
+                      0,0,2,0,0,2,0,0,2,2,2,2,
+                      2,2,0,2,0,0,2,2,2,2,2,2,
+                      2,0,0,2,0,2,2,0,2,2,2,2,
+                      0,2,0,0,2,0,0,2,2,2,2,2,
+                      2,2,2,0,2,2,0,0,2,2,2,2,
+                      2,0,0,0,2,2,2,0,2,2,2,2,
+                      0,0,2,2,2,0,0,0,2,2,2,2,
+                      2,2,2,2,2,2,2,2,0,2,2,2,
+                      0,0,0,0,0,0,0,0,2,2,2,2,
+                      0,0,0,0,0,0,0,0,2,2,2,2,
+                      0,0,0,0,0,0,0,0,2,2,2,2};
     List<Integer> CURRENT_CONFIG_TO_START = Arrays.asList(arr);
     List<Cell> cellList = new ArrayList<>();
     int x = 0;
@@ -53,7 +66,7 @@ public class Runner {
       x++;
       y++;
     }
-    Simulation s = new FireSimulation(NUMROWS, NUMCOLS, new AdjacentNeighborhood(), cellList);
+    Simulation s = new PercolationSimulation(NUMROWS, NUMCOLS, new AdjacentNeighborhood(), cellList);
     for(int i = 0; i< 50; i++){
       s.transitionFunction();
       s.processUpdate();
