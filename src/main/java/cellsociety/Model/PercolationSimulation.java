@@ -6,7 +6,7 @@ public class PercolationSimulation extends Simulation {
 
   /**
    * This cellular automata simulation represents the CS201 Percolation Assignment.
-   * <p>
+   *
    * author @noah loewy
    */
   public final int OPEN = 0;
@@ -30,9 +30,9 @@ public class PercolationSimulation extends Simulation {
    */
   @Override
   public void transitionFunction() {
-    Iterator gridIterator = myGrid.iterator();
+    Iterator<Cell> gridIterator = myGrid.iterator();
     while (gridIterator.hasNext()) {
-      Cell currentCell = (Cell) gridIterator.next();
+      Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);
       if (currentCell.getCurrentState() == OPEN) {
         int percolatedNeighbors = countNeighborsInState(neighbors, PERCOLATED);

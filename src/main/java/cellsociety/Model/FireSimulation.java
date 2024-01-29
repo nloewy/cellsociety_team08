@@ -27,7 +27,7 @@ public class FireSimulation extends Simulation{
     //these will be parameters, as opposed to hardcoded
     neighborsToIgnite=1;
     probTreeIgnites=.1;
-    probTreeCreated=.3;
+    probTreeCreated=.2;
   }
 
   /**
@@ -39,9 +39,9 @@ public class FireSimulation extends Simulation{
    */
   @Override
   public void transitionFunction() {
-    Iterator gridIterator = myGrid.iterator();
+    Iterator<Cell> gridIterator = myGrid.iterator();
     while (gridIterator.hasNext()) {
-      Cell currentCell = (Cell) gridIterator.next();
+      Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);
       int currentState = currentCell.getCurrentState();
       double randomNumber = random();

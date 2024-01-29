@@ -34,9 +34,9 @@ public class GameOfLifeSimulation extends Simulation {
    */
   @Override
   public void transitionFunction() {
-    Iterator gridIterator = myGrid.iterator();
+    Iterator<Cell> gridIterator = myGrid.iterator();
     while (gridIterator.hasNext()) {
-      Cell currentCell = (Cell) gridIterator.next();
+      Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);
       int aliveNeighbors = countNeighborsInState(neighbors, ALIVE);
 

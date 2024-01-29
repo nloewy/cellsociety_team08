@@ -97,5 +97,6 @@ public abstract class Simulation {
       System.out.print(c.getCurrentState() + " ");
 
     }
+
   }
 }

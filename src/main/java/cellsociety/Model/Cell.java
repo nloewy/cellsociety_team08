@@ -49,6 +49,15 @@ public class Cell {
   }
 
   /**
+   * Retrieves myNextState instance variable
+   *
+   * @return myNextState, the future state of the cell object.
+   */
+  public int getNextState() {
+    return myNextState;
+  }
+
+  /**
    * Retrieves myLocation instance variable
    *
    * @return myLocation, the current x,y position of the cell object on the 2-dimensional grid
