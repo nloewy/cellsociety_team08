@@ -6,7 +6,7 @@ public class SchellingSimulation extends Simulation {
 
   /**
    * This cellular automata simulation represents the Schelling Segregation Model.
-   *
+   * <p>
    * author @noah loewy
    */
   public final int GROUPA = 0;
@@ -43,29 +43,30 @@ public class SchellingSimulation extends Simulation {
       int totalNeighbors = neighbors.size();
       int numEmptyNeighbors = countNeighborsInState(neighbors, EMPTY);
       int numNeighborsSameState = countNeighborsInState(neighbors, currentCell.getCurrentState());
-      if (currentCell.getCurrentState() != EMPTY ) {
-        if (totalNeighbors!=numEmptyNeighbors && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors) < proportionNeededToStay) {
+      if (currentCell.getCurrentState() != EMPTY) {
+        if (totalNeighbors != numEmptyNeighbors
+            && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
+            < proportionNeededToStay) {
           toLeave.add(currentCell);
-        }
-        else {
+        } else {
           currentCell.setNextState(currentCell.getCurrentState());
         }
       }
     }
     Collections.shuffle(toLeave);
     int index = 0;
-    while(index < Math.min(toLeave.size(), emptyCells.size())){
+    while (index < Math.min(toLeave.size(), emptyCells.size())) {
       emptyCells.get(index).setNextState(toLeave.get(index).getCurrentState());
       toLeave.get(index).setNextState(EMPTY);
       index++;
     }
-    for(Cell c : emptyCells){
-      if(c.getNextState()==-1){
+    for (Cell c : emptyCells) {
+      if (c.getNextState() == -1) {
         c.setNextState(c.getCurrentState());
       }
     }
-    for(Cell c : toLeave){
-      if(c.getNextState()==-1){
+    for (Cell c : toLeave) {
+      if (c.getNextState() == -1) {
         c.setNextState(c.getCurrentState());
       }
     }
