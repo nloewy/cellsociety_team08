@@ -4,51 +4,52 @@ import java.util.*;
 
 public class GameOfLifeSimulation extends Simulation{
 
+  /**
+   * This cellular automata simulation represents Conway's Game of Life.
+   * author @noah loewy
+   */
   public final int ALIVE = 1;
   public final int DEAD = 0;
 
-  private int alive_to_alive_min;
-  private int alive_to_alive_max;
-  private int dead_to_alive_min;
-  private int dead_to_alive_max;
+  private int aliveToAliveMin;
+  private int aliveToAliveMax;
+  private int deadToAliveMin;
+  private int deadToAliveMax;
 
   public GameOfLifeSimulation(int row, int col, Neighborhood neighborhoodType, List<Cell> gridList){
 
     super(row,col,neighborhoodType, gridList);
 
     //the below values will become parameterized later on
-    alive_to_alive_min = 2;
-    alive_to_alive_max = 3;
-    dead_to_alive_min = 3;
-    dead_to_alive_max = 3;
+    aliveToAliveMin = 2;
+    aliveToAliveMax = 3;
+    deadToAliveMin = 3;
+    deadToAliveMax = 3;
   }
-  public int countAliveNeighbors(List<Cell> neighbors){
-    int count = 0;
-    for(Cell c : neighbors){
-      if (c.getCurrentState()==ALIVE){
-        count++;
-      }
-    }
-    return count;
-  }
+
+  /**
+   * Transition function for gameOfLife. Alive cells remain alive if their number of alive neighbors
+   * is between aliveToAliveMin and aliveToAliveMax. Dead cells become alive if their number of
+   * alive neighbors is between deadToAliveMax and deadToAliveMin
+   */
   @Override
   public void transitionFunction() {
     Iterator gridIterator = myGrid.iterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = (Cell) gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);
-      int aliveNeighbors = countAliveNeighbors(neighbors);
+      int aliveNeighbors = countNeighborsInState(neighbors, ALIVE);
 
       //can definitely use some refactoring here
       if (currentCell.getCurrentState() == ALIVE) {
-        if (aliveNeighbors >= alive_to_alive_min && aliveNeighbors <= alive_to_alive_max) {
+        if (aliveNeighbors >= aliveToAliveMin && aliveNeighbors <= aliveToAliveMax) {
           currentCell.setNextState(ALIVE);
         } else {
           currentCell.setNextState(DEAD);
         }
       }
       if (currentCell.getCurrentState() == DEAD) {
-        if (aliveNeighbors >= dead_to_alive_min && aliveNeighbors <= dead_to_alive_max) {
+        if (aliveNeighbors >= deadToAliveMin && aliveNeighbors <= deadToAliveMax) {
           currentCell.setNextState(ALIVE);
         } else {
           currentCell.setNextState(DEAD);

@@ -7,6 +7,8 @@ public abstract class Simulation {
   /**
    * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
    * transitionFunction() based on the rules of the simulation
+   *
+   * @author Noah Loewy
    */
   protected Neighborhood myNeighborhood;
   protected Grid myGrid;
@@ -42,8 +44,6 @@ public abstract class Simulation {
       Cell c = iterator.next();
       c.updateStates();
     }
-
-
   }
 
   /**
@@ -67,6 +67,22 @@ public abstract class Simulation {
     return neighboringCells;
   }
 
+  /**
+   * Given a list of cells, and an integer representing a state, determines the number of cells in
+   * the list that are currently at that state
+   * @param neighbors, a list of cells, representing the neighbors of a central cell
+   * @param state, an integer, representing the state to check for
+   * @return an integer, representing the number of cells in neighbors where myCurrentState == state
+   */
+  public int countNeighborsInState(List<Cell> neighbors, int state){
+    int count = 0;
+    for(Cell c : neighbors){
+      if (c.getCurrentState()==state){
+        count++;
+      }
+    }
+    return count;
+  }
 
   private void printForDebugging() {
     Iterator<Cell> iterator2 = myGrid.iterator();

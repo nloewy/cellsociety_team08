@@ -4,6 +4,8 @@ public class Point {
 
   /**
    * Represents an x,y pairing in R^2 space
+   *
+   * @author Noah Loewy
    */
   private int myX;
   private int myY;
