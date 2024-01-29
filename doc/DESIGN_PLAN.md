@@ -1,6 +1,6 @@
 # Cell Society Design Plan
 ### Team 8
-### Judy He, Noah Loewy, Alisha Zheng
+### Judy He, Noah Loewy, Alisha Zhang
 
 
 #### Examples
@@ -147,7 +147,7 @@ Cell[] data = simulation.getCurrentStat();
 XML.writeFile(data, "file name")
 ```
 
-2. Check/Retrieve previously saved state for before starting a specific simulation from the beginning
+2. Check/Retrieve previously saved state before starting a specific simulation from the beginning
 ```java
 public Cell[] retrieveState() {
     String filename = checkSavedState();
@@ -254,7 +254,7 @@ _This section describes the parts of the program each team member plans to take 
   * Refactor, debug code
 * Secondary responsibilities: Integrate code for core functionalities with GUI-related methods.
 
-**Team Member #3: Alisha Zheng**
+**Team Member #3: Alisha Zhang**
 * Primary responsibilities:
   * Implement all GUI-related methods (CELL 17-25)
   * Refactor, debug code
