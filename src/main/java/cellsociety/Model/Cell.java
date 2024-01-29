@@ -13,8 +13,7 @@ public class Cell {
   private String myCurrentState;
   private String myNextState;
   private List<Cell> myNeighbors;
-  private int myX;
-  private int myY;
+  private Point myLocation;
 
   /**
    * Constructs a cell object
@@ -27,9 +26,7 @@ public class Cell {
   public Cell(String initialState, int x, int y) {
     myCurrentState = initialState;
     myNextState = null;
-    myNeighbors = new ArrayList<>();
-    myX = x;
-    myY = y;
+    myLocation = new Point(x, y);
   }
 
   /**
@@ -42,37 +39,21 @@ public class Cell {
   }
 
   /**
-   * Adds a neighboring cell to a cell's list of neighbors
-   */
-  public void addNeighbor(Cell c) {
-    myNeighbors.add(c);
-  }
-
-  /**
-   * Retrieves myX instance variable
-   *
-   * @return myX, the x coordinate of the cell object on the 2d grid
-   */
-  public int getX() {
-    return myX;
-  }
-
-  /**
-   * Retrieves myY instance variable
-   *
-   * @return myY, the y coordinate of the cell object on the 2d grid
-   */
-  public int getY() {
-    return myY;
-  }
-
-  /**
    * Retrieves myCurrentState instance variable
    *
    * @return myCurrentState, the current state of the cell object.
    */
   public String getCurrentState() {
     return myCurrentState;
+  }
+
+  /**
+   * Retrieves myLocation instance variable
+   *
+   * @return myLocation, the current x,y position of the cell object on the 2-dimensional grid
+   */
+  public Point getLocation() {
+    return myLocation;
   }
 
 }

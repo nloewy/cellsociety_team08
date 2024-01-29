@@ -13,7 +13,7 @@ public class Grid {
    */
   private int myNumRows;
   private int myNumCols;
-  private List<Cell> myGrid;
+  private ArrayList<Cell> myGrid;
 
   /**
    * Constructs a cell object
@@ -30,11 +30,12 @@ public class Grid {
   /**
    * Determines if (x,y) is a legal cell in the grid.
    *
-   * @param x, the x coordinate of a potential grid cell
-   * @param y, the y coordinate of a potential grid cell
-   * @return boolean, highlighting if x,y is a legal cell in the grid
+   * @param p, the coordinates of a potential grid cell on a 2d-plane
+   * @return boolean, highlighting if p is a legal cell in the grid
    */
-  public boolean inBounds(int x, int y) {
+  public boolean inBounds(Point p) {
+    int x = p.getX();
+    int y = p.getY();
     return xInBounds(x) && yInBounds(y);
   }
 
@@ -56,6 +57,21 @@ public class Grid {
    */
   public boolean yInBounds(int y) {
     return y >= 0 && y < myNumCols;
+  }
+
+
+  /**
+   * Returns the cell located at a given Point on the 2 dimensional grid
+   *
+   * @param p, an (x,y) pairing of a potential cell location on the grid
+   * @return Cell, the cell located at Point p, or null, if p is not a valid location
+   */
+
+  public Cell getCellAtLocation(Point p) {
+    if (!inBounds(p)) {
+      throw new IndexOutOfBoundsException();
+    }
+    return myGrid.get(myNumRows * p.getX() + p.getY());
   }
 
   /**

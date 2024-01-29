@@ -39,4 +39,25 @@ public abstract class Simulation {
       c.updateStates();
     }
   }
+
+  /**
+   * Returns List of all cells that are considered "neighbors" to the parameter cell, given the
+   * definition of a neighborhood provided by instance variable myNeighborhood
+   *
+   * @param c, a cell object that we are trying to get the neighbors of
+   * @return List<Cell>, all neighboring cell objects to c
+   */
+  public List<Cell> getNeighbors(Cell c) {
+    List<Cell> neighboringCells = new ArrayList<>();
+    List<Point> neighboringCoordinates = neighborhood.getNeighborCoordinates(c.getLocation());
+    for (Point p : neighboringCoordinates) {
+      Cell neighbor = myGrid.getCellAtLocation(p);
+      try {
+        neighboringCells.add(neighbor);
+      } catch (IndexOutOfBoundsException e) {
+        continue;
+      }
+    }
+    return neighboringCells;
+  }
 }
