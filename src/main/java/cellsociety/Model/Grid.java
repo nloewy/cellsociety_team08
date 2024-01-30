@@ -21,12 +21,17 @@ public class Grid {
    * @param rows is the number of rows in the grid
    * @param cols is the number of columns in the grid
    */
-  public Grid(int rows, int cols, List<Cell> gridList) {
+  public Grid(int rows, int cols) {
     myNumRows = rows;
     myNumCols = cols;
-    myGrid = new ArrayList<>(gridList);
+    myGrid = new ArrayList<>();
   }
 
+  public void initializeGrid(List<Integer> stateList){
+    for(int i = 0; i < stateList.size(); i++){
+      myGrid.add(new Cell(stateList.get(i), i/myNumRows, i%myNumCols));
+    }
+  }
   /**
    * Determines if (x,y) is a legal cell in the grid.
    *

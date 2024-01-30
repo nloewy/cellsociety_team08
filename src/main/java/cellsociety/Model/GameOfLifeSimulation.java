@@ -16,9 +16,10 @@ public class GameOfLifeSimulation extends Simulation {
   private int deadToAliveMax;
 
   public GameOfLifeSimulation(int row, int col, Neighborhood neighborhoodType,
-      List<Cell> gridList) {
+      List<Integer> stateList) {
 
-    super(row, col, neighborhoodType, gridList);
+    super(row, col, neighborhoodType);
+    myGrid.initializeGrid(stateList);
 
     //these will be parameters, as opposed to hardcoded
     aliveToAliveMin = 2;

@@ -5,7 +5,7 @@ import java.util.*;
 public interface Neighborhood {
 
   /**
-   * Abstract class that represents a cell's neighborhood, which is a collection of points
+   * Interface that represents a cell's neighborhood, which is a collection of points
    * surrounding a center point.
    *
    * @author Noah Loewy

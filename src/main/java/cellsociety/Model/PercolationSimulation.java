@@ -17,8 +17,9 @@ public class PercolationSimulation extends Simulation {
 
 
   public PercolationSimulation(int row, int col, Neighborhood neighborhoodType,
-      List<Cell> gridList) {
-    super(row, col, neighborhoodType, gridList);
+      List<Integer> stateList) {
+    super(row, col, neighborhoodType);
+    myGrid.initializeGrid(stateList);
 
     //these will be parameters, as opposed to hardcoded
     neighborsPercolatedRequired = 1;

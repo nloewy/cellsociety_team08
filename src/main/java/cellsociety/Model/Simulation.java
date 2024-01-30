@@ -14,15 +14,15 @@ public abstract class Simulation {
   protected Grid myGrid;
 
 
+  public Simulation(){}
   /**
    * Constructs a basic Simulation object
    *
    * @param rows, the number of rows in the 2-dimensional grid
    * @param cols, the number of columns in the 2-dimensional grid
    */
-  public Simulation(int rows, int cols, Neighborhood neighborhoodType, List<Cell> gridList) {
-    myGrid = new Grid(rows, cols, gridList);
-
+  public Simulation(int rows, int cols, Neighborhood neighborhoodType) {
+    myGrid = new Grid(rows, cols);
     myNeighborhood = neighborhoodType;
   }
 

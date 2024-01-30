@@ -16,8 +16,9 @@ public class SchellingSimulation extends Simulation {
   private double proportionNeededToStay;
 
   public SchellingSimulation(int row, int col, Neighborhood neighborhoodType,
-      List<Cell> gridList) {
-    super(row, col, neighborhoodType, gridList);
+      List<Integer> stateList) {
+    super(row, col, neighborhoodType);
+    myGrid.initializeGrid(stateList);
 
     //these will be parameters, as opposed to hardcoded
     proportionNeededToStay = .5;

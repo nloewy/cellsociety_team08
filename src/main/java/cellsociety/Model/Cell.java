@@ -74,4 +74,5 @@ public class Cell {
   public void setNextState(int nextState) {
     myNextState = nextState;
   }
+
 }

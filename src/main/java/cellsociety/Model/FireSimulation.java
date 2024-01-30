@@ -20,9 +20,10 @@ public class FireSimulation extends Simulation{
   private double probTreeCreated;
   private int neighborsToIgnite;
 
-  public FireSimulation(int row, int col, Neighborhood neighborhoodType, List<Cell> gridList){
+  public FireSimulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList){
 
-    super(row,col,neighborhoodType, gridList);
+    super(row,col,neighborhoodType);
+    myGrid.initializeGrid(stateList);
 
     //these will be parameters, as opposed to hardcoded
     neighborsToIgnite=1;

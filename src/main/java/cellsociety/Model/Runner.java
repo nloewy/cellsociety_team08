@@ -78,7 +78,7 @@ public class Runner {
       y++;
     }
     Simulation s = new FireSimulation(NUMROWS, NUMCOLS, new AdjacentNeighborhood(),
-        cellList);
+        CURRENT_CONFIG_TO_START);
     for (int i = 0; i < 20; i++) {
       s.transitionFunction();
       s.processUpdate();
