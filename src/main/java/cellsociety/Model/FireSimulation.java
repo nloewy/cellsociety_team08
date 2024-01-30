@@ -22,8 +22,8 @@ public class FireSimulation extends Simulation{
 
   public FireSimulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList){
 
-    super(row,col,neighborhoodType);
-    myGrid.initializeGrid(stateList);
+    super(row,col,neighborhoodType, stateList);
+
 
     //these will be parameters, as opposed to hardcoded
     neighborsToIgnite=1;
@@ -40,7 +40,7 @@ public class FireSimulation extends Simulation{
    */
   @Override
   public void transitionFunction() {
-    Iterator<Cell> gridIterator = myGrid.iterator();
+    Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);

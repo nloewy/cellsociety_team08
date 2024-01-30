@@ -20,18 +20,17 @@ public class Grid {
    *
    * @param rows is the number of rows in the grid
    * @param cols is the number of columns in the grid
+   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
-  public Grid(int rows, int cols) {
+  public Grid(int rows, int cols, List<Integer> stateList) {
     myNumRows = rows;
     myNumCols = cols;
     myGrid = new ArrayList<>();
-  }
-
-  public void initializeGrid(List<Integer> stateList){
     for(int i = 0; i < stateList.size(); i++){
       myGrid.add(new Cell(stateList.get(i), i/myNumRows, i%myNumCols));
     }
   }
+
   /**
    * Determines if (x,y) is a legal cell in the grid.
    *

@@ -10,8 +10,8 @@ public abstract class Simulation {
    *
    * @author Noah Loewy
    */
-  protected Neighborhood myNeighborhood;
-  protected Grid myGrid;
+  private Neighborhood myNeighborhood;
+  private Grid myGrid;
 
 
   public Simulation(){}
@@ -20,9 +20,11 @@ public abstract class Simulation {
    *
    * @param rows, the number of rows in the 2-dimensional grid
    * @param cols, the number of columns in the 2-dimensional grid
+   * @param neighborhoodType, the definition of neighbors
+   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
-  public Simulation(int rows, int cols, Neighborhood neighborhoodType) {
-    myGrid = new Grid(rows, cols);
+  public Simulation(int rows, int cols, Neighborhood neighborhoodType, List<Integer> stateList) {
+    myGrid = new Grid(rows, cols, stateList);
     myNeighborhood = neighborhoodType;
   }
 
@@ -85,6 +87,9 @@ public abstract class Simulation {
     return count;
   }
 
+  public Iterator<Cell> getIterator(){
+    return myGrid.iterator();
+  }
   private void printForDebugging() {
     Iterator<Cell> iterator2 = myGrid.iterator();
     int count = 0;

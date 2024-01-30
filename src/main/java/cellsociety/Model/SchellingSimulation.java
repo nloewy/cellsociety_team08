@@ -17,10 +17,7 @@ public class SchellingSimulation extends Simulation {
 
   public SchellingSimulation(int row, int col, Neighborhood neighborhoodType,
       List<Integer> stateList) {
-    super(row, col, neighborhoodType);
-    myGrid.initializeGrid(stateList);
-
-    //these will be parameters, as opposed to hardcoded
+    super(row, col, neighborhoodType, stateList);
     proportionNeededToStay = .5;
   }
 
@@ -32,7 +29,7 @@ public class SchellingSimulation extends Simulation {
   @Override
   //MAJOR REFACTORING NEEDED
   public void transitionFunction() {
-    Iterator<Cell> gridIterator = myGrid.iterator();
+    Iterator<Cell> gridIterator = getIterator();
     List<Cell> emptyCells = new ArrayList<>();
     List<Cell> toLeave = new ArrayList<>();
     while (gridIterator.hasNext()) {

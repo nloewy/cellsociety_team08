@@ -18,8 +18,7 @@ public class GameOfLifeSimulation extends Simulation {
   public GameOfLifeSimulation(int row, int col, Neighborhood neighborhoodType,
       List<Integer> stateList) {
 
-    super(row, col, neighborhoodType);
-    myGrid.initializeGrid(stateList);
+    super(row, col, neighborhoodType, stateList);
 
     //these will be parameters, as opposed to hardcoded
     aliveToAliveMin = 2;
@@ -35,7 +34,7 @@ public class GameOfLifeSimulation extends Simulation {
    */
   @Override
   public void transitionFunction() {
-    Iterator<Cell> gridIterator = myGrid.iterator();
+    Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);
