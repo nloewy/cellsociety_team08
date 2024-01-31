@@ -4,10 +4,10 @@ import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
 import cellsociety.model.core.Point;
 import cellsociety.model.neighborhood.Neighborhood;
-import java.util.function.Function;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.function.Function;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class Simulation<T extends Cell> {
 

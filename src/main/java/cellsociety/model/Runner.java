@@ -64,22 +64,22 @@ public class Runner {
 
      schelling test
      */
-    List<Integer> CURRENT_CONFIG_TO_START = Arrays.asList(arr);
+    List<Integer> currentConfigToStart = Arrays.asList(arr);
     List<Cell> cellList = new ArrayList<>();
     int x = 0;
     int y = 0;
-    int NUMROWS = (int) Math.round(Math.sqrt(arr.length));
-    int NUMCOLS = (int) Math.round(Math.sqrt(arr.length));
-    for (Integer i : CURRENT_CONFIG_TO_START) {
-      cellList.add(new Cell(i, x / NUMROWS, y % NUMCOLS));
+    int numRows = (int) Math.round(Math.sqrt(arr.length));
+    int numCols = (int) Math.round(Math.sqrt(arr.length));
+    for (Integer i : currentConfigToStart) {
+      cellList.add(new Cell(i, x / numRows, y % numCols));
       if (i == 1) {
         // System.out.println("" + x / NUMROWS + " " + y % NUMCOLS);
       }
       x++;
       y++;
     }
-    Simulation s = new FireSimulation(NUMROWS, NUMCOLS, new AdjacentNeighborhood(),
-        CURRENT_CONFIG_TO_START);
+    Simulation s = new FireSimulation(numRows, numCols, new AdjacentNeighborhood(),
+        currentConfigToStart);
     for (int i = 0; i < 20; i++) {
       s.transitionFunction();
       s.processUpdate();

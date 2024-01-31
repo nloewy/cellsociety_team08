@@ -1,7 +1,7 @@
 package cellsociety.model.neighborhood;
 
 import cellsociety.model.core.Point;
-import java.util.*;
+import java.util.List;
 
 public interface Neighborhood {
 
