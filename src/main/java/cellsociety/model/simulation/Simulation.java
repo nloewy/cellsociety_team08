@@ -4,8 +4,10 @@ import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
 import cellsociety.model.core.Point;
 import cellsociety.model.neighborhood.Neighborhood;
-import java.util.*;
 import java.util.function.Function;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public abstract class Simulation<T extends Cell> {
 
@@ -19,20 +21,23 @@ public abstract class Simulation<T extends Cell> {
   private Grid<T> myGrid;
 
 
-  public Simulation(){}
+  public Simulation() {
+  }
+
   /**
    * Constructs a basic Simulation object
    *
-   * @param rows, the number of rows in the 2-dimensional grid
-   * @param cols, the number of columns in the 2-dimensional grid
+   * @param rows,             the number of rows in the 2-dimensional grid
+   * @param cols,             the number of columns in the 2-dimensional grid
    * @param neighborhoodType, the definition of neighbors
-   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
+   * @param stateList,        a list of the integer representation of each cells state, by rows,
+   *                          then cols
    */
 
   public Simulation(int rows, int cols, Neighborhood neighborhoodType, List<Integer> stateList,
       Function<Integer, T> cellInitializer) {
     List<T> cellList = new ArrayList<>();
-    for(int i = 0; i < stateList.size(); i++) {
+    for (int i = 0; i < stateList.size(); i++) {
       cellList.add(cellInitializer.apply(i));
     }
     myGrid = new Grid<T>(rows, cols, cellList);
@@ -97,9 +102,10 @@ public abstract class Simulation<T extends Cell> {
     return count;
   }
 
-  public Iterator<T> getIterator(){
+  public Iterator<T> getIterator() {
     return myGrid.iterator();
   }
+
   private void printForDebugging() {
     Iterator<T> iterator2 = myGrid.iterator();
     int count = 0;

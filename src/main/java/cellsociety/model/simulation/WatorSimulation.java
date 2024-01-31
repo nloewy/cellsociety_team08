@@ -2,7 +2,9 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.WatorCell;
 import cellsociety.model.neighborhood.Neighborhood;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class WatorSimulation extends Simulation<WatorCell> {
 
@@ -11,17 +13,18 @@ public class WatorSimulation extends Simulation<WatorCell> {
   public static final int SHARK = 2;
 
   public WatorSimulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList) {
-    super(row, col, neighborhoodType, stateList,  (ind -> new WatorCell(stateList.get(ind),
+    super(row, col, neighborhoodType, stateList, (ind -> new WatorCell(stateList.get(ind),
         ind / row, ind % col, 0, 0)));
   }
 
-  private List<WatorCell> getCellsFromStates(List<Integer> stateList, int row, int col){
+  private List<WatorCell> getCellsFromStates(List<Integer> stateList, int row, int col) {
     List<WatorCell> newStateList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
       newStateList.add(new WatorCell(stateList.get(i), i / row, i % col, 0, 0));
     }
     return newStateList;
   }
+
   @Override
   public void transitionFunction() {
     Iterator<WatorCell> gridIterator = getIterator();

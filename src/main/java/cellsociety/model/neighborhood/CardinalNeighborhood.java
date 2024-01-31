@@ -6,14 +6,15 @@ import java.util.*;
 public class CardinalNeighborhood implements Neighborhood {
 
   /**
-   * Represents a neighborhood where neighbors are characterized as points that share a common
-   * side on the coordinate grid
+   * Represents a neighborhood where neighbors are characterized as points that share a common side
+   * on the coordinate grid
    *
    * @author Noah Loewy
    */
 
-  public static final int[] ROW_DELTAS = {1,-1,0,0};
-  public static final int[] COL_DELTAS = {0,0,1,-1};
+  public static final int[] ROW_DELTAS = {1, -1, 0, 0};
+  public static final int[] COL_DELTAS = {0, 0, 1, -1};
+
   /**
    * Retrieves all points that either shares an edge with the central point
    *
@@ -24,12 +25,12 @@ public class CardinalNeighborhood implements Neighborhood {
   @Override
   public List<Point> getNeighborCoordinates(Point p) {
     List<Point> neighbors = new ArrayList<>();
-    for (int i = 0; i < ROW_DELTAS.length; i++){
-        Point neighbor = p.translate(ROW_DELTAS[i], COL_DELTAS[i]);
-        if (!neighbor.equals(p)) {
-          neighbors.add(neighbor);
-        }
+    for (int i = 0; i < ROW_DELTAS.length; i++) {
+      Point neighbor = p.translate(ROW_DELTAS[i], COL_DELTAS[i]);
+      if (!neighbor.equals(p)) {
+        neighbors.add(neighbor);
       }
+    }
     return neighbors;
   }
 }
