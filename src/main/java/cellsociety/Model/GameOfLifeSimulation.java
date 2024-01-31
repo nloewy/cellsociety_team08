@@ -2,13 +2,14 @@ package cellsociety.Model;
 
 import java.util.*;
 
-public class GameOfLifeSimulation extends Simulation {
+public class GameOfLifeSimulation extends SimpleCellSimulation  {
 
   /**
    * This cellular automata simulation represents Conway's Game of Life. author @noah loewy
    */
-  public final int ALIVE = 1;
-  public final int DEAD = 0;
+  public static final int DEAD = 0;
+
+  public static final int ALIVE = 1;
 
   private int aliveToAliveMin;
   private int aliveToAliveMax;
@@ -34,12 +35,12 @@ public class GameOfLifeSimulation extends Simulation {
    */
   @Override
   public void transitionFunction() {
+
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);
       int aliveNeighbors = countNeighborsInState(neighbors, ALIVE);
-
       //can definitely use some refactoring here
       if (currentCell.getCurrentState() == ALIVE) {
         if (aliveNeighbors >= aliveToAliveMin && aliveNeighbors <= aliveToAliveMax) {

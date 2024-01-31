@@ -4,16 +4,16 @@ import static java.lang.Math.random;
 
 import java.util.*;
 
-public class FireSimulation extends Simulation{
+public class FireSimulation extends SimpleCellSimulation{
 
   /**
    * Represents the spreading of a wild fire in a forest
    *
    * @author Noah Loewy
    */
-  public final int EMPTY = 0;
-  public final int TREE = 1;
-  public final int BURNING = 2;
+  public static final int EMPTY = 0;
+  public static final int TREE = 1;
+  public static final int BURNING = 2;
 
 
   private double probTreeIgnites;
@@ -22,13 +22,12 @@ public class FireSimulation extends Simulation{
 
   public FireSimulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList){
 
-    super(row,col,neighborhoodType, stateList);
-
+    super(row,col,neighborhoodType,stateList);
 
     //these will be parameters, as opposed to hardcoded
     neighborsToIgnite=1;
-    probTreeIgnites=.1;
-    probTreeCreated=.2;
+    probTreeIgnites=0;
+    probTreeCreated=0;
   }
 
   /**
@@ -41,7 +40,13 @@ public class FireSimulation extends Simulation{
   @Override
   public void transitionFunction() {
     Iterator<Cell> gridIterator = getIterator();
+
+
+    int count = 0;
+
+
     while (gridIterator.hasNext()) {
+      count++;
       Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);
       int currentState = currentCell.getCurrentState();
@@ -58,6 +63,9 @@ public class FireSimulation extends Simulation{
           currentCell.setNextState(EMPTY);
         }
       else if(currentState == TREE){
+        if(count==59){
+          System.out.println(countNeighborsInState(neighbors, BURNING));
+        }
           int burningNeighbors = countNeighborsInState(neighbors, BURNING);
           if(burningNeighbors >= neighborsToIgnite || randomNumber <= probTreeIgnites){
             currentCell.setNextState(BURNING);

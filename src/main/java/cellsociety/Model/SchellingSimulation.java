@@ -2,16 +2,17 @@ package cellsociety.Model;
 
 import java.util.*;
 
-public class SchellingSimulation extends Simulation {
+public class SchellingSimulation extends SimpleCellSimulation {
 
   /**
    * This cellular automata simulation represents the Schelling Segregation Model.
    * <p>
    * author @noah loewy
    */
-  public final int GROUPA = 0;
-  public final int GROUPB = 1;
-  public final int EMPTY = 2;
+  public static final int PLACEHOLDER = -1;
+  public static final int GROUPA = 0;
+  public static final int GROUPB = 1;
+  public static final int EMPTY = 2;
 
   private double proportionNeededToStay;
 
@@ -59,12 +60,12 @@ public class SchellingSimulation extends Simulation {
       index++;
     }
     for (Cell c : emptyCells) {
-      if (c.getNextState() == -1) {
+      if (c.getNextState() == PLACEHOLDER) {
         c.setNextState(c.getCurrentState());
       }
     }
     for (Cell c : toLeave) {
-      if (c.getNextState() == -1) {
+      if (c.getNextState() == PLACEHOLDER){
         c.setNextState(c.getCurrentState());
       }
     }

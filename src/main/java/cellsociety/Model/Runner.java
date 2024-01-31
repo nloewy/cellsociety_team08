@@ -7,7 +7,8 @@ import java.util.List;
 public class Runner {
 
   public static void main(String[] args) {
-    /**  Integer[] arr = {0,0,0,0,0,0,0,0,0,0,0,0,
+    /**
+      Integer[] arr = {0,0,0,0,0,0,0,0,0,0,0,0,
      0,0,1,0,0,0,0,0,0,0,0,0,
      1,0,1,0,0,0,0,0,0,0,0,0,
      0,1,1,0,0,0,0,0,0,0,0,0,
@@ -17,10 +18,9 @@ public class Runner {
      0,0,0,0,0,0,0,0,0,0,0,0,
      0,0,0,0,0,0,0,0,0,0,0,0,
      0,0,0,0,0,0,0,0,0,0,0,0,
-     0,0,0,0,0,0,0,0,0,0,0,0};
-
-     Glider Test
-    */
+     0,0,0,0,0,0,0,0,0,0,0,0,
+          0,0,0,0,0,0,0,0,0,0,0,0};
+*/
 
 
 
@@ -38,6 +38,7 @@ public class Runner {
      1,1,1,1,1,1,1,1,1,1,0,0};
 
     // fire test
+
 
 
     /**
@@ -72,7 +73,7 @@ public class Runner {
     for (Integer i : CURRENT_CONFIG_TO_START) {
       cellList.add(new Cell(i, x / NUMROWS, y % NUMCOLS));
       if (i == 1) {
-        System.out.println("" + x / NUMROWS + " " + y % NUMCOLS);
+       // System.out.println("" + x / NUMROWS + " " + y % NUMCOLS);
       }
       x++;
       y++;

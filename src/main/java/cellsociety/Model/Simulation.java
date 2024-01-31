@@ -1,8 +1,9 @@
 package cellsociety.Model;
 
 import java.util.*;
+import java.util.function.Function;
 
-public abstract class Simulation {
+public abstract class Simulation<T extends Cell> {
 
   /**
    * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
@@ -11,7 +12,7 @@ public abstract class Simulation {
    * @author Noah Loewy
    */
   private Neighborhood myNeighborhood;
-  private Grid myGrid;
+  private Grid<T> myGrid;
 
 
   public Simulation(){}
@@ -23,8 +24,18 @@ public abstract class Simulation {
    * @param neighborhoodType, the definition of neighbors
    * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
-  public Simulation(int rows, int cols, Neighborhood neighborhoodType, List<Integer> stateList) {
-    myGrid = new Grid(rows, cols, stateList);
+
+  public Simulation(int rows, int cols, Neighborhood neighborhoodType, List<Integer> stateList,
+      Function<Integer, T> cellInitializer) {
+
+    List<T> cellList = new ArrayList<>();
+    for(int i = 0; i < stateList.size(); i++) {
+      cellList.add(cellInitializer.apply(i));
+
+    }
+
+
+    myGrid = new Grid(rows, cols, cellList);
     myNeighborhood = neighborhoodType;
   }
 
@@ -41,10 +52,10 @@ public abstract class Simulation {
   public void processUpdate() {
     printForDebugging();
 
-    Iterator<Cell> iterator = myGrid.iterator();
+    Iterator<T> iterator = myGrid.iterator();
     while (iterator.hasNext()) {
-      Cell c = iterator.next();
-      c.updateStates();
+      T cell = iterator.next();
+      cell.updateStates();
     }
   }
 
@@ -52,15 +63,15 @@ public abstract class Simulation {
    * Returns List of all cells that are considered "neighbors" to the parameter cell, given the
    * definition of a neighborhood provided by instance variable myNeighborhood
    *
-   * @param c, a cell object that we are trying to get the neighbors of
-   * @return List<Cell>, all neighboring cell objects to c
+   * @param cell, a cell object that we are trying to get the neighbors of
+   * @return List<T>, all neighboring cell objects to c
    */
-  public List<Cell> getNeighbors(Cell c) {
-    List<Cell> neighboringCells = new ArrayList<>();
-    List<Point> neighboringCoordinates = myNeighborhood.getNeighborCoordinates(c.getLocation());
+  public List<T> getNeighbors(T cell) {
+    List<T> neighboringCells = new ArrayList<>();
+    List<Point> neighboringCoordinates = myNeighborhood.getNeighborCoordinates(cell.getLocation());
     for (Point p : neighboringCoordinates) {
       try {
-        Cell neighbor = myGrid.getCellAtLocation(p);
+        T neighbor = myGrid.getCellAtLocation(p);
         neighboringCells.add(neighbor);
       } catch (IndexOutOfBoundsException e) {
         continue;
@@ -77,9 +88,9 @@ public abstract class Simulation {
    * @param state,     an integer, representing the state to check for
    * @return an integer, representing the number of cells in neighbors where myCurrentState == state
    */
-  public int countNeighborsInState(List<Cell> neighbors, int state) {
+  public int countNeighborsInState(List<T> neighbors, int state) {
     int count = 0;
-    for (Cell c : neighbors) {
+    for (T c : neighbors) {
       if (c.getCurrentState() == state) {
         count++;
       }
@@ -87,17 +98,17 @@ public abstract class Simulation {
     return count;
   }
 
-  public Iterator<Cell> getIterator(){
+  public Iterator<T> getIterator(){
     return myGrid.iterator();
   }
   private void printForDebugging() {
-    Iterator<Cell> iterator2 = myGrid.iterator();
+    Iterator<T> iterator2 = myGrid.iterator();
     int count = 0;
     while (iterator2.hasNext()) {
       if (count % 12 == 0) {
         System.out.println();
       }
-      Cell c = iterator2.next();
+      T c = iterator2.next();
       count++;
       System.out.print(c.getCurrentState() + " ");
 

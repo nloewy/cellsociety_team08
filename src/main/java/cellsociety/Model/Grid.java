@@ -2,7 +2,7 @@ package cellsociety.Model;
 
 import java.util.*;
 
-public class Grid {
+public class Grid<T extends Cell> {
 
   /**
    * The Grid represents a 2-dimensional list for our simulation, where each x,y pairing contains a
@@ -13,22 +13,20 @@ public class Grid {
    */
   private int myNumRows;
   private int myNumCols;
-  private ArrayList<Cell> myGrid;
+  private List<T> myGrid;
 
   /**
    * Constructs a cell object
    *
    * @param rows is the number of rows in the grid
    * @param cols is the number of columns in the grid
-   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
+   * @param cellList, a list of the cells, by rows, then cols
    */
-  public Grid(int rows, int cols, List<Integer> stateList) {
+  public Grid(int rows, int cols, List<T> cellList) {
     myNumRows = rows;
     myNumCols = cols;
-    myGrid = new ArrayList<>();
-    for(int i = 0; i < stateList.size(); i++){
-      myGrid.add(new Cell(stateList.get(i), i/myNumRows, i%myNumCols));
-    }
+    myGrid = new ArrayList<>(cellList);
+
   }
 
   /**
@@ -68,10 +66,10 @@ public class Grid {
    * Returns the cell located at a given Point on the 2 dimensional grid
    *
    * @param p, an (x,y) pairing of a potential cell location on the grid
-   * @return Cell, the cell located at Point p, or null, if p is not a valid location
+   * @return T, the cell located at Point p, or null, if p is not a valid location
    */
 
-  public Cell getCellAtLocation(Point p) {
+  public T getCellAtLocation(Point p) {
     if (!inBounds(p)) {
       throw new IndexOutOfBoundsException();
     }
@@ -84,7 +82,7 @@ public class Grid {
    *
    * @return Iterator<Cell>
    */
-  public Iterator<Cell> iterator() {
+  public Iterator<T> iterator() {
     return myGrid.iterator();
   }
 }
