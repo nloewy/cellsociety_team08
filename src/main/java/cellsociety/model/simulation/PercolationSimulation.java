@@ -1,8 +1,10 @@
-package cellsociety.Model;
+package cellsociety.model.simulation;
 
+import cellsociety.model.core.Cell;
+import cellsociety.model.neighborhood.Neighborhood;
 import java.util.*;
 
-public class PercolationSimulation extends SimpleCellSimulation  {
+public class PercolationSimulation extends SimpleCellSimulation {
 
   /**
    * This cellular automata simulation represents the CS201 Percolation Assignment.

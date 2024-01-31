@@ -1,6 +1,8 @@
-package cellsociety.Model;
+package cellsociety.model.core;
 
-public class WatorCell extends Cell{
+import cellsociety.model.core.Cell;
+
+public class WatorCell extends Cell {
 
   private int myEnergy;
   private int myTime;

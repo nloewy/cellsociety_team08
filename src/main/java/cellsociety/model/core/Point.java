@@ -1,4 +1,4 @@
-package cellsociety.Model;
+package cellsociety.model.core;
 
 public class Point {
 

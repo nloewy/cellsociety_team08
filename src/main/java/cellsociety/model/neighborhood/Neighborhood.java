@@ -1,5 +1,6 @@
-package cellsociety.Model;
+package cellsociety.model.neighborhood;
 
+import cellsociety.model.core.Point;
 import java.util.*;
 
 public interface Neighborhood {

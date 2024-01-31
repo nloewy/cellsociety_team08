@@ -1,8 +1,10 @@
-package cellsociety.Model;
+package cellsociety.model.simulation;
 
+import cellsociety.model.core.Cell;
+import cellsociety.model.neighborhood.Neighborhood;
 import java.util.*;
 
-public class GameOfLifeSimulation extends SimpleCellSimulation  {
+public class GameOfLifeSimulation extends SimpleCellSimulation {
 
   /**
    * This cellular automata simulation represents Conway's Game of Life. author @noah loewy

@@ -1,4 +1,4 @@
-package cellsociety.Views;
+package cellsociety.view;
 
 public class SceneManager {
 }

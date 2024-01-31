@@ -1,5 +1,9 @@
-package cellsociety.Model;
+package cellsociety.model;
 
+import cellsociety.model.core.Cell;
+import cellsociety.model.neighborhood.AdjacentNeighborhood;
+import cellsociety.model.simulation.FireSimulation;
+import cellsociety.model.simulation.Simulation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

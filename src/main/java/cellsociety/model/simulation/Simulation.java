@@ -1,5 +1,9 @@
-package cellsociety.Model;
+package cellsociety.model.simulation;
 
+import cellsociety.model.core.Cell;
+import cellsociety.model.core.Grid;
+import cellsociety.model.core.Point;
+import cellsociety.model.neighborhood.Neighborhood;
 import java.util.*;
 import java.util.function.Function;
 
@@ -27,15 +31,11 @@ public abstract class Simulation<T extends Cell> {
 
   public Simulation(int rows, int cols, Neighborhood neighborhoodType, List<Integer> stateList,
       Function<Integer, T> cellInitializer) {
-
     List<T> cellList = new ArrayList<>();
     for(int i = 0; i < stateList.size(); i++) {
       cellList.add(cellInitializer.apply(i));
-
     }
-
-
-    myGrid = new Grid(rows, cols, cellList);
+    myGrid = new Grid<T>(rows, cols, cellList);
     myNeighborhood = neighborhoodType;
   }
 
@@ -51,7 +51,6 @@ public abstract class Simulation<T extends Cell> {
    */
   public void processUpdate() {
     printForDebugging();
-
     Iterator<T> iterator = myGrid.iterator();
     while (iterator.hasNext()) {
       T cell = iterator.next();

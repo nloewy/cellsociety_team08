@@ -1,5 +1,7 @@
-package cellsociety.Model;
+package cellsociety.model.simulation;
 
+import cellsociety.model.core.WatorCell;
+import cellsociety.model.neighborhood.Neighborhood;
 import java.util.*;
 
 public class WatorSimulation extends Simulation<WatorCell> {

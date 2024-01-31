@@ -1,6 +1,4 @@
-package cellsociety.Model;
-
-import java.util.*;
+package cellsociety.model.core;
 
 public class Cell {
 
