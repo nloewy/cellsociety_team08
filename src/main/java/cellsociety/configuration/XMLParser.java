@@ -146,10 +146,14 @@ public class XMLParser {
             width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
             height = Integer.parseInt(eElement.getElementsByTagName("height").item(0).getTextContent());
 
+            // Parse initial states
             String rawStates = eElement.getElementsByTagName("initial_states").item(0).getTextContent();
             parseStates(rawStates);
 
-            NodeList parametersNodeList = eElement.getElementsByTagName("parameters").item(0).getChildNodes();
+            // Parse parameters
+            Node parametersNode = eElement.getElementsByTagName("parameters").item(0);
+            Element parameterElement = (Element) parametersNode;
+            NodeList parametersNodeList = parameterElement.getElementsByTagName("*");
 
             parseParameters(parametersNodeList);
 
@@ -179,7 +183,7 @@ public class XMLParser {
     }
 
     // creating a new XML file, saving the current state the simulation the user is running
-    public void createXML(String filename) throws ParserConfigurationException, TransformerException {
+    public void createXML(String filename, String folderName) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -208,7 +212,7 @@ public class XMLParser {
 
         // write document to a new file
         try (FileOutputStream output =
-                     new FileOutputStream("../data/" + filename + ".xml")) {
+                     new FileOutputStream("data/" + folderName + "/" + filename + ".xml")) {
             writeXml(doc, output);
         } catch (IOException e) {
             e.printStackTrace();

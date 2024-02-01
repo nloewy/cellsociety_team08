@@ -8,25 +8,13 @@
     <display_description>A demonstration of the Blinker pattern in Conway's Game of Life simulation</display_description>
     <width>10</width>
     <height>10</height>
-    <initial_states>
-        <!-- 0 - DEAD
-             1 - ALIVE -->
-        0 0 0 0 0 0 0 0 0 0
-        0 0 0 0 0 0 0 0 0 0
-        0 0 0 0 0 0 0 0 0 0
-        0 0 0 0 0 0 0 0 0 0
-        0 0 0 0 0 0 0 0 0 0
-        0 0 0 1 1 1 0 0 0 0
-        0 0 0 0 0 0 0 0 0 0
-        0 0 0 0 0 0 0 0 0 0
-        0 0 0 0 0 0 0 0 0 0
-        0 0 0 0 0 0 0 0 0 0
-    </initial_states>
+    <!-- 0 - DEAD / 1 - ALIVE -->
+    <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</initial_states>
     <neighborhood_type>cardinal</neighborhood_type>
     <parameters>
-        <alive_to_alive_min>1</alive_to_alive_min>
-        <alive_to_alive_max>1</alive_to_alive_max>
-        <dead_to_alive_min>1</dead_to_alive_min>
-        <dead_to_alive_max>1</dead_to_alive_max>
+        <aliveToAliveMin>1.0</aliveToAliveMin>
+        <aliveToAliveMax>1.0</aliveToAliveMax>
+        <deadToAliveMin>1.0</deadToAliveMin>
+        <deadToAliveMax>1.0</deadToAliveMax>
     </parameters>
 </simulation>
