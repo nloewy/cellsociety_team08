@@ -1,11 +1,10 @@
 package cellsociety.model.core;
 
-import cellsociety.model.core.Cell;
-
 public class WatorCell extends Cell {
 
   private int myEnergy;
   private int myTime;
+
   /**
    * Constructs a cell object
    *
@@ -14,22 +13,26 @@ public class WatorCell extends Cell {
    * @param x            is the x-coordinate of the cell on the 2-dimensional grid
    * @param y            is the y-coordinate of the cell on the 2-dimensional grid
    */
+
   public WatorCell(int initialState, int x, int y, int energy, int time) {
     super(initialState, x, y);
     myEnergy = energy;
     myTime = time;
   }
 
-  public int getEnergy(){
+  public int getEnergy() {
     return myEnergy;
   }
-  public int getTime(){
+
+  public int getTime() {
     return myTime;
   }
-  public void setEnergy(int energy){
+
+  public void setEnergy(int energy) {
     myEnergy = energy;
   }
-  public void setTime(int time){
+
+  public void setTime(int time) {
     myTime = time;
   }
 

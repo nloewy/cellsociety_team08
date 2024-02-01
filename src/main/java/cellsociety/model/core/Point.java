@@ -73,4 +73,8 @@ public class Point {
     return otherPoint.getX() == myX && otherPoint.getY() == myY;
 
   }
+
+  public int hashCode() {
+    return 18 * myX + myY;
+  }
 }

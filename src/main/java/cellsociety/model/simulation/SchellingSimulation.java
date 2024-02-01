@@ -2,7 +2,10 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class SchellingSimulation extends SimpleCellSimulation {
 
@@ -67,7 +70,7 @@ public class SchellingSimulation extends SimpleCellSimulation {
       }
     }
     for (Cell c : toLeave) {
-      if (c.getNextState() == PLACEHOLDER){
+      if (c.getNextState() == PLACEHOLDER) {
         c.setNextState(c.getCurrentState());
       }
     }

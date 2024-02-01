@@ -1,6 +1,8 @@
 package cellsociety.model.core;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Grid<T extends Cell> {
 
@@ -18,8 +20,8 @@ public class Grid<T extends Cell> {
   /**
    * Constructs a cell object
    *
-   * @param rows is the number of rows in the grid
-   * @param cols is the number of columns in the grid
+   * @param rows      is the number of rows in the grid
+   * @param cols      is the number of columns in the grid
    * @param cellList, a list of the cells, by rows, then cols
    */
   public Grid(int rows, int cols, List<T> cellList) {
@@ -38,7 +40,7 @@ public class Grid<T extends Cell> {
   public boolean inBounds(Point p) {
     int x = p.getX();
     int y = p.getY();
-    return xInBounds(x) && yInBounds(y);
+    return inBoundsX(x) && inBoundsY(y);
   }
 
   /**
@@ -47,7 +49,7 @@ public class Grid<T extends Cell> {
    * @param x, the x coordinate of a potential grid cell
    * @return boolean, highlighting if 0<=x<myNumRows
    */
-  public boolean xInBounds(int x) {
+  public boolean inBoundsX(int x) {
     return x >= 0 && x < myNumRows;
   }
 
@@ -57,7 +59,7 @@ public class Grid<T extends Cell> {
    * @param y, the y coordinate of a potential grid cell
    * @return boolean, highlighting if 0<=y<myNumCols
    */
-  public boolean yInBounds(int y) {
+  public boolean inBoundsY(int y) {
     return y >= 0 && y < myNumCols;
   }
 

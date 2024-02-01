@@ -2,13 +2,14 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 public class PercolationSimulation extends SimpleCellSimulation {
 
   /**
    * This cellular automata simulation represents the CS201 Percolation Assignment.
-   *
+   * <p>
    * author @noah loewy
    */
   public static final int OPEN = 0;
@@ -18,9 +19,9 @@ public class PercolationSimulation extends SimpleCellSimulation {
   private int neighborsPercolatedRequired;
 
 
-  public PercolationSimulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList){
+  public PercolationSimulation(int row, int col, Neighborhood neighborhoodType,
+      List<Integer> stateList) {
     super(row, col, neighborhoodType, stateList);
-
 
     //these will be parameters, as opposed to hardcoded
     neighborsPercolatedRequired = 1;

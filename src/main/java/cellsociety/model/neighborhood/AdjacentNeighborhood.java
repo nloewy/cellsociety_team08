@@ -1,7 +1,8 @@
 package cellsociety.model.neighborhood;
 
 import cellsociety.model.core.Point;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdjacentNeighborhood implements Neighborhood {
 
