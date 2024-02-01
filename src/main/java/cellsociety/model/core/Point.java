@@ -1,12 +1,13 @@
 package cellsociety.model.core;
 
+/**
+ * Represents an x,y pairing in R^2 space
+ *
+ * @author Noah Loewy
+ */
+
 public class Point {
 
-  /**
-   * Represents an x,y pairing in R^2 space
-   *
-   * @author Noah Loewy
-   */
   private int myX;
   private int myY;
 
@@ -74,7 +75,13 @@ public class Point {
 
   }
 
+  /**
+   * Retrieves the hashcode of a Point object
+   * @return integer hashcode
+   */
+  @Override
   public int hashCode() {
     return 18 * myX + myY;
   }
+
 }

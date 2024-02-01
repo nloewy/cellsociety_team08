@@ -4,14 +4,15 @@ import cellsociety.model.core.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a neighborhood where neighbors are characterized as points that share a common
+ * vertex or side on the coordinate grid
+ *
+ * @author Noah Loewy
+ */
+
 public class AdjacentNeighborhood implements Neighborhood {
 
-  /**
-   * Represents a neighborhood where neighbors are characterized as points that share a common
-   * vertex or side on the coordinate grid
-   *
-   * @author Noah Loewy
-   */
   private static final int[] DELTA_X = {-1, 0, 1};
   private static final int[] DELTA_Y = {-1, 0, 1};
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
+<simulation>
+    <type>Schelling</type>
+    <title>Schelling Simulation</title>
+    <author>Judy He</author>
+    <file_description>This file configures the Schelling Simulation.</file_description>
+    <display_description>A demonstration of the Schelling Simulation</display_description>
+    <width>10</width>
+    <height>10</height>
+    <initial_states>
+        <!-- 0 - EMPTY (The cell is empty ground or a burnt tree containing no tree.)
+         1 - TREE (The cell contains a tree that is not burning.)
+         2 - BURNING The cell contains a tree that is burning. -->
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 2 1 1 1 1 1 1 1
+        1 2 0 0 0 1 1 1 1 1
+        1 1 2 0 1 1 1 1 1 1
+        1 1 1 2 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+    </initial_states>
+    <neighborhood_type></neighborhood_type>
+    <parameters>
+        <proportion_needed_to_stay>0.5</proportion_needed_to_stay>
+    </parameters>
+</simulation>

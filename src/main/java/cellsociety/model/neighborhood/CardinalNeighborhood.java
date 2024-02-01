@@ -4,14 +4,15 @@ import cellsociety.model.core.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a neighborhood where neighbors are characterized as points that share a common side
+ * on the coordinate grid
+ *
+ * @author Noah Loewy
+ */
+
 public class CardinalNeighborhood implements Neighborhood {
 
-  /**
-   * Represents a neighborhood where neighbors are characterized as points that share a common side
-   * on the coordinate grid
-   *
-   * @author Noah Loewy
-   */
 
   public static final int[] ROW_DELTAS = {1, -1, 0, 0};
   public static final int[] COL_DELTAS = {0, 0, 1, -1};

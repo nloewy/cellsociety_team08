@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
+<simulation>
+    <type>Percolation</type>
+    <title>Percolation Simulation</title>
+    <author>Judy He</author>
+    <file_description>This file configures the Percolation Simulation.</file_description>
+    <display_description>A demonstration of the Percolation Simulation</display_description>
+    <width>10</width>
+    <height>10</height>
+    <initial_states>
+        <!--
+         0 - blocked site
+         1 - EMPTY open site
+         2 - FULL open site
+          -->
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 2 1 1 1 1 1 1 1
+        1 2 0 0 0 1 1 1 1 1
+        1 1 2 0 1 1 1 1 1 1
+        1 1 1 2 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+    </initial_states>
+    <neighborhood_type>adjacent</neighborhood_type>
+    <parameters>
+        <neighbors_percolated_required>3</neighbors_percolated_required>
+    </parameters>
+</simulation>

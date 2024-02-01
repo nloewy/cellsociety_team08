@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
+<simulation>
+    <type>WaTor</type>
+    <title>WaTor Simulation</title>
+    <author>Judy He</author>
+    <file_description>This file configures the WaTor Simulation.</file_description>
+    <display_description>A demonstration of the WaTor Simulation</display_description>
+    <width>10</width>
+    <height>10</height>
+    <initial_states>
+        <!--
+        0 - fish
+        1 - shark
+          -->
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 2 1 1 1 1 1 1 1
+        1 2 0 0 0 1 1 1 1 1
+        1 1 2 0 1 1 1 1 1 1
+        1 1 1 2 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+        1 1 1 1 1 1 1 1 1 1
+    </initial_states>
+    <neighborhood_type>adjacent</neighborhood_type>
+    <parameters>
+        <fish_reproduction_time>5</fish_reproduction_time>
+        <shark_reproduction_time>3</shark_reproduction_time>
+        <energy_from_fish>3</energy_from_fish>
+        <shark_initial_energy>3</shark_initial_energy>
+    </parameters>
+</simulation>
