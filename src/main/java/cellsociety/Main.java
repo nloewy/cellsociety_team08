@@ -3,7 +3,15 @@ package cellsociety;
 import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;
+
+import cellsociety.model.core.Cell;
+import cellsociety.model.core.Grid;
+import cellsociety.model.simulation.FireSimulation;
+import cellsociety.view.Controller;
+import cellsociety.view.SceneManager;
+import cellsociety.view.SimulationPage;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -29,19 +37,30 @@ public class Main extends Application {
     // internal configuration file
     public static final String INTERNAL_CONFIGURATION = "cellsociety.Version";
 
+
+
     /**
      * @see Application#start(Stage)
      */
     @Override
     public void start (Stage primaryStage) {
-        showMessage(AlertType.INFORMATION, String.format("Version: %s", getVersion()));
-        File dataFile = FILE_CHOOSER.showOpenDialog(primaryStage);
-        if (dataFile != null) {
-            int numBlocks = calculateNumBlocks(dataFile);
-            if (numBlocks != 0) {
-                showMessage(AlertType.INFORMATION, String.format("Number of Blocks = %d", numBlocks));
-            }
-        }
+//        Stage stage = new Stage();
+//        SceneManager manager = new SceneManager();
+//        stage.setScene(manager.getMenuPage());
+//        FireSimulation test = new FireSimulation(10,10,1);
+//        SimulationPage sim = new SimulationPage();
+//        stage.setScene(sim.getGrid().getScene());
+//        stage.show();
+
+//        showMessage(AlertType.INFORMATION, String.format("Version: %s", getVersion()));
+//        File dataFile = FILE_CHOOSER.showOpenDialog(primaryStage);
+//        if (dataFile != null) {
+//            int numBlocks = calculateNumBlocks(dataFile);
+//            if (numBlocks != 0) {
+//                showMessage(AlertType.INFORMATION, String.format("Number of Blocks = %d", numBlocks));
+//            }
+//        }
+        Controller game = new Controller();
     }
 
     /**
