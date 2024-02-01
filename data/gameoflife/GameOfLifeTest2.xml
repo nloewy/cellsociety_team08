@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://en.wikipedia.org/wiki/Conway's_Game_of_Life-->
+<simulation>
+    <type>GameOfLife</type>
+    <title>Conway's Game of Life Simulation: Test 2</title>
+    <author>Judy He</author>
+    <file_description>This file configures the Game of Life simulation.</file_description>
+    <display_description>A demonstration of Conway's Game of Life simulation</display_description>
+    <width>10</width>
+    <height>10</height>
+    <initial_states>
+        <!-- 0 - DEAD
+             1 - ALIVE -->
+        0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0
+        1 0 1 0 0 0 0 0 0 0
+        0 1 1 1 0 0 0 0 0 0
+        0 0 1 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 0
+        0 0 0 0 0 0 0 0 0 1
+        0 0 0 0 0 0 0 0 0 1
+        0 0 0 0 0 0 0 0 1 1
+        0 0 0 0 0 0 1 1 1 1
+    </initial_states>
+    <neighborhood_type>cardinal</neighborhood_type>
+    <parameters>
+        <alive_to_alive_min>1</alive_to_alive_min>
+        <alive_to_alive_max>1</alive_to_alive_max>
+        <dead_to_alive_min>1</dead_to_alive_min>
+        <dead_to_alive_max>1</dead_to_alive_max>
+    </parameters>
+</simulation>
