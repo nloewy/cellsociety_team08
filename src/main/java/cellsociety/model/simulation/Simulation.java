@@ -27,20 +27,20 @@ public abstract class Simulation<T extends Cell> {
   /**
    * Constructs a basic Simulation object
    *
-   * @param rows,             the number of rows in the 2-dimensional grid
-   * @param cols,             the number of columns in the 2-dimensional grid
+   * @param row,             the number of rows in the 2-dimensional grid
+   * @param col,             the number of columns in the 2-dimensional grid
    * @param neighborhoodType, the definition of neighbors
    * @param stateList,        a list of the integer representation of each cells state, by rows,
    *                          then cols
    */
 
-  public Simulation(int rows, int cols, Neighborhood neighborhoodType, List<Integer> stateList,
+  public Simulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList,
       Function<Integer, T> cellInitializer) {
     List<T> cellList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
       cellList.add(cellInitializer.apply(i));
     }
-    myGrid = new Grid<T>(rows, cols, cellList);
+    myGrid = new Grid<T>(row, col, cellList);
     myNeighborhood = neighborhoodType;
   }
 
@@ -108,7 +108,7 @@ public abstract class Simulation<T extends Cell> {
     Iterator<T> iterator2 = myGrid.iterator();
     int count = 0;
     while (iterator2.hasNext()) {
-      if (count % 6 == 0) {
+      if (count % 12 == 0) {
         System.out.println();
       }
       T c = iterator2.next();

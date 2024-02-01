@@ -21,6 +21,15 @@ public class SchellingSimulation extends SimpleCellSimulation {
 
   private double proportionNeededToStay;
 
+  /**
+   * Initializes a SchellingSimulation object
+   *
+   * @param row,              the number of rows in the 2-dimensional grid
+   * @param col,              the number of columns in the 2-dimensional grid
+   * @param neighborhoodType, the definition of neighbors
+   * @param stateList,        a list of the integer representation of each cells state, by rows,
+   *                          then cols
+   */
   public SchellingSimulation(int row, int col, Neighborhood neighborhoodType,
       List<Integer> stateList) {
     super(row, col, neighborhoodType, stateList);
