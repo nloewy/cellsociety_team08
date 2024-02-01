@@ -149,7 +149,8 @@ public class XMLParser {
             String rawStates = eElement.getElementsByTagName("initial_states").item(0).getTextContent();
             parseStates(rawStates);
 
-            NodeList parametersNodeList = eElement.getElementsByTagName("parameters");
+            NodeList parametersNodeList = eElement.getElementsByTagName("parameters").item(0).getChildNodes();
+
             parseParameters(parametersNodeList);
 
         }
