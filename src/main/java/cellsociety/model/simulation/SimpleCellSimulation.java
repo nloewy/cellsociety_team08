@@ -25,6 +25,6 @@ public abstract class SimpleCellSimulation extends Simulation<Cell> {
   public SimpleCellSimulation(int row, int col, Neighborhood hoodType,
       List<Integer> stateList) {
     super(row, col, hoodType, stateList,
-        (ind -> new Cell(stateList.get(ind), ind / row, ind % col)));
+        (ind -> new Cell(stateList.get(ind), ind / col, ind % col)));
   }
 }

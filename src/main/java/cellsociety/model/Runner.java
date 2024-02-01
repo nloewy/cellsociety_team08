@@ -23,12 +23,7 @@ public class Runner {
      0,1,1,0,0,0,0,0,0,0,0,0,
      0,0,0,0,0,0,0,0,0,0,0,0,
      0,0,0,0,0,0,0,0,0,0,0,0,
-     0,0,0,0,0,0,0,0,0,0,0,0,
-     0,0,0,0,0,0,0,0,0,0,0,0,
-     0,0,0,0,0,0,0,0,0,0,0,0,
-     0,0,0,0,0,0,0,0,0,0,0,0,
-     0,0,0,0,0,0,0,0,0,0,0,0,
-     0,0,0,0,0,0,0,0,0,0,0,0};
+};
 
     Integer[] arrFire = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
         0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -87,7 +82,7 @@ public class Runner {
     List<Integer> watorConfig = Arrays.asList(arrWator);
 
 
-    Simulation s1 = new GameOfLifeSimulation(12, 12, new AdjacentNeighborhood(),
+    Simulation s1 = new GameOfLifeSimulation(6, 12, new AdjacentNeighborhood(),
         lifeConfig, 2,3,3,3);
     Simulation s2 = new FireSimulation(12, 12, new AdjacentNeighborhood(),
         fireConfig, 1, .05, .2);
@@ -101,8 +96,8 @@ public class Runner {
 
     //REPLACE LINES 105,106 WITH SIMULATION OF UR CHOICE
     for (int i = 0; i < 15; i++) {
-      s5.transitionFunction();
-      s5.processUpdate();
+      s1.transitionFunction();
+      s1.processUpdate();
       System.out.print("\n\n\n\n");
     }
   }
