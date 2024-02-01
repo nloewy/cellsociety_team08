@@ -83,7 +83,6 @@ public class Runner {
     for (Integer i : currentConfigToStart) {
       cellList.add(new Cell(i, x / numRows, y % numCols));
       if (i == 1) {
-        // System.out.println("" + x / NUMROWS + " " + y % NUMCOLS);
       }
       x++;
       y++;

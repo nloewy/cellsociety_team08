@@ -77,9 +77,7 @@ public abstract class Simulation<T extends Cell> {
       try {
         T neighbor = myGrid.getCellAtLocation(p);
         neighboringCells.add(neighbor);
-      } catch (IndexOutOfBoundsException e) {
-        continue;
-      }
+      } catch (IndexOutOfBoundsException e) {}
     }
     return neighboringCells;
   }

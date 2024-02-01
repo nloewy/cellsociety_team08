@@ -28,142 +28,123 @@ public class WatorSimulation extends Simulation<WatorCell> {
     fishEnergyBoost = 4;
   }
 
-  private List<WatorCell> getCellsOfState(List<WatorCell> neighbors, int state) {
+  private List<WatorCell> getCellsOfStateShuffled(List<WatorCell> neighbors, int state) {
     List<WatorCell> ret = new ArrayList<>();
     for (WatorCell cell : neighbors) {
       if (cell.getCurrentState() == state) {
         ret.add(cell);
       }
     }
+    Collections.shuffle(ret);
     return ret;
   }
 
-  //REFACTORING TIME
+  private void fillEmptyCell(WatorCell cell) {
+    cell.updateStateEnergyAge(EMPTY, -1, -1);
+  }
+
+  private void reproduceFish(WatorCell currentCell, WatorCell nextCell){
+    currentCell.updateStateEnergyAge(FISH, -1, 0);
+    nextCell.updateStateEnergyAge(FISH, -1, 0);
+  }
+  private void increaseFishAge(WatorCell currentCell) {
+    currentCell.updateStateEnergyAge(FISH, currentCell.getAge() + 1, -1);;
+  }
+
+  private void updateFish(WatorCell currentCell) {
+    List<WatorCell> neighbors = getNeighbors(currentCell);
+    List<WatorCell> emptyNeighbors = getCellsOfStateShuffled(neighbors, EMPTY);
+    if (emptyNeighbors.isEmpty()) {
+      increaseFishAge(currentCell);
+    } else {
+      WatorCell nextCell = emptyNeighbors.get(0);
+      if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH
+          || currentCell.getAge() < fishAgeOfReproduction) {
+        increaseFishAge(currentCell);
+      } else {
+        reproduceFish(currentCell, nextCell);
+      }
+    }
+  }
+
+
+  private void handleSharkMoveToEmptySpace(WatorCell currentCell, WatorCell nextCell) {
+    if (nextCell.getNextState() == SHARK) {
+      currentCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1,
+          currentCell.getAge() + 1); //inc age of shark
+    } else {
+      nextCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1, currentCell.getAge() + 1);
+      if (currentCell.getAge() >= sharkAgeOfReproduction) {
+        currentCell.updateStateEnergyAge(SHARK, initialEnergy, 0); //create shark
+        nextCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1, 0); //reproducing Shark
+      } else {
+        fillEmptyCell(currentCell);
+      }
+    }
+  }
+
+  private void handleSharkEatFish(WatorCell currentCell, WatorCell nextCell) {
+    if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
+      currentCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1,
+          currentCell.getAge() + 1);
+    } else {
+      nextCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() + fishEnergyBoost,
+          currentCell.getAge() + 1);
+      if (currentCell.getAge() >= sharkAgeOfReproduction) {
+        currentCell.updateStateEnergyAge(SHARK, initialEnergy, 0);
+      } else {
+        fillEmptyCell(currentCell);
+      }
+    }
+  }
+
+  private void handleSharkCantMove(WatorCell cell) {
+    if (cell.getEnergy() > 1) {
+      cell.updateStateEnergyAge(SHARK, cell.getEnergy() - 1, cell.getAge() + 1);
+    } else {
+      fillEmptyCell(cell);
+    }
+  }
+
+  private void updateShark(WatorCell currentCell) {
+    List<WatorCell> neighbors = getNeighbors(currentCell);
+    List<WatorCell> emptyNeighbors = getCellsOfStateShuffled(neighbors, EMPTY);
+    List<WatorCell> fishNeighbors = getCellsOfStateShuffled(neighbors, FISH);
+
+    if (fishNeighbors.isEmpty() && emptyNeighbors.isEmpty()) {
+      handleSharkCantMove(currentCell);
+    } else if (!fishNeighbors.isEmpty()) {
+      handleSharkEatFish(currentCell, fishNeighbors.get(0));
+    } else {
+      if (currentCell.getEnergy() <= 1) {
+        fillEmptyCell(currentCell);
+      } else {
+        handleSharkMoveToEmptySpace(currentCell, emptyNeighbors.get(0));
+      }
+    }
+  }
+
+
+  @Override
   public void transitionFunction() {
-    for (int i = 0; i < 3; i++) {
+    for (int cellToUpdate : UPDATE_ORDER) {
       Iterator<WatorCell> gridIterator = getIterator();
-      int index = -1;
       while (gridIterator.hasNext()) {
-        index++;
         WatorCell currentCell = gridIterator.next();
-        if (currentCell.getNextState() != Cell.PLACEHOLDER || (i == 0
-            && currentCell.getCurrentState() != SHARK) || (i == 1
-            && currentCell.getCurrentState() != FISH) || (i == 2
-            && currentCell.getCurrentState() != EMPTY)) {
-          continue;
-        }
-        List<WatorCell> neighbors = getNeighbors(currentCell);
-        List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
-        List<WatorCell> fishNeighbors = getCellsOfState(neighbors, FISH);
-        if (currentCell.getCurrentState() == EMPTY) {
-          if (currentCell.getNextState() == Cell.PLACEHOLDER) {
-            currentCell.setNextState(EMPTY);
-          }
-        } else if (currentCell.getCurrentState() == FISH) {
-          if (emptyNeighbors.isEmpty()) {
-            System.out.println(index + " NOWHERE TO MOVE FISH");
-            currentCell.setNextState(FISH);
-            currentCell.setNextAge(currentCell.getAge() + 1);
-          } else {
-            Collections.shuffle(emptyNeighbors);
-            WatorCell nextCell = emptyNeighbors.get(0);
-            if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
-              System.out.println(index + " TRIED TO MOVE FISH TO CELL ALREADY CALLED");
-              currentCell.setNextState(FISH);
-              currentCell.setNextAge(currentCell.getAge() + 1);
-            } else {
-              if (currentCell.getAge() >= fishAgeOfReproduction) {
-                System.out.println(index + " FISH REPRODUCTION");
-                currentCell.setNextAge(0);
-                currentCell.setNextState(FISH);
-                currentCell.setNextEnergy(-1);
-                nextCell.setNextAge(0);
-              } else {
-                System.out.println(index + " MOVE FISH");
-                currentCell.setNextState(EMPTY);
-                currentCell.setNextAge(-1);
-                currentCell.setNextEnergy(-1);
-                System.out.println(nextCell.getLocation().toString());
-                nextCell.setNextAge(currentCell.getAge() + 1);
-              }
-              nextCell.setNextState(FISH);
-            }
-          }
-        } else {
-          if (fishNeighbors.isEmpty() && emptyNeighbors.isEmpty()) {
-            if (currentCell.getEnergy() > 1) {
-              System.out.println(index + " CANT MOVE SHARK");
-              currentCell.setNextState(SHARK);
-              currentCell.setNextAge(currentCell.getAge() + 1);
-              currentCell.setNextEnergy(currentCell.getEnergy() - 1);
-            } else {
-              System.out.println(index + " SHARK DEAD");
+        if (currentCell.getNextState() == Cell.PLACEHOLDER &&
+            currentCell.getCurrentState()==cellToUpdate) {
+          switch (cellToUpdate) {
+            case EMPTY: {
               currentCell.setNextState(EMPTY);
-              currentCell.setNextAge(-1);
-              currentCell.setNextEnergy(-1);
+              break;
             }
-          } else if (!fishNeighbors.isEmpty()) {
-            Collections.shuffle(fishNeighbors);
-            WatorCell nextCell = fishNeighbors.get(0);
-            if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
-              System.out.println(index + " SHARK TRIED TO MOVE BUT SHARK ALREADY THERE");
-              currentCell.setNextState(SHARK);
-              currentCell.setNextAge(currentCell.getAge() + 1);
-              currentCell.setNextEnergy(currentCell.getEnergy() - 1);
-            } else {
-              nextCell.setNextState(SHARK);
-              nextCell.setNextEnergy(currentCell.getEnergy() + fishEnergyBoost);
-              nextCell.setNextAge(currentCell.getAge() + 1);
-              if (currentCell.getAge() >= sharkAgeOfReproduction) {
-
-                System.out.println(index + " SHARK EAT FISH + REPRODUCE");
-                System.out.println(nextCell.getLocation().toString());
-
-                currentCell.setNextAge(0);
-                currentCell.setNextState(SHARK);
-                currentCell.setNextEnergy(initialEnergy);
-              } else {
-                System.out.println(index + " SHARK EAT FISH");
-                System.out.println(nextCell.getLocation().toString());
-
-                currentCell.setNextState(EMPTY);
-                currentCell.setNextAge(-1);
-                currentCell.setNextEnergy(-1);
-              }
+            case FISH: {
+              updateFish(currentCell);
+              break;
             }
-          } else {
-            if (currentCell.getEnergy() <= 1) {
-              System.out.println(index + " SHARK DIE");
-              System.out.println(currentCell.getLocation().toString());
-              currentCell.setNextState(EMPTY);
-              currentCell.setNextAge(-1);
-              currentCell.setNextEnergy(-1);
-            } else {
-              Collections.shuffle(emptyNeighbors);
-              WatorCell nextCell = emptyNeighbors.get(0);
-              if (nextCell.getNextState() == SHARK) {
-                System.out.println(index + " SHARK CANT MOVE BC SHARK ALREADY THERE");
-                currentCell.setNextState(SHARK);
-                currentCell.setNextAge(currentCell.getAge() + 1);
-                currentCell.setNextEnergy(currentCell.getEnergy() - 1);
-              } else {
-                nextCell.setNextState(SHARK);
-                nextCell.setNextEnergy(currentCell.getEnergy() - 1);
-                nextCell.setNextAge(currentCell.getAge() + 1);
-                if (currentCell.getAge() >= sharkAgeOfReproduction) {
-                  System.out.println(index + " SHARK REPRODUCE");
-                  System.out.println(nextCell.getLocation().toString());
-                  currentCell.setNextAge(0);
-                  currentCell.setNextState(SHARK);
-                  currentCell.setNextEnergy(initialEnergy);
-                } else {
-                  System.out.println(index + " SHARK MOVE TO EMPTY SPOT");
-                  System.out.println(nextCell.getLocation().toString());
-                  currentCell.setNextState(EMPTY);
-                  currentCell.setNextAge(-1);
-                  currentCell.setNextEnergy(-1);
-                }
-              }
+            case SHARK: {
+              updateShark(currentCell);
+              break;
             }
           }
         }
@@ -171,5 +152,10 @@ public class WatorSimulation extends Simulation<WatorCell> {
     }
   }
 }
+
+
+
+
+
 
 
