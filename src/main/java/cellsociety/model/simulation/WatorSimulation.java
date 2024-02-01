@@ -28,14 +28,13 @@ public class WatorSimulation extends Simulation<WatorCell> {
     fishEnergyBoost = 4;
   }
 
-  private List<WatorCell> getCellsOfStateShuffled(List<WatorCell> neighbors, int state) {
+  private List<WatorCell> getCellsOfState(List<WatorCell> cellList, int state) {
     List<WatorCell> ret = new ArrayList<>();
-    for (WatorCell cell : neighbors) {
+    for (WatorCell cell : cellList) {
       if (cell.getCurrentState() == state) {
         ret.add(cell);
       }
     }
-    Collections.shuffle(ret);
     return ret;
   }
 
@@ -43,30 +42,14 @@ public class WatorSimulation extends Simulation<WatorCell> {
     cell.updateStateEnergyAge(EMPTY, -1, -1);
   }
 
-  private void reproduceFish(WatorCell currentCell, WatorCell nextCell){
+  private void reproduceFish(WatorCell currentCell, WatorCell nextCell) {
     currentCell.updateStateEnergyAge(FISH, -1, 0);
     nextCell.updateStateEnergyAge(FISH, -1, 0);
   }
+
   private void increaseFishAge(WatorCell currentCell) {
-    currentCell.updateStateEnergyAge(FISH, currentCell.getAge() + 1, -1);;
+    currentCell.updateStateEnergyAge(FISH, currentCell.getAge() + 1, -1);
   }
-
-  private void updateFish(WatorCell currentCell) {
-    List<WatorCell> neighbors = getNeighbors(currentCell);
-    List<WatorCell> emptyNeighbors = getCellsOfStateShuffled(neighbors, EMPTY);
-    if (emptyNeighbors.isEmpty()) {
-      increaseFishAge(currentCell);
-    } else {
-      WatorCell nextCell = emptyNeighbors.get(0);
-      if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH
-          || currentCell.getAge() < fishAgeOfReproduction) {
-        increaseFishAge(currentCell);
-      } else {
-        reproduceFish(currentCell, nextCell);
-      }
-    }
-  }
-
 
   private void handleSharkMoveToEmptySpace(WatorCell currentCell, WatorCell nextCell) {
     if (nextCell.getNextState() == SHARK) {
@@ -106,10 +89,30 @@ public class WatorSimulation extends Simulation<WatorCell> {
     }
   }
 
+  private void updateFish(WatorCell currentCell) {
+    List<WatorCell> neighbors = getNeighbors(currentCell);
+    List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
+    Collections.shuffle(emptyNeighbors);
+    if (emptyNeighbors.isEmpty()) {
+      increaseFishAge(currentCell);
+    } else {
+      WatorCell nextCell = emptyNeighbors.get(0);
+      if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH
+          || currentCell.getAge() < fishAgeOfReproduction) {
+        increaseFishAge(currentCell);
+      } else {
+        reproduceFish(currentCell, nextCell);
+      }
+    }
+  }
+
   private void updateShark(WatorCell currentCell) {
     List<WatorCell> neighbors = getNeighbors(currentCell);
-    List<WatorCell> emptyNeighbors = getCellsOfStateShuffled(neighbors, EMPTY);
-    List<WatorCell> fishNeighbors = getCellsOfStateShuffled(neighbors, FISH);
+    List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
+    List<WatorCell> fishNeighbors = getCellsOfState(neighbors, FISH);
+
+    Collections.shuffle(emptyNeighbors);
+    Collections.shuffle(fishNeighbors);
 
     if (fishNeighbors.isEmpty() && emptyNeighbors.isEmpty()) {
       handleSharkCantMove(currentCell);
@@ -132,19 +135,16 @@ public class WatorSimulation extends Simulation<WatorCell> {
       while (gridIterator.hasNext()) {
         WatorCell currentCell = gridIterator.next();
         if (currentCell.getNextState() == Cell.PLACEHOLDER &&
-            currentCell.getCurrentState()==cellToUpdate) {
+            currentCell.getCurrentState() == cellToUpdate) {
           switch (cellToUpdate) {
             case EMPTY: {
               currentCell.setNextState(EMPTY);
-              break;
             }
             case FISH: {
               updateFish(currentCell);
-              break;
             }
             case SHARK: {
               updateShark(currentCell);
-              break;
             }
           }
         }

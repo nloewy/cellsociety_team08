@@ -42,11 +42,7 @@ public class FireSimulation extends SimpleCellSimulation {
   @Override
   public void transitionFunction() {
     Iterator<Cell> gridIterator = getIterator();
-
-    int count = 0;
-
     while (gridIterator.hasNext()) {
-      count++;
       Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighbors(currentCell);
       int currentState = currentCell.getCurrentState();
@@ -60,9 +56,6 @@ public class FireSimulation extends SimpleCellSimulation {
       } else if (currentState == BURNING) {
         currentCell.setNextState(EMPTY);
       } else if (currentState == TREE) {
-        if (count == 59) {
-          System.out.println(countNeighborsInState(neighbors, BURNING));
-        }
         int burningNeighbors = countNeighborsInState(neighbors, BURNING);
         if (burningNeighbors >= neighborsToIgnite || randomNumber <= probTreeIgnites) {
           currentCell.setNextState(BURNING);

@@ -7,9 +7,9 @@ import java.util.List;
 public class Grid<T extends Cell> {
 
   /**
-   * The Grid represents a 2-dimensional list for our simulation, where each x,y pairing contains a
-   * singular cell. We try to abstract away the size and shape of the grid. atomic unit of our
-   * simulation.
+   * The Grid represents a list for our simulation, where each element in the grid represents a cell
+   * located at some point on the xy plane. We try to abstract away the size and shape of the grid.
+   * The grid takes in a generic kind of Cell.
    *
    * @author Noah Loewy
    */
@@ -37,7 +37,7 @@ public class Grid<T extends Cell> {
    * @param p, the coordinates of a potential grid cell on a 2d-plane
    * @return boolean, highlighting if p is a legal cell in the grid
    */
-  public boolean inBounds(Point p) {
+  private boolean inBounds(Point p) {
     int x = p.getX();
     int y = p.getY();
     return inBoundsX(x) && inBoundsY(y);
@@ -49,7 +49,7 @@ public class Grid<T extends Cell> {
    * @param x, the x coordinate of a potential grid cell
    * @return boolean, highlighting if 0<=x<myNumRows
    */
-  public boolean inBoundsX(int x) {
+  private boolean inBoundsX(int x) {
     return x >= 0 && x < myNumRows;
   }
 
@@ -59,7 +59,7 @@ public class Grid<T extends Cell> {
    * @param y, the y coordinate of a potential grid cell
    * @return boolean, highlighting if 0<=y<myNumCols
    */
-  public boolean inBoundsY(int y) {
+  private boolean inBoundsY(int y) {
     return y >= 0 && y < myNumCols;
   }
 
@@ -82,7 +82,7 @@ public class Grid<T extends Cell> {
    * Retrieves Iterator object that can access the grid of cells while hiding the Data Structure
    * used to implement it.
    *
-   * @return Iterator<Cell>
+   * @return Iterator object that can iterate through my grid
    */
   public Iterator<T> iterator() {
     return myGrid.iterator();

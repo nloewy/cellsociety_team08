@@ -32,6 +32,7 @@ public class Cell {
    * currentState takes the value of the nextState placeholder, and nextState is set to placeholder
    * value.
    */
+
   public void updateStates() {
     myCurrentState = myNextState;
     myNextState = PLACEHOLDER;

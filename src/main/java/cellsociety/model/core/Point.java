@@ -74,6 +74,10 @@ public class Point {
 
   }
 
+  /**
+   * Retrieves the hashcode of a Point object
+   * @return integer hashcode
+   */
   @Override
   public int hashCode() {
     return 18 * myX + myY;

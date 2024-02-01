@@ -38,7 +38,6 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
    */
   @Override
   public void transitionFunction() {
-
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
