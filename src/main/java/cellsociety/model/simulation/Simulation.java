@@ -114,7 +114,7 @@ public abstract class Simulation<T extends Cell> {
     Iterator<T> iterator2 = myGrid.iterator();
     int count = 0;
     while (iterator2.hasNext()) {
-      if (count % 12 == 0) {
+      if (count % 50 == 0) {
         System.out.println();
       }
       T c = iterator2.next();

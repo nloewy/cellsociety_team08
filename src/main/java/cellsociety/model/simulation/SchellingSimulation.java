@@ -19,6 +19,8 @@ public class SchellingSimulation extends SimpleCellSimulation {
   public static final int GROUPB = 1;
   public static final int EMPTY = 2;
 
+  private List<Cell> myCellsToMove;
+  private List<Cell> myEmptyCells;
   private double proportionNeededToStay;
 
   /**
@@ -33,7 +35,54 @@ public class SchellingSimulation extends SimpleCellSimulation {
   public SchellingSimulation(int row, int col, Neighborhood neighborhoodType,
       List<Integer> stateList) {
     super(row, col, neighborhoodType, stateList);
+    myCellsToMove = new ArrayList<>();
+    myEmptyCells = new ArrayList<>();
     proportionNeededToStay = .5;
+  }
+
+  /**
+   * Given a cell in either group A or group B, places the cell in either myCellsToMove, or
+   * updates its future state to its current-state, depending on the state-makeup of its neighbors
+   *
+   * @param currentCell a cell in group A or B preparing to transition
+   */
+  private void handleDemographicCell(Cell currentCell){
+    List<Cell> neighbors = getNeighbors(currentCell);
+    int totalNeighbors = neighbors.size();
+    int numEmptyNeighbors = countNeighborsInState(neighbors, EMPTY);
+    int numNeighborsSameState = countNeighborsInState(neighbors, currentCell.getCurrentState());
+    if (currentCell.getCurrentState() != EMPTY) {
+      if (totalNeighbors != numEmptyNeighbors
+          && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
+          < proportionNeededToStay) {
+        myCellsToMove.add(currentCell);
+      } else {
+        currentCell.setNextState(currentCell.getCurrentState());
+      }
+    }
+  }
+
+  /**
+   * Sets the state of all cells that contain an agent that is moving to empty, and set their new
+   * cells to occupied. Also handles case when the amount of agents wanting to leave exceeds the
+   * number of available spots.
+   */
+  private void moveCells(){
+    int shorterListLength = Math.min(myCellsToMove.size(), myEmptyCells.size());
+    int longerListLength = Math.max(myCellsToMove.size(), myEmptyCells.size());
+    for (int i = 0; i < shorterListLength; i++) {
+      myEmptyCells.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
+      myCellsToMove.get(i).setNextState(EMPTY);
+    }
+    for(int i = shorterListLength; i < longerListLength; i++){
+      if(myCellsToMove.size() < myEmptyCells.size()) {
+        myEmptyCells.get(i).setNextState(myEmptyCells.get(i).getCurrentState());
+      }
+      else{
+        myCellsToMove.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
+      }
+    }
+
   }
 
   /**
@@ -42,46 +91,19 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * proportionNeededToStay) remain in place, whereas others move to a random vacant cell.
    */
   @Override
-  //MAJOR REFACTORING NEEDED
   public void transitionFunction() {
     Iterator<Cell> gridIterator = getIterator();
-    List<Cell> emptyCells = new ArrayList<>();
-    List<Cell> toLeave = new ArrayList<>();
+    myCellsToMove.clear();
+    myEmptyCells.clear();
+
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
       if (currentCell.getCurrentState() == EMPTY) {
-        emptyCells.add(currentCell);
+        myEmptyCells.add(currentCell);
       }
-      List<Cell> neighbors = getNeighbors(currentCell);
-      int totalNeighbors = neighbors.size();
-      int numEmptyNeighbors = countNeighborsInState(neighbors, EMPTY);
-      int numNeighborsSameState = countNeighborsInState(neighbors, currentCell.getCurrentState());
-      if (currentCell.getCurrentState() != EMPTY) {
-        if (totalNeighbors != numEmptyNeighbors
-            && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
-            < proportionNeededToStay) {
-          toLeave.add(currentCell);
-        } else {
-          currentCell.setNextState(currentCell.getCurrentState());
-        }
-      }
+      handleDemographicCell(currentCell);
     }
-    Collections.shuffle(toLeave);
-    int index = 0;
-    while (index < Math.min(toLeave.size(), emptyCells.size())) {
-      emptyCells.get(index).setNextState(toLeave.get(index).getCurrentState());
-      toLeave.get(index).setNextState(EMPTY);
-      index++;
-    }
-    for (Cell c : emptyCells) {
-      if (c.getNextState() == PLACEHOLDER) {
-        c.setNextState(c.getCurrentState());
-      }
-    }
-    for (Cell c : toLeave) {
-      if (c.getNextState() == PLACEHOLDER) {
-        c.setNextState(c.getCurrentState());
-      }
-    }
+    Collections.shuffle(myCellsToMove);
+    moveCells();
   }
 }
