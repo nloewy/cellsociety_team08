@@ -8,7 +8,7 @@ public class Cell {
    *
    * @author Noah Loewy
    */
-  private static final int PLACEHOLDER_STATE = -1;
+  public static final int PLACEHOLDER = -1;
   private int myCurrentState;
   private int myNextState;
   private Point myLocation;
@@ -23,7 +23,7 @@ public class Cell {
    */
   public Cell(int initialState, int x, int y) {
     myCurrentState = initialState;
-    myNextState = PLACEHOLDER_STATE;
+    myNextState = PLACEHOLDER;
     myLocation = new Point(x, y);
   }
 
@@ -34,7 +34,7 @@ public class Cell {
    */
   public void updateStates() {
     myCurrentState = myNextState;
-    myNextState = PLACEHOLDER_STATE;
+    myNextState = PLACEHOLDER;
   }
 
   /**

@@ -74,6 +74,7 @@ public class Point {
 
   }
 
+  @Override
   public int hashCode() {
     return 18 * myX + myY;
   }
