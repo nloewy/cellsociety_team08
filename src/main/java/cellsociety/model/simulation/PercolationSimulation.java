@@ -9,7 +9,7 @@ public class PercolationSimulation extends SimpleCellSimulation {
 
   /**
    * This cellular automata simulation represents the CS201 Percolation Assignment.
-   * <p>
+   *
    * author @noah loewy
    */
   public static final int OPEN = 0;

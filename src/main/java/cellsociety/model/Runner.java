@@ -2,8 +2,10 @@ package cellsociety.model;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.AdjacentNeighborhood;
+import cellsociety.model.neighborhood.CardinalNeighborhood;
 import cellsociety.model.simulation.FireSimulation;
 import cellsociety.model.simulation.Simulation;
+import cellsociety.model.simulation.WatorSimulation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +27,7 @@ public class Runner {
      0,0,0,0,0,0,0,0,0,0,0,0,
      0,0,0,0,0,0,0,0,0,0,0,0};
      */
-
+/**
     Integer[] arr = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
         0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
         0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -40,7 +42,7 @@ public class Runner {
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
 
     // fire test
-
+    */
     /**
      Integer[] arr = {1, 2, 0, 0, 2, 2, 0, 2, 2, 2, 2, 2,
      0, 0, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2,
@@ -64,6 +66,14 @@ public class Runner {
 
      schelling test
      */
+
+    Integer[] arr = {
+        0,0,0,0,0,0,
+        1,1,1,0,0,0,
+        0,0,0,0,0,0,
+        0,2,2,2,0,0,
+        0,0,0,0,0,0,
+        0,0,0,0,0,0};
     List<Integer> currentConfigToStart = Arrays.asList(arr);
     List<Cell> cellList = new ArrayList<>();
     int x = 0;
@@ -78,7 +88,7 @@ public class Runner {
       x++;
       y++;
     }
-    Simulation s = new FireSimulation(numRows, numCols, new AdjacentNeighborhood(),
+    Simulation s = new WatorSimulation(numRows, numCols, new CardinalNeighborhood(),
         currentConfigToStart);
     for (int i = 0; i < 20; i++) {
       s.transitionFunction();

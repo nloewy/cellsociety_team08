@@ -2,9 +2,10 @@ package cellsociety.model.core;
 
 public class WatorCell extends Cell {
 
-  private int myEnergy;
-  private int myTime;
-
+  private int myCurrentAge;
+  private int myCurrentEnergy;
+  private int myNextAge;
+  private int myNextEnergy;
   /**
    * Constructs a cell object
    *
@@ -14,26 +15,41 @@ public class WatorCell extends Cell {
    * @param y            is the y-coordinate of the cell on the 2-dimensional grid
    */
 
-  public WatorCell(int initialState, int x, int y, int energy, int time) {
+  public WatorCell(int initialState, int x, int y, int energy, int age) {
     super(initialState, x, y);
-    myEnergy = energy;
-    myTime = time;
+    myCurrentEnergy = energy;
+    myCurrentAge = age;
+    myNextEnergy = -1;
+    myNextAge = -1;
+  }
+  @Override
+  public void updateStates(){
+   super.updateStates();
+   myCurrentAge = myNextAge;
+   myCurrentEnergy = myNextEnergy;
+   myNextAge = PLACEHOLDER;
+   myNextEnergy = PLACEHOLDER;
   }
 
+  public void updateStateEnergyAge(int state, int energy, int age) {
+    setNextState(state);
+    setNextEnergy(energy);
+    setNextAge(age);
+  }
   public int getEnergy() {
-    return myEnergy;
+    return myCurrentEnergy;
   }
 
-  public int getTime() {
-    return myTime;
+  public int getAge() {
+    return myCurrentAge;
   }
 
-  public void setEnergy(int energy) {
-    myEnergy = energy;
+  public void setNextEnergy(int energy) {
+    myNextEnergy = energy;
   }
 
-  public void setTime(int time) {
-    myTime = time;
+  public void setNextAge(int time) {
+    myNextAge = time;
   }
 
 

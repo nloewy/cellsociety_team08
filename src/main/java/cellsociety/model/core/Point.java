@@ -74,6 +74,9 @@ public class Point {
 
   }
 
+  public String toString(){
+    return "("+myX + ", " + myY +")";
+  }
   public int hashCode() {
     return 18 * myX + myY;
   }
