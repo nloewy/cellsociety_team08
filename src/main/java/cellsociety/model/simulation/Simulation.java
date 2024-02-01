@@ -9,16 +9,19 @@ import java.util.function.Function;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
+ * transitionFunction() based on the rules of the simulation
+ *
+ * @author Noah Loewy
+ */
+
 public abstract class Simulation<T extends Cell> {
 
-  /**
-   * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
-   * transitionFunction() based on the rules of the simulation
-   *
-   * @author Noah Loewy
-   */
   private Neighborhood myNeighborhood;
   private Grid<T> myGrid;
+
+  private int myCols;
 
 
   public Simulation() {
@@ -29,19 +32,20 @@ public abstract class Simulation<T extends Cell> {
    *
    * @param row,             the number of rows in the 2-dimensional grid
    * @param col,             the number of columns in the 2-dimensional grid
-   * @param neighborhoodType, the definition of neighbors
+   * @param hoodType,        the definition of neighbors
    * @param stateList,        a list of the integer representation of each cells state, by rows,
    *                          then cols
    */
 
-  public Simulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList,
+  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       Function<Integer, T> cellInitializer) {
     List<T> cellList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
       cellList.add(cellInitializer.apply(i));
     }
-    myGrid = new Grid<T>(row, col, cellList);
-    myNeighborhood = neighborhoodType;
+    myCols = col;
+    myGrid = new Grid<>(row, col, cellList);
+    myNeighborhood = hoodType;
   }
 
   /**
@@ -114,7 +118,7 @@ public abstract class Simulation<T extends Cell> {
     Iterator<T> iterator2 = myGrid.iterator();
     int count = 0;
     while (iterator2.hasNext()) {
-      if (count % 50 == 0) {
+      if (count % myCols == 0) {
         System.out.println();
       }
       T c = iterator2.next();

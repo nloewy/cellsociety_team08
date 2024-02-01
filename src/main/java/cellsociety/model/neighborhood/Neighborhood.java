@@ -3,14 +3,14 @@ package cellsociety.model.neighborhood;
 import cellsociety.model.core.Point;
 import java.util.List;
 
-public interface Neighborhood {
+/**
+ * Interface that represents a cell's neighborhood, which is a collection of points
+ * surrounding a center point.
+ *
+ * @author Noah Loewy
+ */
 
-  /**
-   * Interface that represents a cell's neighborhood, which is a collection of points
-   * surrounding a center point.
-   *
-   * @author Noah Loewy
-   */
+public interface Neighborhood {
 
 
   /**
@@ -21,5 +21,5 @@ public interface Neighborhood {
    * @return List<Point>, a list of all points that could potentially represent neighboring cells of
    * point p, should those points be valid indices in the grid.
    */
-  public List<Point> getNeighborCoordinates(Point p);
+   List<Point> getNeighborCoordinates(Point p);
 }

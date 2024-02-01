@@ -5,35 +5,36 @@ import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This cellular automata simulation represents the CS201 Percolation Assignment
+ *
+ * author @noah loewy
+ */
+
 public class PercolationSimulation extends SimpleCellSimulation {
 
-  /**
-   * This cellular automata simulation represents the CS201 Percolation Assignment.
-   *
-   * author @noah loewy
-   */
   public static final int OPEN = 0;
   public static final int PERCOLATED = 1;
   public static final int BLOCKED = 2;
 
-  private int neighborsPercolatedRequired;
+  private final int percolatedNeighbors;
 
 
   /**
    * Initializes a PercolationSimulation object
    *
-   * @param row,              the number of rows in the 2-dimensional grid
-   * @param col,              the number of columns in the 2-dimensional grid
-   * @param neighborhoodType, the definition of neighbors
-   * @param stateList,        a list of the integer representation of each cells state, by rows,
-   *                          then cols
+   * @param row,                the number of rows in the 2-dimensional grid
+   * @param col,                the number of columns in the 2-dimensional grid
+   * @param hoodType,           the definition of neighbors
+   * @param stateList,          a list of the integer representation of each cells state, by rows,
+   *                            then cols
+   * @param percolatedNeighbors minimum number of percolated neighbors an open cell must have for it
+   *                            to percolate
    */
-  public PercolationSimulation(int row, int col, Neighborhood neighborhoodType,
-      List<Integer> stateList) {
-    super(row, col, neighborhoodType, stateList);
-
-    //these will be parameters, as opposed to hardcoded
-    neighborsPercolatedRequired = 1;
+  public PercolationSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
+      int percolatedNeighbors) {
+    super(row, col, hoodType, stateList);
+    this.percolatedNeighbors = percolatedNeighbors;
   }
 
   /**
@@ -44,8 +45,8 @@ public class PercolationSimulation extends SimpleCellSimulation {
    *                 definition of neighborhood
    */
   private void handleOpenCell(Cell currentCell, List<Cell> neighbors){
-    int percolatedNeighbors = countNeighborsInState(neighbors, PERCOLATED);
-    if (percolatedNeighbors >= neighborsPercolatedRequired) {
+    int numPercolatedNeighbors = countNeighborsInState(neighbors, PERCOLATED);
+    if (numPercolatedNeighbors >= percolatedNeighbors) {
       currentCell.setNextState(PERCOLATED);
     } else {
       currentCell.setNextState(OPEN);

@@ -7,13 +7,14 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This cellular automata simulation represents the Schelling Segregation Model.
+ *
+ * author @noah loewy
+ */
+
 public class SchellingSimulation extends SimpleCellSimulation {
 
-  /**
-   * This cellular automata simulation represents the Schelling Segregation Model.
-   * <p>
-   * author @noah loewy
-   */
   public static final int PLACEHOLDER = -1;
   public static final int GROUPA = 0;
   public static final int GROUPB = 1;
@@ -26,18 +27,21 @@ public class SchellingSimulation extends SimpleCellSimulation {
   /**
    * Initializes a SchellingSimulation object
    *
-   * @param row,              the number of rows in the 2-dimensional grid
-   * @param col,              the number of columns in the 2-dimensional grid
-   * @param neighborhoodType, the definition of neighbors
-   * @param stateList,        a list of the integer representation of each cells state, by rows,
-   *                          then cols
+   * @param row,                    the number of rows in the 2-dimensional grid
+   * @param col,                    the number of columns in the 2-dimensional grid
+   * @param hoodType,               the definition of neighbors
+   * @param stateList,              a list of the integer representation of each cells state, by
+   *                                rows, then cols
+   * @param proportionNeededToStay  the minimum proportion of neighboring cells (excluding empty
+   *                                cells) that are of the same state as the given cell, for a cell
+   *                                to remain in their current state
    */
-  public SchellingSimulation(int row, int col, Neighborhood neighborhoodType,
-      List<Integer> stateList) {
-    super(row, col, neighborhoodType, stateList);
+  public SchellingSimulation(int row, int col, Neighborhood hoodType,  List<Integer> stateList,
+      double proportionNeededToStay) {
+    super(row, col, hoodType, stateList);
     myCellsToMove = new ArrayList<>();
     myEmptyCells = new ArrayList<>();
-    proportionNeededToStay = .5;
+    this.proportionNeededToStay = proportionNeededToStay;
   }
 
   /**

@@ -1,13 +1,14 @@
 package cellsociety.model.core;
 
+/**
+ * Represents an extension of the Cell, and serves as the atomic unit of the Wator simulation.
+ * Contains extra instance variables that typical cells do not have, referencing energy and age.
+ *
+ * @author Noah Loewy
+ */
+
 public class WatorCell extends Cell {
 
-  /**
-   * Represents an extension of the Cell, and serves as the atomic unit of the Wator simulation.
-   * Contains extra instance variables that typical cells do not have, referencing energy and age.
-   *
-   * @author Noah Loewy
-   */
   private int myCurrentAge;
   private int myCurrentEnergy;
   private int myNextAge;
@@ -24,10 +25,10 @@ public class WatorCell extends Cell {
    * @param age          is the current age of the Wator Cell, if it is a shark/fish, or -1
    */
 
-  public WatorCell(int initialState, int x, int y, int energy, int age) {
+  public WatorCell(int initialState, int x, int y, int energy) {
     super(initialState, x, y);
     myCurrentEnergy = energy;
-    myCurrentAge = age;
+    myCurrentAge = 0;
     myNextEnergy = -1;
     myNextAge = -1;
   }

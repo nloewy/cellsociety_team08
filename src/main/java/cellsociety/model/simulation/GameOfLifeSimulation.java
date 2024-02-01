@@ -5,41 +5,47 @@ import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This cellular automata simulation represents Conway's Game of Life.
+ *
+ * author @Noah Loewy
+ */
 
 public class GameOfLifeSimulation extends SimpleCellSimulation {
 
-  /**
-   * This cellular automata simulation represents Conway's Game of Life.
-   *
-   * author @Noah Loewy
-   */
   public static final int DEAD = 0;
   public static final int ALIVE = 1;
 
-  private int aliveToAliveMin;
-  private int aliveToAliveMax;
-  private int deadToAliveMin;
-  private int deadToAliveMax;
+  private final int aliveToAliveMin;
+  private final int aliveToAliveMax;
+  private final int deadToAliveMin;
+  private final int deadToAliveMax;
 
   /**
    * Initializes a GameOfLifeSimulation object
    *
    * @param row,              the number of rows in the 2-dimensional grid
    * @param col,              the number of columns in the 2-dimensional grid
-   * @param neighborhoodType, the definition of neighbors
+   * @param hoodType,         the definition of neighbors
    * @param stateList,        a list of the integer representation of each cells state, by rows,
    *                          then cols
+   * @param aliveToAliveMin   minimum number of living cells that can be neighbors of a living cell
+   *                          to avoid death by underpopulation
+   * @param aliveToAliveMax   maximum number of living cells can be neighbors of a living cell
+   *                          to avoid death by overpopulation
+   * @param deadToAliveMin    minimum number of living cells that can be neighbors of a dead cell
+   *                          to allow reproduction
+   * @param deadToAliveMax    maximum number of living cells that can be neighbors of a dead cell
+   *    *                     to allow reproduction
    */
-  public GameOfLifeSimulation(int row, int col, Neighborhood neighborhoodType,
-      List<Integer> stateList) {
+  public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
+      int aliveToAliveMin, int aliveToAliveMax, int deadToAliveMin, int deadToAliveMax) {
 
-    super(row, col, neighborhoodType, stateList);
-
-    //these will be parameters, as opposed to hardcoded
-    aliveToAliveMin = 2;
-    aliveToAliveMax = 3;
-    deadToAliveMin = 3;
-    deadToAliveMax = 3;
+    super(row, col, hoodType, stateList);
+    this.aliveToAliveMin = aliveToAliveMin;
+    this.aliveToAliveMax = aliveToAliveMax;
+    this.deadToAliveMin = deadToAliveMin;
+    this.deadToAliveMax = deadToAliveMax;
   }
 
   /**
