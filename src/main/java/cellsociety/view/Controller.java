@@ -2,14 +2,16 @@ package cellsociety.view;
 
 import cellsociety.configuration.XMLParser;
 import cellsociety.model.neighborhood.AdjacentNeighborhood;
+import cellsociety.model.neighborhood.CardinalNeighborhood;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.*;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -19,6 +21,7 @@ public class Controller {
   private SceneManager sceneManager;
   private SimulationPage simulationPage;
   private XMLParser xmlParser;
+  private Simulation simulationModel;
 
   public static final String INTERNAL_CONFIGURATION = "cellsociety.Version";
   public static final String TEXT_CONFIGURATION = "cellsociety.Text";
@@ -35,10 +38,17 @@ public class Controller {
     stage = new Stage();
 
     ResourceBundle Text = ResourceBundle.getBundle(TEXT_CONFIGURATION);
-    showMessage(Alert.AlertType.INFORMATION, String.format(Text.getString("uploadFile")));
-    File dataFile = chooseFile();
-    xmlParser = new XMLParser(); //pass in data file
+    showMessage(AlertType.INFORMATION, String.format(Text.getString("uploadFile")));
 
+    File dataFile = chooseFile();
+    xmlParser = new XMLParser();
+    parseFile(dataFile.getPath());
+
+    setSimulation(); //loads view and model
+  }
+
+  private void parseFile(String filePath) {
+    xmlParser.readXML(filePath);
   }
 
   private File chooseFile() {
@@ -47,16 +57,24 @@ public class Controller {
   }
 
   private void setSimulation() {
-    loadSimulationScene("Fire", 10, 10); //get name from xmlpaser
+    loadSimulationScene(xmlParser.getType(), xmlParser.getWidth(), xmlParser.getHeight());
 
-    Neighborhood test = new AdjacentNeighborhood();
-    List<Integer> testList = new ArrayList<>();
-    loadSimulationModel(10, 10, test, testList, "fire");
+    String neighborhoodTypeString = xmlParser.getNeighborhoodType();
+    Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
+    loadSimulationModel(xmlParser.getWidth(), xmlParser.getHeight(), neighborhoodType, xmlParser.getStates(), xmlParser.getType());
   }
 
-  private Simulation loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
+  private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
+    return switch (neighborhoodTypeString){
+      case "adjacent" -> new AdjacentNeighborhood();
+      case "cardinal" -> new CardinalNeighborhood();
+      default -> throw new IllegalStateException("Unexpected value: " + neighborhoodTypeString);
+    };
+  }
+
+  private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType) {
-    Simulation simulation = switch (simulationType) {
+      simulationModel = switch (simulationType) {
       case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList);
       case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList);
       case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList);
@@ -64,7 +82,6 @@ public class Controller {
       case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList);
       default -> null;
     };
-    return simulation;
   }
 
   private void loadSimulationScene(String simulationName, int numRows, int numCols) {
@@ -73,8 +90,7 @@ public class Controller {
     stage.show();
   }
 
-
-  public void showMessage(Alert.AlertType type, String message) {
+  public void showMessage(AlertType type, String message) {
     new Alert(type, message).showAndWait();
   }
 
@@ -88,7 +104,7 @@ public class Controller {
     result.setTitle("Open Data File");
     result.setInitialDirectory(new File(DATA_FILE_FOLDER));
     result.getExtensionFilters()
-        .setAll(new FileChooser.ExtensionFilter("Data Files", extensionAccepted));
+        .setAll(new ExtensionFilter("Data Files", extensionAccepted));
     return result;
   }
 }
