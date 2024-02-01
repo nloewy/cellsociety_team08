@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * The Grid represents a list for our simulation, where each element in the grid represents a cell
+ * located at some point on the xy plane. We try to abstract away the size and shape of the grid.
+ * The grid takes in a generic kind of Cell.
+ *
+ * @author Noah Loewy
+ */
+
 public class Grid<T extends Cell> {
 
-  /**
-   * The Grid represents a list for our simulation, where each element in the grid represents a cell
-   * located at some point on the xy plane. We try to abstract away the size and shape of the grid.
-   * The grid takes in a generic kind of Cell.
-   *
-   * @author Noah Loewy
-   */
+
   private int myNumRows;
   private int myNumCols;
   private List<T> myGrid;
@@ -75,7 +77,7 @@ public class Grid<T extends Cell> {
     if (!inBounds(p)) {
       throw new IndexOutOfBoundsException();
     }
-    return myGrid.get(myNumRows * p.getX() + p.getY());
+    return myGrid.get(myNumCols * p.getX() + p.getY());
   }
 
   /**

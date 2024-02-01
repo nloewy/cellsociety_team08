@@ -1,46 +1,48 @@
 package cellsociety.model.simulation;
 
 import static java.lang.Math.random;
-
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Represents the spreading of a wild fire in a forest
+ *
+ * @author Noah Loewy
+ */
 
 public class FireSimulation extends SimpleCellSimulation {
 
-  /**
-   * Represents the spreading of a wild fire in a forest
-   *
-   * @author Noah Loewy
-   */
   public static final int EMPTY = 0;
   public static final int TREE = 1;
   public static final int BURNING = 2;
 
 
-  private double probTreeIgnites;
-  private double probTreeCreated;
-  private int neighborsToIgnite;
+  private final double probTreeIgnites;
+  private final double probTreeCreated;
+  private final int neighborsToIgnite;
 
   /**
    * Initializes a FireSimulation object
    *
    * @param row,              the number of rows in the 2-dimensional grid
    * @param col,              the number of columns in the 2-dimensional grid
-   * @param neighborhoodType, the definition of neighbors
+   * @param hoodType,         the definition of neighbors
    * @param stateList,        a list of the integer representation of each cells state, by rows,
    *                          then cols
+   * @param neighborsToIgnite the number of burning neighbors needed for a tree to catch fire
+   * @param probTreeIgnites   probability a tree (not meeting the required number of burning
+   *                          neighbors) catches fire
+   * @param probTreeCreated   probability an empty cell becomes a tree
+   *
    */
-  public FireSimulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList) {
-
-    super(row, col, neighborhoodType, stateList);
-
-    //these will be parameters, as opposed to hardcoded
-    neighborsToIgnite = 1;
-    probTreeIgnites = 0;
-    probTreeCreated = 0;
+  public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
+      int neighborsToIgnite, double probTreeIgnites, double probTreeCreated) {
+    super(row, col, hoodType, stateList);
+    this.neighborsToIgnite = neighborsToIgnite;
+    this.probTreeIgnites = probTreeIgnites;
+    this.probTreeCreated = probTreeCreated;
   }
 
   /**

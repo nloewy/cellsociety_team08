@@ -1,17 +1,18 @@
 package cellsociety.model.core;
 
+/**
+ * The Cell is the atomic unit of our simulation. Each individual cell represents a location on a
+ * grid, and has some sort of state.
+ *
+ * @author Noah Loewy
+ */
+
 public class Cell {
 
-  /**
-   * The Cell is the atomic unit of our simulation. Each individual cell represents a location on a
-   * grid, and has some sort of state.
-   *
-   * @author Noah Loewy
-   */
   public static final int PLACEHOLDER = -1;
   private int myCurrentState;
   private int myNextState;
-  private Point myLocation;
+  private final Point myLocation;
 
   /**
    * Constructs a cell object

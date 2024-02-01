@@ -8,39 +8,45 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This cellular automata simulation represents the Predator-Prey simulaton developed by Alexander K
+ * Dewdney
+ * <p>
+ * author @noah loewy
+ */
+
 public class WatorSimulation extends Simulation<WatorCell> {
 
-  /**
-   * This cellular automata simulation represents the Predator-Prey simulaton developed by Alexander
-   * K. Dewdney.
-   * <p>
-   * author @noah loewy
-   */
   public static final int EMPTY = 0;
   public static final int FISH = 1;
   public static final int SHARK = 2;
   public static final int[] UPDATE_ORDER = {SHARK, FISH, EMPTY};
-  private int fishAgeOfReproduction;
-  private int sharkAgeOfReproduction;
-  private int fishEnergyBoost;
-  private int initialEnergy;
+  private final int fishAgeOfReproduction;
+  private final int sharkAgeOfReproduction;
+  private final int energyBoost;
+  private final int initialEnergy;
 
   /**
    * Initializes a WatorSimulation object
    *
-   * @param row,              the number of rows in the 2-dimensional grid
-   * @param col,              the number of columns in the 2-dimensional grid
-   * @param neighborhoodType, the definition of neighbors
-   * @param stateList,        a list of the integer representation of each cells state, by rows,
-   *                          then cols
+   * @param row,                   the number of rows in the 2-dimensional grid
+   * @param col,                   the number of columns in the 2-dimensional grid
+   * @param hoodType,              the definition of neighbors
+   * @param stateList,             a list of the integer representation of each cells state, by
+   *                               rows, then cols
+   * @param fishAgeOfReproduction  age at which fish cells can reproduce and create new cells
+   * @param sharkAgeOfReproduction age at which shark cells can reproduce and create new cells
+   * @param initialEnergy          initial energy level for shark cell
+   * @param energyBoost            energy gained by a shark for eating a fish cell
    */
-  public WatorSimulation(int row, int col, Neighborhood neighborhoodType, List<Integer> stateList) {
-    super(row, col, neighborhoodType, stateList, (ind -> new WatorCell(stateList.get(ind),
-        ind / row, ind % col, 2, 0)));
-    fishAgeOfReproduction = 4;
-    sharkAgeOfReproduction = 4;
-    initialEnergy = 2;
-    fishEnergyBoost = 4;
+  public WatorSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
+      int fishAgeOfReproduction, int sharkAgeOfReproduction, int initialEnergy, int energyBoost) {
+    super(row, col, hoodType, stateList, (ind -> new WatorCell(stateList.get(ind),
+        ind / col, ind % col, initialEnergy)));
+    this.fishAgeOfReproduction = fishAgeOfReproduction;
+    this.sharkAgeOfReproduction = sharkAgeOfReproduction;
+    this.initialEnergy = initialEnergy;
+    this.energyBoost = energyBoost;
   }
 
   /**
@@ -125,7 +131,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
       currentCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1,
           currentCell.getAge() + 1);
     } else {
-      nextCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() + fishEnergyBoost,
+      nextCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() + energyBoost,
           currentCell.getAge() + 1);
       if (currentCell.getAge() >= sharkAgeOfReproduction) {
         currentCell.updateStateEnergyAge(SHARK, initialEnergy, 0);
@@ -163,11 +169,16 @@ public class WatorSimulation extends Simulation<WatorCell> {
       increaseFishAge(currentCell);
     } else {
       WatorCell nextCell = emptyNeighbors.get(0);
-      if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH
-          || currentCell.getAge() < fishAgeOfReproduction) {
+      if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
         increaseFishAge(currentCell);
       } else {
-        reproduceFish(currentCell, nextCell);
+        if(currentCell.getAge()<fishAgeOfReproduction){
+          nextCell.updateStateEnergyAge(FISH, -1, currentCell.getAge()+1);
+          fillEmptyCell(currentCell);
+        }
+        else {
+          reproduceFish(currentCell, nextCell);
+        }
       }
     }
   }
@@ -215,12 +226,15 @@ public class WatorSimulation extends Simulation<WatorCell> {
           switch (cellToUpdate) {
             case EMPTY: {
               currentCell.setNextState(EMPTY);
+              break;
             }
             case FISH: {
               updateFish(currentCell);
+              break;
             }
             case SHARK: {
               updateShark(currentCell);
+              break;
             }
           }
         }
