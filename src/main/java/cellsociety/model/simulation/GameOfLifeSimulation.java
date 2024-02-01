@@ -12,7 +12,6 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
    * This cellular automata simulation represents Conway's Game of Life. author @noah loewy
    */
   public static final int DEAD = 0;
-
   public static final int ALIVE = 1;
 
   private int aliveToAliveMin;
