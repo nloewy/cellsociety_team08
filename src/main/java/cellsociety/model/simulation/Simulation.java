@@ -88,7 +88,7 @@ public abstract class Simulation<T extends Cell> {
    *
    * @param neighbors, a list of cells, representing the neighbors of a central cell
    * @param state,     an integer, representing the state to check for
-   * @return an integer, representing the number of cells in neighbors where myCurrentState == state
+   * @return count, representing the number of cells in neighbors where myCurrentState == state
    */
   public int countNeighborsInState(List<T> neighbors, int state) {
     int count = 0;
@@ -100,6 +100,12 @@ public abstract class Simulation<T extends Cell> {
     return count;
   }
 
+  /**
+   * Retrieves the Grid's object that can access the grid of cells while hiding the Data Structure
+   * used to implement it.
+   *
+   * @return Iterator object that can iterate through my grid
+   */
   public Iterator<T> getIterator() {
     return myGrid.iterator();
   }
