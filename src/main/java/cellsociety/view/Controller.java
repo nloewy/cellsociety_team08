@@ -78,8 +78,8 @@ public class Controller {
       case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("alive_to_alive_min").intValue(), xmlParser.getParameters().get("alive_to_alive_max").intValue(), xmlParser.getParameters().get("dead_to_alive_min").intValue(), xmlParser.getParameters().get("dead_to_alive_max").intValue());
       case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("neighbors_percolated_required").intValue());
       case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("neighbors_to_ignite").intValue(), xmlParser.getParameters().get("prob_tree_ignites"), xmlParser.getParameters().get("prob_tree_created"));
-//      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList);
-//      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList);
+      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("proportion_needed_to_stay").intValue());
+      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("fish_reproduction_time").intValue(), xmlParser.getParameters().get("shark_reproduction_time").intValue(), xmlParser.getParameters().get("energy_from_fish").intValue(), xmlParser.getParameters().get("shark_initial_energy").intValue());
       default -> null;
     };
   }
