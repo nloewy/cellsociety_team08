@@ -57,7 +57,7 @@ public class Controller {
   }
 
   private void setSimulation() {
-    loadSimulationScene(xmlParser.getType(), xmlParser.getWidth(), xmlParser.getHeight());
+    loadSimulationScene(xmlParser.getTitle(), xmlParser.getWidth(), xmlParser.getHeight());
 
     String neighborhoodTypeString = xmlParser.getNeighborhoodType();
     Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
@@ -85,9 +85,20 @@ public class Controller {
   }
 
   private void loadSimulationScene(String simulationName, int numRows, int numCols) {
-    simulationPage = new SimulationPage(simulationName, numRows, numCols, 10, 10);
+    simulationPage = new SimulationPage(simulationName, numRows, numCols, 10, 10, event -> onNewSimulationClicked(), event -> onInfoButtonClicked());
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
+  }
+
+  private void onInfoButtonClicked() {
+    showMessage(AlertType.INFORMATION, String.format(xmlParser.getDisplayDescription()));
+  }
+
+  private void onNewSimulationClicked() {
+    //TODO: how to pause current simulation?
+    File dataFile = chooseFile();
+    parseFile(dataFile.getPath());
+    setSimulation();
   }
 
   public void showMessage(AlertType type, String message) {
