@@ -75,11 +75,11 @@ public class Controller {
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType) {
       simulationModel = switch (simulationType) {
-      case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList);
-      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList);
-      case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList);
-      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList);
-      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList);
+      case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("alive_to_alive_min").intValue(), xmlParser.getParameters().get("alive_to_alive_max").intValue(), xmlParser.getParameters().get("dead_to_alive_min").intValue(), xmlParser.getParameters().get("dead_to_alive_max").intValue());
+      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("neighbors_percolated_required").intValue());
+      case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("neighbors_to_ignite").intValue(), xmlParser.getParameters().get("prob_tree_ignites"), xmlParser.getParameters().get("prob_tree_created"));
+//      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList);
+//      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList);
       default -> null;
     };
   }
@@ -95,7 +95,7 @@ public class Controller {
   }
 
   private void onNewSimulationClicked() {
-    //TODO: how to pause current simulation?
+    //TODO: how to pause current simulation? do we need to save current simulation?
     File dataFile = chooseFile();
     parseFile(dataFile.getPath());
     setSimulation();
