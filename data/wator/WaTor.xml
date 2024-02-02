@@ -8,27 +8,16 @@
     <display_description>A demonstration of the WaTor Simulation</display_description>
     <width>10</width>
     <height>10</height>
-    <initial_states>
-        <!--
+    <!--
         0 - fish
         1 - shark
           -->
-        1 1 1 1 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-        1 1 2 1 1 1 1 1 1 1
-        1 2 0 0 0 1 1 1 1 1
-        1 1 2 0 1 1 1 1 1 1
-        1 1 1 2 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-    </initial_states>
-    <neighborhood_type>adjacent</neighborhood_type>
+    <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0</initial_states>
+    <neighborhood_type>cardinal</neighborhood_type>
     <parameters>
-        <fishReproductionTime>5</fishReproductionTime>
-        <sharkReproductionTime>3</sharkReproductionTime>
-        <energyFromFish>3</energyFromFish>
-        <sharkInitialEnergy>3</sharkInitialEnergy>
+        <fishAgeOfReproduction>4</fishAgeOfReproduction>
+        <sharkAgeOfReproduction>8</sharkAgeOfReproduction>
+        <energyBoost>4</energyBoost>
+        <initialEnergy>2</initialEnergy>
     </parameters>
 </simulation>
