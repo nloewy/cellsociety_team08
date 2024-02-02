@@ -13,20 +13,9 @@
          1 - EMPTY open site
          2 - FULL open site
           -->
-    <initial_states>
-        0 0 0 0 2 0 0 0 0 0
-        0 0 0 0 1 0 0 0 0 0
-        0 0 0 0 1 1 0 0 0 0
-        0 0 0 0 0 1 0 0 0 0
-        0 0 0 0 0 1 0 0 0 0
-        0 0 0 1 1 1 0 0 0 0
-        0 0 0 1 0 0 0 0 0 0
-        0 0 0 1 1 1 0 0 0 0
-        0 0 0 0 0 1 0 0 0 0
-        0 0 0 0 0 1 0 0 0 0
-    </initial_states>
+    <initial_states>0 0 0 0 2 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0</initial_states>
     <neighborhood_type>adjacent</neighborhood_type>
     <parameters>
-        <neighborsPercolatedRequired>3</neighborsPercolatedRequired>
+        <percolatedNeighbors>1.0</percolatedNeighbors>
     </parameters>
 </simulation>

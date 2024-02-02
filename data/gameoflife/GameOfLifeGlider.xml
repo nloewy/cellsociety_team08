@@ -10,11 +10,11 @@
     <height>10</height>
     <!-- 0 - DEAD / 1 - ALIVE -->
     <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</initial_states>
-    <neighborhood_type>cardinal</neighborhood_type>
+    <neighborhood_type>adjacent</neighborhood_type>
     <parameters>
-        <aliveToAliveMin>1.0</aliveToAliveMin>
-        <aliveToAliveMax>1.0</aliveToAliveMax>
-        <deadToAliveMin>1.0</deadToAliveMin>
-        <deadToAliveMax>1.0</deadToAliveMax>
+        <aliveToAliveMin>2.0</aliveToAliveMin>
+        <aliveToAliveMax>3.0</aliveToAliveMax>
+        <deadToAliveMin>3.0</deadToAliveMin>
+        <deadToAliveMax>3.0</deadToAliveMax>
     </parameters>
 </simulation>
