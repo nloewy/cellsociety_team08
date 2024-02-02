@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.scene.text.Text;
+import javax.swing.Action;
 
 
 public class SimulationPage {
@@ -24,17 +25,23 @@ public class SimulationPage {
     private CellView[][] board;
     private Button newSimulationButton;
     private Button simulationInfoButton;
+    private Button startSimulationButton;
     private Text simulationTitleDisplay;
+    private int numRows;
+    private int numCols;
 
     public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
     public static final int GRID_X_OFFSET = 100;
     public static final int GRID_Y_OFFSET = 100;
 
-    public SimulationPage(String simulationName, int numRows, int numCols, EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler, Iterator<Cell> gridIterator) {
+    public SimulationPage(String simulationName, int numRows, int numCols, EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler, EventHandler<ActionEvent> startSimulationHandler, Iterator<Cell> gridIterator) {
 //        buttonLables = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLables");
         root = new Group();
         grid = new GridPane();
         scene = new Scene(root,700,700);
+
+        this.numRows = numRows;
+        this.numCols = numCols;
 
         board = new CellView[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
@@ -44,16 +51,31 @@ public class SimulationPage {
             }
         }
 
-        newSimulationButton = new Button("NewSimulation");
-        newSimulationButton.setOnAction(newSimulationHandler);
-        newSimulationButton.setLayoutY(100);
+        grid.setLayoutY(150);
 
-        simulationInfoButton = new Button("About");
-        simulationInfoButton.setOnAction(infoButtonHandler);
+        newSimulationButton = makeButton("New Simulation", newSimulationHandler, 0, 100);
+//        newSimulationButton = new Button("NewSimulation");
+//        newSimulationButton.setOnAction(newSimulationHandler);
+//        newSimulationButton.setLayoutY(100);
+
+        simulationInfoButton = makeButton("About", infoButtonHandler, 300, 280);
+//        simulationInfoButton = new Button("About");
+//        simulationInfoButton.setOnAction(infoButtonHandler);
+//        simulationInfoButton.setLayoutX(200);
+
+        startSimulationButton = makeButton("Start", startSimulationHandler, 300, 300);
 
         simulationTitleDisplay = new Text(simulationName);
 
-        root.getChildren().addAll(grid, newSimulationButton, simulationInfoButton, simulationTitleDisplay);
+        root.getChildren().addAll(grid, newSimulationButton, simulationInfoButton, startSimulationButton, simulationTitleDisplay);
+    }
+
+    private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int xPos, int yPos){
+        Button ret = new Button(buttonText);
+        ret.setOnAction(handler);
+        ret.setLayoutX(xPos);
+        ret.setLayoutY(yPos);
+        return ret;
     }
 
     public GridPane getGrid() {
@@ -63,19 +85,13 @@ public class SimulationPage {
     public Scene getSimulationScene(){
         return scene;
     }
-//    public Iterator<Cell> getIterator(){
-//        Iterator<T> iterator = gridModel.iterator();
-//        while (iterator.hasNext()) {
-//            T cell = iterator.next();
-//            cell.updateStates();
-//        }
-//    }
 
-    public void updateView(Iterator gridIterator){
-        if (gridIterator.hasNext()){
-            gridIterator.next();
+
+    public void updateView(Iterator<Cell> gridIterator){
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j ++){
+                board[i][j].updateState(gridIterator.next().getCurrentState());
+            }
         }
     }
-
-
 }
