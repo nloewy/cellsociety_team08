@@ -3,6 +3,7 @@ package cellsociety.view;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -29,7 +30,7 @@ public class SimulationPage {
     public static final int GRID_X_OFFSET = 100;
     public static final int GRID_Y_OFFSET = 100;
 
-    public SimulationPage(String simulationName, int numRows, int numCols, int cellWidth, int cellHeight, EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler) {
+    public SimulationPage(String simulationName, int numRows, int numCols, EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler, Iterator<Cell> gridIterator) {
 //        buttonLables = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLables");
         root = new Group();
         grid = new GridPane();
@@ -38,7 +39,7 @@ public class SimulationPage {
         board = new CellView[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j ++){
-                board[i][j] = new CellView(i, j);
+                board[i][j] = new CellView(i, j, gridIterator.next().getCurrentState()); //TODO: read state from grid iterator;
                 grid.add(board[i][j].getCellGraphic(), i, j);
             }
         }
