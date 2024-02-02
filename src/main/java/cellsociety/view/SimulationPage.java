@@ -1,9 +1,6 @@
 package cellsociety.view;
 
-
 import cellsociety.model.core.Cell;
-import cellsociety.model.core.Grid;
-import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -14,8 +11,11 @@ import javafx.scene.layout.GridPane;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.scene.text.Text;
-import javax.swing.Action;
 
+/**
+ * This class controls the simulation's view component, controls the simulation grid view, and starting/pausing/saving/changing speed/switching of simulation
+ * @author Alisha Zhang
+ */
 
 public class SimulationPage {
 
@@ -26,6 +26,8 @@ public class SimulationPage {
     private Button newSimulationButton;
     private Button simulationInfoButton;
     private Button startSimulationButton;
+    private Button pauseSimulationButton;
+    private Button saveSimulationButton;
     private Text simulationTitleDisplay;
     private int numRows;
     private int numCols;
@@ -34,40 +36,42 @@ public class SimulationPage {
     public static final int GRID_X_OFFSET = 100;
     public static final int GRID_Y_OFFSET = 100;
 
-    public SimulationPage(String simulationName, int numRows, int numCols, EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler, EventHandler<ActionEvent> startSimulationHandler, Iterator<Cell> gridIterator) {
+    public SimulationPage(String simulationName, int numRows, int numCols, EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler, EventHandler<ActionEvent> startSimulationHandler, EventHandler<ActionEvent> saveSimulationHandler, EventHandler<ActionEvent> pauseSimulationHandler, Iterator<Cell> gridIterator) {
 //        buttonLables = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLables");
         root = new Group();
         grid = new GridPane();
-        scene = new Scene(root,700,700);
-
+        scene = new Scene(root,500,500);
+        System.out.println("creating new simulation: " + simulationName);
         this.numRows = numRows;
         this.numCols = numCols;
 
         board = new CellView[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j ++){
-                board[i][j] = new CellView(i, j, gridIterator.next().getCurrentState()); //TODO: read state from grid iterator;
-                grid.add(board[i][j].getCellGraphic(), i, j);
+                board[j][i] = new CellView(j, i, gridIterator.next().getCurrentState()); //TODO: read state from grid iterator;
+                grid.add(board[j][i].getCellGraphic(), j, i);
             }
         }
 
         grid.setLayoutY(150);
 
         newSimulationButton = makeButton("New Simulation", newSimulationHandler, 0, 100);
-//        newSimulationButton = new Button("NewSimulation");
-//        newSimulationButton.setOnAction(newSimulationHandler);
-//        newSimulationButton.setLayoutY(100);
-
-        simulationInfoButton = makeButton("About", infoButtonHandler, 300, 280);
-//        simulationInfoButton = new Button("About");
-//        simulationInfoButton.setOnAction(infoButtonHandler);
-//        simulationInfoButton.setLayoutX(200);
-
-        startSimulationButton = makeButton("Start", startSimulationHandler, 300, 300);
+        simulationInfoButton = makeButton("About", infoButtonHandler, 300, 300);
+        startSimulationButton = makeButton("Start", startSimulationHandler, 300, 250);
+        saveSimulationButton = makeButton("Save Simulation", saveSimulationHandler, 300, 200);
+        pauseSimulationButton = makeButton("Pause", pauseSimulationHandler, 300, 150);
 
         simulationTitleDisplay = new Text(simulationName);
 
-        root.getChildren().addAll(grid, newSimulationButton, simulationInfoButton, startSimulationButton, simulationTitleDisplay);
+        root.getChildren().addAll(
+            grid,
+            newSimulationButton,
+            simulationInfoButton,
+            startSimulationButton,
+            saveSimulationButton,
+            pauseSimulationButton,
+            simulationTitleDisplay
+        );
     }
 
     private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int xPos, int yPos){
@@ -90,7 +94,7 @@ public class SimulationPage {
     public void updateView(Iterator<Cell> gridIterator){
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j ++){
-                board[i][j].updateState(gridIterator.next().getCurrentState());
+                board[j][i].updateState(gridIterator.next().getCurrentState());
             }
         }
     }

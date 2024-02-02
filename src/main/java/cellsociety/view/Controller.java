@@ -6,6 +6,7 @@ import cellsociety.model.simulation.*;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -17,6 +18,10 @@ import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * This class is the main driver of the simulation.
+ * @author Alisha Zhang
+ */
 
 public class Controller {
 
@@ -56,7 +61,7 @@ public class Controller {
 
     setSimulation(); //loads view and model
 
-    speed = 4;
+    speed = 1;
 
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
@@ -88,6 +93,9 @@ public class Controller {
 
   private File chooseFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(stage);
+    if (dataFile == null){
+      //TODO: need to fix this.
+    }
     return dataFile;
   }
 
@@ -95,8 +103,9 @@ public class Controller {
   private void setSimulation() {
     String neighborhoodTypeString = xmlParser.getNeighborhoodType();
     Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
+    System.out.println(neighborhoodTypeString);
     loadSimulationModel(xmlParser.getWidth(), xmlParser.getHeight(), neighborhoodType, xmlParser.getStates(), xmlParser.getType());
-//
+    System.out.println(xmlParser.getType());
 //    if (simulationModel == null) {
 //      showMessage(AlertType.ERROR, "Error loading simulation model.");
 //      return;
@@ -132,9 +141,18 @@ public class Controller {
 
 
   private void loadSimulationScene(String simulationName, int numRows, int numCols) {
-    simulationPage = new SimulationPage(simulationName, numRows, numCols, event -> onNewSimulationClicked(), event -> onInfoButtonClicked(), event -> onStartSimulation() ,simulationModel.getIterator());
+    simulationPage = new SimulationPage(simulationName, numRows, numCols, event -> onNewSimulationClicked(), event -> onInfoButtonClicked(), event -> onStartSimulation(), event -> onSaveSimulation(), event -> onPauseSimulation() ,simulationModel.getIterator());
+    System.out.println(simulationName);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
+  }
+
+  private void onPauseSimulation() {
+    simulationRunning = false;
+  }
+
+  private void onSaveSimulation() {
+
   }
 
   private void onStartSimulation() {
@@ -150,6 +168,9 @@ public class Controller {
   private void onNewSimulationClicked() {
     simulationRunning = false;
     File dataFile = chooseFile();
+    if (dataFile == null){
+      return;
+    }
     parseFile(dataFile.getPath());
     setSimulation();
   }
