@@ -8,22 +8,22 @@
     <display_description>A demonstration of the Percolation Simulation</display_description>
     <width>10</width>
     <height>10</height>
-    <initial_states>
         <!--
          0 - blocked site
          1 - EMPTY open site
          2 - FULL open site
           -->
-        1 1 1 1 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-        1 1 2 1 1 1 1 1 1 1
-        1 2 0 0 0 1 1 1 1 1
-        1 1 2 0 1 1 1 1 1 1
-        1 1 1 2 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
-        1 1 1 1 1 1 1 1 1 1
+    <initial_states>
+        0 0 0 0 2 0 0 0 0 0
+        0 0 0 0 1 0 0 0 0 0
+        0 0 0 0 1 1 0 0 0 0
+        0 0 0 0 0 1 0 0 0 0
+        0 0 0 0 0 1 0 0 0 0
+        0 0 0 1 1 1 0 0 0 0
+        0 0 0 1 0 0 0 0 0 0
+        0 0 0 1 1 1 0 0 0 0
+        0 0 0 0 0 1 0 0 0 0
+        0 0 0 0 0 1 0 0 0 0
     </initial_states>
     <neighborhood_type>adjacent</neighborhood_type>
     <parameters>
