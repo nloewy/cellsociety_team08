@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class XMLTester {
     public static void main(String[] args) throws ParserConfigurationException, TransformerException {
-        String path = "data/gameoflife/GameOfLifeTest1.xml";
+        String path = "data/gameoflife/GameOfLifeGlider.xml";
 
         XMLParser xmlParser = new XMLParser();
         xmlParser.readXML(path);
