@@ -45,8 +45,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
         ind / col, ind % col, initialEnergy)));
     this.fishAgeOfReproduction = fishAgeOfReproduction;
     this.sharkAgeOfReproduction = sharkAgeOfReproduction;
-    this.initialEnergy = initialEnergy;
     this.energyBoost = energyBoost;
+    this.initialEnergy = initialEnergy;
   }
 
   /**

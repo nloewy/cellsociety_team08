@@ -177,6 +177,7 @@ public class XMLParser {
     // convert the states data received as a single String to an ArrayList of Integers.
     private void parseStates(String rawStates) {
         String[] states = rawStates.split(" ");
+        System.out.println(Arrays.toString(states));
         for (String state: states) {
             this.states.add(Integer.parseInt(state));
         }

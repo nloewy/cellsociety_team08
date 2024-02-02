@@ -89,12 +89,15 @@ public class FireSimulation extends SimpleCellSimulation {
       switch (currentCell.getCurrentState()) {
         case EMPTY: {
           handleEmptyCell(currentCell);
+          break;
         }
         case BURNING: {
           currentCell.setNextState(EMPTY);
+          break;
         }
         case TREE: {
           handleTreeCell(currentCell);
+          break;
         }
       }
     }

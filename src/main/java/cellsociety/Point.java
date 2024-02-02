@@ -1,4 +1,4 @@
-package cellsociety.model.core;
+package cellsociety;
 
 /**
  * Represents an x,y pairing in R^2 space

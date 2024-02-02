@@ -10,16 +10,19 @@ public class CellView extends Region {
     private Rectangle r;
 //    XMLParser parser;
 
-    public CellView(int xPos, int yPos, int state) {
+    public CellView(int state) {
 //        parser = new XMLParser(); //TODO: add parameters after it's implemented
-        r = new Rectangle(xPos,yPos,10,10); //TODO: read width and height from css
+        r = new Rectangle(10,10); //TODO: read width and height from css
 //        r.setFill(Color.BLACK);
 
         //testing grid iterator in simualtion page
         if (state == 0){
             r.setFill(Color.BLACK);
-        } else {
+        } else if (state == 1) {
             r.setFill(Color.PINK);
+        }
+        else{
+            r.setFill(Color.BLUE);
         }
 
         r.setStroke(Color.WHITE); //TODO: read color from css file
@@ -30,8 +33,11 @@ public class CellView extends Region {
 
         if (state == 0){
             r.setFill(Color.BLACK);
-        } else {
+        } else if (state == 1) {
             r.setFill(Color.PINK);
+        }
+        else{
+            r.setFill(Color.BLUE);
         }
 
         //TODO: read color from css file

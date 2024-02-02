@@ -9,9 +9,9 @@
     <width>10</width>
     <height>10</height>
         <!--
-         0 - blocked site
-         1 - EMPTY open site
-         2 - FULL open site
+         0 - EMPTY open site
+         1 - FULL open site
+         2 - blocked site
           -->
     <initial_states>0 0 0 0 2 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0</initial_states>
     <neighborhood_type>adjacent</neighborhood_type>

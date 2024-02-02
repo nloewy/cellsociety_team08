@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import cellsociety.Point;
 import cellsociety.model.core.Cell;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,22 +37,34 @@ public class SimulationPage {
     public static final int GRID_X_OFFSET = 100;
     public static final int GRID_Y_OFFSET = 100;
 
-    public SimulationPage(String simulationName, int numRows, int numCols, EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler, EventHandler<ActionEvent> startSimulationHandler, EventHandler<ActionEvent> saveSimulationHandler, EventHandler<ActionEvent> pauseSimulationHandler, Iterator<Cell> gridIterator) {
+    public SimulationPage(String simulationName, int numRows, int numCols,
+        EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler,
+        EventHandler<ActionEvent> startSimulationHandler,
+        EventHandler<ActionEvent> saveSimulationHandler,
+        EventHandler<ActionEvent> pauseSimulationHandler, Iterator<Cell> gridIterator) {
 //        buttonLables = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLables");
         root = new Group();
         grid = new GridPane();
-        scene = new Scene(root,500,500);
+        scene = new Scene(root, 500, 500);
         System.out.println("creating new simulation: " + simulationName);
         this.numRows = numRows;
         this.numCols = numCols;
 
         board = new CellView[numRows][numCols];
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j ++){
-                board[j][i] = new CellView(j, i, gridIterator.next().getCurrentState()); //TODO: read state from grid iterator;
-                grid.add(board[j][i].getCellGraphic(), j, i);
-            }
+        int index=0;
+
+        while (gridIterator.hasNext()) {
+            Cell c = gridIterator.next();
+            Point location = c.getLocation();
+            int state = c.getCurrentState();
+            int col = location.getY();
+            int row = location.getX();
+            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
+            board[row][col] = new CellView(state);
+            grid.add(board[row][col].getCellGraphic(), col, row);
         }
+
+
 
         grid.setLayoutY(150);
 
@@ -92,10 +105,15 @@ public class SimulationPage {
 
 
     public void updateView(Iterator<Cell> gridIterator){
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j ++){
-                board[j][i].updateState(gridIterator.next().getCurrentState());
-            }
+        int index=0;
+        while (gridIterator.hasNext()) {
+            Cell c = gridIterator.next();
+            Point location = c.getLocation();
+            int state = c.getCurrentState();
+            int col = location.getY();
+            int row = location.getX();
+            board[row][col].updateState(state);
+            index++;
         }
     }
 }

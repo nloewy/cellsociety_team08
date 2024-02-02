@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
 <simulation>
-    <type>WaTor</type>
+    <type>Wator</type>
     <title>WaTor Simulation</title>
     <author>Judy He</author>
     <file_description>This file configures the WaTor Simulation.</file_description>
@@ -9,8 +9,9 @@
     <width>10</width>
     <height>10</height>
     <!--
-        0 - fish
-        1 - shark
+      0 - empty
+      1 - fish
+      2 - shark
           -->
     <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0</initial_states>
     <neighborhood_type>cardinal</neighborhood_type>
