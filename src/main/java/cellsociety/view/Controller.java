@@ -56,6 +56,8 @@ public class Controller {
 
     setSimulation(); //loads view and model
 
+    speed = 4;
+
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     double frameDuration = 1.0 / (speed * SECOND_DELAY); // Calculate the duration for the KeyFrame
@@ -130,9 +132,13 @@ public class Controller {
 
 
   private void loadSimulationScene(String simulationName, int numRows, int numCols) {
-    simulationPage = new SimulationPage(simulationName, numRows, numCols, event -> onNewSimulationClicked(), event -> onInfoButtonClicked(), simulationModel.getIterator());
+    simulationPage = new SimulationPage(simulationName, numRows, numCols, event -> onNewSimulationClicked(), event -> onInfoButtonClicked(), event -> onStartSimulation() ,simulationModel.getIterator());
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
+  }
+
+  private void onStartSimulation() {
+    simulationRunning = true;
   }
 
 
@@ -142,11 +148,8 @@ public class Controller {
 
 
   private void onNewSimulationClicked() {
-    //TODO: how to pause current simulation? do we need to save current simulation?
+    simulationRunning = false;
     File dataFile = chooseFile();
-//    String rawPath = dataFile.getPath();
-//    String[] parts = rawPath.split("cellsociety_team08");
-//    parseFile(parts[1]);
     parseFile(dataFile.getPath());
     setSimulation();
   }
