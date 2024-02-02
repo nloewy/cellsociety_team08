@@ -2,7 +2,7 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
-import cellsociety.model.core.Point;
+import cellsociety.Point;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -42,6 +42,10 @@ public abstract class Simulation<T extends Cell> {
     List<T> cellList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
       cellList.add(cellInitializer.apply(i));
+      if(i==47){
+        System.out.println(cellList.get(47).getCurrentState());
+        System.out.println(cellList.get(47).getLocation().toString());
+      }
     }
     myCols = col;
     myGrid = new Grid<>(row, col, cellList);

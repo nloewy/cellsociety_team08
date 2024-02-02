@@ -25,18 +25,19 @@ public class Runner {
      0,0,0,0,0,0,0,0,0,0,0,0,
 };
 
-    Integer[] arrFire = {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+    Integer[] arrFire = {
+        0, 0, 0 ,0, 1, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 0 ,0, 1, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 0 ,0, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
-        1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0};
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+        1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1,
+        1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0
+    };
 
     // fire test
 
@@ -73,6 +74,7 @@ public class Runner {
         1,1,1,0,0,0,
         1,1,1,0,0,0};
 
+
     //ALL OF THIS DATA SHOULD BE SENT FROM XML TO VIEW TO MODEL DIRECTLY
 
     List<Integer> lifeConfig = Arrays.asList(arrLife);
@@ -85,8 +87,8 @@ public class Runner {
     Simulation s1 = new GameOfLifeSimulation(6, 12, new AdjacentNeighborhood(),
         lifeConfig, 2,3,3,3);
     Simulation s2 = new FireSimulation(12, 12, new AdjacentNeighborhood(),
-        fireConfig, 1, .05, .2);
-    Simulation s3 = new SchellingSimulation(50, 50, new AdjacentNeighborhood(),
+        fireConfig, 1, 0.0, .2);
+    Simulation s3 = new SchellingSimulation(10, 10, new AdjacentNeighborhood(),
         schellingConfig, .5);
     Simulation s4 = new PercolationSimulation(13, 12, new AdjacentNeighborhood(),
         percolationConfig, 1);
@@ -96,8 +98,8 @@ public class Runner {
 
     //REPLACE LINES 105,106 WITH SIMULATION OF UR CHOICE
     for (int i = 0; i < 15; i++) {
-      s1.transitionFunction();
-      s1.processUpdate();
+      s2.transitionFunction();
+      s2.processUpdate();
       System.out.print("\n\n\n\n");
     }
   }

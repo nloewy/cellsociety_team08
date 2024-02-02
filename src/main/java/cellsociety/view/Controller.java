@@ -104,13 +104,13 @@ public class Controller {
     String neighborhoodTypeString = xmlParser.getNeighborhoodType();
     Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
     System.out.println(neighborhoodTypeString);
-    loadSimulationModel(xmlParser.getWidth(), xmlParser.getHeight(), neighborhoodType, xmlParser.getStates(), xmlParser.getType());
+    loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType, xmlParser.getStates(), xmlParser.getType());
     System.out.println(xmlParser.getType());
 //    if (simulationModel == null) {
 //      showMessage(AlertType.ERROR, "Error loading simulation model.");
 //      return;
 //    }
-    loadSimulationScene(xmlParser.getTitle(), xmlParser.getWidth(), xmlParser.getHeight());
+    loadSimulationScene(xmlParser.getTitle(), xmlParser.getHeight(),xmlParser.getWidth());
   }
 
 
@@ -131,10 +131,10 @@ public class Controller {
     simulationRunning = false;
       simulationModel = switch (simulationType) {
       case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("aliveToAliveMin").intValue(), xmlParser.getParameters().get("deadToAliveMax").intValue(), xmlParser.getParameters().get("aliveToAliveMax").intValue(), xmlParser.getParameters().get("deadToAliveMin").intValue());
-      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("neighborsPercolatedRequired").intValue());
+      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("percolatedNeighbors").intValue());
       case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("neighborsToIgnite").intValue(), xmlParser.getParameters().get("probTreeIgnites"), xmlParser.getParameters().get("probTreeCreated"));
-      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("proportionNeededToStay").intValue());
-      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("fishReproductionTime").intValue(), xmlParser.getParameters().get("sharkReproductionTime").intValue(), xmlParser.getParameters().get("energyFromFish").intValue(), xmlParser.getParameters().get("sharkInitialEnergy").intValue());
+      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("proportionNeededToStay"));
+      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("fishAgeOfReproduction").intValue(), xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(), xmlParser.getParameters().get("initialEnergy").intValue(),  xmlParser.getParameters().get("energyBoost").intValue());
       default -> null;
     };
   }

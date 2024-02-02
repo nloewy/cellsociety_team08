@@ -1,5 +1,6 @@
 package cellsociety.model.core;
 
+import cellsociety.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

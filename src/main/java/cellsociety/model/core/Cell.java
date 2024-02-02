@@ -1,5 +1,7 @@
 package cellsociety.model.core;
 
+import cellsociety.Point;
+
 /**
  * The Cell is the atomic unit of our simulation. Each individual cell represents a location on a
  * grid, and has some sort of state.
