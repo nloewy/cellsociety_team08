@@ -68,7 +68,7 @@ __About Page:__
 
 [Game of Life Glider Structure XML Configuration File](../data/gameoflife/GameOfLifeTest1.xml)
 
-[Spreading of Fire XML Configuration File](../data/fire/Fire.xml)
+[Spreading of Fire XML Configuration File](../data/fire/FireTest1.xml)
 
 ## Design Details
 
