@@ -26,9 +26,9 @@
     </initial_states>
     <neighborhood_type>adjacent</neighborhood_type>
     <parameters>
-        <fish_reproduction_time>5</fish_reproduction_time>
-        <shark_reproduction_time>3</shark_reproduction_time>
-        <energy_from_fish>3</energy_from_fish>
-        <shark_initial_energy>3</shark_initial_energy>
+        <fishReproductionTime>5</fishReproductionTime>
+        <sharkReproductionTime>3</sharkReproductionTime>
+        <energyFromFish>3</energyFromFish>
+        <sharkInitialEnergy>3</sharkInitialEnergy>
     </parameters>
 </simulation>

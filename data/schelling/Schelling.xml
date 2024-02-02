@@ -25,6 +25,6 @@
     </initial_states>
     <neighborhood_type></neighborhood_type>
     <parameters>
-        <proportion_needed_to_stay>0.5</proportion_needed_to_stay>
+        <proportionNeededToStay>0.5</proportionNeededToStay>
     </parameters>
 </simulation>

@@ -200,7 +200,6 @@ public class XMLParser {
         addElement(doc, rootElement, "width", String.valueOf(width));
         addElement(doc, rootElement, "height", String.valueOf(height));
         addElement(doc, rootElement, "neighborhood_type", neighborhoodType);
-        addElement(doc, rootElement, "parameters", null);
 
         // Convert Integer ArrayList recording the current states of cell to a single String
         ArrayList<String> states = new ArrayList<>();
@@ -209,6 +208,8 @@ public class XMLParser {
         }
         String convertedStatesData = String.join(" ", states);
         addElement(doc, rootElement, "initial_states", convertedStatesData);
+
+        addElement(doc, rootElement, "parameters", null);
 
         // write document to a new file
         try (FileOutputStream output =

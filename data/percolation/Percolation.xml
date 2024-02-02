@@ -27,6 +27,6 @@
     </initial_states>
     <neighborhood_type>adjacent</neighborhood_type>
     <parameters>
-        <neighbors_percolated_required>3</neighbors_percolated_required>
+        <neighborsPercolatedRequired>3</neighborsPercolatedRequired>
     </parameters>
 </simulation>
