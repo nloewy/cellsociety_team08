@@ -56,6 +56,7 @@ public class SimulationPage {
         this.numCols = numCols;
 
         board = new CellView[numRows][numCols];
+        System.out.println("numcols:"+numCols+" numrows:"+numRows);
         int index=0;
 
         while (gridIterator.hasNext()) {
@@ -64,9 +65,12 @@ public class SimulationPage {
             int state = c.getCurrentState();
             int col = location.getY();
             int row = location.getX();
+            System.out.println(row+","+col);
+            System.out.println(index);
 //            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
             board[row][col] = new CellView(state);
             grid.add(board[row][col].getCellGraphic(), col, row);
+            index++;
         }
 
         grid.setLayoutY(150);
