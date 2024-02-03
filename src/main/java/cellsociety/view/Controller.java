@@ -151,7 +151,9 @@ public class Controller {
       double frameDuration = 1.0 / (speed * SECOND_DELAY);
       animation.setRate(speed);
       animation.setDelay(Duration.seconds(frameDuration));
+      simulationPage.updateSpeedLabel(speed);
     });
+
   }
 
   private void onPauseSimulation() {

@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 
@@ -33,6 +34,7 @@ public class SimulationPage {
     private Button saveSimulationButton;
     private Text simulationTitleDisplay;
     private Slider speedSlider;
+    private Label speedLabel;
     private int numRows;
     private int numCols;
 
@@ -81,7 +83,11 @@ public class SimulationPage {
 
         speedSlider = new Slider(1,10,5); //min speed = 1; max speed = 10; default speed when loaded = 5;
         speedSlider.setLayoutY(400);
-        speedSlider.setLayoutX(400);
+        speedSlider.setLayoutX(300);
+
+        speedLabel = new Label("Speed: " + (int) speedSlider.getValue());
+        speedLabel.setLayoutX(400);
+        speedLabel.setLayoutY(370);
 
         root.getChildren().addAll(
             grid,
@@ -91,12 +97,17 @@ public class SimulationPage {
             saveSimulationButton,
             pauseSimulationButton,
             simulationTitleDisplay,
-            speedSlider
+            speedSlider,
+            speedLabel
         );
     }
 
     public void setSpeedSliderHandler(ChangeListener<Number> speedSliderHandler) {
         speedSlider.valueProperty().addListener(speedSliderHandler);
+    }
+
+    public void updateSpeedLabel(int speed){
+        speedLabel.setText("Speed: " + speed);
     }
 
     private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int xPos, int yPos){
