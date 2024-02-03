@@ -4,6 +4,7 @@ import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
 import cellsociety.Point;
 import cellsociety.model.neighborhood.Neighborhood;
+import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.Iterator;
@@ -21,6 +22,7 @@ public abstract class Simulation<T extends Cell> {
   private Neighborhood myNeighborhood;
   private Grid<T> myGrid;
 
+  private Function<Integer, T> myCellInitializer;
   private int myCols;
 
 
@@ -39,19 +41,20 @@ public abstract class Simulation<T extends Cell> {
 
   public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       Function<Integer, T> cellInitializer) {
-    List<T> cellList = new ArrayList<>();
-    for (int i = 0; i < stateList.size(); i++) {
-      cellList.add(cellInitializer.apply(i));
-      if(i==47){
-        System.out.println(cellList.get(47).getCurrentState());
-        System.out.println(cellList.get(47).getLocation().toString());
-      }
-    }
-    myCols = col;
-    myGrid = new Grid<>(row, col, cellList);
+
+    myCellInitializer = cellInitializer;
     myNeighborhood = hoodType;
+    myCols = col;
+    initializeMyGrid(row,col,stateList);
   }
 
+  public void initializeMyGrid(int row, int col, List<Integer> stateList){
+    List<T> cellList = new ArrayList<>();
+    for (int i = 0; i < stateList.size(); i++) {
+      cellList.add(myCellInitializer.apply(i));
+    }
+    myGrid = new Grid<>(row, col, cellList);
+  }
   /**
    * This abstract function will assign each cell a new value for their myNextState, based on the
    * current grid configuration and the rules of the simulation

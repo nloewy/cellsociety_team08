@@ -32,6 +32,7 @@ public class SimulationPage {
     private Button startSimulationButton;
     private Button pauseSimulationButton;
     private Button saveSimulationButton;
+    private Button resetSimulationButton;
     private Text simulationTitleDisplay;
     private Slider speedSlider;
     private Label speedLabel;
@@ -46,7 +47,7 @@ public class SimulationPage {
         EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler,
         EventHandler<ActionEvent> startSimulationHandler,
         EventHandler<ActionEvent> saveSimulationHandler,
-        EventHandler<ActionEvent> pauseSimulationHandler, Iterator<Cell> gridIterator) {
+        EventHandler<ActionEvent> pauseSimulationHandler, EventHandler<ActionEvent> resetSimulationHandler, Iterator<Cell> gridIterator) {
 //        buttonLables = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLables");
         root = new Group();
         grid = new GridPane();
@@ -80,6 +81,7 @@ public class SimulationPage {
         startSimulationButton = makeButton("Start", startSimulationHandler, 300, 250);
         saveSimulationButton = makeButton("Save Simulation", saveSimulationHandler, 300, 200);
         pauseSimulationButton = makeButton("Pause", pauseSimulationHandler, 300, 150);
+        resetSimulationButton = makeButton("Reset", resetSimulationHandler, 300, 350);
 
         simulationTitleDisplay = new Text(simulationName);
         simulationTitleDisplay.setY(50);
@@ -100,6 +102,7 @@ public class SimulationPage {
             startSimulationButton,
             saveSimulationButton,
             pauseSimulationButton,
+            resetSimulationButton,
             simulationTitleDisplay,
             speedSlider,
             speedLabel
