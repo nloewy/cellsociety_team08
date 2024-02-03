@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -65,7 +64,6 @@ public class Controller {
     }
     xmlParser = new XMLParser();
     parseFile(dataFile.getPath());
-    System.out.println("in constructor: "+ xmlParser.getAuthor());
 
     setSimulation(); //loads view and model
 
@@ -170,7 +168,10 @@ public class Controller {
       }
       xmlParser.setStates(newStates);
       xmlParser.createXML("savedSimulation"+xmlParser.getType(), xmlParser.getType().toLowerCase());
-    } catch (ParserConfigurationException | TransformerException e){
+
+      showMessage(AlertType.INFORMATION, String.format("File saved \u2713"));
+    }
+    catch (ParserConfigurationException | TransformerException e){
       e.printStackTrace();
     }
   }
