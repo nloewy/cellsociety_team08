@@ -2,11 +2,13 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 
 import java.util.Iterator;
@@ -30,6 +32,7 @@ public class SimulationPage {
     private Button pauseSimulationButton;
     private Button saveSimulationButton;
     private Text simulationTitleDisplay;
+    private Slider speedSlider;
     private int numRows;
     private int numCols;
 
@@ -59,12 +62,10 @@ public class SimulationPage {
             int state = c.getCurrentState();
             int col = location.getY();
             int row = location.getX();
-            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
+//            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
             board[row][col] = new CellView(state);
             grid.add(board[row][col].getCellGraphic(), col, row);
         }
-
-
 
         grid.setLayoutY(150);
 
@@ -75,6 +76,12 @@ public class SimulationPage {
         pauseSimulationButton = makeButton("Pause", pauseSimulationHandler, 300, 150);
 
         simulationTitleDisplay = new Text(simulationName);
+        simulationTitleDisplay.setY(50);
+        simulationTitleDisplay.setX(100);
+
+        speedSlider = new Slider(1,10,5); //min speed = 1; max speed = 10; default speed when loaded = 5;
+        speedSlider.setLayoutY(400);
+        speedSlider.setLayoutX(400);
 
         root.getChildren().addAll(
             grid,
@@ -83,8 +90,13 @@ public class SimulationPage {
             startSimulationButton,
             saveSimulationButton,
             pauseSimulationButton,
-            simulationTitleDisplay
+            simulationTitleDisplay,
+            speedSlider
         );
+    }
+
+    public void setSpeedSliderHandler(ChangeListener<Number> speedSliderHandler) {
+        speedSlider.valueProperty().addListener(speedSliderHandler);
     }
 
     private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int xPos, int yPos){

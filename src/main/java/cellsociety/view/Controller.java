@@ -145,10 +145,17 @@ public class Controller {
     System.out.println(simulationName);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
+
+    simulationPage.setSpeedSliderHandler((observable, oldValue, newValue) -> {
+      speed = newValue.intValue();
+      double frameDuration = 1.0 / (speed * SECOND_DELAY);
+      animation.setRate(speed);
+      animation.setDelay(Duration.seconds(frameDuration));
+    });
   }
 
   private void onPauseSimulation() {
-    simulationRunning = false;
+    pauseSimulation();
   }
 
   private void onSaveSimulation() {
