@@ -1,9 +1,12 @@
 package cellsociety.view;
 
 import cellsociety.configuration.XMLParser;
+import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.*;
 import cellsociety.model.simulation.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -17,6 +20,8 @@ import javafx.util.Duration;
 import java.io.File;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 /**
  * This class is the main driver of the simulation.
@@ -55,6 +60,9 @@ public class Controller {
     showMessage(AlertType.INFORMATION, String.format(Text.getString("uploadFile")));
 
     File dataFile = chooseFile();
+    if (dataFile == null){
+      return;
+    }
     xmlParser = new XMLParser();
     parseFile(dataFile.getPath());
     System.out.println("in constructor: "+ xmlParser.getAuthor());
@@ -93,9 +101,6 @@ public class Controller {
 
   private File chooseFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(stage);
-    if (dataFile == null){
-      //TODO: need to fix this.
-    }
     return dataFile;
   }
 
@@ -106,10 +111,6 @@ public class Controller {
     System.out.println(neighborhoodTypeString);
     loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType, xmlParser.getStates(), xmlParser.getType());
     System.out.println(xmlParser.getType());
-//    if (simulationModel == null) {
-//      showMessage(AlertType.ERROR, "Error loading simulation model.");
-//      return;
-//    }
     loadSimulationScene(xmlParser.getTitle(), xmlParser.getHeight(),xmlParser.getWidth());
   }
 
@@ -145,15 +146,35 @@ public class Controller {
     System.out.println(simulationName);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
+
+    simulationPage.setSpeedSliderHandler((observable, oldValue, newValue) -> {
+      speed = newValue.intValue();
+      double frameDuration = 1.0 / (speed * SECOND_DELAY);
+      animation.setRate(speed);
+      animation.setDelay(Duration.seconds(frameDuration));
+      simulationPage.updateSpeedLabel(speed);
+    });
+
   }
 
   private void onPauseSimulation() {
-    simulationRunning = false;
+    pauseSimulation();
   }
 
   private void onSaveSimulation() {
-
+    try {
+      ArrayList<Integer> newStates = new ArrayList<>();
+      Iterator<Cell> iterator = simulationModel.getIterator();
+      while (iterator.hasNext()) {
+        newStates.add(iterator.next().getCurrentState());
+      }
+      xmlParser.setStates(newStates);
+      xmlParser.createXML("savedSimulation"+xmlParser.getType(), xmlParser.getType().toLowerCase());
+    } catch (ParserConfigurationException | TransformerException e){
+      e.printStackTrace();
+    }
   }
+
 
   private void onStartSimulation() {
     simulationRunning = true;

@@ -1,0 +1,27 @@
+/* Fire */
+.empty-cell {
+  -fx-fill: forestgreen;
+}
+
+.tree-cell {
+  -fx-fill: brown;
+}
+
+.burning-cell {
+  -fx-fill: orange;
+}
+
+/* Game of Life */
+.alive-cell {
+  -fx-fill: black;
+}
+
+.dead-cell {
+  -fx-fill: white;
+}
+
+/* Percolation */
+
+/* Wator */
+
+/* Schelling */
