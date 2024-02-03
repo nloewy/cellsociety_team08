@@ -1,10 +1,12 @@
 package cellsociety.view;
 
 import cellsociety.configuration.XMLParser;
+import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.*;
 import cellsociety.model.simulation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -160,13 +162,19 @@ public class Controller {
   }
 
   private void onSaveSimulation() {
-//    ArrayList<Integer> states = xmlParser.getStates();
-//    while (simulationModel.getIterator().hasNext()){
-//
-//    }
-//    xmlParser.createXML("savedSimulation"+xmlParser.getType(), xmlParser.getType().toLowerCase());
-//
+    try {
+      ArrayList<Integer> newStates = new ArrayList<>();
+      Iterator<Cell> iterator = simulationModel.getIterator();
+      while (iterator.hasNext()) {
+        newStates.add(iterator.next().getCurrentState());
+      }
+      xmlParser.setStates(newStates);
+      xmlParser.createXML("savedSimulation"+xmlParser.getType(), xmlParser.getType().toLowerCase());
+    } catch (ParserConfigurationException | TransformerException e){
+      e.printStackTrace();
+    }
   }
+
 
   private void onStartSimulation() {
     simulationRunning = true;
