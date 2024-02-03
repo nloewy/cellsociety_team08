@@ -130,8 +130,6 @@ public class XMLParser {
             Document doc = db.parse(file);
             doc.getDocumentElement().normalize();
 
-            System.out.println("Root Node :" + doc.getDocumentElement().getNodeName());
-            System.out.println("------");
             // obtaining the simulation node containing all the configuration data
             Node simulationNode = doc.getElementsByTagName("simulation").item(0);
 
