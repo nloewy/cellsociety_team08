@@ -130,7 +130,7 @@ public class Controller {
     xmlParser.getParameters().forEach((key, value) -> System.out.println(key + ": " + value));
 
     simulationRunning = false;
-      simulationModel = switch (simulationType) {
+    simulationModel = switch (simulationType) {
       case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("aliveToAliveMin").intValue(), xmlParser.getParameters().get("deadToAliveMax").intValue(), xmlParser.getParameters().get("aliveToAliveMax").intValue(), xmlParser.getParameters().get("deadToAliveMin").intValue());
       case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("percolatedNeighbors").intValue());
       case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("neighborsToIgnite").intValue(), xmlParser.getParameters().get("probTreeIgnites"), xmlParser.getParameters().get("probTreeCreated"));
@@ -142,7 +142,7 @@ public class Controller {
 
 
   private void loadSimulationScene(String simulationName, int numRows, int numCols) {
-    simulationPage = new SimulationPage(simulationName, numRows, numCols, event -> onNewSimulationClicked(), event -> onInfoButtonClicked(), event -> onStartSimulation(), event -> onSaveSimulation(), event -> onPauseSimulation() ,simulationModel.getIterator());
+    simulationPage = new SimulationPage(simulationName, numRows, numCols, event -> onNewSimulationClicked(), event -> onInfoButtonClicked(), event -> onStartSimulation(), event -> onSaveSimulation(), event -> onPauseSimulation(), event -> onResetSimulation(), simulationModel.getIterator());
     System.out.println(simulationName);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
@@ -196,6 +196,11 @@ public class Controller {
     setSimulation();
   }
 
+  private void onResetSimulation() {
+    simulationRunning = false;
+    simulationModel.initializeMyGrid(xmlParser.getHeight(), xmlParser.getWidth(), xmlParser.getStates());
+    simulationPage.updateView(simulationModel.getIterator());
+  }
 
   public void showMessage(AlertType type, String message) {
     new Alert(type, message).showAndWait();
