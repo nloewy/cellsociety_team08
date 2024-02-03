@@ -23,6 +23,23 @@ import javafx.scene.text.Text;
 
 public class SimulationPage {
 
+    public static final double SCENE_HEIGHT = 800;
+    public static final double SCENE_WIDTH = 1000;
+    public static final double GRID_HEIGHT= .6 * SCENE_HEIGHT;
+    public static final double GRID_WIDTH = .6 * SCENE_WIDTH;
+    public static final double GRID_START_Y = .2 * SCENE_HEIGHT;
+    public static final double GRID_START_X = .05 * SCENE_WIDTH;
+    public static final int BUTTON_START_X = (int) (SCENE_WIDTH - ((SCENE_WIDTH - GRID_START_X - GRID_WIDTH)/2.0));
+    public static final int TITLE_X = (int) Math.round(.5*SCENE_HEIGHT);
+    public static final int TITLE_Y = (int) Math.round(GRID_START_Y*.5);
+    public static final int NEW_SIMULATION_BUTTON_Y = (int) Math.round(.325*SCENE_HEIGHT);
+    public static final int INFO_BUTTON_Y = (int) Math.round(.375*SCENE_HEIGHT);
+    public static final int START_BUTTON_Y = (int) Math.round(.425*SCENE_HEIGHT);
+    public static final int SAVE_BUTTON_Y = (int) Math.round(.475*SCENE_HEIGHT);
+    public static final int PAUSE_BUTTON_Y = (int) Math.round(.525*SCENE_HEIGHT);
+    public static final int RESET_BUTTON_Y = (int) Math.round(.575*SCENE_HEIGHT);
+    public static final int SPEED_LABEL_Y = (int) Math.round(.625*SCENE_HEIGHT);
+    public static final int SPEED_SLIDER_Y = (int) Math.round(.675*SCENE_HEIGHT);
     private GridPane grid;
     private Scene scene;
     private Group root;
@@ -37,11 +54,8 @@ public class SimulationPage {
     private Slider speedSlider;
     private Label speedLabel;
     private int numRows;
+    private int buttonsOnPanel = 0;
     private int numCols;
-
-    public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
-    public static final int GRID_X_OFFSET = 100;
-    public static final int GRID_Y_OFFSET = 100;
 
     public SimulationPage(String simulationName, int numRows, int numCols,
         EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler,
@@ -51,7 +65,7 @@ public class SimulationPage {
 //        buttonLables = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLables");
         root = new Group();
         grid = new GridPane();
-        scene = new Scene(root, 500, 500);
+        scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         System.out.println("creating new simulation: " + simulationName);
         this.numRows = numRows;
         this.numCols = numCols;
@@ -69,31 +83,35 @@ public class SimulationPage {
             System.out.println(row+","+col);
             System.out.println(index);
 //            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
-            board[row][col] = new CellView(state);
+            board[row][col] = new CellView(state, GRID_WIDTH/numRows, GRID_HEIGHT/numRows);
             grid.add(board[row][col].getCellGraphic(), col, row);
             index++;
         }
 
-        grid.setLayoutY(150);
+        grid.setLayoutY(GRID_START_Y);
+        grid.setLayoutX(GRID_START_X);
 
-        newSimulationButton = makeButton("New Simulation", newSimulationHandler, 0, 100);
-        simulationInfoButton = makeButton("About", infoButtonHandler, 300, 300);
-        startSimulationButton = makeButton("Start", startSimulationHandler, 300, 250);
-        saveSimulationButton = makeButton("Save Simulation", saveSimulationHandler, 300, 200);
-        pauseSimulationButton = makeButton("Pause", pauseSimulationHandler, 300, 150);
-        resetSimulationButton = makeButton("Reset", resetSimulationHandler, 300, 350);
 
-        simulationTitleDisplay = new Text(simulationName);
-        simulationTitleDisplay.setY(50);
-        simulationTitleDisplay.setX(100);
+        newSimulationButton = makeButton("New Simulation", newSimulationHandler, BUTTON_START_X, NEW_SIMULATION_BUTTON_Y);
+        simulationInfoButton = makeButton("About", infoButtonHandler, BUTTON_START_X, INFO_BUTTON_Y);
+        startSimulationButton = makeButton("Start", startSimulationHandler, BUTTON_START_X, START_BUTTON_Y);
+        saveSimulationButton = makeButton("Save Simulation", saveSimulationHandler, BUTTON_START_X, SAVE_BUTTON_Y);
+        pauseSimulationButton = makeButton("Pause", pauseSimulationHandler, BUTTON_START_X, PAUSE_BUTTON_Y);
+        resetSimulationButton = makeButton("Reset", resetSimulationHandler, BUTTON_START_X, RESET_BUTTON_Y);
 
         speedSlider = new Slider(1,10,5); //min speed = 1; max speed = 10; default speed when loaded = 5;
-        speedSlider.setLayoutY(400);
-        speedSlider.setLayoutX(300);
+        speedSlider.setLayoutX(BUTTON_START_X);
+        speedSlider.setLayoutY(SPEED_SLIDER_Y);
+
 
         speedLabel = new Label("Speed: " + (int) speedSlider.getValue());
-        speedLabel.setLayoutX(400);
-        speedLabel.setLayoutY(370);
+        speedLabel.setLayoutX(BUTTON_START_X);
+        speedLabel.setLayoutY(SPEED_LABEL_Y);
+
+        simulationTitleDisplay = new Text(simulationName);
+        simulationTitleDisplay.setX(TITLE_X);
+        simulationTitleDisplay.setY(TITLE_Y);
+
 
         root.getChildren().addAll(
             grid,
@@ -122,6 +140,7 @@ public class SimulationPage {
         ret.setOnAction(handler);
         ret.setLayoutX(xPos);
         ret.setLayoutY(yPos);
+        buttonsOnPanel++;
         return ret;
     }
 
@@ -135,7 +154,6 @@ public class SimulationPage {
 
 
     public void updateView(Iterator<Cell> gridIterator){
-        int index=0;
         while (gridIterator.hasNext()) {
             Cell c = gridIterator.next();
             Point location = c.getLocation();
@@ -143,7 +161,6 @@ public class SimulationPage {
             int col = location.getY();
             int row = location.getX();
             board[row][col].updateState(state);
-            index++;
         }
     }
 }

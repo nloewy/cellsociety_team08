@@ -10,9 +10,10 @@ public class CellView extends Region {
     private Rectangle r;
 //    XMLParser parser;
 
-    public CellView(int state) {
+    public CellView(int state, double width, double height) {
+
 //        parser = new XMLParser(); //TODO: add parameters after it's implemented
-        r = new Rectangle(10,10); //TODO: read width and height from css
+        r = new Rectangle(width,height); //TODO: read width and height from css
 //        r.setFill(Color.BLACK);
 
         //testing grid iterator in simualtion page
