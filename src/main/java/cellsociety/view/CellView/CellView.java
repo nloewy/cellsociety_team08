@@ -11,6 +11,7 @@ public abstract class CellView extends Region {
   private Rectangle r;
 
   public CellView(int state, double width, double height) {
+    super();
     r = new Rectangle(width, height); //TODO: read width and height from css
 
     //testing grid iterator in simualtion page
