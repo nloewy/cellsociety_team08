@@ -2,8 +2,13 @@ package cellsociety.configuration;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.util.ArrayList;
+import java.util.*;
 
+/**
+ * The XMLTester is a class for testing operations on objects of the XMLParser class, particularly its readXML and writeXML methods.
+ *
+ * @author Judy He
+ */
 public class XMLTester {
     public static void main(String[] args) throws ParserConfigurationException, TransformerException {
         String path = "data/gameoflife/GameOfLifeGlider.xml";
@@ -11,7 +16,7 @@ public class XMLTester {
         XMLParser xmlParser = new XMLParser();
         xmlParser.readXML(path);
 
-        ArrayList<Integer> states = xmlParser.getStates();
+        List<Integer> states = xmlParser.getStates();
         states.remove(states.size()-1);
         states.add(1);
 
