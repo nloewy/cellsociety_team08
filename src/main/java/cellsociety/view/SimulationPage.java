@@ -5,6 +5,9 @@ import cellsociety.model.core.Cell;
 import cellsociety.view.CellView.CellView;
 import cellsociety.view.CellView.FireCellView;
 import cellsociety.view.CellView.GameOfLifeCellView;
+import cellsociety.view.CellView.PercolationCellView;
+import cellsociety.view.CellView.SchellingCellView;
+import cellsociety.view.CellView.WatorCellView;
 import java.util.Map;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -161,12 +164,14 @@ public class SimulationPage {
   }
 
   private CellView initializeCellView(String simulationType, int state, double width, double height ) {
-    CellView cellView = switch (simulationType){
+    return switch (simulationType){
       case Controller.FIRE -> new FireCellView(state, width, height);
       case Controller.GAME_OF_LIFE -> new GameOfLifeCellView(state, width, height);
+      case Controller.PERCOLATION -> new PercolationCellView(state, width, height);
+      case Controller.SCHELLING -> new SchellingCellView(state, width, height);
+      case Controller.WATOR -> new WatorCellView(state, width, height);
       default -> throw new IllegalStateException("Unexpected value: " + simulationType);
     };
-    return cellView;
   }
 
   public void setSpeedSliderHandler(ChangeListener<Number> speedSliderHandler) {
