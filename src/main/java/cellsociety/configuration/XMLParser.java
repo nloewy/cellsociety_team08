@@ -27,6 +27,7 @@ public class XMLParser {
     private String author; // author of configuration file
     private String fileDescription; // description of configuration file
     private String displayDescription; // description to be displayed on GUI
+    private String statecolor; // states and corresponding colors of the simulation to be displayed on GUI
     private int width; // number of columns
     private int height; // number of rows
     private String neighborhoodType; // adjacent or cardinal
@@ -186,6 +187,10 @@ public class XMLParser {
         this.states = states;
     }
 
+    public String getStateColor(){
+        return statecolor;
+    }
+
     /**
      * Retrieves parameters instance variable
      * @return parameters, a HashMap mapping parameter names to their corresponding values
@@ -255,6 +260,7 @@ public class XMLParser {
         author = eElement.getElementsByTagName("author").item(0).getTextContent();
         fileDescription = eElement.getElementsByTagName("file_description").item(0).getTextContent();
         displayDescription = eElement.getElementsByTagName("display_description").item(0).getTextContent();
+        statecolor = eElement.getElementsByTagName("state_colors").item(0).getTextContent();
         neighborhoodType = eElement.getElementsByTagName("neighborhood_type").item(0).getTextContent();
         width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
         height = Integer.parseInt(eElement.getElementsByTagName("height").item(0).getTextContent());

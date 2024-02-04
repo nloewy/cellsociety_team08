@@ -1,10 +1,10 @@
 /* Fire */
 .empty-cell {
-  -fx-fill: forestgreen;
+  -fx-fill: grey;
 }
 
 .tree-cell {
-  -fx-fill: brown;
+  -fx-fill: green;
 }
 
 .burning-cell {
@@ -21,7 +21,46 @@
 }
 
 /* Percolation */
+/* colors for this one are gotten from the princeton percolation case study*/
+.empty-site{
+  -fx-fill: white;
+}
+
+.full-site{
+  -fx-fill: skyblue;
+}
+
+.blocked-site{
+  -fx-fill: black;
+}
 
 /* Wator */
+.empty-water{
+  -fx-fill: darkblue;
+}
+
+.fish{
+  -fx-fill: palevioletred;
+}
+
+.shark{
+  -fx-fill: gold;
+}
 
 /* Schelling */
+.agent{
+  -fx-fill: crimson;
+}
+
+.agentX{
+  -fx-fill: dodgerblue	;
+}
+
+.no-agent{
+  -fx-fill: white;
+}
+
+/* Siulation Title */
+.simulation-title {
+  -fx-font-size: 40px;
+}
