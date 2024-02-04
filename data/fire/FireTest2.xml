@@ -15,7 +15,7 @@
   <neighborhood_type>adjacent</neighborhood_type>
   <parameters>
     <probTreeIgnites>.05</probTreeIgnites> <!-- The probability of a tree in a cell catching fire if a tree in a neighboring cell is on fire.-->
-    <probTreeCreated>.2</probTreeCreated>
-    <neighborsToIgnite>1</neighborsToIgnite>
+    <probTreeCreated>.2</probTreeCreated> <!-- The probability of that a tree is created-->
+    <neighborsToIgnite>1</neighborsToIgnite> <!-- Number of neighbors to ignite-->
   </parameters>
 </simulation>

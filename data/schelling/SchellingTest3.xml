@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
+<simulation>
+    <type>Schelling</type>
+    <title>Schelling Simulation</title>
+    <author>Judy He</author>
+    <file_description>This file configures the Schelling Simulation.</file_description>
+    <display_description>A demonstration of the Schelling Simulation</display_description>
+    <width>20</width>
+    <height>20</height>
+    <!-- 0 - agent 0
+         1 - agent X
+         2 - EMPTY
+          -->
+    <initial_states>1 2 2 0 0 0 2 2 2 2 2 1 2 0 2 0 2 2 2 2 2 2 1 2 1 1 2 2 2 2 1 2 2 2 1 1 2 2 2 2 2 1 2 2 0 1 0 1 2 2 2 1 1 2 0 1 0 2 2 2 2 2 2 1 2 2 0 2 2 1 2 1 2 2 2 2 0 2 2 2 0 0 0 2 2 1 2 2 2 2 0 0 0 2 2 2 2 2 2 2 2 2 2 2 0 1 0 2 2 2 1 2 2 2 0 1 0 2 2 2 2 2 2 2 2 2 2 2 0 2 2 2 2 2 2 2 2 2 0 2 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 2 2 1 1 2 2 2 0 0 2 2 2 2 2 2 2 2 0 0 2 2 2 2 2 2 1 1 1 0 2 2 1 1 2 2 1 1 1 0 2 2 2 2 2 2 2 2 0 0 0 2 2 2 2 2 1 2 0 2 0 2 2 2 2 2 2 2 2 1 1 2 2 2 2 1 1 1 1 2 2 2 2 2 2 2 2 2 2 0 1 0 2 2 2 0 0 2 2 0 1 0 2 2 2 0 2 2 2 2 2 0 2 2 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 2 2 1 1 1 2 0 0 0 2 2 2 2 2 2 2 0 2 2 2 0 1 0 2 2 2 2 2 2 2 0 1 0 2 2 2 2 2 2 2 2 2 2 2 0 2 2 0 0 2 2 2 2 2 0 2 2 2 2 2 2 2 2 2 1 1 2 2 2 2 2 2 2 2 1 1 2 2 2 0 0 2 2 0 2 2 2 0 2 0 0 2 2 2 2 2 2 1 1 1 0 2 2 2 2 2 2 1 1 1 0 2 2 2 2 2</initial_states>
+    <neighborhood_type>adjacent</neighborhood_type>
+    <parameters>
+        <proportionNeededToStay>0.5</proportionNeededToStay>
+    </parameters>
+</simulation>
