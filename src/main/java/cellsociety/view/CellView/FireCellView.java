@@ -8,7 +8,7 @@ public class FireCellView extends CellView {
 
   @Override
   public void setColors(int state) {
-    switch (state){
+    switch (state) {
       case 0:
         getCSS("empty-cell");
         break;

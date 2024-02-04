@@ -29,6 +29,7 @@ import javax.xml.transform.TransformerException;
 
 /**
  * This class is the main driver of the simulation.
+ *
  * @author Alisha Zhang
  */
 
@@ -57,7 +58,6 @@ public class Controller {
   private static final double SECOND_DELAY = 1.0;
 
 
-
   public Controller() {
     stage = new Stage();
 
@@ -65,7 +65,7 @@ public class Controller {
     showMessage(AlertType.INFORMATION, String.format(Text.getString("uploadFile")));
 
     File dataFile = chooseFile();
-    if (dataFile == null){
+    if (dataFile == null) {
       return;
     }
     xmlParser = new XMLParser();
@@ -78,7 +78,8 @@ public class Controller {
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     double frameDuration = 1.0 / (speed * SECOND_DELAY); // Calculate the duration for the KeyFrame
-    animation.getKeyFrames().add(new KeyFrame(Duration.seconds(frameDuration), e -> step(SECOND_DELAY)));
+    animation.getKeyFrames()
+        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step(SECOND_DELAY)));
     animation.play();
   }
 
@@ -99,7 +100,7 @@ public class Controller {
     xmlParser.readXML(filePath);
   }
 
-  private void pauseSimulation(){
+  private void pauseSimulation() {
     simulationRunning = false;
   }
 
@@ -113,15 +114,17 @@ public class Controller {
     String neighborhoodTypeString = xmlParser.getNeighborhoodType();
     Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
     System.out.println(neighborhoodTypeString);
-    loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType, xmlParser.getStates(), xmlParser.getType());
+    loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType,
+        xmlParser.getStates(), xmlParser.getType());
     System.out.println(xmlParser.getType());
-    loadSimulationScene(xmlParser.getType(), xmlParser.getTitle(), xmlParser.getHeight(),xmlParser.getWidth());
+    loadSimulationScene(xmlParser.getType(), xmlParser.getTitle(), xmlParser.getHeight(),
+        xmlParser.getWidth());
   }
 
 
   private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
     System.out.println("getting neighborhood type");
-    return switch (neighborhoodTypeString){
+    return switch (neighborhoodTypeString) {
       case "adjacent" -> new AdjacentNeighborhood();
       case "cardinal" -> new CardinalNeighborhood();
       default -> throw new IllegalStateException("Unexpected value: " + neighborhoodTypeString);
@@ -135,19 +138,34 @@ public class Controller {
 
     simulationRunning = false;
     simulationModel = switch (simulationType) {
-      case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("aliveToAliveMin").intValue(), xmlParser.getParameters().get("deadToAliveMax").intValue(), xmlParser.getParameters().get("aliveToAliveMax").intValue(), xmlParser.getParameters().get("deadToAliveMin").intValue());
-      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("percolatedNeighbors").intValue());
-      case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("neighborsToIgnite").intValue(), xmlParser.getParameters().get("probTreeIgnites"), xmlParser.getParameters().get("probTreeCreated"));
-      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("proportionNeededToStay"));
-      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList, xmlParser.getParameters().get("fishAgeOfReproduction").intValue(), xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(), xmlParser.getParameters().get("initialEnergy").intValue(),  xmlParser.getParameters().get("energyBoost").intValue());
+      case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList,
+          xmlParser.getParameters().get("aliveToAliveMin").intValue(),
+          xmlParser.getParameters().get("deadToAliveMax").intValue(),
+          xmlParser.getParameters().get("aliveToAliveMax").intValue(),
+          xmlParser.getParameters().get("deadToAliveMin").intValue());
+      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList,
+          xmlParser.getParameters().get("percolatedNeighbors").intValue());
+      case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList,
+          xmlParser.getParameters().get("neighborsToIgnite").intValue(),
+          xmlParser.getParameters().get("probTreeIgnites"),
+          xmlParser.getParameters().get("probTreeCreated"));
+      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList,
+          xmlParser.getParameters().get("proportionNeededToStay"));
+      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
+          xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
+          xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
+          xmlParser.getParameters().get("initialEnergy").intValue(),
+          xmlParser.getParameters().get("energyBoost").intValue());
       default -> null;
     };
   }
 
 
-  private void loadSimulationScene(String simulationType, String simulationName, int numRows, int numCols) {
+  private void loadSimulationScene(String simulationType, String simulationName, int numRows,
+      int numCols) {
     Map<String, EventHandler<ActionEvent>> handlers = makeMap();
-    simulationPage = new SimulationPage(simulationType, simulationName, numRows, numCols, handlers, simulationModel.getIterator());
+    simulationPage = new SimulationPage(simulationType, simulationName, numRows, numCols, handlers,
+        simulationModel.getIterator());
     System.out.println(simulationName);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
@@ -185,11 +203,11 @@ public class Controller {
         newStates.add(iterator.next().getCurrentState());
       }
       xmlParser.setStates(newStates);
-      xmlParser.createXML("savedSimulation"+xmlParser.getType(), xmlParser.getType().toLowerCase());
+      xmlParser.createXML("savedSimulation" + xmlParser.getType(),
+          xmlParser.getType().toLowerCase());
 
       showMessage(AlertType.INFORMATION, String.format("File saved \u2713"));
-    }
-    catch (ParserConfigurationException | TransformerException e){
+    } catch (ParserConfigurationException | TransformerException e) {
       e.printStackTrace();
     }
   }
@@ -208,7 +226,7 @@ public class Controller {
   private void onNewSimulationClicked() {
     simulationRunning = false;
     File dataFile = chooseFile();
-    if (dataFile == null){
+    if (dataFile == null) {
       return;
     }
     parseFile(dataFile.getPath());
@@ -217,12 +235,12 @@ public class Controller {
 
   private void onResetSimulation() {
     simulationRunning = false;
-    simulationModel.initializeMyGrid(xmlParser.getHeight(), xmlParser.getWidth(), xmlParser.getStates());
+    simulationModel.initializeMyGrid(xmlParser.getHeight(), xmlParser.getWidth(),
+        xmlParser.getStates());
     simulationPage.updateView(simulationModel.getIterator());
   }
 
   /**
-   *
    * @param type
    * @param message
    */

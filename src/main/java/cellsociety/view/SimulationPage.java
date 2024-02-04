@@ -71,7 +71,8 @@ public class SimulationPage {
   public static final int SPEED_LABEL_Y = (int) Math.round(.625 * SCENE_HEIGHT);
   public static final int SPEED_SLIDER_Y = (int) Math.round(.675 * SCENE_HEIGHT);
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
-  public static final String DEFAULT_RESOURCE_FOLDER = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+  public static final String DEFAULT_RESOURCE_FOLDER =
+      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
   public static final String STYLESHEET = "StyleSheet.css";
 
   public static final String NEW_SIMULATION_BUTTON_KEY = "NewSimulationButton";
@@ -82,7 +83,8 @@ public class SimulationPage {
   public static final String SAVE_BUTTON_KEY = "SaveSimulationButton";
 
 
-  public SimulationPage(String simulationType, String simulationName, int numRows, int numCols, Map<String, EventHandler<ActionEvent>> eventHandlers,
+  public SimulationPage(String simulationType, String simulationName, int numRows, int numCols,
+      Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator) {
 
     root = new Group();
@@ -90,7 +92,8 @@ public class SimulationPage {
     scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
 
     buttonLabels = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLabels");
-    scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+    scene.getStylesheets()
+        .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
     System.out.println("creating new simulation: " + simulationName);
     this.numRows = numRows;
@@ -109,7 +112,8 @@ public class SimulationPage {
       System.out.println(row + "," + col);
       System.out.println(index);
 //            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
-      board[row][col] = initializeCellView(simulationType, state, GRID_WIDTH / numRows, GRID_HEIGHT / numRows);
+      board[row][col] = initializeCellView(simulationType, state, GRID_WIDTH / numRows,
+          GRID_HEIGHT / numRows);
 
       grid.add(board[row][col].getCellGraphic(), col, row);
       index++;
@@ -118,16 +122,22 @@ public class SimulationPage {
     grid.setLayoutY(GRID_START_Y);
     grid.setLayoutX(GRID_START_X);
 
-    newSimulationButton = makeButton(buttonLabels.getString(NEW_SIMULATION_BUTTON_KEY), eventHandlers.get("newSimulationHandler"), BUTTON_START_X,
+    newSimulationButton = makeButton(buttonLabels.getString(NEW_SIMULATION_BUTTON_KEY),
+        eventHandlers.get("newSimulationHandler"), BUTTON_START_X,
         NEW_SIMULATION_BUTTON_Y);
-    simulationInfoButton = makeButton(buttonLabels.getString(ABOUT_BUTTON_KEY), eventHandlers.get("infoButtonHandler"), BUTTON_START_X, INFO_BUTTON_Y);
-    startSimulationButton = makeButton(buttonLabels.getString(START_BUTTON_KEY), eventHandlers.get("startSimulationHandler"), BUTTON_START_X,
+    simulationInfoButton = makeButton(buttonLabels.getString(ABOUT_BUTTON_KEY),
+        eventHandlers.get("infoButtonHandler"), BUTTON_START_X, INFO_BUTTON_Y);
+    startSimulationButton = makeButton(buttonLabels.getString(START_BUTTON_KEY),
+        eventHandlers.get("startSimulationHandler"), BUTTON_START_X,
         START_BUTTON_Y);
-    saveSimulationButton = makeButton(buttonLabels.getString(SAVE_BUTTON_KEY), eventHandlers.get("saveSimulationHandler"), BUTTON_START_X,
+    saveSimulationButton = makeButton(buttonLabels.getString(SAVE_BUTTON_KEY),
+        eventHandlers.get("saveSimulationHandler"), BUTTON_START_X,
         SAVE_BUTTON_Y);
-    pauseSimulationButton = makeButton(buttonLabels.getString(PAUSE_BUTTON_KEY), eventHandlers.get("pauseSimulationHandler"), BUTTON_START_X,
+    pauseSimulationButton = makeButton(buttonLabels.getString(PAUSE_BUTTON_KEY),
+        eventHandlers.get("pauseSimulationHandler"), BUTTON_START_X,
         PAUSE_BUTTON_Y);
-    resetSimulationButton = makeButton(buttonLabels.getString(RESET_BUTTON_KEY), eventHandlers.get("resetSimulationHandler"), BUTTON_START_X,
+    resetSimulationButton = makeButton(buttonLabels.getString(RESET_BUTTON_KEY),
+        eventHandlers.get("resetSimulationHandler"), BUTTON_START_X,
         RESET_BUTTON_Y);
 
     speedSlider = new Slider(1, 10,
@@ -141,7 +151,8 @@ public class SimulationPage {
 
     simulationTitleDisplay = new Text(simulationName);
 //    simulationTitleDisplay.setX(TITLE_X - simulationTitleDisplay.getLayoutBounds().getWidth()/2);
-    simulationTitleDisplay.setX((SCENE_WIDTH - simulationTitleDisplay.getLayoutBounds().getWidth()) / 2);
+    simulationTitleDisplay.setX(
+        (SCENE_WIDTH - simulationTitleDisplay.getLayoutBounds().getWidth()) / 2);
     System.out.println("Scenewidth" + SCENE_WIDTH);
     System.out.println("text width" + simulationTitleDisplay.getLayoutBounds().getWidth());
     simulationTitleDisplay.setY(TITLE_Y);
@@ -163,8 +174,9 @@ public class SimulationPage {
     );
   }
 
-  private CellView initializeCellView(String simulationType, int state, double width, double height ) {
-    return switch (simulationType){
+  private CellView initializeCellView(String simulationType, int state, double width,
+      double height) {
+    return switch (simulationType) {
       case Controller.FIRE -> new FireCellView(state, width, height);
       case Controller.GAME_OF_LIFE -> new GameOfLifeCellView(state, width, height);
       case Controller.PERCOLATION -> new PercolationCellView(state, width, height);

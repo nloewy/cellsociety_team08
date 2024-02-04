@@ -8,7 +8,7 @@ public class SchellingCellView extends CellView{
 
   @Override
   public void setColors(int state) {
-    switch (state){
+    switch (state) {
       case 0:
         getCSS("agent");
         break;

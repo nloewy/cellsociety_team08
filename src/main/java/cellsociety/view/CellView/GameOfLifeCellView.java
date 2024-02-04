@@ -1,6 +1,6 @@
 package cellsociety.view.CellView;
 
-public class GameOfLifeCellView extends CellView{
+public class GameOfLifeCellView extends CellView {
 
   public GameOfLifeCellView(int state, double width, double height) {
     super(state, width, height);
@@ -8,7 +8,7 @@ public class GameOfLifeCellView extends CellView{
 
   @Override
   public void setColors(int state) {
-    switch (state){
+    switch (state) {
       case 0:
         getCSS("dead-cell");
         break;

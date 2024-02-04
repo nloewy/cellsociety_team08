@@ -1,6 +1,6 @@
 package cellsociety.view.CellView;
 
-public class WatorCellView extends CellView{
+public class WatorCellView extends CellView {
 
   public WatorCellView(int state, double width, double height) {
     super(state, width, height);
@@ -8,7 +8,7 @@ public class WatorCellView extends CellView{
 
   @Override
   public void setColors(int state) {
-    switch (state){
+    switch (state) {
       case 0:
         getCSS("empty-water");
         break;
