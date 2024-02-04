@@ -7,6 +7,7 @@ import cellsociety.model.simulation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import javafx.css.Stylesheet;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -219,8 +220,23 @@ public class Controller {
 
 
   private void onInfoButtonClicked() {
-    showMessage(AlertType.INFORMATION, String.format(xmlParser.getDisplayDescription()));
+//    showMessage(AlertType.INFORMATION, String.format(xmlParser.getDisplayDescription()));
+    Alert simulationInfo = new Alert(AlertType.INFORMATION);
+
+    simulationInfo.setHeaderText(null);
+    simulationInfo.setTitle(xmlParser.getTitle());
+    simulationInfo.setContentText(
+        xmlParser.getDisplayDescription()+"\n"+
+        "Author: "+xmlParser.getAuthor()+"\n"+
+        "Parameters: "+xmlParser.getParameters()+"\n"+
+        "States: "+xmlParser.getStateColor()
+        );
+
+
+    simulationInfo.showAndWait();
   }
+
+
 
 
   private void onNewSimulationClicked() {

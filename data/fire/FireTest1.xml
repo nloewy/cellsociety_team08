@@ -18,4 +18,9 @@
         <probTreeCreated>0.2</probTreeCreated> <!-- The probability of that a tree is created-->
         <neighborsToIgnite>1</neighborsToIgnite> <!-- Number of neighbors to ignite-->
     </parameters>
+    <state_colors>
+        State 0: empty ground/burnt tree -- grey
+        State 1: tree -- green
+        State 2: burning tree -- orange-red
+    </state_colors>
 </simulation>

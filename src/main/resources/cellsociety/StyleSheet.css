@@ -1,14 +1,14 @@
 /* Fire */
 .empty-cell {
-  -fx-fill: forestgreen;
+  -fx-fill: grey;
 }
 
 .tree-cell {
-  -fx-fill: orange;
+  -fx-fill: green;
 }
 
 .burning-cell {
-  -fx-fill: crimson;
+  -fx-fill: orange;
 }
 
 /* Game of Life */
