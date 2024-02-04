@@ -1,4 +1,4 @@
-package cellsociety.view;
+package cellsociety.view.CellView;
 
 public class FireCellView extends CellView {
 
@@ -8,7 +8,6 @@ public class FireCellView extends CellView {
 
   @Override
   public void setColors(int state) {
-    getCellGraphic().getStyleClass().clear();
     switch (state){
       case 0:
         getCSS("empty-cell");

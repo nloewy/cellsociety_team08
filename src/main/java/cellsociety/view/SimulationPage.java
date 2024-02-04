@@ -2,10 +2,12 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
+import cellsociety.view.CellView.CellView;
+import cellsociety.view.CellView.FireCellView;
+import cellsociety.view.CellView.GameOfLifeCellView;
 import java.util.Map;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -161,6 +163,7 @@ public class SimulationPage {
   private CellView initializeCellView(String simulationType, int state, double width, double height ) {
     CellView cellView = switch (simulationType){
       case Controller.FIRE -> new FireCellView(state, width, height);
+      case Controller.GAME_OF_LIFE -> new GameOfLifeCellView(state, width, height);
       default -> throw new IllegalStateException("Unexpected value: " + simulationType);
     };
     return cellView;

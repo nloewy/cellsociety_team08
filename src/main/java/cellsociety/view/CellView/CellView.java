@@ -1,4 +1,4 @@
-package cellsociety.view;
+package cellsociety.view.CellView;
 
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -24,6 +24,7 @@ public abstract class CellView extends Region {
 
 
     public void updateState(int state){
+        getCellGraphic().getStyleClass().clear();
         setColors(state);
         System.out.println(state);
     }
