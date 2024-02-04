@@ -17,6 +17,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -227,15 +228,34 @@ public class Controller {
 
     simulationInfo.setHeaderText(null);
     simulationInfo.setTitle(xmlParser.getTitle());
-    simulationInfo.setContentText(
-        xmlParser.getDisplayDescription()+"\n\n"+
-        "Author: "+xmlParser.getAuthor()+"\n\n"+
-        "States: "+xmlParser.getStateColor()+"\n"+
-        "Parameters: "+xmlParser.getParameters()
-        );
+
+//    simulationInfo.setContentText(
+//        xmlParser.getDisplayDescription()+"\n\n"+
+//        "Author: "+xmlParser.getAuthor()+"\n\n"+
+//        "States: "+xmlParser.getStateColor()+"\n"+
+//        "Parameters: "+xmlParser.getParameters()
+//        );
+//
+//    simulationInfo.showAndWait();
+    TextArea textArea = new TextArea();
+    textArea.setEditable(false);
+    textArea.setWrapText(true);
+    textArea.setText(
+        xmlParser.getDisplayDescription() + "\n\n" +
+            "Author: " + xmlParser.getAuthor() + "\n\n" +
+            "States: " + xmlParser.getStateColor() + "\n" +
+            "Parameters: " + xmlParser.getParameters()
+    );
+    textArea.setMinHeight(400);
+
+    // Set the content of the alert to the TextArea
+    simulationInfo.getDialogPane().setContent(textArea);
 
     simulationInfo.showAndWait();
   }
+
+  //    simulationInfo.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+//    simulationInfo.getDialogPane().setWrapText(true);
 
 
 
