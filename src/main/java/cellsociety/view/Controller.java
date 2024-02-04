@@ -5,6 +5,11 @@ import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.*;
 import cellsociety.model.simulation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.animation.KeyFrame;
@@ -26,6 +31,7 @@ import javax.xml.transform.TransformerException;
  * This class is the main driver of the simulation.
  * @author Alisha Zhang
  */
+
 
 public class Controller {
 
@@ -140,7 +146,8 @@ public class Controller {
 
 
   private void loadSimulationScene(String simulationName, int numRows, int numCols) {
-    simulationPage = new SimulationPage(simulationName, numRows, numCols, event -> onNewSimulationClicked(), event -> onInfoButtonClicked(), event -> onStartSimulation(), event -> onSaveSimulation(), event -> onPauseSimulation(), event -> onResetSimulation(), simulationModel.getIterator());
+    Map<String, EventHandler<ActionEvent>> handlers = makeMap();
+    simulationPage = new SimulationPage(simulationName, numRows, numCols, handlers, simulationModel.getIterator());
     System.out.println(simulationName);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
@@ -153,6 +160,17 @@ public class Controller {
       simulationPage.updateSpeedLabel(speed);
     });
 
+  }
+
+  private Map<String, EventHandler<ActionEvent>> makeMap() {
+    Map<String, EventHandler<ActionEvent>> map = new HashMap<>();
+    map.put("newSimulationHandler", event -> onNewSimulationClicked());
+    map.put("infoButtonHandler", event -> onInfoButtonClicked());
+    map.put("startSimulationHandler", event -> onStartSimulation());
+    map.put("saveSimulationHandler", event -> onSaveSimulation());
+    map.put("pauseSimulationHandler", event -> onPauseSimulation());
+    map.put("resetSimulationHandler", event -> onResetSimulation());
+    return map;
   }
 
   private void onPauseSimulation() {
@@ -203,6 +221,11 @@ public class Controller {
     simulationPage.updateView(simulationModel.getIterator());
   }
 
+  /**
+   *
+   * @param type
+   * @param message
+   */
   public void showMessage(AlertType type, String message) {
     new Alert(type, message).showAndWait();
   }
