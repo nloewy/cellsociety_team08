@@ -223,15 +223,16 @@ public class Controller {
 //    showMessage(AlertType.INFORMATION, String.format(xmlParser.getDisplayDescription()));
     Alert simulationInfo = new Alert(AlertType.INFORMATION);
 
+    pauseSimulation();
+
     simulationInfo.setHeaderText(null);
     simulationInfo.setTitle(xmlParser.getTitle());
     simulationInfo.setContentText(
-        xmlParser.getDisplayDescription()+"\n"+
-        "Author: "+xmlParser.getAuthor()+"\n"+
-        "Parameters: "+xmlParser.getParameters()+"\n"+
-        "States: "+xmlParser.getStateColor()
+        xmlParser.getDisplayDescription()+"\n\n"+
+        "Author: "+xmlParser.getAuthor()+"\n\n"+
+        "States: "+xmlParser.getStateColor()+"\n"+
+        "Parameters: "+xmlParser.getParameters()
         );
-
 
     simulationInfo.showAndWait();
   }
