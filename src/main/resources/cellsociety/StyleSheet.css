@@ -21,7 +21,6 @@
 }
 
 /* Percolation */
-/* colors for this one are gotten from the princeton percolation case study*/
 .empty-site{
   -fx-fill: white;
 }
