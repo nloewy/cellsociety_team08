@@ -2,8 +2,10 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
+import java.util.Map;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -14,6 +16,7 @@ import javafx.scene.layout.GridPane;
 
 import java.util.Iterator;
 import java.util.ResourceBundle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
@@ -41,7 +44,7 @@ public class SimulationPage {
   private int numRows;
   private int buttonsOnPanel = 0;
   private int numCols;
-  private ResourceBundle buttonLables;
+  private ResourceBundle buttonLabels;
 
 
   public static final double SCENE_HEIGHT = 800;
@@ -66,20 +69,22 @@ public class SimulationPage {
   public static final String DEFAULT_RESOURCE_FOLDER = "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
   public static final String STYLESHEET = "StyleSheet.css";
 
+  public static final String NEW_SIMULATION_BUTTON_KEY = "NewSimulationButton";
+  public static final String RESET_BUTTON_KEY = "ResetButton";
+  public static final String START_BUTTON_KEY = "StartButton";
+  public static final String PAUSE_BUTTON_KEY = "PauseButton";
+  public static final String ABOUT_BUTTON_KEY = "SimulationInfoButton";
+  public static final String SAVE_BUTTON_KEY = "SaveSimulationButton";
 
-  public SimulationPage(String simulationName, int numRows, int numCols,
-      EventHandler<ActionEvent> newSimulationHandler, EventHandler<ActionEvent> infoButtonHandler,
-      EventHandler<ActionEvent> startSimulationHandler,
-      EventHandler<ActionEvent> saveSimulationHandler,
-      EventHandler<ActionEvent> pauseSimulationHandler,
-      EventHandler<ActionEvent> resetSimulationHandler,
-      Iterator<Cell> gridIterator) { //TODO: change this to map
+
+  public SimulationPage(String simulationType, String simulationName, int numRows, int numCols, Map<String, EventHandler<ActionEvent>> eventHandlers,
+      Iterator<Cell> gridIterator) {
 
     root = new Group();
     grid = new GridPane();
     scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
 
-    buttonLables = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLables");
+    buttonLabels = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLabels");
     scene.getStylesheets().add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
     System.out.println("creating new simulation: " + simulationName);
@@ -99,7 +104,7 @@ public class SimulationPage {
       System.out.println(row + "," + col);
       System.out.println(index);
 //            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
-      board[row][col] = new CellView(state, GRID_WIDTH / numRows, GRID_HEIGHT / numRows);
+      board[row][col] = initializeCellView(simulationType, state, GRID_WIDTH / numRows, GRID_HEIGHT / numRows);
 
       grid.add(board[row][col].getCellGraphic(), col, row);
       index++;
@@ -108,20 +113,20 @@ public class SimulationPage {
     grid.setLayoutY(GRID_START_Y);
     grid.setLayoutX(GRID_START_X);
 
-    newSimulationButton = makeButton(buttonLables.getString("NewSimulationButton"), newSimulationHandler, BUTTON_START_X,
+    newSimulationButton = makeButton(buttonLabels.getString(NEW_SIMULATION_BUTTON_KEY), eventHandlers.get("newSimulationHandler"), BUTTON_START_X,
         NEW_SIMULATION_BUTTON_Y);
-    simulationInfoButton = makeButton(buttonLables.getString("SimulationInfoButton"), infoButtonHandler, BUTTON_START_X, INFO_BUTTON_Y);
-    startSimulationButton = makeButton(buttonLables.getString("StartButton"), startSimulationHandler, BUTTON_START_X,
+    simulationInfoButton = makeButton(buttonLabels.getString(ABOUT_BUTTON_KEY), eventHandlers.get("infoButtonHandler"), BUTTON_START_X, INFO_BUTTON_Y);
+    startSimulationButton = makeButton(buttonLabels.getString(START_BUTTON_KEY), eventHandlers.get("startSimulationHandler"), BUTTON_START_X,
         START_BUTTON_Y);
-    saveSimulationButton = makeButton(buttonLables.getString("SaveSimulationButton"), saveSimulationHandler, BUTTON_START_X,
+    saveSimulationButton = makeButton(buttonLabels.getString(SAVE_BUTTON_KEY), eventHandlers.get("saveSimulationHandler"), BUTTON_START_X,
         SAVE_BUTTON_Y);
-    pauseSimulationButton = makeButton(buttonLables.getString("PauseButton"), pauseSimulationHandler, BUTTON_START_X,
+    pauseSimulationButton = makeButton(buttonLabels.getString(PAUSE_BUTTON_KEY), eventHandlers.get("pauseSimulationHandler"), BUTTON_START_X,
         PAUSE_BUTTON_Y);
-    resetSimulationButton = makeButton(buttonLables.getString("ResetButton"), resetSimulationHandler, BUTTON_START_X,
+    resetSimulationButton = makeButton(buttonLabels.getString(RESET_BUTTON_KEY), eventHandlers.get("resetSimulationHandler"), BUTTON_START_X,
         RESET_BUTTON_Y);
 
     speedSlider = new Slider(1, 10,
-        5); //min speed = 1; max speed = 10; default speed when loaded = 5;
+        1); //min speed = 1; max speed = 10; default speed when loaded = 5;
     speedSlider.setLayoutX(BUTTON_START_X);
     speedSlider.setLayoutY(SPEED_SLIDER_Y);
 
@@ -130,8 +135,14 @@ public class SimulationPage {
     speedLabel.setLayoutY(SPEED_LABEL_Y);
 
     simulationTitleDisplay = new Text(simulationName);
-    simulationTitleDisplay.setX(TITLE_X);
+//    simulationTitleDisplay.setX(TITLE_X - simulationTitleDisplay.getLayoutBounds().getWidth()/2);
+    simulationTitleDisplay.setX((SCENE_WIDTH - simulationTitleDisplay.getLayoutBounds().getWidth()) / 2);
+    System.out.println("Scenewidth" + SCENE_WIDTH);
+    System.out.println("text width" + simulationTitleDisplay.getLayoutBounds().getWidth());
     simulationTitleDisplay.setY(TITLE_Y);
+    simulationTitleDisplay.setFont(new Font(40));
+//    simulationTitleDisplay.setId("simulation-title");
+//    simulationTitleDisplay.getStyleClass().add("simulation-title");
 
     root.getChildren().addAll(
         grid,
@@ -145,6 +156,14 @@ public class SimulationPage {
         speedSlider,
         speedLabel
     );
+  }
+
+  private CellView initializeCellView(String simulationType, int state, double width, double height ) {
+    CellView cellView = switch (simulationType){
+      case Controller.FIRE -> new FireCellView(state, width, height);
+      default -> throw new IllegalStateException("Unexpected value: " + simulationType);
+    };
+    return cellView;
   }
 
   public void setSpeedSliderHandler(ChangeListener<Number> speedSliderHandler) {

@@ -115,7 +115,7 @@ public class Controller {
     System.out.println(neighborhoodTypeString);
     loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType, xmlParser.getStates(), xmlParser.getType());
     System.out.println(xmlParser.getType());
-    loadSimulationScene(xmlParser.getTitle(), xmlParser.getHeight(),xmlParser.getWidth());
+    loadSimulationScene(xmlParser.getType(), xmlParser.getTitle(), xmlParser.getHeight(),xmlParser.getWidth());
   }
 
 
@@ -145,9 +145,9 @@ public class Controller {
   }
 
 
-  private void loadSimulationScene(String simulationName, int numRows, int numCols) {
+  private void loadSimulationScene(String simulationType, String simulationName, int numRows, int numCols) {
     Map<String, EventHandler<ActionEvent>> handlers = makeMap();
-    simulationPage = new SimulationPage(simulationName, numRows, numCols, handlers, simulationModel.getIterator());
+    simulationPage = new SimulationPage(simulationType, simulationName, numRows, numCols, handlers, simulationModel.getIterator());
     System.out.println(simulationName);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
