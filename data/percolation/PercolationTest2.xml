@@ -5,7 +5,7 @@
   <title>Percolation Simulation</title>
   <author>Noah Loewy</author>
   <file_description>This file configures the Percolation Simulation.</file_description>
-  <display_description>A demonstration of the Percolation Simulation</display_description>
+  <display_description>In physics and mathematics, percolation theory describes the behavior of clustered components in random networks (Grimmett, 1999). The common intuition is movement and filtering of fluids through porous materials, for example, filtration of water through soil and permeable rocks.</display_description>
   <width>12</width>
   <height>13</height>
   <!--
@@ -18,4 +18,9 @@
   <parameters>
     <percolatedNeighbors>1.0</percolatedNeighbors>
   </parameters>
+  <state_colors>
+    State 0: empty open site -- white
+    State 1: full open site -- blue
+    State 2: blocked site -- black
+  </state_colors>
 </simulation>
