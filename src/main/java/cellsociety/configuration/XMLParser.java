@@ -13,6 +13,14 @@ import org.w3c.dom.*;
 import java.io.*;
 import java.util.*;
 
+
+/**
+ * The XMLParser reads and stores all data from a given XML configuration file.
+ * Using on the values stored in its attributes, the XMLParser may also write and save a new XML configuration file.
+ *
+ * @author Judy He
+ */
+
 public class XMLParser {
     private String type; // simulation type
     private String title; // simulation title
@@ -22,7 +30,7 @@ public class XMLParser {
     private int width; // number of columns
     private int height; // number of rows
     private String neighborhoodType; // adjacent or cardinal
-    private ArrayList<Integer> states; // the state of each cell
+    private List<Integer> states; // the state of each cell
     private Map<String, Double> parameters; // Hashmap mapping parameter names to their values
 
 
@@ -166,7 +174,7 @@ public class XMLParser {
      * Retrieves states instance variable
      * @return states, an ArrayList keeping track of the state of each cell in the simulation.
      */
-    public ArrayList<Integer> getStates() {
+    public List<Integer> getStates() {
         return states;
     }
 
