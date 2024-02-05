@@ -58,8 +58,3 @@
 .no-agent{
   -fx-fill: white;
 }
-
-/* Siulation Title */
-.simulation-title {
-  -fx-font-size: 40px;
-}
