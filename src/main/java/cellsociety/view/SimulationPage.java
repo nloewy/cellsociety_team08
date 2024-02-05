@@ -8,9 +8,7 @@ import cellsociety.view.CellView.GameOfLifeCellView;
 import cellsociety.view.CellView.PercolationCellView;
 import cellsociety.view.CellView.SchellingCellView;
 import cellsociety.view.CellView.WatorCellView;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,6 +18,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
+
+import java.util.Iterator;
+import java.util.ResourceBundle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -144,7 +145,7 @@ public class SimulationPage {
     speedLabel.setLayoutY(SPEED_LABEL_Y);
 
     simulationTitleDisplay = new Text(simulationName);
-    simulationTitleDisplay.setX(TITLE_X - simulationTitleDisplay.getLayoutBounds().getWidth() / 2);
+    simulationTitleDisplay.setX(TITLE_X - simulationTitleDisplay.getLayoutBounds().getWidth()/2);
     System.out.println("Scenewidth" + SCENE_WIDTH);
     System.out.println("text width" + simulationTitleDisplay.getLayoutBounds().getWidth());
     simulationTitleDisplay.setY(TITLE_Y);

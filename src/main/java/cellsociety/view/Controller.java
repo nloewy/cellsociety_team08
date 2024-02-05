@@ -7,7 +7,9 @@ import cellsociety.model.simulation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import javafx.css.Stylesheet;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,6 +39,7 @@ import javax.xml.transform.TransformerException;
 public class Controller {
 
   private Stage stage;
+  private SceneManager sceneManager;
   private SimulationPage simulationPage;
   private XMLParser xmlParser;
   private Simulation simulationModel;
@@ -78,12 +81,12 @@ public class Controller {
     animation.setCycleCount(Timeline.INDEFINITE);
     double frameDuration = 1.0 / (speed * SECOND_DELAY); // Calculate the duration for the KeyFrame
     animation.getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
+        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step(SECOND_DELAY)));
     animation.play();
   }
 
 
-  private void step() {
+  private void step(double secondDelay) {
     if (simulationRunning) {
       //update model
       simulationModel.transitionFunction();
