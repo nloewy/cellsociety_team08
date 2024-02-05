@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a neighborhood where neighbors are characterized as points that share a common side
- * on the coordinate grid
+ * Represents a neighborhood where neighbors are characterized as points that share a common side on
+ * the coordinate grid
  *
  * @author Noah Loewy
  */

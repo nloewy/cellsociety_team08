@@ -77,6 +77,7 @@ public class Point {
 
   /**
    * Retrieves the hashcode of a Point object
+   *
    * @return integer hashcode
    */
   @Override

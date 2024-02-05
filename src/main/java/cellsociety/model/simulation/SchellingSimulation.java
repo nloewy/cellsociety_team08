@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * This cellular automata simulation represents the Schelling Segregation Model.
- *
+ * <p>
  * author @noah loewy
  */
 
@@ -27,16 +27,16 @@ public class SchellingSimulation extends SimpleCellSimulation {
   /**
    * Initializes a SchellingSimulation object
    *
-   * @param row,                    the number of rows in the 2-dimensional grid
-   * @param col,                    the number of columns in the 2-dimensional grid
-   * @param hoodType,               the definition of neighbors
-   * @param stateList,              a list of the integer representation of each cells state, by
-   *                                rows, then cols
-   * @param proportionNeededToStay  the minimum proportion of neighboring cells (excluding empty
-   *                                cells) that are of the same state as the given cell, for a cell
-   *                                to remain in their current state
+   * @param row,                   the number of rows in the 2-dimensional grid
+   * @param col,                   the number of columns in the 2-dimensional grid
+   * @param hoodType,              the definition of neighbors
+   * @param stateList,             a list of the integer representation of each cells state, by
+   *                               rows, then cols
+   * @param proportionNeededToStay the minimum proportion of neighboring cells (excluding empty
+   *                               cells) that are of the same state as the given cell, for a cell
+   *                               to remain in their current state
    */
-  public SchellingSimulation(int row, int col, Neighborhood hoodType,  List<Integer> stateList,
+  public SchellingSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       double proportionNeededToStay) {
     super(row, col, hoodType, stateList);
     myCellsToMove = new ArrayList<>();
@@ -45,12 +45,12 @@ public class SchellingSimulation extends SimpleCellSimulation {
   }
 
   /**
-   * Given a cell in either group A or group B, places the cell in either myCellsToMove, or
-   * updates its future state to its current-state, depending on the state-makeup of its neighbors
+   * Given a cell in either group A or group B, places the cell in either myCellsToMove, or updates
+   * its future state to its current-state, depending on the state-makeup of its neighbors
    *
    * @param currentCell a cell in group A or B preparing to transition
    */
-  private void handleDemographicCell(Cell currentCell){
+  private void handleDemographicCell(Cell currentCell) {
     List<Cell> neighbors = getNeighbors(currentCell);
     int totalNeighbors = neighbors.size();
     int numEmptyNeighbors = countNeighborsInState(neighbors, EMPTY);
@@ -71,18 +71,17 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * cells to occupied. Also handles case when the amount of agents wanting to leave exceeds the
    * number of available spots.
    */
-  private void moveCells(){
+  private void moveCells() {
     int shorterListLength = Math.min(myCellsToMove.size(), myEmptyCells.size());
     int longerListLength = Math.max(myCellsToMove.size(), myEmptyCells.size());
     for (int i = 0; i < shorterListLength; i++) {
       myEmptyCells.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
       myCellsToMove.get(i).setNextState(EMPTY);
     }
-    for(int i = shorterListLength; i < longerListLength; i++){
-      if(myCellsToMove.size() < myEmptyCells.size()) {
+    for (int i = shorterListLength; i < longerListLength; i++) {
+      if (myCellsToMove.size() < myEmptyCells.size()) {
         myEmptyCells.get(i).setNextState(myEmptyCells.get(i).getCurrentState());
-      }
-      else{
+      } else {
         myCellsToMove.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
       }
     }

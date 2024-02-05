@@ -22,7 +22,6 @@ public class WatorCell extends Cell {
    * @param x            is the x-coordinate of the cell on the 2-dimensional grid
    * @param y            is the y-coordinate of the cell on the 2-dimensional grid
    * @param energy       is the initial energy level of the Wator Cell, if it is a shark, or -1
-   * @param age          is the current age of the Wator Cell, if it is a shark/fish, or -1
    */
 
   public WatorCell(int initialState, int x, int y, int energy) {

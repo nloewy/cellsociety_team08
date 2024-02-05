@@ -8,11 +8,11 @@ package cellsociety.exception;
  */
 public class InvalidGridDimensionException extends Exception {
 
-    /**
-     *  Constructor for initializing an InvalidGridDimensionException given an error message
-     */
-    public InvalidGridDimensionException(String message) {
-        super(message);
-    }
+  /**
+   * Constructor for initializing an InvalidGridDimensionException given an error message
+   */
+  public InvalidGridDimensionException(String message) {
+    super(message);
+  }
 
 }
