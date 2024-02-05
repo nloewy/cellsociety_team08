@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import cellsociety.exception.InvalidGridDimensionException;
 import org.w3c.dom.*;
 import java.io.*;
 import java.util.*;
@@ -242,6 +243,10 @@ public class XMLParser {
             NodeList parametersNodeList = parameterElement.getElementsByTagName("*");
             parseParameters(parametersNodeList);
 
+            // Check if grid dimension is valid, throw exception otherwise
+            if (width * height != states.size()) {
+                throw new InvalidGridDimensionException("Invalid grid dimension: width * height != total number of states");
+            }
 
 
         }
