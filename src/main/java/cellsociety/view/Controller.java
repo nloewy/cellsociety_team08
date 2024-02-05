@@ -2,19 +2,26 @@ package cellsociety.view;
 
 import cellsociety.configuration.XMLParser;
 import cellsociety.model.core.Cell;
-import cellsociety.model.neighborhood.*;
-import cellsociety.model.simulation.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import javafx.css.Stylesheet;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import cellsociety.model.neighborhood.AdjacentNeighborhood;
+import cellsociety.model.neighborhood.CardinalNeighborhood;
+import cellsociety.model.neighborhood.Neighborhood;
+import cellsociety.model.simulation.FireSimulation;
+import cellsociety.model.simulation.GameOfLifeSimulation;
+import cellsociety.model.simulation.PercolationSimulation;
+import cellsociety.model.simulation.SchellingSimulation;
+import cellsociety.model.simulation.Simulation;
+import cellsociety.model.simulation.WatorSimulation;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
@@ -22,10 +29,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.io.File;
-import java.util.List;
-import java.util.ResourceBundle;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -102,6 +105,7 @@ public class Controller {
 
   /**
    * Calls the xmlParser to read the xml file according to the specified filepath
+   *
    * @param filePath: the file path to the xml file.
    */
   private void parseFile(String filePath) {
@@ -117,6 +121,7 @@ public class Controller {
 
   /**
    * Opens a dialog box for user to choose the xml file they want to run
+   *
    * @return returns the datafile the user selected
    */
   private File chooseFile() {
@@ -140,7 +145,9 @@ public class Controller {
 
   /**
    * gets the neighborhood object based on the neighborhood type string
-   * @param neighborhoodTypeString a string that specifies which type of neighborhood the current simulation is using
+   *
+   * @param neighborhoodTypeString a string that specifies which type of neighborhood the current
+   *                               simulation is using
    * @return returns the neighborhood object
    */
   private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
@@ -154,11 +161,12 @@ public class Controller {
 
   /**
    * Sets up the simulation model component
-   * @param numRows the integer number of rows in the simulation grid
-   * @param numCols the integer number of columns in the simulation grid
+   *
+   * @param numRows          the integer number of rows in the simulation grid
+   * @param numCols          the integer number of columns in the simulation grid
    * @param neighborhoodType the neighborhood type object
-   * @param stateList a list that specifies the initial state of all cells in the grid
-   * @param simulationType a string that specifies the simulation type
+   * @param stateList        a list that specifies the initial state of all cells in the grid
+   * @param simulationType   a string that specifies the simulation type
    */
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType) {
@@ -190,10 +198,11 @@ public class Controller {
 
   /**
    * sets up the simulation view component
+   *
    * @param simulationType a string that specifies the type of the simulation
    * @param simulationName a string that specifies the name of the simulation (type+pattern)
-   * @param numRows the integer number of rows in the grid
-   * @param numCols the integer number of columns in the grid
+   * @param numRows        the integer number of rows in the grid
+   * @param numCols        the integer number of columns in the grid
    */
   private void loadSimulationScene(String simulationType, String simulationName, int numRows,
       int numCols) {
@@ -216,6 +225,7 @@ public class Controller {
 
   /**
    * makes the map of event handlers to pass into the simulation view
+   *
    * @return returns the map of handler name to the event handler
    */
   private Map<String, EventHandler<ActionEvent>> makeMap() {
@@ -237,7 +247,8 @@ public class Controller {
   }
 
   /**
-   * saves the current state of the simulation as a new xml file when the save simulation button is pressed
+   * saves the current state of the simulation as a new xml file when the save simulation button is
+   * pressed
    */
   private void onSaveSimulation() {
     try {
@@ -291,7 +302,8 @@ public class Controller {
   }
 
   /**
-   * switch simulation and reload the view and model components of the new simulation when new simulation button is clicked
+   * switch simulation and reload the view and model components of the new simulation when new
+   * simulation button is clicked
    */
   private void onNewSimulationClicked() {
     simulationRunning = false;
@@ -314,13 +326,13 @@ public class Controller {
 
   /**
    * Shows a message dialog box according to the type and message text arguments
-   * @param type an AlertType object that specifies the type of the message
+   *
+   * @param type    an AlertType object that specifies the type of the message
    * @param message a string that contains the content of the message
    */
   public void showMessage(AlertType type, String message) {
     new Alert(type, message).showAndWait();
   }
-
 
 //  public double getVersion() {
 //    ResourceBundle resources = ResourceBundle.getBundle(INTERNAL_CONFIGURATION);
@@ -329,6 +341,7 @@ public class Controller {
 
   /**
    * set up the filechooser
+   *
    * @param extensionAccepted a string that specifies what type of file extensions are accepted
    * @return returns the FileChooser object.
    */

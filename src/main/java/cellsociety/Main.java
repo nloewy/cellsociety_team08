@@ -2,19 +2,7 @@ package cellsociety;
 
 import cellsociety.view.Controller;
 import javafx.application.Application;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import java.io.File;
-import java.io.IOException;
-import java.util.ResourceBundle;
 
 
 /**
@@ -78,8 +66,6 @@ public class Main extends Application {
 //      return 0;
 //    }
 //  }
-
-
 
   /**
    * A method to test getting internal resources.

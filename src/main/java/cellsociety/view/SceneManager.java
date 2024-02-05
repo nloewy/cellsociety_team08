@@ -5,17 +5,18 @@ import javafx.scene.Scene;
 
 
 public class SceneManager {
-    private MenuPage selectSimulationPage;
 
-    static final double DISPLAY_WIDTH = 700;
-    static final double DISPLAY_HEIGHT = 500;
+  private MenuPage selectSimulationPage;
 
-    public SceneManager() {
-        selectSimulationPage = new MenuPage(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-    }
+  static final double DISPLAY_WIDTH = 700;
+  static final double DISPLAY_HEIGHT = 500;
 
-    public Scene getMenuPage(){
-        return selectSimulationPage.getMenu();
-    }
+  public SceneManager() {
+    selectSimulationPage = new MenuPage(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+  }
+
+  public Scene getMenuPage() {
+    return selectSimulationPage.getMenu();
+  }
 
 }

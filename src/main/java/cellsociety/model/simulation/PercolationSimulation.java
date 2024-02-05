@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * This cellular automata simulation represents the CS201 Percolation Assignment
- *
+ * <p>
  * author @noah loewy
  */
 
@@ -40,11 +40,12 @@ public class PercolationSimulation extends SimpleCellSimulation {
   /**
    * Handles transition of open cell in PercolationSimulation. Open cells with at least
    * neighersPercolatedRequired will become percolated, and otherwise will remain open.
+   *
    * @param currentCell the transitioning cell object
-   * @param neighbors all cells in the neighborhood of the transitioning cell, under the current
-   *                 definition of neighborhood
+   * @param neighbors   all cells in the neighborhood of the transitioning cell, under the current
+   *                    definition of neighborhood
    */
-  private void handleOpenCell(Cell currentCell, List<Cell> neighbors){
+  private void handleOpenCell(Cell currentCell, List<Cell> neighbors) {
     int numPercolatedNeighbors = countNeighborsInState(neighbors, PERCOLATED);
     if (numPercolatedNeighbors >= percolatedNeighbors) {
       currentCell.setNextState(PERCOLATED);

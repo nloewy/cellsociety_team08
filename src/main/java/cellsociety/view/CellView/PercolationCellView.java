@@ -11,6 +11,7 @@ public class PercolationCellView extends CellView {
 
   /**
    * sets the color of the view component of the cell according to their current state
+   *
    * @param state an integer that specifies which state the cell is in
    */
   @Override

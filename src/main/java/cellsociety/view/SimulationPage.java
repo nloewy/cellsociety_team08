@@ -8,7 +8,9 @@ import cellsociety.view.CellView.GameOfLifeCellView;
 import cellsociety.view.CellView.PercolationCellView;
 import cellsociety.view.CellView.SchellingCellView;
 import cellsociety.view.CellView.WatorCellView;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,9 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
-
-import java.util.Iterator;
-import java.util.ResourceBundle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -84,12 +83,13 @@ public class SimulationPage {
 
   /**
    * Constructs the view component of the simulation
+   *
    * @param simulationType a string that specifies the simulation type
    * @param simulationName a string that specifies the name of the simulation
-   * @param numRows the integer number of rows in the grid
-   * @param numCols the integer number of columns in the grid
-   * @param eventHandlers the map of event handlers for buttons
-   * @param gridIterator and iterator of the grid model for Cell model objects
+   * @param numRows        the integer number of rows in the grid
+   * @param numCols        the integer number of columns in the grid
+   * @param eventHandlers  the map of event handlers for buttons
+   * @param gridIterator   and iterator of the grid model for Cell model objects
    */
   public SimulationPage(String simulationType, String simulationName, int numRows, int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
@@ -122,7 +122,8 @@ public class SimulationPage {
       System.out.println(row + "," + col);
       System.out.println(index);
 //            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
-      board[row][col] = initializeCellView(simulationType, state, Double.parseDouble(configProperties.getString("GRID_WIDTH")) / numCols,
+      board[row][col] = initializeCellView(simulationType, state,
+          Double.parseDouble(configProperties.getString("GRID_WIDTH")) / numCols,
           Double.parseDouble(configProperties.getString("GRID_HEIGHT")) / numRows);
 
       grid.add(board[row][col].getCellGraphic(), col, row);
@@ -160,7 +161,9 @@ public class SimulationPage {
    * set up the speed slider and the speed label
    */
   private void initializeSlider() {
-    speedSlider = new Slider((Integer.parseInt(configProperties.getString("SLIDER_MIN"))), (Integer.parseInt(configProperties.getString("SLIDER_MAX"))), (Integer.parseInt(configProperties.getString("SLIDER_DEFAULT"))));
+    speedSlider = new Slider((Integer.parseInt(configProperties.getString("SLIDER_MIN"))),
+        (Integer.parseInt(configProperties.getString("SLIDER_MAX"))),
+        (Integer.parseInt(configProperties.getString("SLIDER_DEFAULT"))));
     speedSlider.setLayoutX(Integer.parseInt(configProperties.getString("BUTTON_START_X")));
     speedSlider.setLayoutY(Integer.parseInt(configProperties.getString("SPEED_SLIDER_Y")));
 
@@ -171,34 +174,43 @@ public class SimulationPage {
 
   /**
    * initialize the buttons
+   *
    * @param eventHandlers a map of event handlers for the buttons
    */
   private void initializeButtons(Map<String, EventHandler<ActionEvent>> eventHandlers) {
     newSimulationButton = makeButton(buttonLabels.getString(NEW_SIMULATION_BUTTON_KEY),
-        eventHandlers.get("newSimulationHandler"), Integer.parseInt(configProperties.getString("BUTTON_START_X")),
+        eventHandlers.get("newSimulationHandler"),
+        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
         Integer.parseInt(configProperties.getString("NEW_SIMULATION_BUTTON_Y")));
     simulationInfoButton = makeButton(buttonLabels.getString(ABOUT_BUTTON_KEY),
-        eventHandlers.get("infoButtonHandler"), Integer.parseInt(configProperties.getString("BUTTON_START_X")), Integer.parseInt(configProperties.getString("INFO_BUTTON_Y")));
+        eventHandlers.get("infoButtonHandler"),
+        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
+        Integer.parseInt(configProperties.getString("INFO_BUTTON_Y")));
     startSimulationButton = makeButton(buttonLabels.getString(START_BUTTON_KEY),
-        eventHandlers.get("startSimulationHandler"), Integer.parseInt(configProperties.getString("BUTTON_START_X")),
+        eventHandlers.get("startSimulationHandler"),
+        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
         Integer.parseInt(configProperties.getString("START_BUTTON_Y")));
     saveSimulationButton = makeButton(buttonLabels.getString(SAVE_BUTTON_KEY),
-        eventHandlers.get("saveSimulationHandler"), Integer.parseInt(configProperties.getString("BUTTON_START_X")),
+        eventHandlers.get("saveSimulationHandler"),
+        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
         Integer.parseInt(configProperties.getString("SAVE_BUTTON_Y")));
     pauseSimulationButton = makeButton(buttonLabels.getString(PAUSE_BUTTON_KEY),
-        eventHandlers.get("pauseSimulationHandler"), Integer.parseInt(configProperties.getString("BUTTON_START_X")),
+        eventHandlers.get("pauseSimulationHandler"),
+        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
         Integer.parseInt(configProperties.getString("PAUSE_BUTTON_Y")));
     resetSimulationButton = makeButton(buttonLabels.getString(RESET_BUTTON_KEY),
-        eventHandlers.get("resetSimulationHandler"), Integer.parseInt(configProperties.getString("BUTTON_START_X")),
+        eventHandlers.get("resetSimulationHandler"),
+        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
         Integer.parseInt(configProperties.getString("RESET_BUTTON_Y")));
   }
 
   /**
    * initialize the cellview objects in the grid according to the current simulation
+   *
    * @param simulationType a string that specifies the simulation type
-   * @param state an integer that specifies the state the cell is in
-   * @param width a double that specifies the width of a cell
-   * @param height a double that specifies the height of a cell
+   * @param state          an integer that specifies the state the cell is in
+   * @param width          a double that specifies the width of a cell
+   * @param height         a double that specifies the height of a cell
    * @return returns a CellView object
    */
   private CellView initializeCellView(String simulationType, int state, double width,
@@ -215,6 +227,7 @@ public class SimulationPage {
 
   /**
    * adds an event listener for the speed slider
+   *
    * @param speedSliderHandler listens to the change in number of the slider
    */
   public void setSpeedSliderHandler(ChangeListener<Number> speedSliderHandler) {
@@ -223,6 +236,7 @@ public class SimulationPage {
 
   /**
    * updates the speed label of the speed slider
+   *
    * @param speed an integer that specifies the current speed on the slider
    */
   public void updateSpeedLabel(int speed) {
@@ -231,10 +245,11 @@ public class SimulationPage {
 
   /**
    * makes a button
+   *
    * @param buttonText a string of the text on the button
-   * @param handler an event handler that gets hooked on the button
-   * @param xPos an integer of the x position of the button
-   * @param yPos an integer of the y position of the button
+   * @param handler    an event handler that gets hooked on the button
+   * @param xPos       an integer of the x position of the button
+   * @param yPos       an integer of the y position of the button
    * @return returns the button object
    */
   private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int xPos,
@@ -248,6 +263,7 @@ public class SimulationPage {
 
   /**
    * gets the view component of the grid
+   *
    * @return returns the grid pane
    */
   public GridPane getGrid() {
@@ -256,6 +272,7 @@ public class SimulationPage {
 
   /**
    * gets the scene of the view component of the simulation
+   *
    * @return returns the scene object
    */
   public Scene getSimulationScene() {
@@ -264,6 +281,7 @@ public class SimulationPage {
 
   /**
    * updates the view component of the grid and the simulation
+   *
    * @param gridIterator the cell model iterator of the grid model
    */
   public void updateView(Iterator<Cell> gridIterator) {
