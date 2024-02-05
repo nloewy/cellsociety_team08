@@ -131,12 +131,15 @@ public class WatorSimulation extends Simulation<WatorCell> {
       currentCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1,
           currentCell.getAge() + 1);
     } else {
-      nextCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() + energyBoost,
-          currentCell.getAge() + 1);
       if (currentCell.getAge() >= sharkAgeOfReproduction) {
         currentCell.updateStateEnergyAge(SHARK, initialEnergy, 0);
+        nextCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() + energyBoost, 0);
+
       } else {
         fillEmptyCell(currentCell);
+        nextCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() + energyBoost,
+            currentCell.getAge() + 1);
+
       }
     }
   }
