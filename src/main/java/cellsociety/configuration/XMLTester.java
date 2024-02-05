@@ -5,22 +5,24 @@ import javax.xml.transform.TransformerException;
 import java.util.*;
 
 /**
- * The XMLTester is a class for testing operations on objects of the XMLParser class, particularly its readXML and writeXML methods.
+ * The XMLTester is a class for testing operations on objects of the XMLParser class, particularly
+ * its readXML and writeXML methods.
  *
  * @author Judy He
  */
 public class XMLTester {
-    public static void main(String[] args) throws ParserConfigurationException, TransformerException {
-        String path = "data/gameoflife/GameOfLifeGlider.xml";
 
-        XMLParser xmlParser = new XMLParser();
-        xmlParser.readXML(path);
+  public static void main(String[] args) throws ParserConfigurationException, TransformerException {
+    String path = "data/gameoflife/GameOfLifeGlider.xml";
 
-        List<Integer> states = xmlParser.getStates();
-        states.remove(states.size()-1);
-        states.add(1);
+    XMLParser xmlParser = new XMLParser();
+    xmlParser.readXML(path);
 
-        xmlParser.createXML("testSavedXML", "gameoflife");
+    List<Integer> states = xmlParser.getStates();
+    states.remove(states.size() - 1);
+    states.add(1);
 
-    }
+    xmlParser.createXML("testSavedXML", "gameoflife");
+
+  }
 }

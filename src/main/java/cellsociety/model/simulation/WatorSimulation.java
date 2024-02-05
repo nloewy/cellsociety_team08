@@ -175,11 +175,10 @@ public class WatorSimulation extends Simulation<WatorCell> {
       if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
         increaseFishAge(currentCell);
       } else {
-        if(currentCell.getAge()<fishAgeOfReproduction){
-          nextCell.updateStateEnergyAge(FISH, -1, currentCell.getAge()+1);
+        if (currentCell.getAge() < fishAgeOfReproduction) {
+          nextCell.updateStateEnergyAge(FISH, -1, currentCell.getAge() + 1);
           fillEmptyCell(currentCell);
-        }
-        else {
+        } else {
           reproduceFish(currentCell, nextCell);
         }
       }
@@ -239,6 +238,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
               updateShark(currentCell);
               break;
             }
+            default:
+              break;
           }
         }
       }

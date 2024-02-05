@@ -1,6 +1,6 @@
 package cellsociety.view.CellView;
 
-public class SchellingCellView extends CellView{
+public class SchellingCellView extends CellView {
 
   public SchellingCellView(int state, double width, double height) {
     super(state, width, height);

@@ -6,9 +6,9 @@ import cellsociety.Point;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.lang.Integer;
 import java.util.ArrayList;
-import java.util.function.Function;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
@@ -32,11 +32,10 @@ public abstract class Simulation<T extends Cell> {
   /**
    * Constructs a basic Simulation object
    *
-   * @param row,             the number of rows in the 2-dimensional grid
-   * @param col,             the number of columns in the 2-dimensional grid
-   * @param hoodType,        the definition of neighbors
-   * @param stateList,        a list of the integer representation of each cells state, by rows,
-   *                          then cols
+   * @param row,       the number of rows in the 2-dimensional grid
+   * @param col,       the number of columns in the 2-dimensional grid
+   * @param hoodType,  the definition of neighbors
+   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
 
   public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
@@ -45,16 +44,17 @@ public abstract class Simulation<T extends Cell> {
     myCellInitializer = cellInitializer;
     myNeighborhood = hoodType;
     myCols = col;
-    initializeMyGrid(row,col,stateList);
+    initializeMyGrid(row, col, stateList);
   }
 
-  public void initializeMyGrid(int row, int col, List<Integer> stateList){
+  public void initializeMyGrid(int row, int col, List<Integer> stateList) {
     List<T> cellList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
       cellList.add(myCellInitializer.apply(i));
     }
     myGrid = new Grid<>(row, col, cellList);
   }
+
   /**
    * This abstract function will assign each cell a new value for their myNextState, based on the
    * current grid configuration and the rules of the simulation
@@ -88,7 +88,8 @@ public abstract class Simulation<T extends Cell> {
       try {
         T neighbor = myGrid.getCellAtLocation(p);
         neighboringCells.add(neighbor);
-      } catch (IndexOutOfBoundsException e) {}
+      } catch (IndexOutOfBoundsException e) {
+      }
     }
     return neighboringCells;
   }

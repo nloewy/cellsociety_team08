@@ -1,10 +1,12 @@
 package cellsociety.model.simulation;
 
 import static java.lang.Math.random;
+
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
 import java.util.List;
+
 
 /**
  * Represents the spreading of a wild fire in a forest
@@ -35,7 +37,6 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param probTreeIgnites   probability a tree (not meeting the required number of burning
    *                          neighbors) catches fire
    * @param probTreeCreated   probability an empty cell becomes a tree
-   *
    */
   public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       int neighborsToIgnite, double probTreeIgnites, double probTreeCreated) {
