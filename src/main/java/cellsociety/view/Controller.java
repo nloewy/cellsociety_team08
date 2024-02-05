@@ -60,9 +60,6 @@ public class Controller {
   private static final double SECOND_DELAY = 1.0;
 
 
-  /**
-   * Constructs the controller class
-   */
   public Controller() {
     stage = new Stage();
 
@@ -100,33 +97,21 @@ public class Controller {
     }
   }
 
-  /**
-   * Calls the xmlParser to read the xml file according to the specified filepath
-   * @param filePath: the file path to the xml file.
-   */
+
   private void parseFile(String filePath) {
     xmlParser.readXML(filePath);
   }
 
-  /**
-   * pauses the simulation
-   */
   private void pauseSimulation() {
     simulationRunning = false;
   }
 
-  /**
-   * Opens a dialog box for user to choose the xml file they want to run
-   * @return returns the datafile the user selected
-   */
   private File chooseFile() {
     File dataFile = FILE_CHOOSER.showOpenDialog(stage);
     return dataFile;
   }
 
-  /**
-   * Set up the simulation model and view
-   */
+
   private void setSimulation() {
     String neighborhoodTypeString = xmlParser.getNeighborhoodType();
     Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
@@ -138,11 +123,7 @@ public class Controller {
         xmlParser.getWidth());
   }
 
-  /**
-   * gets the neighborhood object based on the neighborhood type string
-   * @param neighborhoodTypeString a string that specifies which type of neighborhood the current simulation is using
-   * @return returns the neighborhood object
-   */
+
   private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
     System.out.println("getting neighborhood type");
     return switch (neighborhoodTypeString) {
@@ -152,14 +133,7 @@ public class Controller {
     };
   }
 
-  /**
-   * Sets up the simulation model component
-   * @param numRows the integer number of rows in the simulation grid
-   * @param numCols the integer number of columns in the simulation grid
-   * @param neighborhoodType the neighborhood type object
-   * @param stateList a list that specifies the initial state of all cells in the grid
-   * @param simulationType a string that specifies the simulation type
-   */
+
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType) {
     xmlParser.getParameters().forEach((key, value) -> System.out.println(key + ": " + value));
@@ -188,13 +162,7 @@ public class Controller {
     };
   }
 
-  /**
-   * sets up the simulation view component
-   * @param simulationType a string that specifies the type of the simulation
-   * @param simulationName a string that specifies the name of the simulation (type+pattern)
-   * @param numRows the integer number of rows in the grid
-   * @param numCols the integer number of columns in the grid
-   */
+
   private void loadSimulationScene(String simulationType, String simulationName, int numRows,
       int numCols) {
     Map<String, EventHandler<ActionEvent>> handlers = makeMap();
@@ -214,10 +182,6 @@ public class Controller {
 
   }
 
-  /**
-   * makes the map of event handlers to pass into the simulation view
-   * @return returns the map of handler name to the event handler
-   */
   private Map<String, EventHandler<ActionEvent>> makeMap() {
     Map<String, EventHandler<ActionEvent>> map = new HashMap<>();
     map.put("newSimulationHandler", event -> onNewSimulationClicked());
@@ -229,16 +193,10 @@ public class Controller {
     return map;
   }
 
-  /**
-   * pauses the simulation when the pause button is clicked
-   */
   private void onPauseSimulation() {
     pauseSimulation();
   }
 
-  /**
-   * saves the current state of the simulation as a new xml file when the save simulation button is pressed
-   */
   private void onSaveSimulation() {
     try {
       ArrayList<Integer> newStates = new ArrayList<>();
@@ -256,16 +214,12 @@ public class Controller {
     }
   }
 
-  /**
-   * un-pause the simulation when the start button is clicked
-   */
+
   private void onStartSimulation() {
     simulationRunning = true;
   }
 
-  /**
-   * shows the simulation information dialog box when about button is pressed
-   */
+
   private void onInfoButtonClicked() {
 //    showMessage(AlertType.INFORMATION, String.format(xmlParser.getDisplayDescription()));
     Alert simulationInfo = new Alert(AlertType.INFORMATION);
@@ -275,6 +229,14 @@ public class Controller {
     simulationInfo.setHeaderText(null);
     simulationInfo.setTitle(xmlParser.getTitle());
 
+//    simulationInfo.setContentText(
+//        xmlParser.getDisplayDescription()+"\n\n"+
+//        "Author: "+xmlParser.getAuthor()+"\n\n"+
+//        "States: "+xmlParser.getStateColor()+"\n"+
+//        "Parameters: "+xmlParser.getParameters()
+//        );
+//
+//    simulationInfo.showAndWait();
     TextArea textArea = new TextArea();
     textArea.setEditable(false);
     textArea.setWrapText(true);
@@ -286,13 +248,18 @@ public class Controller {
     );
     textArea.setMinHeight(400);
 
+    // Set the content of the alert to the TextArea
     simulationInfo.getDialogPane().setContent(textArea);
+
     simulationInfo.showAndWait();
   }
 
-  /**
-   * switch simulation and reload the view and model components of the new simulation when new simulation button is clicked
-   */
+  //    simulationInfo.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+//    simulationInfo.getDialogPane().setWrapText(true);
+
+
+
+
   private void onNewSimulationClicked() {
     simulationRunning = false;
     File dataFile = chooseFile();
@@ -303,35 +270,28 @@ public class Controller {
     setSimulation();
   }
 
-  /**
-   * returns simulation to its initial state when reset button is pressed
-   */
   private void onResetSimulation() {
+    simulationRunning = false;
     simulationModel.initializeMyGrid(xmlParser.getHeight(), xmlParser.getWidth(),
         xmlParser.getStates());
     simulationPage.updateView(simulationModel.getIterator());
   }
 
   /**
-   * Shows a message dialog box according to the type and message text arguments
-   * @param type an AlertType object that specifies the type of the message
-   * @param message a string that contains the content of the message
+   * @param type
+   * @param message
    */
   public void showMessage(AlertType type, String message) {
     new Alert(type, message).showAndWait();
   }
 
 
-//  public double getVersion() {
-//    ResourceBundle resources = ResourceBundle.getBundle(INTERNAL_CONFIGURATION);
-//    return Double.parseDouble(resources.getString("Version"));
-//  }
+  public double getVersion() {
+    ResourceBundle resources = ResourceBundle.getBundle(INTERNAL_CONFIGURATION);
+    return Double.parseDouble(resources.getString("Version"));
+  }
 
-  /**
-   * set up the filechooser
-   * @param extensionAccepted a string that specifies what type of file extensions are accepted
-   * @return returns the FileChooser object.
-   */
+
   private static FileChooser makeChooser(String extensionAccepted) {
     FileChooser result = new FileChooser();
     result.setTitle("Open Data File");
