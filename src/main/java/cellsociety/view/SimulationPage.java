@@ -46,9 +46,6 @@ public class SimulationPage {
   private Text simulationTitleDisplay;
   private Slider speedSlider;
   private Label speedLabel;
-  private int numRows;
-  private int buttonsOnPanel = 0;
-  private int numCols;
   private ResourceBundle buttonLabels;
 
 
@@ -96,8 +93,6 @@ public class SimulationPage {
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
     System.out.println("creating new simulation: " + simulationName);
-    this.numRows = numRows;
-    this.numCols = numCols;
 
     board = new CellView[numRows][numCols];
     System.out.println("numcols:" + numCols + " numrows:" + numRows);
@@ -112,7 +107,7 @@ public class SimulationPage {
       System.out.println(row + "," + col);
       System.out.println(index);
 //            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
-      board[row][col] = initializeCellView(simulationType, state, GRID_WIDTH / numRows,
+      board[row][col] = initializeCellView(simulationType, state, GRID_WIDTH / numCols,
           GRID_HEIGHT / numRows);
 
       grid.add(board[row][col].getCellGraphic(), col, row);
@@ -150,9 +145,7 @@ public class SimulationPage {
     speedLabel.setLayoutY(SPEED_LABEL_Y);
 
     simulationTitleDisplay = new Text(simulationName);
-//    simulationTitleDisplay.setX(TITLE_X - simulationTitleDisplay.getLayoutBounds().getWidth()/2);
-    simulationTitleDisplay.setX(
-        (SCENE_WIDTH - simulationTitleDisplay.getLayoutBounds().getWidth()) / 2);
+    simulationTitleDisplay.setX(TITLE_X - simulationTitleDisplay.getLayoutBounds().getWidth()/2);
     System.out.println("Scenewidth" + SCENE_WIDTH);
     System.out.println("text width" + simulationTitleDisplay.getLayoutBounds().getWidth());
     simulationTitleDisplay.setY(TITLE_Y);
@@ -200,7 +193,6 @@ public class SimulationPage {
     ret.setOnAction(handler);
     ret.setLayoutX(xPos);
     ret.setLayoutY(yPos);
-    buttonsOnPanel++;
     return ret;
   }
 

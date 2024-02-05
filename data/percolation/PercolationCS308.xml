@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
+<simulation>
+  <type>Percolation</type>
+  <title>Percolation Simulation</title>
+  <author>Judy He</author>
+  <file_description>This file configures the Percolation Simulation.</file_description>
+  <display_description>In physics and mathematics, percolation theory describes the behavior of clustered components in random networks (Grimmett, 1999). The common intuition is movement and filtering of fluids through porous materials, for example, filtration of water through soil and permeable rocks.</display_description>
+  <width>16</width>
+  <height>16</height>
+  <!--
+   0 - EMPTY open site
+   1 - FULL open site
+   2 - blocked site
+    -->
+  <initial_states>2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 1 2 0 0 0 0 0 0 0 2 0 0 0 0 2 2 2 2 0 2 2 2 0 0 0 0 0 0 0 0 2 2 2 2 0 2 2 2 2 0 0 0 0 0 2 0 2 2 2 2 2 0 0 0 2 2 0 0 0 2 2 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 2 0 0 0 0 0 2 2 2 0 2 2 2 0 2 2 2 2 2 2 2 0 2 2 2 0 0 0 0 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2</initial_states>
+  <neighborhood_type>adjacent</neighborhood_type>
+  <parameters>
+    <percolatedNeighbors>1.0</percolatedNeighbors>
+  </parameters>
+  <state_colors>
+    State 0: empty open site -- white
+    State 1: full open site -- blue
+    State 2: blocked site -- black
+  </state_colors>
+</simulation>
