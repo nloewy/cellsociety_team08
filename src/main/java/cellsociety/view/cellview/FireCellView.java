@@ -18,15 +18,10 @@ public class FireCellView extends CellView {
   @Override
   public void setColors(int state) {
     switch (state) {
-      case 0:
-        getCss("empty-cell");
-        break;
-      case 1:
-        getCss("tree-cell");
-        break;
-      case 2:
-        getCss("burning-cell");
-        break;
+      case 0 -> getCss("empty-cell");
+      case 1 -> getCss("tree-cell");
+      case 2 -> getCss("burning-cell");
+      default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }
 }

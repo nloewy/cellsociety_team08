@@ -17,15 +17,10 @@ public class WatorCellView extends CellView {
   @Override
   public void setColors(int state) {
     switch (state) {
-      case 0:
-        getCss("empty-water");
-        break;
-      case 1:
-        getCss("fish");
-        break;
-      case 2:
-        getCss("shark");
-        break;
+      case 0 -> getCss("empty-water");
+      case 1 -> getCss("fish");
+      case 2 -> getCss("shark");
+      default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }
 }

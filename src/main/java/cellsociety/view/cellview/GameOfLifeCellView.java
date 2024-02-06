@@ -17,12 +17,9 @@ public class GameOfLifeCellView extends CellView {
   @Override
   public void setColors(int state) {
     switch (state) {
-      case 0:
-        getCss("dead-cell");
-        break;
-      case 1:
-        getCss("alive-cell");
-        break;
+      case 0 -> getCss("dead-cell");
+      case 1 -> getCss("alive-cell");
+      default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }
 }

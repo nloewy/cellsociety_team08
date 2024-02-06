@@ -17,15 +17,10 @@ public class SchellingCellView extends CellView {
   @Override
   public void setColors(int state) {
     switch (state) {
-      case 0:
-        getCss("agent");
-        break;
-      case 1:
-        getCss("agentX");
-        break;
-      case 2:
-        getCss("no-agent");
-        break;
+      case 0 -> getCss("agent");
+      case 1 -> getCss("agentX");
+      case 2 -> getCss("no-agent");
+      default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }
 }

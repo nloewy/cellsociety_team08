@@ -17,15 +17,10 @@ public class PercolationCellView extends CellView {
   @Override
   public void setColors(int state) {
     switch (state) {
-      case 0:
-        getCss("empty-site");
-        break;
-      case 1:
-        getCss("full-site");
-        break;
-      case 2:
-        getCss("blocked-site");
-        break;
+      case 0 -> getCss("empty-site");
+      case 1 -> getCss("full-site");
+      case 2 -> getCss("blocked-site");
+      default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }
 }
