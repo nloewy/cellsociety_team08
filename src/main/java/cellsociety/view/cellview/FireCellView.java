@@ -1,11 +1,11 @@
-package cellsociety.view.CellView;
+package cellsociety.view.cellview;
 
 /**
- * the view component of cells in the game of life simulation
+ * the view component of cells in the spread of fire simulation
  */
-public class GameOfLifeCellView extends CellView {
+public class FireCellView extends CellView {
 
-  public GameOfLifeCellView(int state, double width, double height) {
+  public FireCellView(int state, double width, double height) {
     super(state, width, height);
   }
 
@@ -14,14 +14,18 @@ public class GameOfLifeCellView extends CellView {
    *
    * @param state an integer that specifies which state the cell is in
    */
+
   @Override
   public void setColors(int state) {
     switch (state) {
       case 0:
-        getCSS("dead-cell");
+        getCss("empty-cell");
         break;
       case 1:
-        getCSS("alive-cell");
+        getCss("tree-cell");
+        break;
+      case 2:
+        getCss("burning-cell");
         break;
     }
   }

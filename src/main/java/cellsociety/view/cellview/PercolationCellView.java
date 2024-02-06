@@ -1,11 +1,11 @@
-package cellsociety.view.CellView;
+package cellsociety.view.cellview;
 
 /**
- * the view component of cells in the spread of fire simulation
+ * the view component of cells in the percolation simulation
  */
-public class FireCellView extends CellView {
+public class PercolationCellView extends CellView {
 
-  public FireCellView(int state, double width, double height) {
+  public PercolationCellView(int state, double width, double height) {
     super(state, width, height);
   }
 
@@ -14,18 +14,17 @@ public class FireCellView extends CellView {
    *
    * @param state an integer that specifies which state the cell is in
    */
-
   @Override
   public void setColors(int state) {
     switch (state) {
       case 0:
-        getCSS("empty-cell");
+        getCss("empty-site");
         break;
       case 1:
-        getCSS("tree-cell");
+        getCss("full-site");
         break;
       case 2:
-        getCSS("burning-cell");
+        getCss("blocked-site");
         break;
     }
   }

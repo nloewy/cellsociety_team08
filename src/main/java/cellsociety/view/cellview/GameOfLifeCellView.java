@@ -1,11 +1,11 @@
-package cellsociety.view.CellView;
+package cellsociety.view.cellview;
 
 /**
- * the view component of cells in the percolation simulation
+ * the view component of cells in the game of life simulation
  */
-public class PercolationCellView extends CellView {
+public class GameOfLifeCellView extends CellView {
 
-  public PercolationCellView(int state, double width, double height) {
+  public GameOfLifeCellView(int state, double width, double height) {
     super(state, width, height);
   }
 
@@ -18,13 +18,10 @@ public class PercolationCellView extends CellView {
   public void setColors(int state) {
     switch (state) {
       case 0:
-        getCSS("empty-site");
+        getCss("dead-cell");
         break;
       case 1:
-        getCSS("full-site");
-        break;
-      case 2:
-        getCSS("blocked-site");
+        getCss("alive-cell");
         break;
     }
   }

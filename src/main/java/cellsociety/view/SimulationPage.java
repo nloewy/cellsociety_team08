@@ -2,12 +2,12 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
-import cellsociety.view.CellView.CellView;
-import cellsociety.view.CellView.FireCellView;
-import cellsociety.view.CellView.GameOfLifeCellView;
-import cellsociety.view.CellView.PercolationCellView;
-import cellsociety.view.CellView.SchellingCellView;
-import cellsociety.view.CellView.WatorCellView;
+import cellsociety.view.cellview.CellView;
+import cellsociety.view.cellview.FireCellView;
+import cellsociety.view.cellview.GameOfLifeCellView;
+import cellsociety.view.cellview.PercolationCellView;
+import cellsociety.view.cellview.SchellingCellView;
+import cellsociety.view.cellview.WatorCellView;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -171,7 +171,8 @@ public class SimulationPage {
     speedSlider.setLayoutX(configInt(BUTTON_START_X_KEY));
     speedSlider.setLayoutY(configInt(SPEED_SLIDER_Y_KEY));
 
-    speedLabel = new Label(textProperties.getString(SPEED_LABEL_TEXT_KEY) + (int) speedSlider.getValue());
+    speedLabel = new Label(
+        textProperties.getString(SPEED_LABEL_TEXT_KEY) + (int) speedSlider.getValue());
     speedLabel.setLayoutX(configInt(BUTTON_START_X_KEY));
     speedLabel.setLayoutY(configInt(SPEED_LABEL_Y_KEY));
   }
@@ -309,19 +310,21 @@ public class SimulationPage {
 
   /**
    * gets integer value from config file according to its key string
+   *
    * @param key a string that specifies the key for the target int value
    * @return returns the integer value
    */
-  public Integer configInt(String key){
+  public Integer configInt(String key) {
     return Integer.parseInt(configProperties.getString(key));
   }
 
   /**
    * gets double value from config file according to its key string
+   *
    * @param key a string that specifies the key for the target double value
    * @return returns the double value
    */
-  public Double configDouble(String key){
+  public Double configDouble(String key) {
     return Double.parseDouble(configProperties.getString(key));
   }
 

@@ -93,14 +93,16 @@ public class Controller {
 
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
-    double frameDuration = 1.0 / (speed * simulationPage.configDouble(SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
+    double frameDuration = 1.0 / (speed * simulationPage.configDouble(
+        SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
     animation.getKeyFrames()
         .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
     animation.play();
   }
 
   /**
-   * this method is responsible for calling update on the model and the view upon each step in the simulation
+   * this method is responsible for calling update on the model and the view upon each step in the
+   * simulation
    */
   private void step() {
     if (simulationRunning) {
@@ -231,7 +233,7 @@ public class Controller {
 
     simulationPage.setSpeedSliderHandler((observable, oldValue, newValue) -> {
       speed = newValue.intValue();
-      double frameDuration = 1.0 /(speed *  simulationPage.configDouble(SECOND_DELAY_KEY));
+      double frameDuration = 1.0 / (speed * simulationPage.configDouble(SECOND_DELAY_KEY));
       animation.setRate(speed);
       animation.setDelay(Duration.seconds(frameDuration));
       simulationPage.updateSpeedLabel(speed);

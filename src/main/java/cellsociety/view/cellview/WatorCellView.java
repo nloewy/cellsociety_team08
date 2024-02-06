@@ -1,4 +1,4 @@
-package cellsociety.view.CellView;
+package cellsociety.view.cellview;
 
 /**
  * the view component of cells in the Wa-Tor simulation
@@ -18,13 +18,13 @@ public class WatorCellView extends CellView {
   public void setColors(int state) {
     switch (state) {
       case 0:
-        getCSS("empty-water");
+        getCss("empty-water");
         break;
       case 1:
-        getCSS("fish");
+        getCss("fish");
         break;
       case 2:
-        getCSS("shark");
+        getCss("shark");
         break;
     }
   }

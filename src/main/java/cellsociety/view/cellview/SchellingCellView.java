@@ -1,9 +1,9 @@
-package cellsociety.view.CellView;
+package cellsociety.view.cellview;
 
 /**
  * the view component of cells in the Schelling's model of segregation simulation
  */
-public class SchellingCellView extends CellView{
+public class SchellingCellView extends CellView {
 
   public SchellingCellView(int state, double width, double height) {
     super(state, width, height);
@@ -11,19 +11,20 @@ public class SchellingCellView extends CellView{
 
   /**
    * sets the color of the view component of the cell according to their current state
+   *
    * @param state an integer that specifies which state the cell is in
    */
   @Override
   public void setColors(int state) {
     switch (state) {
       case 0:
-        getCSS("agent");
+        getCss("agent");
         break;
       case 1:
-        getCSS("agentX");
+        getCss("agentX");
         break;
       case 2:
-        getCSS("no-agent");
+        getCss("no-agent");
         break;
     }
   }
