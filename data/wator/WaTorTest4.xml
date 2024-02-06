@@ -22,8 +22,8 @@
         <initialEnergy>8</initialEnergy>
     </parameters>
     <state_colors>
-        State 0: empty cell -- blue
-        State 1: fish -- pink
-        State 2: shark -- yellow
+        State 0: empty cell
+        State 1: fish
+        State 2: shark
     </state_colors>
 </simulation>

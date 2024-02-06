@@ -19,8 +19,8 @@
         <neighborsToIgnite>1</neighborsToIgnite> <!-- Number of neighbors to ignite-->
     </parameters>
     <state_colors>
-        State 0: empty ground/burnt tree -- grey
-        State 1: tree -- green
-        State 2: burning tree -- orange-red
+        State 0: empty ground/burnt
+        State 1: tree
+        State 2: burning tree
     </state_colors>
 </simulation>

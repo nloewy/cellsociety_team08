@@ -18,7 +18,7 @@
         <deadToAliveMax>3.0</deadToAliveMax>
     </parameters>
     <state_colors>
-        State 0: dead cell -- white
-        State 1: alive cell -- black
+        State 0: dead cell
+        State 1: alive cell
     </state_colors>
 </simulation>
