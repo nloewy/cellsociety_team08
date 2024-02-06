@@ -18,8 +18,8 @@
     <proportionNeededToStay>.5</proportionNeededToStay>
   </parameters>
   <state_colors>
-    State 0: agent 0
-    State 1: agent x
-    State 2: empty cell
+    State 0: agent 0 -- red
+    State 1: agent x -- blue
+    State 2: empty cell -- white
   </state_colors>
 </simulation>

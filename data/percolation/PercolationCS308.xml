@@ -19,8 +19,8 @@
     <percolatedNeighbors>1.0</percolatedNeighbors>
   </parameters>
   <state_colors>
-    State 0: empty open site
-    State 1: full open site
-    State 2: blocked site
+    State 0: empty open site -- white
+    State 1: full open site -- blue
+    State 2: blocked site -- black
   </state_colors>
 </simulation>
