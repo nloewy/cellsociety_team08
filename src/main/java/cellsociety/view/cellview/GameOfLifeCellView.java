@@ -1,4 +1,4 @@
-package cellsociety.view.CellView;
+package cellsociety.view.cellview;
 
 /**
  * the view component of cells in the game of life simulation
@@ -17,12 +17,9 @@ public class GameOfLifeCellView extends CellView {
   @Override
   public void setColors(int state) {
     switch (state) {
-      case 0:
-        getCSS("dead-cell");
-        break;
-      case 1:
-        getCSS("alive-cell");
-        break;
+      case 0 -> getCss("dead-cell");
+      case 1 -> getCss("alive-cell");
+      default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }
 }

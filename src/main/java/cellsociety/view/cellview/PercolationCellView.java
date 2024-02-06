@@ -1,4 +1,4 @@
-package cellsociety.view.CellView;
+package cellsociety.view.cellview;
 
 /**
  * the view component of cells in the percolation simulation
@@ -17,15 +17,10 @@ public class PercolationCellView extends CellView {
   @Override
   public void setColors(int state) {
     switch (state) {
-      case 0:
-        getCSS("empty-site");
-        break;
-      case 1:
-        getCSS("full-site");
-        break;
-      case 2:
-        getCSS("blocked-site");
-        break;
+      case 0 -> getCss("empty-site");
+      case 1 -> getCss("full-site");
+      case 2 -> getCss("blocked-site");
+      default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }
 }

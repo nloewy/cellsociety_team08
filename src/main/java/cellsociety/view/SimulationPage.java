@@ -2,12 +2,12 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
-import cellsociety.view.CellView.CellView;
-import cellsociety.view.CellView.FireCellView;
-import cellsociety.view.CellView.GameOfLifeCellView;
-import cellsociety.view.CellView.PercolationCellView;
-import cellsociety.view.CellView.SchellingCellView;
-import cellsociety.view.CellView.WatorCellView;
+import cellsociety.view.cellview.CellView;
+import cellsociety.view.cellview.FireCellView;
+import cellsociety.view.cellview.GameOfLifeCellView;
+import cellsociety.view.cellview.PercolationCellView;
+import cellsociety.view.cellview.SchellingCellView;
+import cellsociety.view.cellview.WatorCellView;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -47,39 +47,45 @@ public class SimulationPage {
   private Label speedLabel;
   private ResourceBundle buttonLabels;
   private ResourceBundle configProperties;
+  private ResourceBundle textProperties;
 
-//  public static final double SCENE_HEIGHT = 800;
-//  public static final double SCENE_WIDTH = 1000;
-//  public static final double GRID_HEIGHT = .6 * SCENE_HEIGHT;
-//  public static final double GRID_WIDTH = .6 * SCENE_WIDTH;
-//  public static final double GRID_START_Y = .2 * SCENE_HEIGHT;
-//  public static final double GRID_START_X = .05 * SCENE_WIDTH;
-//  public static final int BUTTON_START_X = (int) (SCENE_WIDTH - (
-//      (SCENE_WIDTH - GRID_START_X - GRID_WIDTH) / 2.0));
-//  public static final int TITLE_X = (int) Math.round(.5 * SCENE_HEIGHT);
-//  public static final int TITLE_Y = (int) Math.round(GRID_START_Y * .5);
-//  public static final int NEW_SIMULATION_BUTTON_Y = (int) Math.round(.325 * SCENE_HEIGHT);
-//  public static final int INFO_BUTTON_Y = (int) Math.round(.375 * SCENE_HEIGHT);
-//  public static final int START_BUTTON_Y = (int) Math.round(.425 * SCENE_HEIGHT);
-//  public static final int SAVE_BUTTON_Y = (int) Math.round(.475 * SCENE_HEIGHT);
-//  public static final int PAUSE_BUTTON_Y = (int) Math.round(.525 * SCENE_HEIGHT);
-//  public static final int RESET_BUTTON_Y = (int) Math.round(.575 * SCENE_HEIGHT);
-//  public static final int SPEED_LABEL_Y = (int) Math.round(.625 * SCENE_HEIGHT);
-//  public static final int SPEED_SLIDER_Y = (int) Math.round(.675 * SCENE_HEIGHT);
+  //config file number keys
+  public static final String SCENE_HEIGHT_KEY = "SCENE_HEIGHT";
+  public static final String SCENE_WIDTH_KEY = "SCENE_WIDTH";
+  public static final String GRID_HEIGHT_KEY = "GRID_HEIGHT";
+  public static final String GRID_WIDTH_KEY = "GRID_WIDTH";
+  public static final String GRID_START_Y_KEY = "GRID_START_Y";
+  public static final String GRID_START_X_KEY = "GRID_START_X";
+  public static final String BUTTON_START_X_KEY = "BUTTON_START_X";
+  public static final String TITLE_X_OFFSET_KEY = "TITLE_X_OFFSET";
+  public static final String TITLE_Y_OFFSET_KEY = "TITLE_Y_OFFSET";
+  public static final String NEW_SIMULATION_BUTTON_Y_KEY = "NEW_SIMULATION_BUTTON_Y";
+  public static final String INFO_BUTTON_Y_KEY = "INFO_BUTTON_Y";
+  public static final String START_BUTTON_Y_KEY = "START_BUTTON_Y";
+  public static final String SAVE_BUTTON_Y_KEY = "SAVE_BUTTON_Y";
+  public static final String PAUSE_BUTTON_Y_KEY = "PAUSE_BUTTON_Y";
+  public static final String RESET_BUTTON_Y_KEY = "RESET_BUTTON_Y";
+  public static final String SPEED_LABEL_Y_KEY = "SPEED_LABEL_Y";
+  public static final String SPEED_SLIDER_Y_KEY = "SPEED_SLIDER_Y";
+  public static final String SPEED_SLIDER_MIN_KEY = "SLIDER_MIN";
+  public static final String SPEED_SLIDER_MAX_KEY = "SLIDER_MAX";
+  public static final String SLIDER_DEFAULT_KEY = "SLIDER_DEFAULT";
 
-  //paths (will stay as constants)
+  //paths
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
   public static final String STYLESHEET = "StyleSheet.css";
 
-  //button label keys (will stay as constants)
+  //button label keys
   public static final String NEW_SIMULATION_BUTTON_KEY = "NewSimulationButton";
   public static final String RESET_BUTTON_KEY = "ResetButton";
   public static final String START_BUTTON_KEY = "StartButton";
   public static final String PAUSE_BUTTON_KEY = "PauseButton";
   public static final String ABOUT_BUTTON_KEY = "SimulationInfoButton";
   public static final String SAVE_BUTTON_KEY = "SaveSimulationButton";
+  public static final String SPEED_LABEL_TEXT_KEY = "speedLabel";
+
 
   /**
    * Constructs the view component of the simulation
@@ -95,22 +101,19 @@ public class SimulationPage {
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator) {
 
+    textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
 
     root = new Group();
     grid = new GridPane();
-//    scene = new Scene(root, Double.parseDouble(configProperties.getString("SCENE_WIDTH"), Double.parseDouble(configProperties.getString("SCENE_HEIGHT"))));
-    scene = new Scene(root, Double.parseDouble(configProperties.getString("SCENE_WIDTH")),
-        Double.parseDouble(configProperties.getString("SCENE_HEIGHT")));
+    scene = new Scene(root, configDouble(SCENE_WIDTH_KEY),
+        configDouble(SCENE_HEIGHT_KEY));
 
     buttonLabels = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLabels");
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
-    System.out.println("creating new simulation: " + simulationName);
-
     board = new CellView[numRows][numCols];
-    System.out.println("numcols:" + numCols + " numrows:" + numRows);
     int index = 0;
 
     while (gridIterator.hasNext()) {
@@ -123,24 +126,24 @@ public class SimulationPage {
       System.out.println(index);
 //            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
       board[row][col] = initializeCellView(simulationType, state,
-          Double.parseDouble(configProperties.getString("GRID_WIDTH")) / numCols,
-          Double.parseDouble(configProperties.getString("GRID_HEIGHT")) / numRows);
+          configDouble(GRID_WIDTH_KEY) / numCols,
+          configDouble(GRID_HEIGHT_KEY) / numRows);
 
       grid.add(board[row][col].getCellGraphic(), col, row);
       index++;
     }
 
-    grid.setLayoutY(Double.parseDouble(configProperties.getString("GRID_START_Y")));
-    grid.setLayoutX(Double.parseDouble(configProperties.getString("GRID_START_X")));
+    grid.setLayoutY(configDouble(GRID_START_Y_KEY));
+    grid.setLayoutX(configDouble(GRID_START_X_KEY));
 
     initializeButtons(eventHandlers);
     initializeSlider();
 
     simulationTitleDisplay = new Text(simulationName);
-//    simulationTitleDisplay.setX((Integer.parseInt(configProperties.getString("SCENE_WIDTH")) - simulationTitleDisplay.getLayoutBounds().getWidth())/2);
-//    simulationTitleDisplay.setY((Integer.parseInt(configProperties.getString("SCENE_HEIGHT")) - (Integer.parseInt(configProperties.getString("GRID_START_Y")) - simulationTitleDisplay.getLayoutBounds().getHeight())/2));
-    simulationTitleDisplay.setX(Integer.parseInt(configProperties.getString("TITLE_X_OFFSET")));
-    simulationTitleDisplay.setY(Integer.parseInt(configProperties.getString("TITLE_Y_OFFSET")));
+    simulationTitleDisplay.setId("simulation-title");
+    simulationTitleDisplay.getStyleClass().add("simulation-title");
+    simulationTitleDisplay.setX(configInt(TITLE_X_OFFSET_KEY));
+    simulationTitleDisplay.setY(configInt(TITLE_Y_OFFSET_KEY));
     simulationTitleDisplay.setFont(new Font(40));
 
     root.getChildren().addAll(
@@ -157,20 +160,23 @@ public class SimulationPage {
     );
   }
 
+
   /**
    * set up the speed slider and the speed label
    */
   private void initializeSlider() {
-    speedSlider = new Slider((Integer.parseInt(configProperties.getString("SLIDER_MIN"))),
-        (Integer.parseInt(configProperties.getString("SLIDER_MAX"))),
-        (Integer.parseInt(configProperties.getString("SLIDER_DEFAULT"))));
-    speedSlider.setLayoutX(Integer.parseInt(configProperties.getString("BUTTON_START_X")));
-    speedSlider.setLayoutY(Integer.parseInt(configProperties.getString("SPEED_SLIDER_Y")));
+    speedSlider = new Slider(configInt(SPEED_SLIDER_MIN_KEY),
+        (configInt(SPEED_SLIDER_MAX_KEY)),
+        (configInt(SLIDER_DEFAULT_KEY)));
+    speedSlider.setLayoutX(configInt(BUTTON_START_X_KEY));
+    speedSlider.setLayoutY(configInt(SPEED_SLIDER_Y_KEY));
 
-    speedLabel = new Label("Speed: " + (int) speedSlider.getValue());
-    speedLabel.setLayoutX(Integer.parseInt(configProperties.getString("BUTTON_START_X")));
-    speedLabel.setLayoutY(Integer.parseInt(configProperties.getString("SPEED_LABEL_Y")));
+    speedLabel = new Label(
+        textProperties.getString(SPEED_LABEL_TEXT_KEY) + (int) speedSlider.getValue());
+    speedLabel.setLayoutX(configInt(BUTTON_START_X_KEY));
+    speedLabel.setLayoutY(configInt(SPEED_LABEL_Y_KEY));
   }
+
 
   /**
    * initialize the buttons
@@ -180,29 +186,30 @@ public class SimulationPage {
   private void initializeButtons(Map<String, EventHandler<ActionEvent>> eventHandlers) {
     newSimulationButton = makeButton(buttonLabels.getString(NEW_SIMULATION_BUTTON_KEY),
         eventHandlers.get("newSimulationHandler"),
-        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
-        Integer.parseInt(configProperties.getString("NEW_SIMULATION_BUTTON_Y")));
+        configInt(BUTTON_START_X_KEY),
+        configInt(NEW_SIMULATION_BUTTON_Y_KEY));
     simulationInfoButton = makeButton(buttonLabels.getString(ABOUT_BUTTON_KEY),
         eventHandlers.get("infoButtonHandler"),
-        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
-        Integer.parseInt(configProperties.getString("INFO_BUTTON_Y")));
+        configInt(BUTTON_START_X_KEY),
+        configInt(INFO_BUTTON_Y_KEY));
     startSimulationButton = makeButton(buttonLabels.getString(START_BUTTON_KEY),
         eventHandlers.get("startSimulationHandler"),
-        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
-        Integer.parseInt(configProperties.getString("START_BUTTON_Y")));
+        configInt(BUTTON_START_X_KEY),
+        configInt(START_BUTTON_Y_KEY));
     saveSimulationButton = makeButton(buttonLabels.getString(SAVE_BUTTON_KEY),
         eventHandlers.get("saveSimulationHandler"),
-        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
-        Integer.parseInt(configProperties.getString("SAVE_BUTTON_Y")));
+        configInt(BUTTON_START_X_KEY),
+        configInt(SAVE_BUTTON_Y_KEY));
     pauseSimulationButton = makeButton(buttonLabels.getString(PAUSE_BUTTON_KEY),
         eventHandlers.get("pauseSimulationHandler"),
-        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
-        Integer.parseInt(configProperties.getString("PAUSE_BUTTON_Y")));
+        configInt(BUTTON_START_X_KEY),
+        configInt(PAUSE_BUTTON_Y_KEY));
     resetSimulationButton = makeButton(buttonLabels.getString(RESET_BUTTON_KEY),
         eventHandlers.get("resetSimulationHandler"),
-        Integer.parseInt(configProperties.getString("BUTTON_START_X")),
-        Integer.parseInt(configProperties.getString("RESET_BUTTON_Y")));
+        configInt(BUTTON_START_X_KEY),
+        configInt(RESET_BUTTON_Y_KEY));
   }
+
 
   /**
    * initialize the cellview objects in the grid according to the current simulation
@@ -225,6 +232,7 @@ public class SimulationPage {
     };
   }
 
+
   /**
    * adds an event listener for the speed slider
    *
@@ -234,14 +242,16 @@ public class SimulationPage {
     speedSlider.valueProperty().addListener(speedSliderHandler);
   }
 
+
   /**
    * updates the speed label of the speed slider
    *
    * @param speed an integer that specifies the current speed on the slider
    */
   public void updateSpeedLabel(int speed) {
-    speedLabel.setText("Speed: " + speed);
+    speedLabel.setText(textProperties.getString(SPEED_LABEL_TEXT_KEY) + speed);
   }
+
 
   /**
    * makes a button
@@ -261,6 +271,7 @@ public class SimulationPage {
     return ret;
   }
 
+
   /**
    * gets the view component of the grid
    *
@@ -270,6 +281,7 @@ public class SimulationPage {
     return grid;
   }
 
+
   /**
    * gets the scene of the view component of the simulation
    *
@@ -278,6 +290,7 @@ public class SimulationPage {
   public Scene getSimulationScene() {
     return scene;
   }
+
 
   /**
    * updates the view component of the grid and the simulation
@@ -294,4 +307,25 @@ public class SimulationPage {
       board[row][col].updateState(state);
     }
   }
+
+  /**
+   * gets integer value from config file according to its key string
+   *
+   * @param key a string that specifies the key for the target int value
+   * @return returns the integer value
+   */
+  public Integer configInt(String key) {
+    return Integer.parseInt(configProperties.getString(key));
+  }
+
+  /**
+   * gets double value from config file according to its key string
+   *
+   * @param key a string that specifies the key for the target double value
+   * @return returns the double value
+   */
+  public Double configDouble(String key) {
+    return Double.parseDouble(configProperties.getString(key));
+  }
+
 }
