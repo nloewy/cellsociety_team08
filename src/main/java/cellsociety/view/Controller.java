@@ -42,26 +42,33 @@ import javax.xml.transform.TransformerException;
 public class Controller {
 
   private Stage stage;
-  private SceneManager sceneManager;
   private SimulationPage simulationPage;
   private XMLParser xmlParser;
   private Simulation simulationModel;
   private Timeline animation;
   private int speed;
   private boolean simulationRunning = false;
+  private ResourceBundle textConfig;
+  private FileChooser fileChooser;
 
-  public static final String INTERNAL_CONFIGURATION = "cellsociety.Version";
+
+  //paths (will stay)
   public static final String TEXT_CONFIGURATION = "cellsociety.Text";
   public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   public static final String DATA_FILE_EXTENSION = "*.xml";
-  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+//  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+
   public static final String FIRE = "Fire";
   public static final String GAME_OF_LIFE = "GameOfLife";
   public static final String PERCOLATION = "Percolation";
   public static final String SCHELLING = "Schelling";
   public static final String WATOR = "Wator";
-  private static final double SECOND_DELAY = 1.0;
 
+  public static final String UPLOAD_FILE_TEXT_KEY = "uploadFile";
+  public static final String SECOND_DELAY_KEY = "SECOND_DELAY";
+  public static final String FILE_SAVED_KEY = "fileSaved";
+  public static final String UPLOAD_FILE_WINDOW_TITLE_KEY = "uploadFileWindowTitle";
+  public static final String ABOUT_MIN_HEIGHT_KEY = "ABOUT_MIN_HEIGHT";
 
   /**
    * Constructs the controller class
@@ -69,8 +76,9 @@ public class Controller {
   public Controller() {
     stage = new Stage();
 
-    ResourceBundle Text = ResourceBundle.getBundle(TEXT_CONFIGURATION);
-    showMessage(AlertType.INFORMATION, String.format(Text.getString("uploadFile")));
+    textConfig = ResourceBundle.getBundle(TEXT_CONFIGURATION);
+    fileChooser = makeChooser(DATA_FILE_EXTENSION);
+    showMessage(AlertType.INFORMATION, String.format(textConfig.getString(UPLOAD_FILE_TEXT_KEY)));
 
     File dataFile = chooseFile();
     if (dataFile == null) {
@@ -85,14 +93,16 @@ public class Controller {
 
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
-    double frameDuration = 1.0 / (speed * SECOND_DELAY); // Calculate the duration for the KeyFrame
+    double frameDuration = 1.0 / (speed * simulationPage.configDouble(SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
     animation.getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step(SECOND_DELAY)));
+        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
     animation.play();
   }
 
-
-  private void step(double secondDelay) {
+  /**
+   * this method is responsible for calling update on the model and the view upon each step in the simulation
+   */
+  private void step() {
     if (simulationRunning) {
       //update model
       simulationModel.transitionFunction();
@@ -103,6 +113,7 @@ public class Controller {
     }
   }
 
+
   /**
    * Calls the xmlParser to read the xml file according to the specified filepath
    *
@@ -112,6 +123,7 @@ public class Controller {
     xmlParser.readXML(filePath);
   }
 
+
   /**
    * pauses the simulation
    */
@@ -119,15 +131,17 @@ public class Controller {
     simulationRunning = false;
   }
 
+
   /**
    * Opens a dialog box for user to choose the xml file they want to run
    *
    * @return returns the datafile the user selected
    */
   private File chooseFile() {
-    File dataFile = FILE_CHOOSER.showOpenDialog(stage);
+    File dataFile = fileChooser.showOpenDialog(stage);
     return dataFile;
   }
+
 
   /**
    * Set up the simulation model and view
@@ -143,6 +157,7 @@ public class Controller {
         xmlParser.getWidth());
   }
 
+
   /**
    * gets the neighborhood object based on the neighborhood type string
    *
@@ -151,13 +166,13 @@ public class Controller {
    * @return returns the neighborhood object
    */
   private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
-    System.out.println("getting neighborhood type");
     return switch (neighborhoodTypeString) {
       case "adjacent" -> new AdjacentNeighborhood();
       case "cardinal" -> new CardinalNeighborhood();
       default -> throw new IllegalStateException("Unexpected value: " + neighborhoodTypeString);
     };
   }
+
 
   /**
    * Sets up the simulation model component
@@ -196,6 +211,7 @@ public class Controller {
     };
   }
 
+
   /**
    * sets up the simulation view component
    *
@@ -215,13 +231,13 @@ public class Controller {
 
     simulationPage.setSpeedSliderHandler((observable, oldValue, newValue) -> {
       speed = newValue.intValue();
-      double frameDuration = 1.0 / (speed * SECOND_DELAY);
+      double frameDuration = 1.0 /(speed *  simulationPage.configDouble(SECOND_DELAY_KEY));
       animation.setRate(speed);
       animation.setDelay(Duration.seconds(frameDuration));
       simulationPage.updateSpeedLabel(speed);
     });
-
   }
+
 
   /**
    * makes the map of event handlers to pass into the simulation view
@@ -239,12 +255,14 @@ public class Controller {
     return map;
   }
 
+
   /**
    * pauses the simulation when the pause button is clicked
    */
   private void onPauseSimulation() {
     pauseSimulation();
   }
+
 
   /**
    * saves the current state of the simulation as a new xml file when the save simulation button is
@@ -261,11 +279,12 @@ public class Controller {
       xmlParser.createXML("savedSimulation" + xmlParser.getType(),
           xmlParser.getType().toLowerCase());
 
-      showMessage(AlertType.INFORMATION, String.format("File saved \u2713"));
+      showMessage(AlertType.INFORMATION, String.format(textConfig.getString(FILE_SAVED_KEY)));
     } catch (ParserConfigurationException | TransformerException e) {
       e.printStackTrace();
     }
   }
+
 
   /**
    * un-pause the simulation when the start button is clicked
@@ -274,11 +293,11 @@ public class Controller {
     simulationRunning = true;
   }
 
+
   /**
    * shows the simulation information dialog box when about button is pressed
    */
   private void onInfoButtonClicked() {
-//    showMessage(AlertType.INFORMATION, String.format(xmlParser.getDisplayDescription()));
     Alert simulationInfo = new Alert(AlertType.INFORMATION);
 
     pauseSimulation();
@@ -295,11 +314,12 @@ public class Controller {
             "States: " + xmlParser.getStateColor() + "\n" +
             "Parameters: " + xmlParser.getParameters()
     );
-    textArea.setMinHeight(400);
+    textArea.setMinHeight(simulationPage.configInt(ABOUT_MIN_HEIGHT_KEY));
 
     simulationInfo.getDialogPane().setContent(textArea);
     simulationInfo.showAndWait();
   }
+
 
   /**
    * switch simulation and reload the view and model components of the new simulation when new
@@ -315,6 +335,7 @@ public class Controller {
     setSimulation();
   }
 
+
   /**
    * returns simulation to its initial state when reset button is pressed
    */
@@ -323,6 +344,7 @@ public class Controller {
         xmlParser.getStates());
     simulationPage.updateView(simulationModel.getIterator());
   }
+
 
   /**
    * Shows a message dialog box according to the type and message text arguments
@@ -334,10 +356,6 @@ public class Controller {
     new Alert(type, message).showAndWait();
   }
 
-//  public double getVersion() {
-//    ResourceBundle resources = ResourceBundle.getBundle(INTERNAL_CONFIGURATION);
-//    return Double.parseDouble(resources.getString("Version"));
-//  }
 
   /**
    * set up the filechooser
@@ -345,9 +363,10 @@ public class Controller {
    * @param extensionAccepted a string that specifies what type of file extensions are accepted
    * @return returns the FileChooser object.
    */
-  private static FileChooser makeChooser(String extensionAccepted) {
+  private FileChooser makeChooser(String extensionAccepted) {
     FileChooser result = new FileChooser();
-    result.setTitle("Open Data File");
+    result.setTitle(textConfig.getString(UPLOAD_FILE_WINDOW_TITLE_KEY));
+
     result.setInitialDirectory(new File(DATA_FILE_FOLDER));
     result.getExtensionFilters()
         .setAll(new ExtensionFilter("Data Files", extensionAccepted));
