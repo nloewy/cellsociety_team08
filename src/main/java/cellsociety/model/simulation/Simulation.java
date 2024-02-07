@@ -3,6 +3,7 @@ package cellsociety.model.simulation;
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
+import cellsociety.model.core.WarpedGrid;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,12 +19,13 @@ import java.util.function.Function;
 
 public abstract class Simulation<T extends Cell> {
 
-  private Neighborhood myNeighborhood;
-  private Grid<T> myGrid;
+  protected Neighborhood myNeighborhood;
+  protected Grid<T> myGrid;
 
   private Function<Integer, T> myCellInitializer;
   private int myCols;
 
+  private String myGridType;
 
   public Simulation() {
   }
@@ -35,14 +37,16 @@ public abstract class Simulation<T extends Cell> {
    * @param col,       the number of columns in the 2-dimensional grid
    * @param hoodType,  the definition of neighbors
    * @param stateList, a list of the integer representation of each cells state, by rows, then cols
+   * @param gridType          type of grid used in simulation
    */
 
-  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
+  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType,
       Function<Integer, T> cellInitializer) {
 
     myCellInitializer = cellInitializer;
     myNeighborhood = hoodType;
     myCols = col;
+    myGridType = gridType;
     initializeMyGrid(row, col, stateList);
   }
 
@@ -51,7 +55,16 @@ public abstract class Simulation<T extends Cell> {
     for (int i = 0; i < stateList.size(); i++) {
       cellList.add(myCellInitializer.apply(i));
     }
-    myGrid = new Grid<>(row, col, cellList);
+    switch(myGridType) {
+      case "Normal": {
+        myGrid = new Grid<>(row, col, cellList);
+        break;
+      }
+      case "Warped": {
+        myGrid = new WarpedGrid<>(row, col, cellList);
+        break;
+      }
+    }
   }
 
   /**
@@ -73,25 +86,6 @@ public abstract class Simulation<T extends Cell> {
     }
   }
 
-  /**
-   * Returns List of all cells that are considered "neighbors" to the parameter cell, given the
-   * definition of a neighborhood provided by instance variable myNeighborhood
-   *
-   * @param cell, a cell object that we are trying to get the neighbors of
-   * @return List<T>, all neighboring cell objects to c
-   */
-  public List<T> getNeighbors(T cell) {
-    List<T> neighboringCells = new ArrayList<>();
-    List<Point> neighboringCoordinates = myNeighborhood.getNeighborCoordinates(cell.getLocation());
-    for (Point p : neighboringCoordinates) {
-      try {
-        T neighbor = myGrid.getCellAtLocation(p);
-        neighboringCells.add(neighbor);
-      } catch (IndexOutOfBoundsException e) {
-      }
-    }
-    return neighboringCells;
-  }
 
   /**
    * Given a list of cells, and an integer representing a state, determines the number of cells in
@@ -111,6 +105,13 @@ public abstract class Simulation<T extends Cell> {
     return count;
   }
 
+  public Neighborhood getNeighborhood(){
+    return myNeighborhood;
+  }
+
+  public Grid<T> getGrid(){
+    return myGrid;
+  }
   /**
    * Retrieves the Grid's object that can access the grid of cells while hiding the Data Structure
    * used to implement it.

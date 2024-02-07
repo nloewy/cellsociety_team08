@@ -36,10 +36,11 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param probTreeIgnites   probability a tree (not meeting the required number of burning
    *                          neighbors) catches fire
    * @param probTreeCreated   probability an empty cell becomes a tree
+   * @param gridType          type of grid used in simulation
    */
   public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int neighborsToIgnite, double probTreeIgnites, double probTreeCreated) {
-    super(row, col, hoodType, stateList);
+      int neighborsToIgnite, double probTreeIgnites, double probTreeCreated, String gridType) {
+    super(row, col, hoodType, stateList, gridType);
     this.neighborsToIgnite = neighborsToIgnite;
     this.probTreeIgnites = probTreeIgnites;
     this.probTreeCreated = probTreeCreated;
@@ -68,7 +69,7 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param currentCell the transitioning cell object
    */
   private void handleTreeCell(Cell currentCell) {
-    List<Cell> neighbors = getNeighbors(currentCell);
+    List<Cell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
     int burningNeighbors = countNeighborsInState(neighbors, BURNING);
     if (burningNeighbors >= neighborsToIgnite || random() <= probTreeIgnites) {
       currentCell.setNextState(BURNING);

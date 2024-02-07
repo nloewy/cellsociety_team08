@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLTester {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws ParserConfigurationException, TransformerException {
     String path = "data/gameoflife/GameOfLifeGlider.xml";
 
     XMLParser xmlParser = new XMLParser();

@@ -35,10 +35,11 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * @param proportionNeededToStay the minimum proportion of neighboring cells (excluding empty
    *                               cells) that are of the same state as the given cell, for a cell
    *                               to remain in their current state
+   * @param gridType               type of grid used in simulation
    */
   public SchellingSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      double proportionNeededToStay) {
-    super(row, col, hoodType, stateList);
+      double proportionNeededToStay, String gridType) {
+    super(row, col, hoodType, stateList, gridType);
     myCellsToMove = new ArrayList<>();
     myEmptyCells = new ArrayList<>();
     this.proportionNeededToStay = proportionNeededToStay;
@@ -51,7 +52,7 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * @param currentCell a cell in group A or B preparing to transition
    */
   private void handleDemographicCell(Cell currentCell) {
-    List<Cell> neighbors = getNeighbors(currentCell);
+    List<Cell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
     int totalNeighbors = neighbors.size();
     int numEmptyNeighbors = countNeighborsInState(neighbors, EMPTY);
     int numNeighborsSameState = countNeighborsInState(neighbors, currentCell.getCurrentState());

@@ -12,7 +12,7 @@
          1 - TREE (The cell contains a tree that is not burning.)
          2 - BURNING The cell contains a tree that is burning. -->
     <initial_states>0 0 0 0 1 1 1 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 0 0 1 1 0 0 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0</initial_states>
-    <neighborhood_type>adjacent</neighborhood_type>
+    <neighborhood_type>Moore</neighborhood_type>
     <parameters>
       <probTreeIgnites>.05</probTreeIgnites> <!-- The probability of a tree in a cell catching fire if a tree in a neighboring cell is on fire.-->
       <probTreeCreated>.2</probTreeCreated> <!-- The probability of that a tree is created-->
@@ -25,7 +25,7 @@
     </state_colors>
     <language>English</language>
     <cell_shape>square</cell_shape>
-    <grid_edge_type>NONE</grid_edge_type>
+    <grid_edge_type>Normal</grid_edge_type>
     <random_configuration_by_total_states>
       <active>false</active>
     </random_configuration_by_total_states>

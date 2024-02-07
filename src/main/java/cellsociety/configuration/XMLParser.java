@@ -64,9 +64,13 @@ public class XMLParser {
   public XMLParser() {
     states = new ArrayList<>();
     parameters = new HashMap<>();
+
+
+    /**
     language = "English";
     // use resources for errors
     resourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE+language);
+     */
   }
 
   /**
@@ -217,6 +221,9 @@ public class XMLParser {
     this.neighborhoodType = neighborhoodType;
   }
 
+  public String getGridEdgeType(){
+    return gridEdgeType;
+  }
   /**
    * Retrieves states instance variable
    *
@@ -271,20 +278,25 @@ public class XMLParser {
     try {
       // create a new File object for the XML file
       File file = new File(path);
+      /**
       if (!getFileExtension(file.getName()).equals("xml")) {
         throw new InvalidFileFormatException(String.format(resourceBundle.getString("InvalidFileType"), path));
       }
+       */
 
       // create a new instance of document builder factory that allows for a document builder
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
       // checking for well-formatted XML
+
+      /**
       dbf.setValidating(false);
       dbf.setNamespaceAware(true);
-
+      */
       // create an instance of document builder to parse the XML file
       DocumentBuilder db = dbf.newDocumentBuilder();
       Document doc = db.parse(file);
       doc.getDocumentElement().normalize();
+
 
       // obtaining the simulation node containing all the configuration data
       Node simulationNode = doc.getElementsByTagName("simulation").item(0);
@@ -308,9 +320,11 @@ public class XMLParser {
       parseParameters(parametersNodeList);
 
       // Check if grid dimension is valid, throw exception otherwise
+      /**
       if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()) {
         throw new InvalidGridBoundsException(String.format(resourceBundle.getString("InvalidGridBounds"), width, height, states.size()));
       }
+       */
 
     }
     catch (NullPointerException e) {
@@ -355,6 +369,7 @@ public class XMLParser {
     neighborhoodType = eElement.getElementsByTagName("neighborhood_type").item(0).getTextContent();
     width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
     height = Integer.parseInt(eElement.getElementsByTagName("height").item(0).getTextContent());
+    gridEdgeType = eElement.getElementsByTagName("grid_edge_type").item(0).getTextContent();
   }
 
   /**
@@ -449,6 +464,8 @@ public class XMLParser {
     addElement(doc, rootElement, "width", String.valueOf(width));
     addElement(doc, rootElement, "height", String.valueOf(height));
     addElement(doc, rootElement, "neighborhood_type", neighborhoodType);
+    addElement(doc, rootElement, "grid_edge_type", gridEdgeType);
+
   }
 
   /**
