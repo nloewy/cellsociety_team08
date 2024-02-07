@@ -38,10 +38,12 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param sharkAgeOfReproduction age at which shark cells can reproduce and create new cells
    * @param initialEnergy          initial energy level for shark cell
    * @param energyBoost            energy gained by a shark for eating a fish cell
+   * @param gridType               type of grid used in simulation
    */
   public WatorSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int fishAgeOfReproduction, int sharkAgeOfReproduction, int initialEnergy, int energyBoost) {
-    super(row, col, hoodType, stateList, (ind -> new WatorCell(stateList.get(ind),
+      int fishAgeOfReproduction, int sharkAgeOfReproduction, int initialEnergy, int energyBoost,
+      String gridType) {
+    super(row, col, hoodType, stateList, gridType, (ind -> new WatorCell(stateList.get(ind),
         ind / col, ind % col, initialEnergy)));
     this.fishAgeOfReproduction = fishAgeOfReproduction;
     this.sharkAgeOfReproduction = sharkAgeOfReproduction;
@@ -165,7 +167,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param currentCell the fish cell trying to transition
    */
   private void updateFish(WatorCell currentCell) {
-    List<WatorCell> neighbors = getNeighbors(currentCell);
+    List<WatorCell> neighbors = myGrid.getNeighbors(currentCell.getLocation(), myNeighborhood);
     List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
     Collections.shuffle(emptyNeighbors);
     if (emptyNeighbors.isEmpty()) {
@@ -192,7 +194,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param currentCell the fish cell trying to transition
    */
   private void updateShark(WatorCell currentCell) {
-    List<WatorCell> neighbors = getNeighbors(currentCell);
+    List<WatorCell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
     List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
     List<WatorCell> fishNeighbors = getCellsOfState(neighbors, FISH);
 

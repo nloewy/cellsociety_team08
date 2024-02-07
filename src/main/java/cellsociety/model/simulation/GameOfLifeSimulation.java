@@ -37,11 +37,12 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
    *                        allow reproduction
    * @param deadToAliveMax  maximum number of living cells that can be neighbors of a dead cell *
    *                        to allow reproduction
+   * @param gridType          type of grid used in simulation
    */
   public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int aliveToAliveMin, int aliveToAliveMax, int deadToAliveMin, int deadToAliveMax) {
+      int aliveToAliveMin, int aliveToAliveMax, int deadToAliveMin, int deadToAliveMax, String gridType) {
 
-    super(row, col, hoodType, stateList);
+    super(row, col, hoodType, stateList, gridType);
     this.aliveToAliveMin = aliveToAliveMin;
     this.aliveToAliveMax = aliveToAliveMax;
     this.deadToAliveMin = deadToAliveMin;
@@ -87,7 +88,7 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      List<Cell> neighbors = getNeighbors(currentCell);
+      List<Cell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
       int aliveNeighbors = countNeighborsInState(neighbors, ALIVE);
       if (currentCell.getCurrentState() == ALIVE) {
         handleAliveCell(currentCell, aliveNeighbors);

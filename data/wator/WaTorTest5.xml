@@ -14,7 +14,7 @@
     2 - shark
         -->
   <initial_states>1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</initial_states>
-  <neighborhood_type>cardinal</neighborhood_type>
+  <neighborhood_type>VonNeumann</neighborhood_type>
   <parameters>
     <fishAgeOfReproduction>1</fishAgeOfReproduction>
     <sharkAgeOfReproduction>9</sharkAgeOfReproduction>
@@ -28,7 +28,7 @@
   </state_colors>
   <language>English</language>
   <cell_shape>square</cell_shape>
-  <grid_edge_type>NONE</grid_edge_type>
+  <grid_edge_type>Normal</grid_edge_type>
   <random_configuration_by_total_states>
     <active>false</active>
   </random_configuration_by_total_states>

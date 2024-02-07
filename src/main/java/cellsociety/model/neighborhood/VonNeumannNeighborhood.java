@@ -11,7 +11,7 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class CardinalNeighborhood implements Neighborhood {
+public class VonNeumannNeighborhood implements Neighborhood {
 
 
   public static final int[] ROW_DELTAS = {1, -1, 0, 0};

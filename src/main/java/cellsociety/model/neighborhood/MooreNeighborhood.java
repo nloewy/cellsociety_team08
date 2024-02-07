@@ -11,7 +11,7 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class AdjacentNeighborhood implements Neighborhood {
+public class MooreNeighborhood implements Neighborhood {
 
   private static final int[] DELTA_X = {-1, 0, 1};
   private static final int[] DELTA_Y = {-1, 0, 1};

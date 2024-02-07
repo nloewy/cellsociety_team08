@@ -1,6 +1,7 @@
 package cellsociety.model.core;
 
 import cellsociety.Point;
+import cellsociety.model.neighborhood.Neighborhood;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -74,6 +75,33 @@ public class Grid<T extends Cell> {
    * @return T, the cell located at Point p, or null, if p is not a valid location
    */
 
+
+  /**
+   * Returns List of all cells that are considered "neighbors" to the parameter cell, given the
+   * definition of a neighborhood provided by instance variable myNeighborhood
+   *
+   * @param p, a location of cell object that we are trying to get the neighbors of
+   * @return List<T>, all neighboring cell objects to c
+   */
+  public List<T> getNeighbors(Point p, Neighborhood neighborhood) {
+    List<T> neighboringCells = new ArrayList<>();
+    List<Point> neighboringCoordinates = neighborhood.getNeighborCoordinates(p);
+    for (Point pNew : neighboringCoordinates) {
+      try {
+        T neighbor = getCellAtLocation(pNew);
+        neighboringCells.add(neighbor);
+      } catch (IndexOutOfBoundsException e) {
+      }
+    }
+    return neighboringCells;
+  }
+
+  public int getNumRows() {
+    return myNumRows;
+  }
+  public int getNumCols() {
+    return myNumCols;
+  }
   public T getCellAtLocation(Point p) {
     if (!inBounds(p)) {
       throw new IndexOutOfBoundsException();
