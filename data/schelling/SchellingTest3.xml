@@ -22,4 +22,10 @@
         State 1: agent x -- blue
         State 2: empty cell -- white
     </state_colors>
+    <language>English</language>
+    <cell_shape>square</cell_shape>
+    <grid_edge_type>NONE</grid_edge_type>
+    <random_configuration_by_total_states>
+        <active>false</active>
+    </random_configuration_by_total_states>
 </simulation>

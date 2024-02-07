@@ -6,6 +6,7 @@
     <author>Judy He</author>
     <file_description>This file configures the Spreading of Fire Simulation.</file_description>
     <display_description>The forest-fire model is a mathematical simulation of wildfires' self-organization. It operates on a grid with empty cells, trees, and burning cells. The key parameter is the ratio of planted trees to ignition probability, impacting wildfire patterns. In ecology, it illustrates how vegetation arrangement influences real-world wildfires.</display_description>
+<!--    at least width or height must be defined-->
     <width>10</width>
     <height>10</height>
     <!-- 0 - EMPTY (The cell is empty ground or a burnt tree containing no tree.)
@@ -23,4 +24,10 @@
         State 1: tree -- green
         State 2: burning tree -- orange-red
     </state_colors>
+    <language>English</language>
+    <cell_shape>square</cell_shape>
+    <grid_edge_type>NONE</grid_edge_type>
+    <random_configuration_by_total_states>
+        <active>false</active>
+    </random_configuration_by_total_states>
 </simulation>

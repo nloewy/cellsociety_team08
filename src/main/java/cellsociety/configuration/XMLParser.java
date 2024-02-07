@@ -1,8 +1,10 @@
 package cellsociety.configuration;
 
 
-import cellsociety.exception.InvalidGridDimensionException;
+import cellsociety.exception.InvalidFileFormatException;
+import cellsociety.exception.InvalidGridBoundsException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -36,6 +40,8 @@ import org.w3c.dom.NodeList;
 
 public class XMLParser {
 
+  public static final String DEFAULT_RESOURCE_PACKAGE = "browser.model.Errors";
+  private ResourceBundle resourceBundle;
   private String type; // simulation type
   private String title; // simulation title
   private String author; // author of configuration file
@@ -47,7 +53,10 @@ public class XMLParser {
   private String neighborhoodType; // adjacent or cardinal
   private List<Integer> states; // the state of each cell
   private Map<String, Double> parameters; // Hashmap mapping parameter names to their values
-
+  private String language;
+  private String cellShape;
+  private String gridEdgeType;
+  private Map<String, Double> randomConfigurationTotalStates;
 
   /**
    * Constructor for initializing the states ArrayList and parameters HashMap
@@ -55,6 +64,9 @@ public class XMLParser {
   public XMLParser() {
     states = new ArrayList<>();
     parameters = new HashMap<>();
+    language = "English";
+    // use resources for errors
+    resourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE+language);
   }
 
   /**
@@ -246,18 +258,28 @@ public class XMLParser {
   }
 
   /**
-   * Read an XML configuration file, initializing all attributes in the XMLParser Reference:
+   * Read an XML configuration file, initializing all attributes in the XMLParser
+   * References:
    * https://mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
+   * https://www.edankert.com/validate.html
    *
    * @param path, the path to the XML configuration file being read
+   * @throws InvalidFileFormatException, throw when the user loads a configuration file that has empty, badly formatted, or non-XML file,
+   * @throws InvalidGridBoundsException, throw when the user loads a configuration file that has cell locations specified outside the grid’s bounds
    */
-  public void readXML(String path) {
+  public void readXML(String path) throws InvalidFileFormatException, InvalidGridBoundsException {
     try {
       // create a new File object for the XML file
       File file = new File(path);
+      if (!getFileExtension(file.getName()).equals("xml")) {
+        throw new InvalidFileFormatException(String.format(resourceBundle.getString("InvalidFileType"), path));
+      }
 
       // create a new instance of document builder factory that allows for a document builder
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      // checking for well-formatted XML
+      dbf.setValidating(false);
+      dbf.setNamespaceAware(true);
 
       // create an instance of document builder to parse the XML file
       DocumentBuilder db = dbf.newDocumentBuilder();
@@ -266,6 +288,10 @@ public class XMLParser {
 
       // obtaining the simulation node containing all the configuration data
       Node simulationNode = doc.getElementsByTagName("simulation").item(0);
+      // check if file is empty
+      if (simulationNode == null) {
+        throw new InvalidFileFormatException(String.format(resourceBundle.getString("EmptyXMLFile"), path));
+      }
 
       // parse all configuration data
       Element eElement = (Element) simulationNode;
@@ -282,15 +308,35 @@ public class XMLParser {
       parseParameters(parametersNodeList);
 
       // Check if grid dimension is valid, throw exception otherwise
-      if (width * height != states.size()) {
-        throw new InvalidGridDimensionException(
-            "Invalid grid dimension: width * height != total number of states");
+      if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()) {
+        throw new InvalidGridBoundsException(String.format(resourceBundle.getString("InvalidGridBounds"), width, height, states.size()));
       }
 
-
-    } catch (Exception e) {
-      e.printStackTrace();
     }
+    catch (NullPointerException e) {
+      throw new InvalidFileFormatException(String.format(resourceBundle.getString("FileNotFound"), path), e);
+    }
+    catch (ParserConfigurationException e) {
+      throw new InvalidFileFormatException(String.format(resourceBundle.getString("ParserCreationError"), path), e);
+    }
+    catch (IOException e) {
+      throw new InvalidFileFormatException(String.format(resourceBundle.getString("IOError"), path), e);
+    }
+    catch (SAXException e) {
+      throw new InvalidFileFormatException(String.format(resourceBundle.getString("ParserError"), path), e);
+    }
+
+  }
+
+  /**
+   * Obtain a file's extension for checking whether it is an XML file
+   *
+   * @param fileName, name of file
+   * @return file extension
+   */
+  public String getFileExtension(String fileName) {
+    int dotIndex = fileName.lastIndexOf('.');
+    return fileName.substring(dotIndex + 1);
   }
 
   /**
