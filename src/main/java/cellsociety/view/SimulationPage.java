@@ -114,21 +114,15 @@ public class SimulationPage {
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
     board = new CellView[numRows][numCols];
-    int index = 0;
-
-    while (gridIterator.hasNext()) {
-      Cell c = gridIterator.next();
-      Point location = c.getLocation();
-      int state = c.getState().getCurrentStatus();
-      int col = (int) location.getCol();
-      int row = (int) location.getRow();
-      board[row][col] = initializeCellView(simulationType, state,
-          configDouble(GRID_WIDTH_KEY) / numCols,
-          configDouble(GRID_HEIGHT_KEY) / numRows);
-
-      grid.add(board[row][col].getCellGraphic(), col, row);
-      index++;
+    for(int row = 0; row < numRows; row++){
+      for(int col = 0; col < numCols; col++){
+        board[row][col] = initializeCellView(simulationType, 0,
+            configDouble(GRID_WIDTH_KEY) / numCols,
+            configDouble(GRID_HEIGHT_KEY) / numRows);
+        grid.add(board[row][col].getCellGraphic(), col, row);
+      }
     }
+    updateView(gridIterator);
 
     grid.setLayoutY(configDouble(GRID_START_Y_KEY));
     grid.setLayoutX(configDouble(GRID_START_X_KEY));
@@ -255,16 +249,16 @@ public class SimulationPage {
    *
    * @param buttonText a string of the text on the button
    * @param handler    an event handler that gets hooked on the button
-   * @param xPos       an integer of the x position of the button
-   * @param yPos       an integer of the y position of the button
+   * @param colPos       an integer of the x position of the button
+   * @param rowPos       an integer of the y position of the button
    * @return returns the button object
    */
-  private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int xPos,
-      int yPos) {
+  private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int colPos,
+      int rowPos) {
     Button ret = new Button(buttonText);
     ret.setOnAction(handler);
-    ret.setLayoutX(xPos);
-    ret.setLayoutY(yPos);
+    ret.setLayoutX(colPos);
+    ret.setLayoutY(rowPos);
     return ret;
   }
 
@@ -298,10 +292,9 @@ public class SimulationPage {
     while (gridIterator.hasNext()) {
       Cell c = gridIterator.next();
       Point location = c.getLocation();
-      int state = c.getState().getCurrentStatus();
       int col = (int) location.getCol();
       int row = (int) location.getRow();
-      board[row][col].updateState(state);
+      board[row][col].updateState(c.getState().getCurrentStatus());
     }
   }
 

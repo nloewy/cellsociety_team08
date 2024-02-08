@@ -39,6 +39,7 @@ public abstract class CellView extends Region {
     return rec;
   }
 
-  //TODO: add the r's to the gridpane not the cellviews, avoid extending the region because you don't want to add a bunch of unnecesary packages when extending.
+  //TODO: add the r's to the gridpane not the cellviews, avoid extending the region because you
+  // don't want to add a bunch of unnecesary packages when extending.
 }
 

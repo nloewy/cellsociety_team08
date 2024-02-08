@@ -242,6 +242,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
               updateShark(currentCell);
               break;
             }
+            default:
+              break; //TODO: check exception
           }
         }
       }

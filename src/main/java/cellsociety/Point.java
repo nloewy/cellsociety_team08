@@ -34,13 +34,13 @@ public class Point {
   /**
    * Creates a new point object that is a translation of a current point object
    *
-   * @param dRow, translation in row direction
-   * @param dCol, translation in col direction
+   * @param deltaRow, translation in row direction
+   * @param deltaCol, translation in col direction
    * @return Point, a *new* point that is the original point, translated.
    */
-  public Point translate(double dRow, double dCol) {
-    double newRow = myRow + dRow;
-    double newCol = myCol + dCol;
+  public Point translate(double deltaRow, double deltaCol) {
+    double newRow = myRow + deltaRow;
+    double newCol = myCol + deltaCol;
     return new Point(newRow, newCol);
   }
 

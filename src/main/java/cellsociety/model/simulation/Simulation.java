@@ -52,18 +52,18 @@ public abstract class Simulation<T extends Cell> {
   public void initializeMyGrid(int row, int col, List<Integer> stateList, String cellShape) {
     List<Cell> cellList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
-      Cell newCell = switch(cellShape) {
-      case "square"-> new RectangleCell(stateList.get(i), i / col, i % col);
-      case "hexagon"-> new HexagonCell(stateList.get(i), i / col, i % col);
-      default-> throw new InvalidValueException("Cell Shape Does Not Exist");
+      Cell newCell = switch (cellShape) {
+        case "square" -> new RectangleCell(stateList.get(i), i / col, i % col);
+        case "hexagon" -> new HexagonCell(stateList.get(i), i / col, i % col);
+        default -> throw new InvalidValueException("Cell Shape Does Not Exist");
       };
       cellList.add(newCell);
     }
 
     myGrid = switch (myGridType) {
-      case "Normal"-> new Grid(row, col, cellList);
-      case "Warped"-> new WarpedGrid(row, col, cellList);
-      default-> throw new InvalidValueException("Edge Type Does Not Exist");
+      case "Normal" -> new Grid(row, col, cellList);
+      case "Warped" -> new WarpedGrid(row, col, cellList);
+      default -> throw new InvalidValueException("Edge Type Does Not Exist");
     };
   }
 

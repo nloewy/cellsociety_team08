@@ -36,9 +36,9 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
    *                        avoid death by overpopulation
    * @param deadToAliveMin  minimum number of living cells that can be neighbors of a dead cell to
    *                        allow reproduction
-   * @param deadToAliveMax  maximum number of living cells that can be neighbors of a dead cell *
-   *                        to allow reproduction
-   * @param gridType          type of grid used in simulation
+   * @param deadToAliveMax  maximum number of living cells that can be neighbors of a dead cell * to
+   *                        allow reproduction
+   * @param gridType        type of grid used in simulation
    */
   public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       GameOfLifeRecord r) {
@@ -88,15 +88,16 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
+      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
       int aliveNeighbors = countNeighborsInState(neighbors, ALIVE);
       System.out.print("Neighbors of " + currentCell.getLocation().toString() + " :");
       for (Cell c : neighbors) {
         System.out.print(c.getLocation().toString() + " ");
       }
       System.out.println();
-      System.out.println("Alive Neighbors of " + currentCell.getLocation().toString() + "  : " + aliveNeighbors);
-      if (currentCell.getState().getCurrentStatus()  == ALIVE) {
+      System.out.println(
+          "Alive Neighbors of " + currentCell.getLocation().toString() + "  : " + aliveNeighbors);
+      if (currentCell.getState().getCurrentStatus() == ALIVE) {
         handleAliveCell(currentCell, aliveNeighbors);
       }
       if (currentCell.getState().getCurrentStatus() == DEAD) {
