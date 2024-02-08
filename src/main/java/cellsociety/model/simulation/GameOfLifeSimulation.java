@@ -40,9 +40,8 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
    * @param gridType          type of grid used in simulation
    */
   public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int aliveToAliveMin, int aliveToAliveMax, int deadToAliveMin, int deadToAliveMax, String gridType) {
-
-    super(row, col, hoodType, stateList, gridType);
+      int aliveToAliveMin, int aliveToAliveMax, int deadToAliveMin, int deadToAliveMax, String gridType, String cellShape) {
+    super(row, col, hoodType, stateList, gridType, cellShape);
     this.aliveToAliveMin = aliveToAliveMin;
     this.aliveToAliveMax = aliveToAliveMax;
     this.deadToAliveMin = deadToAliveMin;

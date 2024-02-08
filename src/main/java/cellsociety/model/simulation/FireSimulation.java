@@ -24,6 +24,7 @@ public class FireSimulation extends SimpleCellSimulation {
   private final double probTreeCreated;
   private final int neighborsToIgnite;
 
+
   /**
    * Initializes a FireSimulation object
    *
@@ -39,8 +40,8 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param gridType          type of grid used in simulation
    */
   public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int neighborsToIgnite, double probTreeIgnites, double probTreeCreated, String gridType) {
-    super(row, col, hoodType, stateList, gridType);
+      int neighborsToIgnite, double probTreeIgnites, double probTreeCreated, String gridType, String cellShape) {
+    super(row, col, hoodType, stateList, gridType, cellShape);
     this.neighborsToIgnite = neighborsToIgnite;
     this.probTreeIgnites = probTreeIgnites;
     this.probTreeCreated = probTreeCreated;
