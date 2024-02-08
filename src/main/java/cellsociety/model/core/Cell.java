@@ -68,6 +68,9 @@ public class Cell {
     return myVertices;
   }
 
+  public void addVertex(Point p){
+    myVertices.add(p);
+  }
   public Point getCentroid(){
     double rowSum = 0;
     double colSum = 0;

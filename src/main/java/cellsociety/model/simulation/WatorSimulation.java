@@ -43,8 +43,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
   public WatorSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       int fishAgeOfReproduction, int sharkAgeOfReproduction, int initialEnergy, int energyBoost,
       String gridType, String cellShape) {
-    //super(row, col, hoodType, stateList, gridType, cellShape, (ind -> new WatorCell(stateList.get(ind),
-     //   ind / col, ind % col, initialEnergy)));
+    super(row, col, hoodType, stateList, gridType, cellShape, (ind -> new WatorCell(stateList.get(ind),
+        ind / col, ind % col, initialEnergy)));
     this.fishAgeOfReproduction = fishAgeOfReproduction;
     this.sharkAgeOfReproduction = sharkAgeOfReproduction;
     this.energyBoost = energyBoost;
@@ -61,7 +61,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
   private List<WatorCell> getCellsOfState(List<WatorCell> cellList, int state) {
     List<WatorCell> ret = new ArrayList<>();
     for (WatorCell cell : cellList) {
-      if (cell.getState().getCurrentStatus() == state) {
+      if (cell.getCurrentState() == state) {
         ret.add(cell);
       }
     }
@@ -105,7 +105,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param nextCell    the cell the shark is attempting to move to
    */
   private void handleSharkMoveToEmptySpace(WatorCell currentCell, WatorCell nextCell) {
-    if (nextCell.getState().getNextStatus() == SHARK) { //another shark is already moving to nextCell
+    if (nextCell.getNextState() == SHARK) { //another shark is already moving to nextCell
       currentCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1,
           currentCell.getAge() + 1);
     } else {
@@ -128,7 +128,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    *                    move
    */
   private void handleSharkEatFish(WatorCell currentCell, WatorCell nextCell) {
-    if (nextCell.getState().getNextStatus()  == SHARK || nextCell.getState().getNextStatus() == FISH) {
+    if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
       //another shark or fish is already moving to nextCell
       currentCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1,
           currentCell.getAge() + 1);
@@ -167,16 +167,14 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param currentCell the fish cell trying to transition
    */
   private void updateFish(WatorCell currentCell) {
-    //List<WatorCell> neighbors = myGrid.getNeighbors(currentCell.getLocation(), myNeighborhood);
-    List<WatorCell> neighbors = new ArrayList<>();
-
+    List<WatorCell> neighbors = myGrid.getNeighbors(currentCell.getLocation(), myNeighborhood);
     List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
     Collections.shuffle(emptyNeighbors);
     if (emptyNeighbors.isEmpty()) {
       increaseFishAge(currentCell);
     } else {
       WatorCell nextCell = emptyNeighbors.get(0);
-      if (nextCell.getState().getNextStatus()  == SHARK || nextCell.getState().getNextStatus() == FISH) {
+      if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
         increaseFishAge(currentCell);
       } else {
         if (currentCell.getAge() < fishAgeOfReproduction) {
@@ -196,8 +194,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param currentCell the fish cell trying to transition
    */
   private void updateShark(WatorCell currentCell) {
-    List<WatorCell> neighbors = new ArrayList<>();
-    //List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
+    List<WatorCell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
     List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
     List<WatorCell> fishNeighbors = getCellsOfState(neighbors, FISH);
 
@@ -228,8 +225,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
       Iterator<WatorCell> gridIterator = getIterator();
       while (gridIterator.hasNext()) {
         WatorCell currentCell = gridIterator.next();
-        if (currentCell.getState().getNextStatus()  == Cell.PLACEHOLDER &&
-            currentCell.getState().getCurrentStatus() == cellToUpdate) {
+        if (currentCell.getNextState() == Cell.PLACEHOLDER &&
+            currentCell.getCurrentState() == cellToUpdate) {
           switch (cellToUpdate) {
             case EMPTY: {
               currentCell.setNextState(EMPTY);

@@ -7,9 +7,9 @@
   <file_description>This file configures the Game of Life simulation.</file_description>
   <display_description>The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970. Its evolution is determined by its initial state, requiring no further input. It is Turing complete and can simulate a universal constructor or any other Turing machine.</display_description>
   <width>4</width>
-  <height>4</height>
+  <height>5</height>
   <!-- 0 - DEAD / 1 - ALIVE -->
-  <initial_states>1 1 1 0 1 0 0 0 0 0 1 1 1 1 1 0</initial_states>
+  <initial_states>1 1 1 0 1 0 0 0 0 0 1 1 1 1 1 0 1 0 0 0</initial_states>
   <neighborhood_type>VonNeumann</neighborhood_type>
   <parameters>
     <aliveToAliveMin>2.0</aliveToAliveMin>
