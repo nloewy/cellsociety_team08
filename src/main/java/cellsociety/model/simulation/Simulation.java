@@ -3,6 +3,8 @@ package cellsociety.model.simulation;
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
+import cellsociety.model.core.HexagonCell;
+import cellsociety.model.core.RectangleCell;
 import cellsociety.model.core.WarpedGrid;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.function.Function;
 public abstract class Simulation<T extends Cell> {
 
   protected Neighborhood myNeighborhood;
-  protected Grid<T> myGrid;
+  protected Grid myGrid;
 
   private Function<Integer, T> myCellInitializer;
   private int myCols;
@@ -41,29 +43,32 @@ public abstract class Simulation<T extends Cell> {
    * @param gridType          type of grid used in simulation
    */
 
-  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType, String cellShape,
-      Function<Integer, T> cellInitializer) {
-
-    myCellInitializer = cellInitializer;
+  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType, String cellShape) {
+    List<Cell> cellList = new ArrayList<>();
+    if(cellShape.equals("square")){
+      for (int i = 0; i < stateList.size(); i++) {
+        cellList.add(new RectangleCell(stateList.get(i), i / col, i % col));
+      }
+    }
+    else if(cellShape.equals("hexagon")){
+      for (int i = 0; i < stateList.size(); i++) {
+        cellList.add(new HexagonCell(stateList.get(i), i / col, i % col));
+      }
+    }
     myNeighborhood = hoodType;
     myCols = col;
     myGridType = gridType;
-    this.cellShape = cellShape;
-    initializeMyGrid(row, col, stateList);
+    initializeMyGrid(row, col, cellList);
   }
 
-  public void initializeMyGrid(int row, int col, List<Integer> stateList) {
-    List<T> cellList = new ArrayList<>();
-    for (int i = 0; i < stateList.size(); i++) {
-      cellList.add(myCellInitializer.apply(i));
-    }
+  public void initializeMyGrid(int row, int col, List<Cell> cellList) {
     switch(myGridType) {
       case "Normal": {
-        myGrid = new Grid<>(row, col, cellList);
+        myGrid = new Grid(row, col, cellList);
         break;
       }
       case "Warped": {
-        myGrid = new WarpedGrid<>(row, col, cellList);
+        myGrid = new WarpedGrid(row, col, cellList);
         break;
       }
     }
@@ -81,9 +86,9 @@ public abstract class Simulation<T extends Cell> {
    */
   public void processUpdate() {
     printForDebugging();
-    Iterator<T> iterator = myGrid.iterator();
+    Iterator<Cell> iterator = myGrid.iterator();
     while (iterator.hasNext()) {
-      T cell = iterator.next();
+      Cell cell = iterator.next();
       cell.updateStates();
     }
   }
@@ -111,7 +116,7 @@ public abstract class Simulation<T extends Cell> {
     return myNeighborhood;
   }
 
-  public Grid<T> getGrid(){
+  public Grid getGrid(){
     return myGrid;
   }
   /**

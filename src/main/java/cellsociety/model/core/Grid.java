@@ -14,12 +14,12 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class Grid<T extends Cell> {
+public class Grid {
 
 
   private int myNumRows;
   private int myNumCols;
-  private List<T> myGrid;
+  private List<Cell> myGrid;
 
   /**
    * Constructs a cell object
@@ -28,7 +28,7 @@ public class Grid<T extends Cell> {
    * @param cols      is the number of columns in the grid
    * @param cellList, a list of the cells, by rows, then cols
    */
-  public Grid(int rows, int cols, List<T> cellList) {
+  public Grid(int rows, int cols, List<Cell> cellList) {
     myNumRows = rows;
     myNumCols = cols;
     myGrid = new ArrayList<>(cellList);
@@ -83,12 +83,12 @@ public class Grid<T extends Cell> {
    * @param p, a location of cell object that we are trying to get the neighbors of
    * @return List<T>, all neighboring cell objects to c
    */
-  public List<T> getNeighbors(Point p, Neighborhood neighborhood) {
-    List<T> neighboringCells = new ArrayList<>();
+  public List<Cell> getNeighbors(Point p, Neighborhood neighborhood) {
+    List<Cell> neighboringCells = new ArrayList<>();
     List<Point> neighboringCoordinates = neighborhood.getNeighborCoordinates(p);
     for (Point pNew : neighboringCoordinates) {
       try {
-        T neighbor = getCellAtLocation(pNew);
+        Cell neighbor = getCellAtLocation(pNew);
         neighboringCells.add(neighbor);
       } catch (IndexOutOfBoundsException e) {
       }
@@ -102,7 +102,7 @@ public class Grid<T extends Cell> {
   public int getNumCols() {
     return myNumCols;
   }
-  public T getCellAtLocation(Point p) {
+  public Cell getCellAtLocation(Point p) {
     if (!inBounds(p)) {
       throw new IndexOutOfBoundsException();
     }
@@ -115,7 +115,7 @@ public class Grid<T extends Cell> {
    *
    * @return Iterator object that can iterate through my grid
    */
-  public Iterator<T> iterator() {
+  public Iterator iterator() {
     return myGrid.iterator();
   }
 }

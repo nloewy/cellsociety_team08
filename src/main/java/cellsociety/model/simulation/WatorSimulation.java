@@ -43,8 +43,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
   public WatorSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       int fishAgeOfReproduction, int sharkAgeOfReproduction, int initialEnergy, int energyBoost,
       String gridType, String cellShape) {
-    super(row, col, hoodType, stateList, gridType, cellShape, (ind -> new WatorCell(stateList.get(ind),
-        ind / col, ind % col, initialEnergy)));
+    //super(row, col, hoodType, stateList, gridType, cellShape, (ind -> new WatorCell(stateList.get(ind),
+     //   ind / col, ind % col, initialEnergy)));
     this.fishAgeOfReproduction = fishAgeOfReproduction;
     this.sharkAgeOfReproduction = sharkAgeOfReproduction;
     this.energyBoost = energyBoost;
@@ -167,7 +167,9 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param currentCell the fish cell trying to transition
    */
   private void updateFish(WatorCell currentCell) {
-    List<WatorCell> neighbors = myGrid.getNeighbors(currentCell.getLocation(), myNeighborhood);
+    //List<WatorCell> neighbors = myGrid.getNeighbors(currentCell.getLocation(), myNeighborhood);
+    List<WatorCell> neighbors = new ArrayList<>();
+
     List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
     Collections.shuffle(emptyNeighbors);
     if (emptyNeighbors.isEmpty()) {
@@ -194,7 +196,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param currentCell the fish cell trying to transition
    */
   private void updateShark(WatorCell currentCell) {
-    List<WatorCell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
+    List<WatorCell> neighbors = new ArrayList<>();
+   // List<WatorCell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
     List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
     List<WatorCell> fishNeighbors = getCellsOfState(neighbors, FISH);
 

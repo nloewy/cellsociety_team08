@@ -4,6 +4,7 @@ import static java.lang.Math.random;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param currentCell the transitioning cell object
    */
   private void handleTreeCell(Cell currentCell) {
+
     List<Cell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
     int burningNeighbors = countNeighborsInState(neighbors, BURNING);
     if (burningNeighbors >= neighborsToIgnite || random() <= probTreeIgnites) {
