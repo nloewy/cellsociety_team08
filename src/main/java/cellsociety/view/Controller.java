@@ -153,7 +153,8 @@ public class Controller {
     Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
     System.out.println(neighborhoodTypeString);
     loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType,
-        xmlParser.getStates(), xmlParser.getType(), xmlParser.getGridEdgeType());
+        xmlParser.getStates(), xmlParser.getType(), xmlParser.getGridEdgeType(),
+        xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
     loadSimulationScene(xmlParser.getType(), xmlParser.getTitle(), xmlParser.getHeight(),
         xmlParser.getWidth());
@@ -186,7 +187,7 @@ public class Controller {
    * @param simulationType   a string that specifies the simulation type
    */
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
-      List<Integer> stateList, String simulationType, String gridType) {
+      List<Integer> stateList, String simulationType, String gridType, String cellShape) {
     xmlParser.getParameters().forEach((key, value) -> System.out.println(key + ": " + value));
 
     simulationRunning = false;
@@ -195,20 +196,20 @@ public class Controller {
           xmlParser.getParameters().get("aliveToAliveMin").intValue(),
           xmlParser.getParameters().get("deadToAliveMax").intValue(),
           xmlParser.getParameters().get("aliveToAliveMax").intValue(),
-          xmlParser.getParameters().get("deadToAliveMin").intValue(), gridType);
+          xmlParser.getParameters().get("deadToAliveMin").intValue(), gridType, cellShape);
       case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList,
-          xmlParser.getParameters().get("percolatedNeighbors").intValue(), gridType);
+          xmlParser.getParameters().get("percolatedNeighbors").intValue(), gridType, cellShape);
       case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList,
           xmlParser.getParameters().get("neighborsToIgnite").intValue(),
           xmlParser.getParameters().get("probTreeIgnites"),
-          xmlParser.getParameters().get("probTreeCreated"),gridType);
+          xmlParser.getParameters().get("probTreeCreated"),gridType, cellShape);
       case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList,
-          xmlParser.getParameters().get("proportionNeededToStay"),gridType);
+          xmlParser.getParameters().get("proportionNeededToStay"),gridType, cellShape);
       case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
           xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
           xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
           xmlParser.getParameters().get("initialEnergy").intValue(),
-          xmlParser.getParameters().get("energyBoost").intValue(),gridType);
+          xmlParser.getParameters().get("energyBoost").intValue(),gridType, cellShape);
       default -> null;
     };
   }

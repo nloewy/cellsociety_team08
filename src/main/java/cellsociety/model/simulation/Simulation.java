@@ -26,6 +26,7 @@ public abstract class Simulation<T extends Cell> {
   private int myCols;
 
   private String myGridType;
+  private String cellShape;
 
   public Simulation() {
   }
@@ -40,13 +41,14 @@ public abstract class Simulation<T extends Cell> {
    * @param gridType          type of grid used in simulation
    */
 
-  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType,
+  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType, String cellShape,
       Function<Integer, T> cellInitializer) {
 
     myCellInitializer = cellInitializer;
     myNeighborhood = hoodType;
     myCols = col;
     myGridType = gridType;
+    this.cellShape = cellShape;
     initializeMyGrid(row, col, stateList);
   }
 

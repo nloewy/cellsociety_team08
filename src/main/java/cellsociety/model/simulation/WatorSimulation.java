@@ -42,8 +42,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
    */
   public WatorSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       int fishAgeOfReproduction, int sharkAgeOfReproduction, int initialEnergy, int energyBoost,
-      String gridType) {
-    super(row, col, hoodType, stateList, gridType, (ind -> new WatorCell(stateList.get(ind),
+      String gridType, String cellShape) {
+    super(row, col, hoodType, stateList, gridType, cellShape, (ind -> new WatorCell(stateList.get(ind),
         ind / col, ind % col, initialEnergy)));
     this.fishAgeOfReproduction = fishAgeOfReproduction;
     this.sharkAgeOfReproduction = sharkAgeOfReproduction;
