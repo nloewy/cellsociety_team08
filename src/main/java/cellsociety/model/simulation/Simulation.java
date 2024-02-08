@@ -1,6 +1,5 @@
 package cellsociety.model.simulation;
 
-import cellsociety.Point;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
 import cellsociety.model.core.HexagonCell;
@@ -10,7 +9,6 @@ import cellsociety.model.neighborhood.Neighborhood;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
@@ -23,12 +21,7 @@ public abstract class Simulation<T extends Cell> {
 
   protected Neighborhood myNeighborhood;
   protected Grid myGrid;
-
-  private Function<Integer, T> myCellInitializer;
-  private int myCols;
-
   private String myGridType;
-  private String cellShape;
 
   public Simulation() {
   }
@@ -47,7 +40,6 @@ public abstract class Simulation<T extends Cell> {
       String gridType, String cellShape) {
 
     myNeighborhood = hoodType;
-    myCols = col;
     myGridType = gridType;
     initializeMyGrid(row, col, stateList, cellShape);
   }
