@@ -16,13 +16,7 @@ import java.util.List;
 
 public class MooreNeighborhood implements Neighborhood {
 
-  /**
-   * Retrieves all points that either shares an edge or a vertex with the central point
-   *
-   * @param p, a central point that we are aiming to get the neighbors of
-   * @return List<Point>, a list of all points that could potentially represent cells that share a
-   * an edge or a vertex with central point p, should those points be valid indices in the grid.
-   */
+
   public List<Cell> getNeighbors(Grid grid, Cell cell) {
     List<Cell> neighbors = new ArrayList<>();
     Iterator<Cell> iter = grid.iterator();
