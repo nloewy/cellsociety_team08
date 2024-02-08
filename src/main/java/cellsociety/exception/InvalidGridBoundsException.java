@@ -9,7 +9,7 @@ package cellsociety.exception;
 public class InvalidGridBoundsException extends RuntimeException {
 
   /**
-   * Constructor for initializing an InvalidGridBoundsException given an error message
+   * Initializes an InvalidGridBoundsException given an error message
    *
    * @param message, message to be displayed when exception is thrown
    */
@@ -18,7 +18,7 @@ public class InvalidGridBoundsException extends RuntimeException {
   }
 
   /**
-   * Constructor for initializing an InvalidGridBoundsException based on a caught exception with a different message.
+   * Initializes an InvalidGridBoundsException based on a caught exception with a different message.
    *
    * @param message, message to be displayed when exception is thrown
    * @param cause, the other exception that caused this exception

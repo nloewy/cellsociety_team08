@@ -1,6 +1,5 @@
 package cellsociety.configuration;
 
-
 import cellsociety.exception.InputMissingParametersException;
 import cellsociety.exception.InvalidCellStateException;
 import cellsociety.exception.InvalidFileFormatException;
@@ -37,8 +36,10 @@ import org.xml.sax.SAXException;
 
 
 /**
- * The XMLParser reads and stores all data from a given XML configuration file. Using on the values
- * stored in its attributes, the XMLParser may also write and save a new XML configuration file.
+ * The XMLParser reads and stores all data from a given XML configuration file, handling all
+ * potential error by throwing exceptions, calculating certain values or assigning default values.
+ * Using the values stored in its attributes, the XMLParser may also write and save a new XML
+ * configuration file.
  *
  * @author Judy He
  */
@@ -248,14 +249,43 @@ public class XMLParser {
    */
   public void setNeighborhoodType(String neighborhoodType) {
     this.neighborhoodType = neighborhoodType;
+
   }
 
+  /**
+   * Retrieves cellShape instance variable
+   *
+   * @return cell shape, the shape of the cells in the given simulation
+   */
   public String getCellShape() {
     return cellShape;
   }
 
+  /**
+   * Updates cellShape instance variable
+   *
+   * @param cellShape, the shape of the cells in the given simulation
+   */
+  public void setCellShape(String cellShape) {
+    this.cellShape = cellShape;
+  }
+
+  /**
+   * Retrieves gridEdgeType instance variable
+   *
+   * @return gridEdgeType, the grid edge type used by the given simulation
+   */
   public String getGridEdgeType() {
     return gridEdgeType;
+  }
+
+  /**
+   * Updates gridEdgeType instance variable
+   *
+   * @param gridEdgeType, the grid edge type used by the given simulation
+   */
+  public void setGridEdgeType(String gridEdgeType) {
+    this.gridEdgeType = gridEdgeType;
   }
 
   /**
@@ -272,12 +302,28 @@ public class XMLParser {
    *
    * @param states, an ArrayList keeping track of the state of each cell in the simulation.
    */
-  public void setStates(ArrayList<Integer> states) {
+  public void setStates(List<Integer> states) {
     this.states = states;
   }
 
+  /**
+   * Retrieves stateColor instance variable
+   *
+   * @return stateColor, a description for which color corresponds to which color for the given
+   * simulation
+   */
   public String getStateColor() {
     return stateColor;
+  }
+
+  /**
+   * Update stateColor instance variable
+   *
+   * @param stateColor, a description for which color corresponds to which color for the given
+   *                    simulation
+   */
+  public void setStateColor(String stateColor) {
+    this.stateColor = stateColor;
   }
 
   /**
@@ -298,42 +344,58 @@ public class XMLParser {
     this.parameters = parameters;
   }
 
+  /**
+   * Retrieve resource bundle containing the error messages in given language
+   *
+   * @return ResourceBundle, the resource bundle used by the current simulation
+   */
   public ResourceBundle getResourceBundle() {
     return resourceBundle;
   }
 
+  /**
+   * Updates resourceBundle instance variable
+   *
+   * @param resourceBundle, the resource bundle used by the current simulation
+   */
   public void setResourceBundle(ResourceBundle resourceBundle) {
     this.resourceBundle = resourceBundle;
   }
 
-  public void setStateColor(String stateColor) {
-    this.stateColor = stateColor;
-  }
-
-  public void setStates(List<Integer> states) {
-    this.states = states;
-  }
-
+  /**
+   * Retrieves language instance variable
+   *
+   * @return language, the language the given simulation is in
+   */
   public String getLanguage() {
     return language;
   }
 
+  /**
+   * Updates language instance variable
+   *
+   * @param language, the language the given simulation is in
+   */
   public void setLanguage(String language) {
     this.language = language;
   }
 
-  public void setCellShape(String cellShape) {
-    this.cellShape = cellShape;
-  }
-
-  public void setGridEdgeType(String gridEdgeType) {
-    this.gridEdgeType = gridEdgeType;
-  }
-
+  /**
+   * Retrieves randomConfigurationTotalStates instance variable
+   *
+   * @return randomConfigurationTotalStates, a Hashmap mapping a state to the number of cells with
+   * that state in the given simulation
+   */
   public Map<String, Integer> getRandomConfigurationTotalStates() {
     return randomConfigurationTotalStates;
   }
 
+  /**
+   * Updates randomConfigurationTotalStates instance variable
+   *
+   * @param randomConfigurationTotalStates, a Hashmap mapping a state to the number of cells with
+   *                                        that state in the given simulation
+   */
   public void setRandomConfigurationTotalStates(
       Map<String, Integer> randomConfigurationTotalStates) {
     this.randomConfigurationTotalStates = randomConfigurationTotalStates;
@@ -341,9 +403,6 @@ public class XMLParser {
 
   /**
    * Read an XML configuration file, initializing all attributes in the XMLParser
-   * <p>
-   * References: https://mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
-   * https://www.edankert.com/validate.html
    *
    * @param path, the path to the XML configuration file being read
    * @throws InvalidFileFormatException,      when the user loads a configuration file that has
@@ -656,8 +715,6 @@ public class XMLParser {
   /**
    * Create a new XML file, saving all information and the current cell states of the simulation
    * currently being run.
-   * <p>
-   * Reference: https://mkyong.com/java/how-to-create-xml-file-in-java-dom/
    *
    * @param filename,   name of the new XML file
    * @param folderName, folder in which the new XML file will be stored
