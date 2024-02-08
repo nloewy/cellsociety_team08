@@ -89,10 +89,16 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
       Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
       int aliveNeighbors = countNeighborsInState(neighbors, ALIVE);
-      if (currentCell.getCurrentState() == ALIVE) {
+      System.out.print("Neighbors of " + currentCell.getLocation().toString() + " :");
+      for (Cell c : neighbors) {
+        System.out.print(c.getLocation().toString() + " ");
+      }
+      System.out.println();
+      System.out.println("Alive Neighbors of " + currentCell.getLocation().toString() + "  : " + aliveNeighbors);
+      if (currentCell.getState().getCurrentStatus()  == ALIVE) {
         handleAliveCell(currentCell, aliveNeighbors);
       }
-      if (currentCell.getCurrentState() == DEAD) {
+      if (currentCell.getState().getCurrentStatus() == DEAD) {
         handleDeadCell(currentCell, aliveNeighbors);
       }
     }

@@ -1,6 +1,5 @@
 package cellsociety.model.simulation;
 
-import cellsociety.Point;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
 import cellsociety.model.core.HexagonCell;
@@ -10,7 +9,6 @@ import cellsociety.model.neighborhood.Neighborhood;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
@@ -23,12 +21,7 @@ public abstract class Simulation<T extends Cell> {
 
   protected Neighborhood myNeighborhood;
   protected Grid myGrid;
-
-  private Function<Integer, T> myCellInitializer;
-  private int myCols;
-
   private String myGridType;
-  private String cellShape;
 
   public Simulation() {
   }
@@ -40,30 +33,29 @@ public abstract class Simulation<T extends Cell> {
    * @param col,       the number of columns in the 2-dimensional grid
    * @param hoodType,  the definition of neighbors
    * @param stateList, a list of the integer representation of each cells state, by rows, then cols
-   * @param gridType          type of grid used in simulation
+   * @param gridType   type of grid used in simulation
    */
 
-  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType, String cellShape) {
+  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
+      String gridType, String cellShape) {
 
     myNeighborhood = hoodType;
-    myCols = col;
     myGridType = gridType;
     initializeMyGrid(row, col, stateList, cellShape);
   }
 
   public void initializeMyGrid(int row, int col, List<Integer> stateList, String cellShape) {
     List<Cell> cellList = new ArrayList<>();
-    if(cellShape.equals("square")){
+    if (cellShape.equals("square")) {
       for (int i = 0; i < stateList.size(); i++) {
         cellList.add(new RectangleCell(stateList.get(i), i / col, i % col));
       }
-    }
-    else if(cellShape.equals("hexagon")){
+    } else if (cellShape.equals("hexagon")) {
       for (int i = 0; i < stateList.size(); i++) {
         cellList.add(new HexagonCell(stateList.get(i), i / col, i % col));
       }
     }
-    switch(myGridType) {
+    switch (myGridType) {
       case "Normal": {
         myGrid = new Grid(row, col, cellList);
         break;
@@ -105,20 +97,21 @@ public abstract class Simulation<T extends Cell> {
   public int countNeighborsInState(List<T> neighbors, int state) {
     int count = 0;
     for (T c : neighbors) {
-      if (c.getCurrentState() == state) {
+      if (c.getState().getCurrentStatus() == state) {
         count++;
       }
     }
     return count;
   }
 
-  public Neighborhood getNeighborhood(){
+  public Neighborhood getNeighborhood() {
     return myNeighborhood;
   }
 
-  public Grid getGrid(){
+  public Grid getGrid() {
     return myGrid;
   }
+
   /**
    * Retrieves the Grid's object that can access the grid of cells while hiding the Data Structure
    * used to implement it.

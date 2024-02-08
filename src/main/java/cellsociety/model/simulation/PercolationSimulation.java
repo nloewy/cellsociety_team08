@@ -30,7 +30,7 @@ public class PercolationSimulation extends SimpleCellSimulation {
    *                            then cols
    * @param percolatedNeighbors minimum number of percolated neighbors an open cell must have for it
    *                            to percolate
-   * @param gridType          type of grid used in simulation
+   * @param gridType            type of grid used in simulation
    */
   public PercolationSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       int percolatedNeighbors, String gridType, String cellShape) {
@@ -64,11 +64,11 @@ public class PercolationSimulation extends SimpleCellSimulation {
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
-      if (currentCell.getCurrentState() == OPEN) {
+      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
+      if (currentCell.getState().getCurrentStatus() == OPEN) {
         handleOpenCell(currentCell, neighbors);
       } else {
-        currentCell.setNextState(currentCell.getCurrentState());
+        currentCell.setNextState(currentCell.getState().getCurrentStatus());
       }
     }
   }

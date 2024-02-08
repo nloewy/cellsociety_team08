@@ -18,6 +18,9 @@ This project implements a cellular automata simulator.
 ### Attributions
 
  * Resources used for learning (including AI assistance)
+   * Reading XML file: https://mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
+   * Check for empty/badly formatted XML file: https://www.edankert.com/validate.html
+   * Writing XML file: https://mkyong.com/java/how-to-create-xml-file-in-java-dom/
  
  * Resources used directly (including AI assistance)
 

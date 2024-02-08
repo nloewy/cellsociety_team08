@@ -1,25 +1,27 @@
 package cellsociety.model.core;
 
 import cellsociety.Point;
-import cellsociety.model.neighborhood.Neighborhood;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WarpedGrid extends Grid {
 
   public WarpedGrid(int rows, int cols, List<Cell> cellList) {
-    super(rows,cols,cellList);
+    super(rows, cols, cellList);
   }
 
 
-
   @Override
-  public boolean containsVertex(Point p, List<Point> vertices) {
-    if (super.containsVertex(p, vertices)){
+  public boolean containsVertex(Point vtx, List<Point> vertices) {
+    if (super.containsVertex(vtx, vertices)) {
       return true;
     }
-    Point pNew = new Point((p.getX()+getNumCols())%getNumCols(),
-        (p.getY()+getNumRows())%getNumRows());
-    return super.containsVertex(pNew, vertices);
+    final double[][] translations = {{getNumRows(), vtx.getColOffset()}, {-getNumRows(),
+        vtx.getColOffset()}, {0, getNumCols()}, {0, -getNumCols()}};
+    for (int i = 0; i < translations.length; i++) {
+      if (super.containsVertex(vtx.translate(translations[i][0], translations[i][1]), vertices)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

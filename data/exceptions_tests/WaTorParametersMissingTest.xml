@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
+<simulation>
+  <type>Wator</type>
+  <title>WaTor Simulation</title>
+  <author>Judy He</author>
+  <file_description>This file configures the WaTor Simulation.</file_description>
+  <display_description>Wator is a simulation based on a discrete model of predator-prey interaction. It was originally described by Alexander K. Dewdney in the Scientific American magazine. It simulates the hypothetical toroidal Planet Wa-Tor (Water Torus) whose surface is entirely covered with water, occupied by two species: fish and sharks. The sharks are the predators that eat the fish. Fish move randomly, reproduce according to a certain rate, lives on a never ending supply of plankton, and die if eaten by shark; while sharks move randomly, lose energy by moving, and gain energy by eating fish, and spawn offspring if energy is sufficient. </display_description>
+  <width>10</width>
+  <height>10</height>
+  <!--
+    0 - empty
+    1 - fish
+    2 - shark
+        -->
+  <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0</initial_states>
+  <neighborhood_type>VonNeumann</neighborhood_type>
+<!--  Missing 3 out of 4 parameters-->
+  <parameters>
+    <fishAgeOfReproduction></fishAgeOfReproduction>
+    <sharkAgeOfReproduction></sharkAgeOfReproduction>
+    <energyBoost></energyBoost>
+    <initialEnergy>2</initialEnergy>
+  </parameters>
+  <state_colors>
+    State 0: empty cell -- blue
+    State 1: fish -- pink
+    State 2: shark -- yellow
+  </state_colors>
+  <language>English</language>
+  <cell_shape>square</cell_shape>
+  <grid_edge_type>Normal</grid_edge_type>
+  <random_configuration_by_total_states>
+  </random_configuration_by_total_states>
+</simulation>

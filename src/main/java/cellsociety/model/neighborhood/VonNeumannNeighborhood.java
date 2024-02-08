@@ -3,43 +3,20 @@ package cellsociety.model.neighborhood;
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-/**
- * Represents a neighborhood where neighbors are characterized as points that share a common side on
- * the coordinate grid
- *
- * @author Noah Loewy
- */
-
-public class VonNeumannNeighborhood implements Neighborhood {
 
 
-  public static final int[] ROW_DELTAS = {1, -1, 0, 0};
-  public static final int[] COL_DELTAS = {0, 0, 1, -1};
+public class VonNeumannNeighborhood extends Neighborhood {
 
-  /**
-   * Retrieves all points that either shares an edge with the central point
-   *
-   * @param p, a central point that we are aiming to get the neighbors of
-   * @return List<Point>, a list of all points that could potentially represent cells that share a
-   * an edge with central point p, should those points be valid indices in the grid.
-   */
+
   @Override
-  public List<Cell> getNeighbors(Grid grid, Cell cell) {
-    List<Cell> neighbors = new ArrayList<>();
-    Iterator<Cell> iter = grid.iterator();
-    while(iter.hasNext()){
-      Cell otherCell = iter.next();
-      for(Point p : cell.getVertices()) {
-        if (grid.containsVertex(p, otherCell.getVertices()) &&  !cell.equals(otherCell) &&
-        (otherCell.getCentroid().getY()==p.getY() || otherCell.getCentroid().getX()==p.getX())){
-          neighbors.add(otherCell);
-        }
+  public boolean isValidNeighbor(Cell cell1, Cell cell2, Grid grid) {
+    for (Point vtx : cell1.getVertices()) {
+      if (grid.containsVertex(vtx, cell2.getVertices()) &&
+          (cell2.getCentroid().getCol() == cell1.getCentroid().getCol()
+              || cell2.getCentroid().getRow() == cell1.getCentroid().getRow())) {
+        return true;
       }
     }
-    return neighbors;
+    return false;
   }
 }

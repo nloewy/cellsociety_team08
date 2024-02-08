@@ -1,25 +1,29 @@
 package cellsociety.model.core;
 
 import cellsociety.Point;
-import java.util.ArrayList;
-import java.util.List;
 
-public class HexagonCell extends Cell{
+public class HexagonCell extends Cell {
+
   /**
    * Constructs a cell object
    *
    * @param initialState is the original state of the cell, either randomly set or determined from a
    *                     configuration file
-   * @param x            is the x-coordinate of the cell on the 2-dimensional grid
-   * @param y            is the y-coordinate of the cell on the 2-dimensional grid
+   * @param row          is the x-coordinate of the cell on the 2-dimensional grid
+   * @param col          is the y-coordinate of the cell on the 2-dimensional grid
    */
-  public HexagonCell(int initialState, int x, int y) {
-    super(initialState, x, y);
-    List<Point> myVertices = getVertices();
-    myVertices.add(new Point(x,y));
-    myVertices.add(new Point(x+1,y));
-    myVertices.add(new Point(x,y+1));
-    myVertices.add(new Point(x+1,y+1));
-    getCentroid();
+  public HexagonCell(int initialState, int row, int col) {
+    super(initialState, row, col);
+    double shapeOffset = .5;
+    double currOffset;
+    if (row % 2 == 1) {
+      currOffset = .5;
+    } else {
+      currOffset = 0.0;
+    }
+    final double[][] offsets = {{.25, 0}, {1, 0}, {1.25, .5}, {1, 1}, {.25, 1}, {1, .5}};
+    for (double[] offset : offsets) {
+      addVertex(new Point(row + offset[0], col + offset[1] + currOffset, shapeOffset));
+    }
   }
 }

@@ -1,7 +1,6 @@
 package cellsociety.model.core;
 
 import cellsociety.Point;
-import cellsociety.model.neighborhood.Neighborhood;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,8 +41,8 @@ public class Grid {
    * @return boolean, highlighting if p is a legal cell in the grid
    */
   private boolean inBounds(Point p) {
-    int x = p.getX();
-    int y = p.getY();
+    double x = p.getRow();
+    double y = p.getCol();
     return inBoundsX(x) && inBoundsY(y);
   }
 
@@ -53,7 +52,7 @@ public class Grid {
    * @param x, the x coordinate of a potential grid cell
    * @return boolean, highlighting if 0<=x<myNumRows
    */
-  private boolean inBoundsX(int x) {
+  private boolean inBoundsX(double x) {
     return x >= 0 && x < myNumRows;
   }
 
@@ -63,7 +62,7 @@ public class Grid {
    * @param y, the y coordinate of a potential grid cell
    * @return boolean, highlighting if 0<=y<myNumCols
    */
-  private boolean inBoundsY(int y) {
+  private boolean inBoundsY(double y) {
     return y >= 0 && y < myNumCols;
   }
 
@@ -80,7 +79,7 @@ public class Grid {
     if (!inBounds(p)) {
       throw new IndexOutOfBoundsException();
     }
-    return myGrid.get(myNumCols * p.getX() + p.getY());
+    return myGrid.get((myNumCols * (int) p.getRow() + (int) p.getCol()));
   }
 
   /**

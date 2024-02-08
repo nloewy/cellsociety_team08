@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://en.wikipedia.org/wiki/Conway's_Game_of_Life-->
+<simulation>
+  <type>GameOfLife</type>
+  <title>Conway's Game of Life Simulation: Test 4</title>
+  <author>Judy He</author>
+  <file_description>This file configures the Game of Life simulation.</file_description>
+  <display_description>The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970. Its evolution is determined by its initial state, requiring no further input. It is Turing complete and can simulate a universal constructor or any other Turing machine.</display_description>
+  <width>-9</width>
+  <height>19</height>
+  <!-- 0 - DEAD / 1 - ALIVE -->
+  <initial_states>1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</initial_states>
+  <neighborhood_type>Moore</neighborhood_type>
+  <parameters>
+    <aliveToAliveMin>2.0</aliveToAliveMin>
+    <aliveToAliveMax>3.0</aliveToAliveMax>
+    <deadToAliveMin>3.0</deadToAliveMin>
+    <deadToAliveMax>3.0</deadToAliveMax>
+  </parameters>
+  <state_colors>
+    State 0: dead cell -- white
+    State 1: alive cell -- black
+  </state_colors>
+  <language>English</language>
+  <cell_shape>square</cell_shape>
+  <grid_edge_type>Normal</grid_edge_type>
+  <random_configuration_by_total_states>
+  </random_configuration_by_total_states>
+</simulation>
