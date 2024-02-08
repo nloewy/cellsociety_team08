@@ -197,7 +197,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    */
   private void updateShark(WatorCell currentCell) {
     List<WatorCell> neighbors = new ArrayList<>();
-   // List<WatorCell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
+    //List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
     List<WatorCell> emptyNeighbors = getCellsOfState(neighbors, EMPTY);
     List<WatorCell> fishNeighbors = getCellsOfState(neighbors, FISH);
 

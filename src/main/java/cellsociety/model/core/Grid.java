@@ -68,33 +68,7 @@ public class Grid {
   }
 
 
-  /**
-   * Returns the cell located at a given Point on the 2 dimensional grid
-   *
-   * @param p, an (x,y) pairing of a potential cell location on the grid
-   * @return T, the cell located at Point p, or null, if p is not a valid location
-   */
 
-
-  /**
-   * Returns List of all cells that are considered "neighbors" to the parameter cell, given the
-   * definition of a neighborhood provided by instance variable myNeighborhood
-   *
-   * @param p, a location of cell object that we are trying to get the neighbors of
-   * @return List<T>, all neighboring cell objects to c
-   */
-  public List<Cell> getNeighbors(Point p, Neighborhood neighborhood) {
-    List<Cell> neighboringCells = new ArrayList<>();
-    List<Point> neighboringCoordinates = neighborhood.getNeighborCoordinates(p);
-    for (Point pNew : neighboringCoordinates) {
-      try {
-        Cell neighbor = getCellAtLocation(pNew);
-        neighboringCells.add(neighbor);
-      } catch (IndexOutOfBoundsException e) {
-      }
-    }
-    return neighboringCells;
-  }
 
   public int getNumRows() {
     return myNumRows;
@@ -117,5 +91,9 @@ public class Grid {
    */
   public Iterator iterator() {
     return myGrid.iterator();
+  }
+
+  public boolean containsVertex(Point p, List<Point> vertices){
+    return vertices.contains(p);
   }
 }

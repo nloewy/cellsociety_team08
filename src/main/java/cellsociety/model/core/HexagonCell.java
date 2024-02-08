@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HexagonCell extends Cell{
-
   /**
    * Constructs a cell object
    *
@@ -16,10 +15,11 @@ public class HexagonCell extends Cell{
    */
   public HexagonCell(int initialState, int x, int y) {
     super(initialState, x, y);
-    List<Point> myVertices = new ArrayList<>();
+    List<Point> myVertices = getVertices();
     myVertices.add(new Point(x,y));
     myVertices.add(new Point(x+1,y));
     myVertices.add(new Point(x,y+1));
     myVertices.add(new Point(x+1,y+1));
+    getCentroid();
   }
 }
