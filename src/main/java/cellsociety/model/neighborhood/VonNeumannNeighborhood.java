@@ -3,38 +3,20 @@ package cellsociety.model.neighborhood;
 import cellsociety.Point;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-/**
- * Represents a neighborhood where neighbors are characterized as points that share a common side on
- * the coordinate grid
- *
- * @author Noah Loewy
- */
 
-public class VonNeumannNeighborhood implements Neighborhood {
+public class VonNeumannNeighborhood extends Neighborhood {
 
 
   @Override
-  public List<Cell> getNeighbors(Grid grid, Cell cell) {
-    List<Cell> neighbors = new ArrayList<>();
-    Iterator<Cell> iter = grid.iterator();
-    while (iter.hasNext()) {
-      Cell otherCell = iter.next();
-      if (cell.equals(otherCell)) {
-        continue;
-      }
-      for (Point vtx : cell.getVertices()) {
-        if (grid.containsVertex(vtx, otherCell.getVertices()) &&
-            (otherCell.getCentroid().getCol() == cell.getCentroid().getCol()
-                || otherCell.getCentroid().getRow() == cell.getCentroid().getRow())) {
-          neighbors.add(otherCell);
-          break;
-        }
+  public boolean isValidNeighbor(Cell cell1, Cell cell2, Grid grid) {
+    for (Point vtx : cell1.getVertices()) {
+      if (grid.containsVertex(vtx, cell2.getVertices()) &&
+          (cell2.getCentroid().getCol() == cell1.getCentroid().getCol()
+              || cell2.getCentroid().getRow() == cell1.getCentroid().getRow())) {
+        return true;
       }
     }
-    return neighbors;
+    return false;
   }
 }
