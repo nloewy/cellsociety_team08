@@ -3,19 +3,20 @@
 <simulation>
   <type>Fire</type>
   <title>Spreading of Fire Simulation</title>
-  <author>Alisha Zhang</author>
+  <author>Judy He</author>
   <file_description>This file configures the Spreading of Fire Simulation.</file_description>
   <display_description>The forest-fire model is a mathematical simulation of wildfires' self-organization. It operates on a grid with empty cells, trees, and burning cells. The key parameter is the ratio of planted trees to ignition probability, impacting wildfire patterns. In ecology, it illustrates how vegetation arrangement influences real-world wildfires.</display_description>
-  <width>20</width>
-  <height>20</height>
+  <!--Missing width and height-->
+  <width></width>
+  <height></height>
   <!-- 0 - EMPTY (The cell is empty ground or a burnt tree containing no tree.)
        1 - TREE (The cell contains a tree that is not burning.)
        2 - BURNING The cell contains a tree that is burning. -->
-  <initial_states>0 0 0 0 0 0 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 2 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 1 0 0 0 1 1 0 0 1 1 1 2 1 1 1 1 0 0 1 1 1 2 1 1 0 0 1 1 1 2 1 1 1 1 1 1 0 0 0 1 1 1 2 1 0 1 2 0 1 1 1 2 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 0 1 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 2 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 1 2 1 1 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 0 0 1 1 1 0 0 0 0 0 0 0</initial_states>
+  <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 1 1 2 1 1 1 0 0 1 1 1 2 0 0 0 1 1 1 1 1 1 1 2 0 1 1 1 0 0 0 1 1 1 2 1 1 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 0 0</initial_states>
   <neighborhood_type>Moore</neighborhood_type>
   <parameters>
-    <probTreeIgnites>.05</probTreeIgnites> <!-- The probability of a tree in a cell catching fire if a tree in a neighboring cell is on fire.-->
-    <probTreeCreated>.2</probTreeCreated> <!-- The probability of that a tree is created-->
+    <probTreeIgnites>0.05</probTreeIgnites> <!-- The probability of a tree in a cell catching fire if a tree in a neighboring cell is on fire.-->
+    <probTreeCreated>0.2</probTreeCreated> <!-- The probability of that a tree is created-->
     <neighborsToIgnite>1</neighborsToIgnite> <!-- Number of neighbors to ignite-->
   </parameters>
   <state_colors>
