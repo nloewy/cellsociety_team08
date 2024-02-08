@@ -30,7 +30,8 @@
 ////        Button world = createButton("Wa-Tor World");
 ////        Button percolation = createButton("Percolation");
 ////
-////        root.getChildren().addAll(cellSocietyTitle, gameOfLife, fire, segregation, world, percolation);
+////        root.getChildren().addAll(cellSocietyTitle, gameOfLife, fire, segregation, world,
+//                                    percolation);
 //  }
 //
 //  private Button createButton(String buttonText) {

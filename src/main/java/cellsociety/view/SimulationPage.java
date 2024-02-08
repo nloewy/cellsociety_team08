@@ -255,16 +255,16 @@ public class SimulationPage {
    *
    * @param buttonText a string of the text on the button
    * @param handler    an event handler that gets hooked on the button
-   * @param xPos       an integer of the x position of the button
-   * @param yPos       an integer of the y position of the button
+   * @param colPos       an integer of the x position of the button
+   * @param rowPos       an integer of the y position of the button
    * @return returns the button object
    */
-  private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int xPos,
-      int yPos) {
+  private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int colPos,
+      int rowPos) {
     Button ret = new Button(buttonText);
     ret.setOnAction(handler);
-    ret.setLayoutX(xPos);
-    ret.setLayoutY(yPos);
+    ret.setLayoutX(colPos);
+    ret.setLayoutY(rowPos);
     return ret;
   }
 

@@ -11,13 +11,12 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class Cell{//<T extends State> {
+public class Cell { //<T extends State> {
 
   public static final int PLACEHOLDER = -1;
-  private State myState;//T myState;
+  private State myState; //T myState;
   private Point myLocation;
   private List<Point> myVertices;
-
   private Point myCentroid;
 
   /**

@@ -209,7 +209,7 @@ public class Controller {
           xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
           xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
           xmlParser.getParameters().get("initialEnergy").intValue(),
-          xmlParser.getParameters().get("energyBoost").intValue(),gridType, cellShape);
+          xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape);
       default -> null;
     };
   }

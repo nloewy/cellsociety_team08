@@ -102,6 +102,9 @@ public class FireSimulation extends SimpleCellSimulation {
           handleTreeCell(currentCell);
           break;
         }
+        default:
+          break;
+          //TODO: check if exception needed
       }
     }
   }
