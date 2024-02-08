@@ -17,6 +17,7 @@ The Liskov Substitution Model also focuses on abstraction, and essentially state
 reference to an abstract object (superclass) with any of its concrete children (subclasses) should
 not break the code/model. For example, replacing List with ArrayList should not break the code.
 
+### Our Abstractions
 1. Simulations ==> all of the simulations extend a general simulation class. It does not matter what
    type of simulation object you use, as they all have the same public methods. This highlights
    open-closed principle, as we would not have to modify existing code to create a new type of
