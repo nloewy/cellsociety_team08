@@ -1,6 +1,7 @@
 package cellsociety.configuration;
 
 import java.util.List;
+import java.util.Map.Entry;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -13,16 +14,25 @@ import javax.xml.transform.TransformerException;
 public class XMLTester {
 
   public static void main(String[] args) throws ParserConfigurationException, TransformerException {
-    String path = "data/fire/FireTest1.xml";
+    String path = "data/exceptions_tests/SchellingOnlyWidthMissingTest.xml";
 
     XMLParser xmlParser = new XMLParser();
     xmlParser.readXML(path);
+
+    System.out.println("Width: " + xmlParser.getWidth());
+    System.out.println("Height: " + xmlParser.getHeight());
+    for (Entry<String, Double> e: xmlParser.getParameters().entrySet()) {
+      System.out.println(e.getKey() +": "+e.getValue());
+    }
+    for (Entry<String, Integer> e: xmlParser.getRandomConfigurationTotalStates().entrySet()) {
+      System.out.println(e.getKey() +": "+e.getValue());
+    }
 
     List<Integer> states = xmlParser.getStates();
     states.remove(states.size() - 1);
     states.add(1);
 
-    xmlParser.createXML("testSavedXML", "gameoflife");
+    xmlParser.createXML("testSavedXML", "exceptions_tests");
 
   }
 }
