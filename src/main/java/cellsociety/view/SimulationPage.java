@@ -114,21 +114,15 @@ public class SimulationPage {
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
     board = new CellView[numRows][numCols];
-    int index = 0;
-
-    while (gridIterator.hasNext()) {
-      Cell c = gridIterator.next();
-      Point location = c.getLocation();
-      int state = c.getState().getCurrentStatus();
-      int col = (int) location.getCol();
-      int row = (int) location.getRow();
-      board[row][col] = initializeCellView(simulationType, state,
-          configDouble(GRID_WIDTH_KEY) / numCols,
-          configDouble(GRID_HEIGHT_KEY) / numRows);
-
-      grid.add(board[row][col].getCellGraphic(), col, row);
-      index++;
+    for(int row = 0; row < numRows; row++){
+      for(int col = 0; col < numCols; col++){
+        board[row][col] = initializeCellView(simulationType, 0,
+            configDouble(GRID_WIDTH_KEY) / numCols,
+            configDouble(GRID_HEIGHT_KEY) / numRows);
+        grid.add(board[row][col].getCellGraphic(), col, row);
+      }
     }
+    updateView(gridIterator);
 
     grid.setLayoutY(configDouble(GRID_START_Y_KEY));
     grid.setLayoutX(configDouble(GRID_START_X_KEY));
@@ -298,10 +292,9 @@ public class SimulationPage {
     while (gridIterator.hasNext()) {
       Cell c = gridIterator.next();
       Point location = c.getLocation();
-      int state = c.getState().getCurrentStatus();
       int col = (int) location.getCol();
       int row = (int) location.getRow();
-      board[row][col].updateState(state);
+      board[row][col].updateState(c.getState().getCurrentStatus());
     }
   }
 
