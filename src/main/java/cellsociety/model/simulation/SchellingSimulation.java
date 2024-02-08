@@ -38,8 +38,8 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * @param gridType               type of grid used in simulation
    */
   public SchellingSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      double proportionNeededToStay, String gridType) {
-    super(row, col, hoodType, stateList, gridType);
+      double proportionNeededToStay, String gridType, String cellShape) {
+    super(row, col, hoodType, stateList, gridType, cellShape);
     myCellsToMove = new ArrayList<>();
     myEmptyCells = new ArrayList<>();
     this.proportionNeededToStay = proportionNeededToStay;

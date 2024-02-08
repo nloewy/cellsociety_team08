@@ -23,8 +23,7 @@ public abstract class SimpleCellSimulation extends Simulation<Cell> {
    * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
   public SimpleCellSimulation(int row, int col, Neighborhood hoodType,
-      List<Integer> stateList, String gridType) {
-    super(row, col, hoodType, stateList, gridType,
-        (ind -> new Cell(stateList.get(ind), ind / col, ind % col)));
+      List<Integer> stateList, String gridType, String cellShape) {
+    super(row, col, hoodType, stateList, gridType, cellShape);
   }
 }

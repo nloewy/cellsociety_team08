@@ -33,8 +33,8 @@ public class PercolationSimulation extends SimpleCellSimulation {
    * @param gridType          type of grid used in simulation
    */
   public PercolationSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int percolatedNeighbors, String gridType) {
-    super(row, col, hoodType, stateList, gridType);
+      int percolatedNeighbors, String gridType, String cellShape) {
+    super(row, col, hoodType, stateList, gridType, cellShape);
     this.percolatedNeighbors = percolatedNeighbors;
   }
 

@@ -24,8 +24,8 @@ public class SugarSimulation extends SimpleCellSimulation {
   public static final int OCCUPIED = 1;
 
 
-  public SugarSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType) {
-    super(row, col, hoodType, stateList, gridType);
+  public SugarSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType, String cellShape) {
+    super(row, col, hoodType, stateList, gridType, cellShape);
   }
 
 
@@ -47,4 +47,3 @@ public class SugarSimulation extends SimpleCellSimulation {
   }
 }
 
-*/
