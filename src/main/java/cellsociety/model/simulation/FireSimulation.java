@@ -4,7 +4,6 @@ import static java.lang.Math.random;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 

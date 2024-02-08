@@ -1,6 +1,5 @@
 package cellsociety.model.neighborhood;
 
-import cellsociety.Point;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
 import java.util.List;

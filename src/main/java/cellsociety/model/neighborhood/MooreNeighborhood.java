@@ -26,13 +26,13 @@ public class MooreNeighborhood implements Neighborhood {
   public List<Cell> getNeighbors(Grid grid, Cell cell) {
     List<Cell> neighbors = new ArrayList<>();
     Iterator<Cell> iter = grid.iterator();
-    while(iter.hasNext()){
+    while (iter.hasNext()) {
       Cell otherCell = iter.next();
-      if(cell.equals(otherCell)){
+      if (cell.equals(otherCell)) {
         continue;
       }
-      for(Point vtx : cell.getVertices()) {
-        if (grid.containsVertex(vtx, otherCell.getVertices())){
+      for (Point vtx : cell.getVertices()) {
+        if (grid.containsVertex(vtx, otherCell.getVertices())) {
           neighbors.add(otherCell);
           break;
         }

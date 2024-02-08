@@ -29,14 +29,15 @@ public class VonNeumannNeighborhood implements Neighborhood {
   public List<Cell> getNeighbors(Grid grid, Cell cell) {
     List<Cell> neighbors = new ArrayList<>();
     Iterator<Cell> iter = grid.iterator();
-    while(iter.hasNext()){
+    while (iter.hasNext()) {
       Cell otherCell = iter.next();
-      if(cell.equals(otherCell)){
+      if (cell.equals(otherCell)) {
         continue;
       }
-      for(Point vtx : cell.getVertices()) {
-        if (grid.containsVertex(vtx, otherCell.getVertices())  &&
-            (otherCell.getCentroid().getCol()==cell.getCentroid().getCol() || otherCell.getCentroid().getRow()==cell.getCentroid().getRow())) {
+      for (Point vtx : cell.getVertices()) {
+        if (grid.containsVertex(vtx, otherCell.getVertices()) &&
+            (otherCell.getCentroid().getCol() == cell.getCentroid().getCol()
+                || otherCell.getCentroid().getRow() == cell.getCentroid().getRow())) {
           neighbors.add(otherCell);
           break;
         }
