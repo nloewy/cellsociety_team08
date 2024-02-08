@@ -30,6 +30,6 @@
   <random_configuration_by_total_states>
     <numTree>35</numTree>
     <numBurning>10</numBurning>
-    <numEmpty>55</numEmpty>
+    <numEmpty>100</numEmpty>
   </random_configuration_by_total_states>
 </simulation>

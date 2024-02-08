@@ -373,7 +373,9 @@ public class XMLParser {
 
       // parse initial states
       String rawStates = eElement.getElementsByTagName("initial_states").item(0).getTextContent();
-      parseStates(rawStates);
+      if (!rawStates.isEmpty()) {
+        parseStates(rawStates);
+      }
       int totalNumStates = states.size();
 
       // parse parameters
@@ -402,7 +404,7 @@ public class XMLParser {
       }
 
       // Check if grid dimension is valid, throw exception otherwise
-      if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()) {
+      if (randomConfigurationTotalStates.isEmpty() && width * height != states.size() || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
         throw new InvalidGridBoundsException(
             String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
                 states.size()));

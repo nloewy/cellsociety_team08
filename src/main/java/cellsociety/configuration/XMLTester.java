@@ -14,7 +14,7 @@ import javax.xml.transform.TransformerException;
 public class XMLTester {
 
   public static void main(String[] args) throws ParserConfigurationException, TransformerException {
-    String path = "data/exceptions_tests/badlyFormattedXMLExceptionTest.xml";
+    String path = "data/exceptions_tests/FireGridBoundsRandConfigExceptionTest.xml";
 
     XMLParser xmlParser = new XMLParser();
     xmlParser.readXML(path);
