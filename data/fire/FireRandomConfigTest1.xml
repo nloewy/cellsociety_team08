@@ -28,7 +28,6 @@
   <cell_shape>square</cell_shape>
   <grid_edge_type>Normal</grid_edge_type>
   <random_configuration_by_total_states>
-    <active>true</active>
     <numTree>45</numTree>
     <numBurning>10</numBurning>
   </random_configuration_by_total_states>

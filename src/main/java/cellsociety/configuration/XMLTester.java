@@ -1,10 +1,8 @@
 package cellsociety.configuration;
 
-import java.io.IOException;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
  * The XMLTester is a class for testing operations on objects of the XMLParser class, particularly
@@ -15,7 +13,7 @@ import org.xml.sax.SAXException;
 public class XMLTester {
 
   public static void main(String[] args) throws ParserConfigurationException, TransformerException {
-    String path = "data/gameoflife/GameOfLifeGlider.xml";
+    String path = "data/fire/FireTest1.xml";
 
     XMLParser xmlParser = new XMLParser();
     xmlParser.readXML(path);
