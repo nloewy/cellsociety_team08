@@ -14,13 +14,13 @@ public class RectangleCell extends Cell{
    * @param x            is the x-coordinate of the cell on the 2-dimensional grid
    * @param y            is the y-coordinate of the cell on the 2-dimensional grid
    */
-  public RectangleCell(int initialState, int x, int y) {
-    super(initialState, x, y);
+  public RectangleCell(int initialState, int row, int col) {
+    super(initialState, row, col);
     List<Point> myVertices = getVertices();
-    myVertices.add(new Point(x,y));
-    myVertices.add(new Point(x+1,y));
-    myVertices.add(new Point(x,y+1));
-    myVertices.add(new Point(x+1,y+1));
+    myVertices.add(new Point(row,col));
+    myVertices.add(new Point(row+1,col));
+    myVertices.add(new Point(row,col+1));
+    myVertices.add(new Point(row+1,col+1));
     getCentroid();
   }
 }

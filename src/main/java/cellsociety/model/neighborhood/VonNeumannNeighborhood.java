@@ -36,7 +36,7 @@ public class VonNeumannNeighborhood implements Neighborhood {
       }
       for(Point vtx : cell.getVertices()) {
         if (grid.containsVertex(vtx, otherCell.getVertices())  &&
-            (otherCell.getCentroid().getY()==vtx.getY() || otherCell.getCentroid().getX()==vtx.getX())) {
+            (otherCell.getCentroid().getCol()==cell.getCentroid().getCol() || otherCell.getCentroid().getRow()==cell.getCentroid().getRow())) {
           neighbors.add(otherCell);
           break;
         }

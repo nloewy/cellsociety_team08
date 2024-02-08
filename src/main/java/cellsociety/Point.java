@@ -1,5 +1,7 @@
 package cellsociety;
 
+import static java.lang.Math.round;
+
 /**
  * Represents an x,y pairing in R^2 space
  *
@@ -8,31 +10,37 @@ package cellsociety;
 
 public class Point {
 
-  private int myX;
-  private int myY;
+  private double myRow;
+  private double myCol;
+  private double myColOffset = 0;
 
+  public Point(double row, double col, double offset){
+    myRow = row;
+    myCol = col;
+    myColOffset = offset;
+  }
   /**
    * Constructs an object of type point
    *
-   * @param x, coordinate on x axis
-   * @param y, coordinate on y axis
+   * @param row, row coordinate
+   * @param col, col coordinate
    */
-  public Point(int x, int y) {
-    myX = x;
-    myY = y;
+  public Point(double row, double col) {
+    this(row,col,0.0);
   }
+
 
   /**
    * Creates a new point object that is a translation of a current point object
    *
-   * @param dx, translation in x direction
-   * @param dy, translation in y direction
+   * @param dRow, translation in row direction
+   * @param dCol, translation in col direction
    * @return Point, a *new* point that is the original point, translated.
    */
-  public Point translate(int dx, int dy) {
-    int newX = myX + dx;
-    int newY = myY + dy;
-    return new Point(newX, newY);
+  public Point translate(double dRow, double dCol) {
+    double newRow = myRow + dRow;
+    double newCol = myCol + dCol;
+    return new Point(newRow, newCol);
   }
 
   /**
@@ -40,8 +48,8 @@ public class Point {
    *
    * @return myX, the x coordinate of the Point on the 2d grid
    */
-  public int getX() {
-    return myX;
+  public double getRow() {
+    return myRow;
   }
 
   /**
@@ -49,8 +57,8 @@ public class Point {
    *
    * @return myY, the y coordinate of the Point on the 2d grid
    */
-  public int getY() {
-    return myY;
+  public double getCol() {
+    return myCol;
   }
 
   /**
@@ -59,6 +67,11 @@ public class Point {
    * @param other, an object in java
    * @return boolean, whether other object equals this instance
    */
+
+  public double getColOffset() {
+    return myColOffset;
+  }
+
   @Override
   public boolean equals(Object other) {
     if (this == other) {
@@ -71,7 +84,7 @@ public class Point {
       return false;
     }
     Point otherPoint = (Point) other;
-    return otherPoint.getX() == myX && otherPoint.getY() == myY;
+    return otherPoint.getRow() == myRow && otherPoint.getCol() == myCol;
 
   }
 
@@ -82,10 +95,10 @@ public class Point {
    */
   @Override
   public int hashCode() {
-    return 18 * myX + myY;
+    return (int) round(18 * myRow + myCol);
   }
 
   public String toString(){
-    return "(" + myX + "," + myY + ")";
+    return "(row:" + myRow + ",col" + myCol + ")";
   }
 }
