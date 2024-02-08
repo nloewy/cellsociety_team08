@@ -2,14 +2,15 @@
 <!-- References: https://en.wikipedia.org/wiki/Conway's_Game_of_Life-->
 <simulation>
   <type>GameOfLife</type>
-  <title>Conway's Game of Life Simulation: Test 5</title>
-  <author>Noah Loewy</author>
+<!--  title missing-->
+  <title></title>
+  <author>Judy He</author>
   <file_description>This file configures the Game of Life simulation.</file_description>
   <display_description>The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970. Its evolution is determined by its initial state, requiring no further input. It is Turing complete and can simulate a universal constructor or any other Turing machine.</display_description>
-  <width>23</width>
-  <height>11</height>
+  <width>10</width>
+  <height>10</height>
   <!-- 0 - DEAD / 1 - ALIVE -->
-  <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</initial_states>
+  <initial_states>1 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 1 1 0</initial_states>
   <neighborhood_type>Moore</neighborhood_type>
   <parameters>
     <aliveToAliveMin>2.0</aliveToAliveMin>
