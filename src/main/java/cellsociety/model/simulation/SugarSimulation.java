@@ -15,7 +15,7 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-/**
+
 public class SugarSimulation extends SimpleCellSimulation {
 
 

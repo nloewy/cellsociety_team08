@@ -220,6 +220,9 @@ public class XMLParser {
   public void setNeighborhoodType(String neighborhoodType) {
     this.neighborhoodType = neighborhoodType;
   }
+  public String getCellShape(){
+    return cellShape;
+  }
 
   public String getGridEdgeType(){
     return gridEdgeType;
@@ -370,6 +373,8 @@ public class XMLParser {
     width = Integer.parseInt(eElement.getElementsByTagName("width").item(0).getTextContent());
     height = Integer.parseInt(eElement.getElementsByTagName("height").item(0).getTextContent());
     gridEdgeType = eElement.getElementsByTagName("grid_edge_type").item(0).getTextContent();
+    cellShape = eElement.getElementsByTagName("cell_shape").item(0).getTextContent();
+
   }
 
   /**
@@ -465,6 +470,9 @@ public class XMLParser {
     addElement(doc, rootElement, "height", String.valueOf(height));
     addElement(doc, rootElement, "neighborhood_type", neighborhoodType);
     addElement(doc, rootElement, "grid_edge_type", gridEdgeType);
+    addElement(doc, rootElement, "cell_shape", cellShape);
+
+
 
   }
 
