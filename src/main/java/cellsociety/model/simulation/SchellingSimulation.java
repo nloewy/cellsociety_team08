@@ -2,6 +2,7 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
+import cellsociety.model.simulation.Records.SchellingRecord;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -38,11 +39,11 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * @param gridType               type of grid used in simulation
    */
   public SchellingSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      double proportionNeededToStay, String gridType, String cellShape) {
-    super(row, col, hoodType, stateList, gridType, cellShape);
+      SchellingRecord r) {
+    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
     myCellsToMove = new ArrayList<>();
     myEmptyCells = new ArrayList<>();
-    this.proportionNeededToStay = proportionNeededToStay;
+    this.proportionNeededToStay = r.proportionNeededToStay();
   }
 
   /**
