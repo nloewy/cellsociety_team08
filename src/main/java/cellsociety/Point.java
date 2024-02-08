@@ -85,4 +85,7 @@ public class Point {
     return 18 * myX + myY;
   }
 
+  public String toString(){
+    return "(" + myX + "," + myY + ")";
+  }
 }

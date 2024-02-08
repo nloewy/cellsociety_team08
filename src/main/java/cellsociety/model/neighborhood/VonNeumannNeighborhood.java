@@ -16,10 +16,6 @@ import java.util.List;
 
 public class VonNeumannNeighborhood implements Neighborhood {
 
-
-  public static final int[] ROW_DELTAS = {1, -1, 0, 0};
-  public static final int[] COL_DELTAS = {0, 0, 1, -1};
-
   /**
    * Retrieves all points that either shares an edge with the central point
    *
@@ -27,16 +23,22 @@ public class VonNeumannNeighborhood implements Neighborhood {
    * @return List<Point>, a list of all points that could potentially represent cells that share a
    * an edge with central point p, should those points be valid indices in the grid.
    */
+
+
   @Override
   public List<Cell> getNeighbors(Grid grid, Cell cell) {
     List<Cell> neighbors = new ArrayList<>();
     Iterator<Cell> iter = grid.iterator();
     while(iter.hasNext()){
       Cell otherCell = iter.next();
-      for(Point p : cell.getVertices()) {
-        if (grid.containsVertex(p, otherCell.getVertices()) &&  !cell.equals(otherCell) &&
-        (otherCell.getCentroid().getY()==p.getY() || otherCell.getCentroid().getX()==p.getX())){
+      if(cell.equals(otherCell)){
+        continue;
+      }
+      for(Point vtx : cell.getVertices()) {
+        if (grid.containsVertex(vtx, otherCell.getVertices())  &&
+            (otherCell.getCentroid().getY()==vtx.getY() || otherCell.getCentroid().getX()==vtx.getX())) {
           neighbors.add(otherCell);
+          break;
         }
       }
     }

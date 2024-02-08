@@ -16,9 +16,6 @@ import java.util.List;
 
 public class MooreNeighborhood implements Neighborhood {
 
-  private static final int[] DELTA_X = {-1, 0, 1};
-  private static final int[] DELTA_Y = {-1, 0, 1};
-
   /**
    * Retrieves all points that either shares an edge or a vertex with the central point
    *
@@ -31,8 +28,11 @@ public class MooreNeighborhood implements Neighborhood {
     Iterator<Cell> iter = grid.iterator();
     while(iter.hasNext()){
       Cell otherCell = iter.next();
-      for(Point p : cell.getVertices()) {
-        if (grid.containsVertex(p, otherCell.getVertices()) && !cell.equals(otherCell)){
+      if(cell.equals(otherCell)){
+        continue;
+      }
+      for(Point vtx : cell.getVertices()) {
+        if (grid.containsVertex(vtx, otherCell.getVertices())){
           neighbors.add(otherCell);
           break;
         }

@@ -14,12 +14,24 @@ public class WarpedGrid extends Grid {
 
 
   @Override
-  public boolean containsVertex(Point p, List<Point> vertices) {
-    if (super.containsVertex(p, vertices)){
+  public boolean containsVertex(Point vtx, List<Point> vertices) {
+    if (super.containsVertex(vtx, vertices)){
       return true;
     }
-    Point pNew = new Point((p.getX()+getNumCols())%getNumCols(),
-        (p.getY()+getNumRows())%getNumRows());
-    return super.containsVertex(pNew, vertices);
+
+    //if(vtx.getX()==3 && vtx.getY()==3){
+     // for(Point vtx2 : vertices){
+      //  System.out.print(vtx2.getX()+","+vtx2.getY() +  "   : ");
+      ///}
+      //System.out.println();
+     // System.out.println(super.containsVertex(new Point(vtx.getX()+getNumCols(), vtx.getY()),vertices));
+    //  System.out.println(super.containsVertex(new Point(vtx.getX()-getNumCols(), vtx.getY()),vertices));
+    //  System.out.println(super.containsVertex(new Point(vtx.getX(), vtx.getY()+getNumRows()),vertices));
+    //  System.out.println(super.containsVertex(new Point(vtx.getX(), vtx.getY()-getNumRows()),vertices));
+   // }
+    return super.containsVertex(new Point(vtx.getX()+getNumCols(), vtx.getY()),vertices) ||
+        super.containsVertex(new Point(vtx.getX()-getNumCols(), vtx.getY()),vertices) ||
+        super.containsVertex(new Point(vtx.getX(), vtx.getY()+getNumRows()),vertices) ||
+        super.containsVertex(new Point(vtx.getX(), vtx.getY()-getNumRows()),vertices) ;
   }
 }
