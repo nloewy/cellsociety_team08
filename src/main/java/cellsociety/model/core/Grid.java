@@ -67,14 +67,14 @@ public class Grid {
   }
 
 
-
-
   public int getNumRows() {
     return myNumRows;
   }
+
   public int getNumCols() {
     return myNumCols;
   }
+
   public Cell getCellAtLocation(Point p) {
     if (!inBounds(p)) {
       throw new IndexOutOfBoundsException();
@@ -92,7 +92,7 @@ public class Grid {
     return myGrid.iterator();
   }
 
-  public boolean containsVertex(Point p, List<Point> vertices){
+  public boolean containsVertex(Point p, List<Point> vertices) {
     return vertices.contains(p);
   }
 }

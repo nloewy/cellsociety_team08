@@ -1,14 +1,19 @@
 package cellsociety.model.simulation;
 
+import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.Grid;
 import cellsociety.model.core.HexagonCell;
 import cellsociety.model.core.RectangleCell;
+import cellsociety.model.core.State;
 import cellsociety.model.core.WarpedGrid;
 import cellsociety.model.neighborhood.Neighborhood;
+import com.sun.jdi.InvalidCodeIndexException;
 import java.util.ArrayList;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
@@ -46,25 +51,20 @@ public abstract class Simulation<T extends Cell> {
 
   public void initializeMyGrid(int row, int col, List<Integer> stateList, String cellShape) {
     List<Cell> cellList = new ArrayList<>();
-    if (cellShape.equals("square")) {
-      for (int i = 0; i < stateList.size(); i++) {
-        cellList.add(new RectangleCell(stateList.get(i), i / col, i % col));
-      }
-    } else if (cellShape.equals("hexagon")) {
-      for (int i = 0; i < stateList.size(); i++) {
-        cellList.add(new HexagonCell(stateList.get(i), i / col, i % col));
-      }
+    for (int i = 0; i < stateList.size(); i++) {
+      Cell newCell = switch (cellShape) {
+        case "square" -> new RectangleCell(stateList.get(i), i / col, i % col);
+        case "hexagon" -> new HexagonCell(stateList.get(i), i / col, i % col);
+        default -> throw new InvalidValueException("Cell Shape Does Not Exist");
+      };
+      cellList.add(newCell);
     }
-    switch (myGridType) {
-      case "Normal": {
-        myGrid = new Grid(row, col, cellList);
-        break;
-      }
-      case "Warped": {
-        myGrid = new WarpedGrid(row, col, cellList);
-        break;
-      }
-    }
+
+    myGrid = switch (myGridType) {
+      case "Normal" -> new Grid(row, col, cellList);
+      case "Warped" -> new WarpedGrid(row, col, cellList);
+      default -> throw new InvalidValueException("Edge Type Does Not Exist");
+    };
   }
 
   /**

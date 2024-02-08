@@ -8,9 +8,9 @@ import cellsociety.view.cellview.GameOfLifeCellView;
 import cellsociety.view.cellview.PercolationCellView;
 import cellsociety.view.cellview.SchellingCellView;
 import cellsociety.view.cellview.WatorCellView;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -52,7 +52,7 @@ public class SimulationPage {
   private ResourceBundle textProperties;
   private SimulationGraph graph;
   private Map<Integer, Integer> stateCount;
-
+  private int totalCellCount;
 
   //config file number keys
   public static final String SCENE_HEIGHT_KEY = "SCENE_HEIGHT";
@@ -121,27 +121,15 @@ public class SimulationPage {
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
     board = new CellView[numRows][numCols];
-    int index = 0;
-
-    while (gridIterator.hasNext()) {
-      Cell c = gridIterator.next();
-      Point location = c.getLocation();
-      int state = c.getState().getCurrentStatus();
-      int col = (int) location.getCol();
-      int row = (int) location.getRow();
-      board[row][col] = initializeCellView(simulationType, state,
-          configDouble(GRID_WIDTH_KEY) / numCols,
-          configDouble(GRID_HEIGHT_KEY) / numRows);
-
-      grid.add(board[row][col].getCellGraphic(), col, row);
-
-      if (!stateCount.containsKey(state)){
-        stateCount.put(state,0);
+    for(int row = 0; row < numRows; row++){
+      for(int col = 0; col < numCols; col++){
+        board[row][col] = initializeCellView(simulationType, 0,
+            configDouble(GRID_WIDTH_KEY) / numCols,
+            configDouble(GRID_HEIGHT_KEY) / numRows);
+        grid.add(board[row][col].getCellGraphic(), col, row);
       }
-      stateCount.replace(state,stateCount.get(state)+1);
-
-      index++;
     }
+    updateView(gridIterator);
 
     grid.setLayoutY(configDouble(GRID_START_Y_KEY));
     grid.setLayoutX(configDouble(GRID_START_X_KEY));
@@ -172,6 +160,7 @@ public class SimulationPage {
         speedLabel
     );
   }
+
 
   /**
    * set up the speed slider and the speed label
@@ -222,14 +211,11 @@ public class SimulationPage {
         configInt(RESET_BUTTON_Y_KEY));
     simulationGraphButton = new Button("graph");
     simulationGraphButton.setOnAction(event -> showGraph());
-
-//    simulationGraphButton = makeButton("graph", event -> showGraph(), configInt(BUTTON_START_X_KEY), 500);
   }
 
   private void showGraph() {
     root.getChildren().add(graph.getGraphSection());
   }
-
 
   /**
    * initialize the cellview objects in the grid according to the current simulation
@@ -278,16 +264,16 @@ public class SimulationPage {
    *
    * @param buttonText a string of the text on the button
    * @param handler    an event handler that gets hooked on the button
-   * @param xPos       an integer of the x position of the button
-   * @param yPos       an integer of the y position of the button
+   * @param colPos       an integer of the x position of the button
+   * @param rowPos       an integer of the y position of the button
    * @return returns the button object
    */
-  private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int xPos,
-      int yPos) {
+  private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int colPos,
+      int rowPos) {
     Button ret = new Button(buttonText);
     ret.setOnAction(handler);
-    ret.setLayoutX(xPos);
-    ret.setLayoutY(yPos);
+    ret.setLayoutX(colPos);
+    ret.setLayoutY(rowPos);
     return ret;
   }
 
@@ -323,9 +309,9 @@ public class SimulationPage {
     while (gridIterator.hasNext()) {
       Cell c = gridIterator.next();
       Point location = c.getLocation();
-      int state = c.getState().getCurrentStatus();
       int col = (int) location.getCol();
       int row = (int) location.getRow();
+      int state = c.getState().getCurrentStatus();
       board[row][col].updateState(state);
 
       if (!stateCount.containsKey(state)){
@@ -333,8 +319,8 @@ public class SimulationPage {
       }
       stateCount.replace(state,stateCount.get(state)+1);
     }
-
     //TODO: update graph with new map
+
   }
 
   /**

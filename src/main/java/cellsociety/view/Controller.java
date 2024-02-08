@@ -8,9 +8,14 @@ import cellsociety.model.neighborhood.VonNeumannNeighborhood;
 import cellsociety.model.simulation.FireSimulation;
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import cellsociety.model.simulation.PercolationSimulation;
+import cellsociety.model.simulation.Records.FireRecord;
+import cellsociety.model.simulation.Records.GameOfLifeRecord;
+import cellsociety.model.simulation.Records.PercolationRecord;
+import cellsociety.model.simulation.Records.SchellingRecord;
+import cellsociety.model.simulation.Records.WatorRecord;
 import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.Simulation;
-import cellsociety.model.simulation.WatorSimulation;
+//import cellsociety.model.simulation.WatorSimulation;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -177,6 +182,8 @@ public class Controller {
   }
 
 
+
+
   /**
    * Sets up the simulation model component
    *
@@ -186,6 +193,7 @@ public class Controller {
    * @param stateList        a list that specifies the initial state of all cells in the grid
    * @param simulationType   a string that specifies the simulation type
    */
+
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType, String gridType, String cellShape) {
     xmlParser.getParameters().forEach((key, value) -> System.out.println(key + ": " + value));
@@ -193,23 +201,24 @@ public class Controller {
     simulationRunning = false;
     simulationModel = switch (simulationType) {
       case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList,
-          xmlParser.getParameters().get("aliveToAliveMin").intValue(),
+          new GameOfLifeRecord(xmlParser.getParameters().get("aliveToAliveMin").intValue(),
           xmlParser.getParameters().get("deadToAliveMax").intValue(),
           xmlParser.getParameters().get("aliveToAliveMax").intValue(),
-          xmlParser.getParameters().get("deadToAliveMin").intValue(), gridType, cellShape);
+          xmlParser.getParameters().get("deadToAliveMin").intValue(), gridType, cellShape));
       case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList,
-          xmlParser.getParameters().get("percolatedNeighbors").intValue(), gridType, cellShape);
+          new PercolationRecord(xmlParser.getParameters().get("percolatedNeighbors").intValue(),
+              gridType, cellShape));
       case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList,
-          xmlParser.getParameters().get("neighborsToIgnite").intValue(),
+          new FireRecord(xmlParser.getParameters().get("neighborsToIgnite").intValue(),
           xmlParser.getParameters().get("probTreeIgnites"),
-          xmlParser.getParameters().get("probTreeCreated"),gridType, cellShape);
+          xmlParser.getParameters().get("probTreeCreated"),gridType, cellShape));
       case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList,
-          xmlParser.getParameters().get("proportionNeededToStay"),gridType, cellShape);
-      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
-          xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
-          xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
-          xmlParser.getParameters().get("initialEnergy").intValue(),
-          xmlParser.getParameters().get("energyBoost").intValue(),gridType, cellShape);
+          new SchellingRecord(xmlParser.getParameters().get("proportionNeededToStay"),gridType, cellShape));
+//      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
+//          new WatorRecord(xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
+//          xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
+//          xmlParser.getParameters().get("initialEnergy").intValue(),
+//          xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape));
       default -> null;
     };
   }
