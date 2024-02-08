@@ -1,7 +1,10 @@
 package cellsociety.model.neighborhood;
 
 import cellsociety.Point;
+import cellsociety.model.core.Cell;
+import cellsociety.model.core.Grid;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -23,14 +26,15 @@ public class MooreNeighborhood implements Neighborhood {
    * @return List<Point>, a list of all points that could potentially represent cells that share a
    * an edge or a vertex with central point p, should those points be valid indices in the grid.
    */
-  @Override
-  public List<Point> getNeighborCoordinates(Point p) {
-    List<Point> neighbors = new ArrayList<>();
-    for (int dx : DELTA_X) {
-      for (int dy : DELTA_Y) {
-        Point neighbor = p.translate(dx, dy);
-        if (!neighbor.equals(p)) {
-          neighbors.add(neighbor);
+  public List<Cell> getNeighbors(Grid grid, Cell cell) {
+    List<Cell> neighbors = new ArrayList<>();
+    Iterator<Cell> iter = grid.iterator();
+    while(iter.hasNext()){
+      Cell otherCell = iter.next();
+      for(Point p : cell.getVertices()) {
+        if (grid.containsVertex(p, otherCell.getVertices()) && !cell.equals(otherCell)){
+          neighbors.add(otherCell);
+          break;
         }
       }
     }

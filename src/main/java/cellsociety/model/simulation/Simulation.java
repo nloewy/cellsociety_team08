@@ -44,6 +44,14 @@ public abstract class Simulation<T extends Cell> {
    */
 
   public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType, String cellShape) {
+
+    myNeighborhood = hoodType;
+    myCols = col;
+    myGridType = gridType;
+    initializeMyGrid(row, col, stateList, cellShape);
+  }
+
+  public void initializeMyGrid(int row, int col, List<Integer> stateList, String cellShape) {
     List<Cell> cellList = new ArrayList<>();
     if(cellShape.equals("square")){
       for (int i = 0; i < stateList.size(); i++) {
@@ -55,13 +63,6 @@ public abstract class Simulation<T extends Cell> {
         cellList.add(new HexagonCell(stateList.get(i), i / col, i % col));
       }
     }
-    myNeighborhood = hoodType;
-    myCols = col;
-    myGridType = gridType;
-    initializeMyGrid(row, col, cellList);
-  }
-
-  public void initializeMyGrid(int row, int col, List<Cell> cellList) {
     switch(myGridType) {
       case "Normal": {
         myGrid = new Grid(row, col, cellList);
@@ -85,7 +86,6 @@ public abstract class Simulation<T extends Cell> {
    * transition function
    */
   public void processUpdate() {
-    printForDebugging();
     Iterator<Cell> iterator = myGrid.iterator();
     while (iterator.hasNext()) {
       Cell cell = iterator.next();
@@ -129,18 +129,4 @@ public abstract class Simulation<T extends Cell> {
     return myGrid.iterator();
   }
 
-  private void printForDebugging() {
-    Iterator<T> iterator2 = myGrid.iterator();
-    int count = 0;
-    while (iterator2.hasNext()) {
-      if (count % myCols == 0) {
-        System.out.println();
-      }
-      T c = iterator2.next();
-      count++;
-      System.out.print(c.getCurrentState() + " ");
-
-    }
-
-  }
 }

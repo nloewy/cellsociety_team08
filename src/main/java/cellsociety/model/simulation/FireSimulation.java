@@ -71,8 +71,7 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param currentCell the transitioning cell object
    */
   private void handleTreeCell(Cell currentCell) {
-
-    List<Cell> neighbors = getGrid().getNeighbors(currentCell.getLocation(), getNeighborhood());
+    List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
     int burningNeighbors = countNeighborsInState(neighbors, BURNING);
     if (burningNeighbors >= neighborsToIgnite || random() <= probTreeIgnites) {
       currentCell.setNextState(BURNING);

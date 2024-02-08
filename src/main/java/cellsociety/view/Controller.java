@@ -344,7 +344,7 @@ public class Controller {
    */
   private void onResetSimulation() {
     simulationModel.initializeMyGrid(xmlParser.getHeight(), xmlParser.getWidth(),
-        xmlParser.getStates());
+        xmlParser.getStates(), xmlParser.getCellShape());
     simulationPage.updateView(simulationModel.getIterator());
   }
 

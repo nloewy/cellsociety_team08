@@ -11,21 +11,15 @@ public class WarpedGrid extends Grid {
     super(rows,cols,cellList);
   }
 
+
+
   @Override
-  public List<Cell> getNeighbors(Point p, Neighborhood neighborhood) {
-    List<Cell> neighboringCells = new ArrayList<>();
-    List<Point> neighboringCoordinates = neighborhood.getNeighborCoordinates(p);
-    for (Point pNew : neighboringCoordinates) {
-      try {
-        Cell neighbor = getCellAtLocation(pNew);
-        neighboringCells.add(neighbor);
-      } catch (IndexOutOfBoundsException e) {
-        Point pNew2 = new Point((pNew.getX()+getNumCols())% getNumCols(),
-            (pNew.getY()+getNumRows())%getNumRows());
-        Cell neighbor = getCellAtLocation(pNew2);
-        neighboringCells.add(neighbor);
-      }
+  public boolean containsVertex(Point p, List<Point> vertices) {
+    if (super.containsVertex(p, vertices)){
+      return true;
     }
-    return neighboringCells;
+    Point pNew = new Point((p.getX()+getNumCols())%getNumCols(),
+        (p.getY()+getNumRows())%getNumRows());
+    return super.containsVertex(pNew, vertices);
   }
 }

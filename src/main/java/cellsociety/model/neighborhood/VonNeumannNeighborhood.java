@@ -1,7 +1,10 @@
 package cellsociety.model.neighborhood;
 
 import cellsociety.Point;
+import cellsociety.model.core.Cell;
+import cellsociety.model.core.Grid;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,12 +28,16 @@ public class VonNeumannNeighborhood implements Neighborhood {
    * an edge with central point p, should those points be valid indices in the grid.
    */
   @Override
-  public List<Point> getNeighborCoordinates(Point p) {
-    List<Point> neighbors = new ArrayList<>();
-    for (int i = 0; i < ROW_DELTAS.length; i++) {
-      Point neighbor = p.translate(ROW_DELTAS[i], COL_DELTAS[i]);
-      if (!neighbor.equals(p)) {
-        neighbors.add(neighbor);
+  public List<Cell> getNeighbors(Grid grid, Cell cell) {
+    List<Cell> neighbors = new ArrayList<>();
+    Iterator<Cell> iter = grid.iterator();
+    while(iter.hasNext()){
+      Cell otherCell = iter.next();
+      for(Point p : cell.getVertices()) {
+        if (grid.containsVertex(p, otherCell.getVertices()) &&  !cell.equals(otherCell) &&
+        (otherCell.getCentroid().getY()==p.getY() || otherCell.getCentroid().getX()==p.getX())){
+          neighbors.add(otherCell);
+        }
       }
     }
     return neighbors;

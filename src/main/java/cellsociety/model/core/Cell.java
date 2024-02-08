@@ -1,6 +1,8 @@
 package cellsociety.model.core;
 
 import cellsociety.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Cell is the atomic unit of our simulation. Each individual cell represents a location on a
@@ -14,7 +16,10 @@ public class Cell {
   public static final int PLACEHOLDER = -1;
   private int myCurrentState;
   private int myNextState;
-  private final Point myLocation;
+  private Point myLocation;
+  private List<Point> myVertices;
+
+  private Point myCentroid;
 
   /**
    * Constructs a cell object
@@ -28,6 +33,7 @@ public class Cell {
     myCurrentState = initialState;
     myNextState = PLACEHOLDER;
     myLocation = new Point(x, y);
+    myVertices = new ArrayList<>();
   }
 
   /**
@@ -77,4 +83,18 @@ public class Cell {
     myNextState = nextState;
   }
 
+  public List<Point> getVertices(){
+    return myVertices;
+  }
+
+  public Point getCentroid(){
+    int xSum = 0;
+    int ySum = 0;
+    for(Point p : myVertices){
+      xSum+=p.getX();
+      ySum+=p.getY();
+    }
+    myCentroid = new Point(xSum, ySum);
+    return myCentroid;
+  }
 }

@@ -1,6 +1,8 @@
 package cellsociety.model.neighborhood;
 
 import cellsociety.Point;
+import cellsociety.model.core.Cell;
+import cellsociety.model.core.Grid;
 import java.util.List;
 
 /**
@@ -21,5 +23,5 @@ public interface Neighborhood {
    * @return List<Point>, a list of all points that could potentially represent neighboring cells of
    * point p, should those points be valid indices in the grid.
    */
-  List<Point> getNeighborCoordinates(Point p);
+  List<Cell> getNeighbors(Grid grid, Cell cell);
 }

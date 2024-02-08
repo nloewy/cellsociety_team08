@@ -122,9 +122,6 @@ public class SimulationPage {
       int state = c.getCurrentState();
       int col = location.getY();
       int row = location.getX();
-      System.out.println(row + "," + col);
-      System.out.println(index);
-//            System.out.println("("+row+","+col+")"+" state " + state + " @index " + index);
       board[row][col] = initializeCellView(simulationType, state,
           configDouble(GRID_WIDTH_KEY) / numCols,
           configDouble(GRID_HEIGHT_KEY) / numRows);

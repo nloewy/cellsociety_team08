@@ -27,13 +27,13 @@ public abstract class CellView extends Region {
   public void updateState(int state) {
     getCellGraphic().getStyleClass().clear();
     setColors(state);
-    System.out.println(state);
   }
 
   public void getCss(String idName) {
     rec.setId(idName);
     rec.getStyleClass().add(idName);
   }
+
 
   public Rectangle getCellGraphic() {
     return rec;
