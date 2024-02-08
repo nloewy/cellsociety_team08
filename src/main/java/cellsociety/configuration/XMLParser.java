@@ -5,6 +5,7 @@ import cellsociety.exception.InputMissingParametersException;
 import cellsociety.exception.InvalidFileFormatException;
 import cellsociety.exception.InvalidGridBoundsException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -266,6 +267,7 @@ public class XMLParser {
   public void setParameters(Map<String, Double> parameters) {
     this.parameters = parameters;
   }
+
   public ResourceBundle getResourceBundle() {
     return resourceBundle;
   }
@@ -309,18 +311,20 @@ public class XMLParser {
 
   /**
    * Read an XML configuration file, initializing all attributes in the XMLParser
-   *
+   * <p>
    * References: https://mkyong.com/java/how-to-read-xml-file-in-java-dom-parser/
    * https://www.edankert.com/validate.html
    *
    * @param path, the path to the XML configuration file being read
-   * @throws InvalidFileFormatException, when the user loads a configuration file that has
-   *                                     empty, badly formatted, or non-XML file,
-   * @throws InputMissingParametersException, when missing essential parameters or height and width in the configuration file
-   * @throws InvalidGridBoundsException, when the user loads a configuration file that has
-   *                                     cell locations specified outside the grid’s bounds
+   * @throws InvalidFileFormatException,      when the user loads a configuration file that has
+   *                                          empty, badly formatted, or non-XML file,
+   * @throws InputMissingParametersException, when missing essential parameters or height and width
+   *                                          in the configuration file
+   * @throws InvalidGridBoundsException,      when the user loads a configuration file that has cell
+   *                                          locations specified outside the grid’s bounds
    */
-  public void readXML(String path) throws InvalidFileFormatException, InputMissingParametersException, InvalidGridBoundsException {
+  public void readXML(String path)
+      throws InvalidFileFormatException, InputMissingParametersException, InvalidGridBoundsException {
     try {
       // create a new File object for the XML file
       File file = new File(path);
@@ -343,31 +347,34 @@ public class XMLParser {
 
       // obtaining the simulation node containing all the configuration data
       Node simulationNode = doc.getElementsByTagName("simulation").item(0);
+
+      Element eElement = (Element) simulationNode;
       // check if file is empty
-      if (simulationNode == null) {
+      if (eElement.getElementsByTagName("*").getLength() == 0) {
         throw new InvalidFileFormatException(
             String.format(resourceBundle.getString("EmptyXMLFile"), path));
       }
 
-      // parse all configuration data
-      Element eElement = (Element) simulationNode;
+      // parse all configuration data presented as single (not nested) fields
       parseSingleFields(eElement);
 
       // check for empty essential inputs
-      if (type.isEmpty() || title.isEmpty() || author.isEmpty() || fileDescription.isEmpty() || displayDescription.isEmpty() || stateColor.isEmpty()) {
-        throw new InputMissingParametersException(String.format(resourceBundle.getString("MissingParameter"), path));
+      if (type.isEmpty() || title.isEmpty() || author.isEmpty() || fileDescription.isEmpty()
+          || displayDescription.isEmpty() || stateColor.isEmpty()) {
+        throw new InputMissingParametersException(
+            String.format(resourceBundle.getString("MissingParameter"), path));
       }
 
       // check if both width and height are not given
       if (width == 0 && height == 0) {
-        throw new InputMissingParametersException(String.format(resourceBundle.getString("MissingWidthAndHeight"), path));
+        throw new InputMissingParametersException(
+            String.format(resourceBundle.getString("MissingWidthAndHeight"), path));
       }
 
       // parse initial states
       String rawStates = eElement.getElementsByTagName("initial_states").item(0).getTextContent();
       parseStates(rawStates);
       int totalNumStates = states.size();
-
 
       // parse parameters
       Node parametersNode = eElement.getElementsByTagName("parameters").item(0);
@@ -382,7 +389,7 @@ public class XMLParser {
       NodeList randomConfigNodeList = randomConfigElement.getElementsByTagName("*");
       if (randomConfigNodeList.getLength() != 0) {
         parseRandomConfig(randomConfigNodeList);
-        for (Integer value: randomConfigurationTotalStates.values()) {
+        for (Integer value : randomConfigurationTotalStates.values()) {
           totalNumStates += value;
         }
       }
@@ -390,8 +397,7 @@ public class XMLParser {
       // check if only width or height is given. If so, update the other based on the total number of states read
       if (width == 0) {
         width = totalNumStates / height;
-      }
-      else if (height == 0) {
+      } else if (height == 0) {
         height = totalNumStates / width;
       }
 
@@ -402,7 +408,7 @@ public class XMLParser {
                 states.size()));
       }
 
-    } catch (NullPointerException e) {
+    } catch (FileNotFoundException e) {
       throw new InvalidFileFormatException(
           String.format(resourceBundle.getString("FileNotFound"), path), e);
     } catch (ParserConfigurationException e) {
@@ -500,18 +506,28 @@ public class XMLParser {
    * @return default value of the parameter
    */
   private String assignDefaultValueToParameter(String name) {
-    ResourceBundle defaultParametersResourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "DefaultParameters");
+    ResourceBundle defaultParametersResourceBundle = ResourceBundle.getBundle(
+        DEFAULT_RESOURCE_PACKAGE + "DefaultParameters");
     switch (this.type) {
       case "Fire":
-        if (name.equals("probTreeIgnites")) return defaultParametersResourceBundle.getString("probTreeIgnites");
-        else if (name.equals("probTreeCreated")) return defaultParametersResourceBundle.getString("probTreeCreated");
-        else return defaultParametersResourceBundle.getString("neighborsToIgnite");
+        if (name.equals("probTreeIgnites")) {
+          return defaultParametersResourceBundle.getString("probTreeIgnites");
+        } else if (name.equals("probTreeCreated")) {
+          return defaultParametersResourceBundle.getString("probTreeCreated");
+        } else {
+          return defaultParametersResourceBundle.getString("neighborsToIgnite");
+        }
 
       case "GameOfLife":
-        if (name.equals("aliveToAliveMin")) return defaultParametersResourceBundle.getString("aliveToAliveMin");
-        else if (name.equals("aliveToAliveMax")) return defaultParametersResourceBundle.getString("aliveToAliveMax");
-        else if (name.equals("deadToAliveMin")) return defaultParametersResourceBundle.getString("deadToAliveMin");
-        else return defaultParametersResourceBundle.getString("deadToAliveMax");
+        if (name.equals("aliveToAliveMin")) {
+          return defaultParametersResourceBundle.getString("aliveToAliveMin");
+        } else if (name.equals("aliveToAliveMax")) {
+          return defaultParametersResourceBundle.getString("aliveToAliveMax");
+        } else if (name.equals("deadToAliveMin")) {
+          return defaultParametersResourceBundle.getString("deadToAliveMin");
+        } else {
+          return defaultParametersResourceBundle.getString("deadToAliveMax");
+        }
 
       case "Percolation":
         return defaultParametersResourceBundle.getString("percolatedNeighbors");
@@ -520,10 +536,15 @@ public class XMLParser {
         return defaultParametersResourceBundle.getString("proportionNeededToStay");
 
       case "Wator":
-        if (name.equals("fishAgeOfReproduction")) return defaultParametersResourceBundle.getString("fishAgeOfReproduction");
-        else if (name.equals("sharkAgeOfReproduction")) return defaultParametersResourceBundle.getString("sharkAgeOfReproduction");
-        else if (name.equals("energyBoost")) return defaultParametersResourceBundle.getString("energyBoost");
-        else return defaultParametersResourceBundle.getString("initialEnergy");
+        if (name.equals("fishAgeOfReproduction")) {
+          return defaultParametersResourceBundle.getString("fishAgeOfReproduction");
+        } else if (name.equals("sharkAgeOfReproduction")) {
+          return defaultParametersResourceBundle.getString("sharkAgeOfReproduction");
+        } else if (name.equals("energyBoost")) {
+          return defaultParametersResourceBundle.getString("energyBoost");
+        } else {
+          return defaultParametersResourceBundle.getString("initialEnergy");
+        }
     }
     return "";
   }
