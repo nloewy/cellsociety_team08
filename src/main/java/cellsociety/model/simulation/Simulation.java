@@ -105,7 +105,7 @@ public abstract class Simulation<T extends Cell> {
   public int countNeighborsInState(List<T> neighbors, int state) {
     int count = 0;
     for (T c : neighbors) {
-      if (c.getCurrentState() == state) {
+      if (c.getState().getCurrentStatus() == state) {
         count++;
       }
     }

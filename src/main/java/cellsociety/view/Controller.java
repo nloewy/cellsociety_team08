@@ -276,7 +276,7 @@ public class Controller {
       ArrayList<Integer> newStates = new ArrayList<>();
       Iterator<Cell> iterator = simulationModel.getIterator();
       while (iterator.hasNext()) {
-        newStates.add(iterator.next().getCurrentState());
+        newStates.add(iterator.next().getState().getCurrentStatus());
       }
       xmlParser.setStates(newStates);
       xmlParser.createXML("savedSimulation" + xmlParser.getType(),

@@ -61,7 +61,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
   private List<WatorCell> getCellsOfState(List<WatorCell> cellList, int state) {
     List<WatorCell> ret = new ArrayList<>();
     for (WatorCell cell : cellList) {
-      if (cell.getCurrentState() == state) {
+      if (cell.getState().getCurrentStatus() == state) {
         ret.add(cell);
       }
     }
@@ -105,7 +105,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param nextCell    the cell the shark is attempting to move to
    */
   private void handleSharkMoveToEmptySpace(WatorCell currentCell, WatorCell nextCell) {
-    if (nextCell.getNextState() == SHARK) { //another shark is already moving to nextCell
+    if (nextCell.getState().getNextStatus() == SHARK) { //another shark is already moving to nextCell
       currentCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1,
           currentCell.getAge() + 1);
     } else {
@@ -128,7 +128,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    *                    move
    */
   private void handleSharkEatFish(WatorCell currentCell, WatorCell nextCell) {
-    if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
+    if (nextCell.getState().getNextStatus()  == SHARK || nextCell.getState().getNextStatus() == FISH) {
       //another shark or fish is already moving to nextCell
       currentCell.updateStateEnergyAge(SHARK, currentCell.getEnergy() - 1,
           currentCell.getAge() + 1);
@@ -176,7 +176,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
       increaseFishAge(currentCell);
     } else {
       WatorCell nextCell = emptyNeighbors.get(0);
-      if (nextCell.getNextState() == SHARK || nextCell.getNextState() == FISH) {
+      if (nextCell.getState().getNextStatus()  == SHARK || nextCell.getState().getNextStatus() == FISH) {
         increaseFishAge(currentCell);
       } else {
         if (currentCell.getAge() < fishAgeOfReproduction) {
@@ -228,8 +228,8 @@ public class WatorSimulation extends Simulation<WatorCell> {
       Iterator<WatorCell> gridIterator = getIterator();
       while (gridIterator.hasNext()) {
         WatorCell currentCell = gridIterator.next();
-        if (currentCell.getNextState() == Cell.PLACEHOLDER &&
-            currentCell.getCurrentState() == cellToUpdate) {
+        if (currentCell.getState().getNextStatus()  == Cell.PLACEHOLDER &&
+            currentCell.getState().getCurrentStatus() == cellToUpdate) {
           switch (cellToUpdate) {
             case EMPTY: {
               currentCell.setNextState(EMPTY);

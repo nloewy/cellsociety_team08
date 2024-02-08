@@ -119,7 +119,7 @@ public class SimulationPage {
     while (gridIterator.hasNext()) {
       Cell c = gridIterator.next();
       Point location = c.getLocation();
-      int state = c.getCurrentState();
+      int state = c.getState().getCurrentStatus();
       int col = (int) location.getCol();
       int row = (int) location.getRow();
       board[row][col] = initializeCellView(simulationType, state,
@@ -298,7 +298,7 @@ public class SimulationPage {
     while (gridIterator.hasNext()) {
       Cell c = gridIterator.next();
       Point location = c.getLocation();
-      int state = c.getCurrentState();
+      int state = c.getState().getCurrentStatus();
       int col = (int) location.getCol();
       int row = (int) location.getRow();
       board[row][col].updateState(state);

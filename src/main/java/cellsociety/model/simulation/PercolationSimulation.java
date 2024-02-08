@@ -65,10 +65,10 @@ public class PercolationSimulation extends SimpleCellSimulation {
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
-      if (currentCell.getCurrentState() == OPEN) {
+      if (currentCell.getState().getCurrentStatus()== OPEN) {
         handleOpenCell(currentCell, neighbors);
       } else {
-        currentCell.setNextState(currentCell.getCurrentState());
+        currentCell.setNextState(currentCell.getState().getCurrentStatus());
       }
     }
   }

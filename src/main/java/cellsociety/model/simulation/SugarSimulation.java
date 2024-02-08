@@ -35,10 +35,10 @@ public class SugarSimulation extends SimpleCellSimulation {
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
       List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
-      String stateStr = Integer.toString(currentCell.getCurrentState());
+      String stateStr = Integer.toString(currentCell.getState().getCurrentStatus());
       List<String> neighborStates = new ArrayList<>();
       for (Cell c : neighbors) {
-        neighborStates.add(Integer.toString(currentCell.getCurrentState()));
+        neighborStates.add(Integer.toString(currentCell.getState().getCurrentStatus()));
       }
       Collections.sort(neighborStates);
 

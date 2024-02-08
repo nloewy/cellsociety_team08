@@ -14,8 +14,7 @@ import java.util.List;
 public class Cell {
 
   public static final int PLACEHOLDER = -1;
-  private int myCurrentState;
-  private int myNextState;
+  private State myState;
   private Point myLocation;
   private List<Point> myVertices;
 
@@ -30,8 +29,7 @@ public class Cell {
    * @param col            is the col-coordinate of the cell on the 2-dimensional grid
    */
   public Cell(int initialState, int row, int col) {
-    myCurrentState = initialState;
-    myNextState = PLACEHOLDER;
+    myState = new State(initialState);
     myLocation = new Point(row, col);
     myVertices = new ArrayList<>();
   }
@@ -43,27 +41,10 @@ public class Cell {
    */
 
   public void updateStates() {
-    myCurrentState = myNextState;
-    myNextState = PLACEHOLDER;
+    myState.updateStatus();
   }
 
-  /**
-   * Retrieves myCurrentState instance variable
-   *
-   * @return myCurrentState, the current state of the cell object.
-   */
-  public int getCurrentState() {
-    return myCurrentState;
-  }
-
-  /**
-   * Retrieves myNextState instance variable
-   *
-   * @return myNextState, the future state of the cell object.
-   */
-  public int getNextState() {
-    return myNextState;
-  }
+  public State getState(){return myState;}
 
   /**
    * Retrieves myLocation instance variable
@@ -80,7 +61,7 @@ public class Cell {
    * @param nextState, new value of myNextState, calculated by transition function
    */
   public void setNextState(int nextState) {
-    myNextState = nextState;
+    myState.setNextStatus(nextState);
   }
 
   public List<Point> getVertices(){

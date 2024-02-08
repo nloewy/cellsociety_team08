@@ -95,10 +95,10 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
       }
       System.out.println();
       System.out.println("Alive Neighbors of " + currentCell.getLocation().toString() + "  : " + aliveNeighbors);
-      if (currentCell.getCurrentState() == ALIVE) {
+      if (currentCell.getState().getCurrentStatus()  == ALIVE) {
         handleAliveCell(currentCell, aliveNeighbors);
       }
-      if (currentCell.getCurrentState() == DEAD) {
+      if (currentCell.getState().getCurrentStatus() == DEAD) {
         handleDeadCell(currentCell, aliveNeighbors);
       }
     }

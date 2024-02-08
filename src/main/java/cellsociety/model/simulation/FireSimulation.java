@@ -89,7 +89,7 @@ public class FireSimulation extends SimpleCellSimulation {
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      switch (currentCell.getCurrentState()) {
+      switch (currentCell.getState().getCurrentStatus()) {
         case EMPTY: {
           handleEmptyCell(currentCell);
           break;

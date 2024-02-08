@@ -55,14 +55,14 @@ public class SchellingSimulation extends SimpleCellSimulation {
     List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
     int totalNeighbors = neighbors.size();
     int numEmptyNeighbors = countNeighborsInState(neighbors, EMPTY);
-    int numNeighborsSameState = countNeighborsInState(neighbors, currentCell.getCurrentState());
-    if (currentCell.getCurrentState() != EMPTY) {
+    int numNeighborsSameState = countNeighborsInState(neighbors, currentCell.getState().getCurrentStatus());
+    if (currentCell.getState().getCurrentStatus() != EMPTY) {
       if (totalNeighbors != numEmptyNeighbors
           && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
           < proportionNeededToStay) {
         myCellsToMove.add(currentCell);
       } else {
-        currentCell.setNextState(currentCell.getCurrentState());
+        currentCell.setNextState(currentCell.getState().getCurrentStatus());
       }
     }
   }
@@ -76,14 +76,14 @@ public class SchellingSimulation extends SimpleCellSimulation {
     int shorterListLength = Math.min(myCellsToMove.size(), myEmptyCells.size());
     int longerListLength = Math.max(myCellsToMove.size(), myEmptyCells.size());
     for (int i = 0; i < shorterListLength; i++) {
-      myEmptyCells.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
+      myEmptyCells.get(i).setNextState(myCellsToMove.get(i).getState().getCurrentStatus());
       myCellsToMove.get(i).setNextState(EMPTY);
     }
     for (int i = shorterListLength; i < longerListLength; i++) {
       if (myCellsToMove.size() < myEmptyCells.size()) {
-        myEmptyCells.get(i).setNextState(myEmptyCells.get(i).getCurrentState());
+        myEmptyCells.get(i).setNextState(myEmptyCells.get(i).getState().getCurrentStatus());
       } else {
-        myCellsToMove.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
+        myCellsToMove.get(i).setNextState(myCellsToMove.get(i).getState().getCurrentStatus());
       }
     }
 
@@ -102,7 +102,7 @@ public class SchellingSimulation extends SimpleCellSimulation {
 
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      if (currentCell.getCurrentState() == EMPTY) {
+      if (currentCell.getState().getCurrentStatus() == EMPTY) {
         myEmptyCells.add(currentCell);
       }
       handleDemographicCell(currentCell);
