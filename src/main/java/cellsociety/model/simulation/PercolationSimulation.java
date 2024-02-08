@@ -4,6 +4,7 @@ import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
 import java.util.List;
+import cellsociety.model.simulation.Records.PercolationRecord;
 
 /**
  * This cellular automata simulation represents the CS201 Percolation Assignment
@@ -33,9 +34,9 @@ public class PercolationSimulation extends SimpleCellSimulation {
    * @param gridType            type of grid used in simulation
    */
   public PercolationSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int percolatedNeighbors, String gridType, String cellShape) {
-    super(row, col, hoodType, stateList, gridType, cellShape);
-    this.percolatedNeighbors = percolatedNeighbors;
+      PercolationRecord r) {
+    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    this.percolatedNeighbors = r.percolatedNeighbors();
   }
 
   /**

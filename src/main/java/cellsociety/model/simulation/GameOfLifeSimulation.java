@@ -2,6 +2,7 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
+import cellsociety.model.simulation.Records.GameOfLifeRecord;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,12 +41,12 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
    * @param gridType          type of grid used in simulation
    */
   public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int aliveToAliveMin, int aliveToAliveMax, int deadToAliveMin, int deadToAliveMax, String gridType, String cellShape) {
-    super(row, col, hoodType, stateList, gridType, cellShape);
-    this.aliveToAliveMin = aliveToAliveMin;
-    this.aliveToAliveMax = aliveToAliveMax;
-    this.deadToAliveMin = deadToAliveMin;
-    this.deadToAliveMax = deadToAliveMax;
+      GameOfLifeRecord r) {
+    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    this.aliveToAliveMin = r.aliveToAliveMin();
+    this.aliveToAliveMax = r.aliveToAliveMax();
+    this.deadToAliveMin = r.deadToAliveMin();
+    this.deadToAliveMax = r.deadToAliveMax();
   }
 
   /**
