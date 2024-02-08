@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement

@@ -3,6 +3,7 @@ package cellsociety.model.simulation;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.WatorCell;
 import cellsociety.model.neighborhood.Neighborhood;
+import cellsociety.model.simulation.Records.WatorRecord;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -41,15 +42,14 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @param gridType               type of grid used in simulation
    */
   public WatorSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int fishAgeOfReproduction, int sharkAgeOfReproduction, int initialEnergy, int energyBoost,
-      String gridType, String cellShape) {
-    super(row, col, hoodType, stateList, gridType, cellShape,
-        (ind -> new WatorCell(stateList.get(ind),
-            ind / col, ind % col, initialEnergy)));
-    this.fishAgeOfReproduction = fishAgeOfReproduction;
-    this.sharkAgeOfReproduction = sharkAgeOfReproduction;
-    this.energyBoost = energyBoost;
-    this.initialEnergy = initialEnergy;
+      WatorRecord r) {
+    super(row, col, hoodType, stateList, r.gridType(), r.cellShape(),
+        (ind -> (WatorCell) new Cell(stateList.get(ind),
+            ind / col, ind % col)));
+    this.fishAgeOfReproduction = r.fishAgeOfReproduction();
+    this.sharkAgeOfReproduction = r.sharkAgeOfReproduction();
+    this.energyBoost = r.energyBoost();
+    this.initialEnergy = r.initialEnergy();
   }
 
   /**

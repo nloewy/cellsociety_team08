@@ -4,6 +4,7 @@ import static java.lang.Math.random;
 
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.Neighborhood;
+import cellsociety.model.simulation.Records.FireRecord;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,12 +41,11 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param gridType          type of grid used in simulation
    */
   public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int neighborsToIgnite, double probTreeIgnites, double probTreeCreated, String gridType,
-      String cellShape) {
-    super(row, col, hoodType, stateList, gridType, cellShape);
-    this.neighborsToIgnite = neighborsToIgnite;
-    this.probTreeIgnites = probTreeIgnites;
-    this.probTreeCreated = probTreeCreated;
+      FireRecord r) {
+    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    this.neighborsToIgnite = r.neighborsToIgnite();
+    this.probTreeIgnites = r.probTreeIgnites();
+    this.probTreeCreated = r.probTreeCreated();
   }
 
   /**
