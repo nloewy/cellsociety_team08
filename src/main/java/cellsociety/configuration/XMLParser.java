@@ -4,17 +4,21 @@ package cellsociety.configuration;
 import cellsociety.exception.InputMissingParametersException;
 import cellsociety.exception.InvalidFileFormatException;
 import cellsociety.exception.InvalidGridBoundsException;
+import cellsociety.exception.InvalidValueException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,6 +45,14 @@ import org.xml.sax.SAXException;
 public class XMLParser {
 
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.configuration.";
+  public static final Set<String> SIMULATION_TYPES = new HashSet<>(
+      Arrays.asList("Fire", "GameOfLife", "Percolation", "Schelling", "Wator"));
+  public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
+      Arrays.asList("adjacent", "cardinal", "Moore", "VonNeumann"));
+  public static final Set<String> CELL_SHAPES = new HashSet<>(
+      Arrays.asList("square", "hexagon"));
+  public static final Set<String> GRID_EDGE_TYPES = new HashSet<>(
+      Arrays.asList("Normal", "Warped"));
   private ResourceBundle resourceBundle;
   private String type; // simulation type
   private String title; // simulation title
@@ -370,6 +382,32 @@ public class XMLParser {
         throw new InputMissingParametersException(
             String.format(resourceBundle.getString("MissingWidthAndHeight"), path));
       }
+      if (width < 0 || height < 0) {
+        throw new InvalidValueException(
+            String.format(resourceBundle.getString("NegativeValueError"), "Width or Height"));
+      }
+
+      // check if simulation type exists
+      if (!SIMULATION_TYPES.contains(type)) {
+        throw new InvalidValueException(
+            String.format(resourceBundle.getString("NonExistentSimulationType"), type));
+      }
+      // check if neighborhood type exists
+      if (!NEIGHBORHOOD_TYPES.contains(neighborhoodType)) {
+        throw new InvalidValueException(
+            String.format(resourceBundle.getString("NonExistentNeighborhoodType"),
+                neighborhoodType));
+      }
+      // check if cell shape exists
+      if (!CELL_SHAPES.contains(cellShape)) {
+        throw new InvalidValueException(
+            String.format(resourceBundle.getString("NonExistentCellShape"), cellShape));
+      }
+      // check if grid edge type exists
+      if (!GRID_EDGE_TYPES.contains(gridEdgeType)) {
+        throw new InvalidValueException(
+            String.format(resourceBundle.getString("NonExistentGridEdgeType"), gridEdgeType));
+      }
 
       // parse initial states
       String rawStates = eElement.getElementsByTagName("initial_states").item(0).getTextContent();
@@ -404,7 +442,8 @@ public class XMLParser {
       }
 
       // Check if grid dimension is valid, throw exception otherwise
-      if (randomConfigurationTotalStates.isEmpty() && width * height != states.size() || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
+      if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
+          || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
         throw new InvalidGridBoundsException(
             String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
                 states.size()));
@@ -481,6 +520,10 @@ public class XMLParser {
         valueString = assignDefaultValueToParameter(name);
       }
       Double value = Double.parseDouble(valueString);
+      if (value < 0) {
+        throw new InvalidValueException(
+            String.format(resourceBundle.getString("NegativeValueError"), "Parameter " + name));
+      }
       parameters.put(name, value);
     }
   }
@@ -497,6 +540,11 @@ public class XMLParser {
       Node randomConfigNode = randomConfigNodeList.item(i);
       String name = randomConfigNode.getNodeName();
       Integer value = Integer.parseInt(randomConfigNode.getTextContent());
+      if (value < 0) {
+        throw new InvalidValueException(
+            String.format(resourceBundle.getString("NegativeValueError"),
+                name + " random configuration"));
+      }
       randomConfigurationTotalStates.put(name, value);
     }
   }
