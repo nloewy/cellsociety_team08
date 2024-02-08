@@ -41,7 +41,8 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param gridType          type of grid used in simulation
    */
   public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      int neighborsToIgnite, double probTreeIgnites, double probTreeCreated, String gridType, String cellShape) {
+      int neighborsToIgnite, double probTreeIgnites, double probTreeCreated, String gridType,
+      String cellShape) {
     super(row, col, hoodType, stateList, gridType, cellShape);
     this.neighborsToIgnite = neighborsToIgnite;
     this.probTreeIgnites = probTreeIgnites;
@@ -71,7 +72,7 @@ public class FireSimulation extends SimpleCellSimulation {
    * @param currentCell the transitioning cell object
    */
   private void handleTreeCell(Cell currentCell) {
-    List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
+    List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
     int burningNeighbors = countNeighborsInState(neighbors, BURNING);
     if (burningNeighbors >= neighborsToIgnite || random() <= probTreeIgnites) {
       currentCell.setNextState(BURNING);

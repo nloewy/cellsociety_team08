@@ -52,10 +52,11 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * @param currentCell a cell in group A or B preparing to transition
    */
   private void handleDemographicCell(Cell currentCell) {
-    List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
+    List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
     int totalNeighbors = neighbors.size();
     int numEmptyNeighbors = countNeighborsInState(neighbors, EMPTY);
-    int numNeighborsSameState = countNeighborsInState(neighbors, currentCell.getState().getCurrentStatus());
+    int numNeighborsSameState = countNeighborsInState(neighbors,
+        currentCell.getState().getCurrentStatus());
     if (currentCell.getState().getCurrentStatus() != EMPTY) {
       if (totalNeighbors != numEmptyNeighbors
           && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)

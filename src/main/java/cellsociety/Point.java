@@ -14,11 +14,12 @@ public class Point {
   private double myCol;
   private double myColOffset = 0;
 
-  public Point(double row, double col, double offset){
+  public Point(double row, double col, double offset) {
     myRow = row;
     myCol = col;
     myColOffset = offset;
   }
+
   /**
    * Constructs an object of type point
    *
@@ -26,7 +27,7 @@ public class Point {
    * @param col, col coordinate
    */
   public Point(double row, double col) {
-    this(row,col,0.0);
+    this(row, col, 0.0);
   }
 
 
@@ -98,7 +99,7 @@ public class Point {
     return (int) round(18 * myRow + myCol);
   }
 
-  public String toString(){
+  public String toString() {
     return "(row:" + myRow + ",col" + myCol + ")";
   }
 }

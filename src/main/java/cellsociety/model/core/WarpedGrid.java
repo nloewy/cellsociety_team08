@@ -12,7 +12,9 @@ public class WarpedGrid extends Grid {
 
   @Override
   public boolean containsVertex(Point vtx, List<Point> vertices) {
-    if(super.containsVertex(vtx,vertices)){return true;}
+    if (super.containsVertex(vtx, vertices)) {
+      return true;
+    }
     final double[][] translations = {{getNumRows(), vtx.getColOffset()}, {-getNumRows(),
         vtx.getColOffset()}, {0, getNumCols()}, {0, -getNumCols()}};
     for (int i = 0; i < translations.length; i++) {

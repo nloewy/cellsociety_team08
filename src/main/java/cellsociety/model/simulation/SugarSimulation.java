@@ -24,7 +24,8 @@ public class SugarSimulation extends SimpleCellSimulation {
   public static final int OCCUPIED = 1;
 
 
-  public SugarSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType, String cellShape) {
+  public SugarSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
+      String gridType, String cellShape) {
     super(row, col, hoodType, stateList, gridType, cellShape);
   }
 
@@ -34,7 +35,7 @@ public class SugarSimulation extends SimpleCellSimulation {
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(),currentCell);
+      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
       String stateStr = Integer.toString(currentCell.getState().getCurrentStatus());
       List<String> neighborStates = new ArrayList<>();
       for (Cell c : neighbors) {

@@ -40,10 +40,11 @@ public abstract class Simulation<T extends Cell> {
    * @param col,       the number of columns in the 2-dimensional grid
    * @param hoodType,  the definition of neighbors
    * @param stateList, a list of the integer representation of each cells state, by rows, then cols
-   * @param gridType          type of grid used in simulation
+   * @param gridType   type of grid used in simulation
    */
 
-  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList, String gridType, String cellShape) {
+  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
+      String gridType, String cellShape) {
 
     myNeighborhood = hoodType;
     myCols = col;
@@ -53,17 +54,16 @@ public abstract class Simulation<T extends Cell> {
 
   public void initializeMyGrid(int row, int col, List<Integer> stateList, String cellShape) {
     List<Cell> cellList = new ArrayList<>();
-    if(cellShape.equals("square")){
+    if (cellShape.equals("square")) {
       for (int i = 0; i < stateList.size(); i++) {
         cellList.add(new RectangleCell(stateList.get(i), i / col, i % col));
       }
-    }
-    else if(cellShape.equals("hexagon")){
+    } else if (cellShape.equals("hexagon")) {
       for (int i = 0; i < stateList.size(); i++) {
         cellList.add(new HexagonCell(stateList.get(i), i / col, i % col));
       }
     }
-    switch(myGridType) {
+    switch (myGridType) {
       case "Normal": {
         myGrid = new Grid(row, col, cellList);
         break;
@@ -112,13 +112,14 @@ public abstract class Simulation<T extends Cell> {
     return count;
   }
 
-  public Neighborhood getNeighborhood(){
+  public Neighborhood getNeighborhood() {
     return myNeighborhood;
   }
 
-  public Grid getGrid(){
+  public Grid getGrid() {
     return myGrid;
   }
+
   /**
    * Retrieves the Grid's object that can access the grid of cells while hiding the Data Structure
    * used to implement it.

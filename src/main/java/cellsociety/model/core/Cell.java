@@ -25,8 +25,8 @@ public class Cell {
    *
    * @param initialState is the original state of the cell, either randomly set or determined from a
    *                     configuration file
-   * @param row            is the row-coordinate of the cell on the 2-dimensional grid
-   * @param col            is the col-coordinate of the cell on the 2-dimensional grid
+   * @param row          is the row-coordinate of the cell on the 2-dimensional grid
+   * @param col          is the col-coordinate of the cell on the 2-dimensional grid
    */
   public Cell(int initialState, int row, int col) {
     myState = new State(initialState);
@@ -44,7 +44,9 @@ public class Cell {
     myState.updateStatus();
   }
 
-  public State getState(){return myState;}
+  public State getState() {
+    return myState;
+  }
 
   /**
    * Retrieves myLocation instance variable
@@ -64,19 +66,20 @@ public class Cell {
     myState.setNextStatus(nextState);
   }
 
-  public List<Point> getVertices(){
+  public List<Point> getVertices() {
     return myVertices;
   }
 
-  public void addVertex(Point p){
+  public void addVertex(Point p) {
     myVertices.add(p);
   }
-  public Point getCentroid(){
+
+  public Point getCentroid() {
     double rowSum = 0;
     double colSum = 0;
-    for(Point p : myVertices){
-      rowSum+=p.getRow();
-      colSum+=p.getCol();
+    for (Point p : myVertices) {
+      rowSum += p.getRow();
+      colSum += p.getCol();
     }
     myCentroid = new Point(rowSum, colSum);
     return myCentroid;
