@@ -1,10 +1,19 @@
 package cellsociety.model.simulation;
 
+import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
+import cellsociety.model.core.CellShape;
+import cellsociety.model.core.FireCell;
+import cellsociety.model.core.HexagonShape;
+import cellsociety.model.core.LifeCell;
+import cellsociety.model.core.RectangleShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.GameOfLifeRecord;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This cellular automata simulation represents Conway's Game of Life.
@@ -12,7 +21,7 @@ import java.util.List;
  * author @Noah Loewy
  */
 
-public class GameOfLifeSimulation extends SimpleCellSimulation {
+public class GameOfLifeSimulation extends Simulation {
 
   public static final int DEAD = 0;
   public static final int ALIVE = 1;
@@ -30,53 +39,44 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
    * @param hoodType,       the definition of neighbors
    * @param stateList,      a list of the integer representation of each cells state, by rows, then
    *                        cols
-   * @param aliveToAliveMin minimum number of living cells that can be neighbors of a living cell to
-   *                        avoid death by underpopulation
-   * @param aliveToAliveMax maximum number of living cells can be neighbors of a living cell to
-   *                        avoid death by overpopulation
-   * @param deadToAliveMin  minimum number of living cells that can be neighbors of a dead cell to
-   *                        allow reproduction
-   * @param deadToAliveMax  maximum number of living cells that can be neighbors of a dead cell * to
-   *                        allow reproduction
-   * @param gridType        type of grid used in simulation
    */
   public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       GameOfLifeRecord r) {
-    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    super(hoodType,  r.gridType());
     this.aliveToAliveMin = r.aliveToAliveMin();
     this.aliveToAliveMax = r.aliveToAliveMax();
     this.deadToAliveMin = r.deadToAliveMin();
     this.deadToAliveMax = r.deadToAliveMax();
+    createCellsAndGrid(row, col, stateList, r.cellShape(), hoodType);
   }
 
-  /**
-   * Handles transition of alive cell in GameOfLifeSimulation. Alive cells with no less than
-   * aliveToAliveMin and no more than aliveToAliveMax living neighbors will remain alive, whereas
-   * all other alive cells will die
-   *
-   * @param currentCell the transitioning cell object
-   */
-  private void handleAliveCell(Cell currentCell, int aliveNeighbors) {
-    if (aliveNeighbors >= aliveToAliveMin && aliveNeighbors <= aliveToAliveMax) {
-      currentCell.setNextState(ALIVE);
-    } else {
-      currentCell.setNextState(DEAD);
+  public void createCellsAndGrid(int row, int col, List<Integer> stateList,
+      String cellShape, Neighborhood hoodType){
+    List<Cell> cellList = cellMaker(row, col,stateList,hoodType, cellShape);
+    initializeMyGrid(row, col, cellList);
+    for(Cell cell : cellList) {
+      cell.initializeNeighbors(hoodType, myGrid);
     }
   }
+  public List<Cell> cellMaker(int row, int col, List<Integer> stateList, Neighborhood hoodType,
+      String cellShape){
+    List<Cell> cellList = new ArrayList<>();
+    for (int i = 0; i < stateList.size(); i++) {
+      CellShape shape = switch (cellShape) {
+        case "square" -> new RectangleShape();
+        case "hexagon" -> new HexagonShape();
+        default -> throw new InvalidValueException("Cell Shape Does Not Exist");
+      };
 
-  /**
-   * Handles transition of alive cell in GameOfLifeSimulation. Dead cells with no less than
-   * deadToAliveMin and no more than deadToAliveMax living neighbors will remain alive, whereas all
-   * other alive cells will die
-   *
-   * @param currentCell the transitioning cell object
-   */
-  private void handleDeadCell(Cell currentCell, int aliveNeighbors) {
-    if (aliveNeighbors >= deadToAliveMin && aliveNeighbors <= deadToAliveMax) {
-      currentCell.setNextState(ALIVE);
-    } else {
-      currentCell.setNextState(DEAD);
+      Map<String, Integer> params = new HashMap<>();
+      params.put("aliveToAliveMin", aliveToAliveMin);
+      params.put("aliveToAliveMax", aliveToAliveMax);
+      params.put("deadToAliveMin",  deadToAliveMin);
+      params.put("deadToAliveMax",  deadToAliveMax);
+
+      cellList.add(new LifeCell(stateList.get(i), i / col, i % col, shape, params));
     }
+    return cellList;
   }
 
   /**
@@ -88,21 +88,9 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
-      int aliveNeighbors = countNeighborsInState(neighbors, ALIVE);
-      System.out.print("Neighbors of " + currentCell.getLocation().toString() + " :");
-      for (Cell c : neighbors) {
-        System.out.print(c.getLocation().toString() + " ");
-      }
-      System.out.println();
-      System.out.println(
-          "Alive Neighbors of " + currentCell.getLocation().toString() + "  : " + aliveNeighbors);
-      if (currentCell.getState().getCurrentStatus() == ALIVE) {
-        handleAliveCell(currentCell, aliveNeighbors);
-      }
-      if (currentCell.getState().getCurrentStatus() == DEAD) {
-        handleDeadCell(currentCell, aliveNeighbors);
-      }
+      currentCell.transition();
     }
   }
 }
+
+

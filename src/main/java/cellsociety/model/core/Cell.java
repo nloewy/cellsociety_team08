@@ -1,6 +1,8 @@
 package cellsociety.model.core;
 
 import cellsociety.Point;
+import cellsociety.model.neighborhood.Neighborhood;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +13,17 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class Cell { //<T extends State> {
+public abstract class Cell { //<T extends State> {
 
   public static final int PLACEHOLDER = -1;
-  private State myState; //T myState;
+  private int myCurrentState; //T myState;
+
+  private int myNextState;
   private Point myLocation;
   private List<Point> myVertices;
+  private List<Cell> myNeighbors;
   private Point myCentroid;
+
 
   /**
    * Constructs a cell object
@@ -27,24 +33,64 @@ public class Cell { //<T extends State> {
    * @param row          is the row-coordinate of the cell on the 2-dimensional grid
    * @param col          is the col-coordinate of the cell on the 2-dimensional grid
    */
-  public Cell(int initialState, int row, int col) {
-    myState = new State(initialState);
+  public Cell(int initialState, int row, int col, CellShape shapeType) {
+    myCurrentState = initialState;
+    myNextState = PLACEHOLDER;
     myLocation = new Point(row, col);
-    myVertices = new ArrayList<>();
+    myVertices = shapeType.getVertices(row,col);
   }
 
+  public void initializeNeighbors(Neighborhood hoodType, Grid grid) {
+    myNeighbors = hoodType.getNeighbors(grid, this);
+
+  }
   /**
    * This function updates the state of the cell after calling the transition function. The new
    * currentState takes the value of the nextState placeholder, and nextState is set to placeholder
    * value.
    */
+  public abstract void transition();
 
-  public void updateStates() {
-    myState.updateStatus();
+  public int getCurrentState() {
+    return myCurrentState;
   }
 
-  public State getState() {
-    return myState;
+  public int getNextState() {
+    return myNextState;
+  }
+
+  public void setCurrentState(int currentState) {
+    myCurrentState = currentState;
+  }
+
+  public void setNextState(int nextState) {
+    myNextState = nextState;
+  }
+
+  public void updateStates() {
+    myCurrentState = myNextState;
+    myNextState = PLACEHOLDER;
+  }
+
+
+  /**
+   * Given a list of cells, and an integer representing a state, determines the number of cells in
+   * the list that are currently at that state
+   *
+   * @param state,     an integer, representing the state to check for
+   * @return count, representing the number of cells in neighbors where myCurrentState == state
+   */
+  public int countNeighborsInState(int state) {
+    int count = 0;
+    for (Cell c : getNeighbors()) {
+      if (c.getCurrentState() == state) {
+        count++;
+      }
+    }
+    return count;
+  }
+  public List<Cell> getNeighbors() {
+    return myNeighbors;
   }
 
   /**
@@ -56,22 +102,11 @@ public class Cell { //<T extends State> {
     return myLocation;
   }
 
-  /**
-   * Updates myNextState instance variable
-   *
-   * @param nextState, new value of myNextState, calculated by transition function
-   */
-  public void setNextState(int nextState) {
-    myState.setNextStatus(nextState);
-  }
 
   public List<Point> getVertices() {
     return myVertices;
   }
 
-  public void addVertex(Point p) {
-    myVertices.add(p);
-  }
 
   public Point getCentroid() {
     double rowSum = 0;
@@ -82,5 +117,9 @@ public class Cell { //<T extends State> {
     }
     myCentroid = new Point(rowSum, colSum);
     return myCentroid;
+  }
+
+  public void setNeighborhood(List<Cell> neighbors) {
+    myNeighbors = neighbors;
   }
 }

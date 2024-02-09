@@ -1,10 +1,18 @@
 package cellsociety.model.simulation;
 
+import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
+import cellsociety.model.core.CellShape;
+import cellsociety.model.core.HexagonShape;
+import cellsociety.model.core.PercolationCell;
+import cellsociety.model.core.RectangleShape;
 import cellsociety.model.neighborhood.Neighborhood;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import cellsociety.model.simulation.Records.PercolationRecord;
+import java.util.Map;
 
 /**
  * This cellular automata simulation represents the CS201 Percolation Assignment
@@ -12,7 +20,7 @@ import cellsociety.model.simulation.Records.PercolationRecord;
  * author @noah loewy
  */
 
-public class PercolationSimulation extends SimpleCellSimulation {
+public class PercolationSimulation extends Simulation {
 
   public static final int OPEN = 0;
   public static final int PERCOLATED = 1;
@@ -29,31 +37,36 @@ public class PercolationSimulation extends SimpleCellSimulation {
    * @param hoodType,           the definition of neighbors
    * @param stateList,          a list of the integer representation of each cells state, by rows,
    *                            then cols
-   * @param percolatedNeighbors minimum number of percolated neighbors an open cell must have for it
-   *                            to percolate
-   * @param gridType            type of grid used in simulation
    */
   public PercolationSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       PercolationRecord r) {
-    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    super(hoodType,  r.gridType());
     this.percolatedNeighbors = r.percolatedNeighbors();
+    createCellsAndGrid(row, col, stateList, r.cellShape(), hoodType);
   }
 
-  /**
-   * Handles transition of open cell in PercolationSimulation. Open cells with at least
-   * neighersPercolatedRequired will become percolated, and otherwise will remain open.
-   *
-   * @param currentCell the transitioning cell object
-   * @param neighbors   all cells in the neighborhood of the transitioning cell, under the current
-   *                    definition of neighborhood
-   */
-  private void handleOpenCell(Cell currentCell, List<Cell> neighbors) {
-    int numPercolatedNeighbors = countNeighborsInState(neighbors, PERCOLATED);
-    if (numPercolatedNeighbors >= percolatedNeighbors) {
-      currentCell.setNextState(PERCOLATED);
-    } else {
-      currentCell.setNextState(OPEN);
+  public void createCellsAndGrid(int row, int col, List<Integer> stateList,
+      String cellShape, Neighborhood hoodType){
+    List<Cell> cellList = cellMaker(row, col,stateList,hoodType, cellShape);
+    initializeMyGrid(row, col, cellList);
+    for(Cell cell : cellList) {
+      cell.initializeNeighbors(hoodType, myGrid);
     }
+  }
+  public List<Cell> cellMaker(int row, int col, List<Integer> stateList, Neighborhood hoodType,
+      String cellShape){
+    List<Cell> cellList = new ArrayList<>();
+    for (int i = 0; i < stateList.size(); i++) {
+      CellShape shape = switch (cellShape) {
+        case "square" -> new RectangleShape();
+        case "hexagon" -> new HexagonShape();
+        default -> throw new InvalidValueException("Cell Shape Does Not Exist");
+      };
+      Map<String, Integer> params = new HashMap<>();
+      params.put("percolatedNeighbors", percolatedNeighbors);
+      cellList.add(new PercolationCell(stateList.get(i),i/col,i%col,shape, params));
+    }
+    return cellList;
   }
 
   /**
@@ -65,12 +78,7 @@ public class PercolationSimulation extends SimpleCellSimulation {
     Iterator<Cell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
-      if (currentCell.getState().getCurrentStatus() == OPEN) {
-        handleOpenCell(currentCell, neighbors);
-      } else {
-        currentCell.setNextState(currentCell.getState().getCurrentStatus());
-      }
+      currentCell.transition();
     }
   }
 }
