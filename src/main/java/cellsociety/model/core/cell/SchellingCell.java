@@ -9,7 +9,6 @@ public class SchellingCell extends Cell {
     super(initialState, row, col, shapeType);
   }
 
-
   @Override
   public void transition() {
   }

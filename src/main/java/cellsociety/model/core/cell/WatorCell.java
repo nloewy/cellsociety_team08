@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Noah Loewy
  */
 
-public class WatorCell extends Cell {
+public class WatorCell extends Cell<WatorCell> {
 
   private int myCurrentAge;
   private int myCurrentEnergy;
@@ -122,9 +122,9 @@ public class WatorCell extends Cell {
    */
   private List<WatorCell> getNeighborsOfState(int state) {
     List<WatorCell> ret = new ArrayList<>();
-    for (Cell cell : getNeighbors()) {
+    for (WatorCell cell : getNeighbors()) {
       if (cell.getCurrentState() == state) {
-        ret.add(((WatorCell) cell));
+        ret.add(cell);
       }
     }
     return ret;
@@ -221,7 +221,7 @@ public class WatorCell extends Cell {
     if (emptyNeighbors.isEmpty()) {
       increaseFishAge();
     } else {
-      WatorCell nextCell = ((WatorCell) emptyNeighbors.get(0));
+      WatorCell nextCell = emptyNeighbors.get(0);
       if (nextCell.getNextState() == WatorSimulation.SHARK
           || nextCell.getNextState() == WatorSimulation.FISH) {
         increaseFishAge();

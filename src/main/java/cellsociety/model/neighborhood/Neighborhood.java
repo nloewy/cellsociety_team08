@@ -8,7 +8,7 @@ import java.util.List;
 
 
 
-public abstract class Neighborhood {
+public abstract class Neighborhood<T extends Cell> {
   /**
    * Class that represents a cell's neighborhood, which is a collection of points surrounding a
    * center point.
@@ -16,11 +16,11 @@ public abstract class Neighborhood {
    * @author Noah Loewy
    */
 
-  public List<Cell> getNeighbors(Grid grid, Cell cell) {
-    List<Cell> neighbors = new ArrayList<>();
-    Iterator<Cell> iter = grid.iterator();
+  public List<T> getNeighbors(Grid grid, T cell) {
+    List<T> neighbors = new ArrayList<>();
+    Iterator<T> iter = grid.iterator();
     while (iter.hasNext()) {
-      Cell otherCell = iter.next();
+      T otherCell = iter.next();
       if (cell.equals(otherCell)) {
         continue;
       }
@@ -31,5 +31,5 @@ public abstract class Neighborhood {
     return neighbors;
   }
 
-  public abstract boolean isValidNeighbor(Cell cell1, Cell cell2, Grid grid);
+  public abstract boolean isValidNeighbor(T cell1, T cell2, Grid grid);
 }
