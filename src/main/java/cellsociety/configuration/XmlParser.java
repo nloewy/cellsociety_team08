@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
 import java.util.ResourceBundle;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
@@ -36,49 +35,76 @@ import org.xml.sax.SAXException;
 
 
 /**
- * The XMLParser reads and stores all data from a given XML configuration file, handling all
+ * The XmlParser reads and stores all data from a given XML configuration file, handling all
  * potential error by throwing exceptions, calculating certain values or assigning default values.
- * Using the values stored in its attributes, the XMLParser may also write and save a new XML
+ * Using the values stored in its attributes, the XmlParser may also write and save a new XML
  * configuration file.
  *
  * @author Judy He
  */
 
-public class XMLParser {
+public class XmlParser {
 
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.configuration.";
+
+  // define name for each simulation type
+  public static final String FIRE_NAME = "Fire";
+  public static final String GAMEOFLIFE_NAME = "GameOfLife";
+  public static final String PERCOLATION_NAME = "Percolation";
+  public static final String SCHELLING_NAME = "Schelling";
+  public static final String WATOR_NAME = "Wator";
+  public static final String SUGAR_NAME = "Sugar";
   public static final Set<String> SIMULATION_TYPES = new HashSet<>(
-      Arrays.asList("Fire", "GameOfLife", "Percolation", "Schelling", "Wator"));
+      Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME));
+
+  // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
       Arrays.asList("adjacent", "cardinal", "Moore", "VonNeumann"));
+  // define valid cell shapes
   public static final Set<String> CELL_SHAPES = new HashSet<>(
       Arrays.asList("square", "hexagon"));
+  // define valid grid edge types
   public static final Set<String> GRID_EDGE_TYPES = new HashSet<>(
       Arrays.asList("Normal", "Warped"));
+  // define valid cell states for Fire simulation
+
   public static final Set<String> FIRE_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
+  // define valid cell states for GameOfLife simulation
   public static final Set<String> GAMEOFLIFE_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1"));
+  // define valid cell states for Percolation simulation
   public static final Set<String> PERCOLATION_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
+  // define valid cell states for Schelling simulation
   public static final Set<String> SCHELLING_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
+  // define valid cell states for Wator simulation
   public static final Set<String> WATOR_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
   public static final Map<String, Set<String>> SIMULATION_CELL_STATES = new HashMap<>() {{
-    put("Fire", FIRE_CELL_STATES);
-    put("GameOfLife", GAMEOFLIFE_CELL_STATES);
-    put("Percolation", PERCOLATION_CELL_STATES);
-    put("Schelling", SCHELLING_CELL_STATES);
-    put("Wator", WATOR_CELL_STATES);
-  }};
-  private ResourceBundle resourceBundle;
+      put(FIRE_NAME, FIRE_CELL_STATES);
+      put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
+      put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
+      put(SCHELLING_NAME, SCHELLING_CELL_STATES);
+      put(WATOR_NAME, WATOR_CELL_STATES);
+    }};
+
+  // define names for the field parameters, random configuration,
+  // and initial states as written in the XML configuration files
+  public static final String PARAMETERS_FIELD_NAME = "parameters";
+  public static final String RANDOM_CONFIG_FIELD_NAME = "random_configuration_by_total_states";
+  public static final String INITIAL_STATES_FIELD_NAME = "initial_states";
+
+  private ResourceBundle resourceBundle; // resource bundle for error handling messages
   private String type; // simulation type
   private String title; // simulation title
   private String author; // author of configuration file
   private String fileDescription; // description of configuration file
   private String displayDescription; // description to be displayed on GUI
-  private String stateColor; // states and corresponding colors of the simulation to be displayed on GUI
+
+  // states and corresponding colors of the simulation to be displayed on GUI
+  private String stateColor;
   private int width; // number of columns
   private int height; // number of rows
   private String neighborhoodType; // adjacent or cardinal
@@ -88,11 +114,12 @@ public class XMLParser {
   private String cellShape;
   private String gridEdgeType;
   private Map<String, Integer> randomConfigurationTotalStates;
+  private int totalNumStates;
 
   /**
    * Constructor for initializing the states ArrayList and parameters HashMap
    */
-  public XMLParser() {
+  public XmlParser() {
     states = new ArrayList<>();
     parameters = new HashMap<>();
     randomConfigurationTotalStates = new HashMap<>();
@@ -402,7 +429,7 @@ public class XMLParser {
   }
 
   /**
-   * Read an XML configuration file, initializing all attributes in the XMLParser
+   * Read an XML configuration file, initializing all attributes in the XmlParser
    *
    * @param path, the path to the XML configuration file being read
    * @throws InvalidFileFormatException,      when the user loads a configuration file that has
@@ -415,16 +442,57 @@ public class XMLParser {
    *                                          does not exist
    * @throws InvalidCellStateException,       when a cell's state is invalid for given simulation
    */
-  public void readXML(String path)
-      throws InvalidFileFormatException, InputMissingParametersException, InvalidValueException, InvalidCellStateException, InvalidGridBoundsException {
+  public void readXml(String path) throws InvalidFileFormatException,
+      InputMissingParametersException,
+      InvalidValueException,
+      InvalidCellStateException,
+      InvalidGridBoundsException {
+
+    // parse file to Document object
+    Document doc = parseFile(path);
+
+    // parse simulation parameters
+    parseSimulation(doc);
+
+    // validate simulation, handling any potential errors
+    validateSimulation();
+
+  }
+
+  /**
+   * Parse file and convert file to Document object given file path
+   *
+   * @param path, path to the file being read
+   * @return Document object representing the file
+   * @throws InvalidFileFormatException when file is not found or file type is not xml
+   */
+  private Document parseFile(String path) throws InvalidFileFormatException {
     try {
       // create a new File object for the XML file
       File file = new File(path);
+
+      // check file extension (only accepts .xml files)
       if (!getFileExtension(file.getName()).equals("xml")) {
         throw new InvalidFileFormatException(
             String.format(resourceBundle.getString("InvalidFileType"), path));
       }
+      return createDocument(file, path);
+    } catch (NullPointerException e) {
+      throw new InvalidFileFormatException(
+          String.format(resourceBundle.getString("FileNotFound"), path), e);
+    }
+  }
 
+  /**
+   * Create Document object given parsed File object and path to file in case errors occur
+   *
+   * @param file, file to be represented by Document object
+   * @param path, path to file
+   * @return Document object representing the file
+   * @throws InvalidFileFormatException, when XML file is empty, badly formatted or not found
+   */
+  private Document createDocument(File file, String path) throws InvalidFileFormatException {
+    try {
       // create a new instance of document builder factory that allows for a document builder
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -437,74 +505,7 @@ public class XMLParser {
       Document doc = db.parse(file);
       doc.getDocumentElement().normalize();
 
-      // obtaining the simulation node containing all the configuration data
-      Node simulationNode = doc.getElementsByTagName("simulation").item(0);
-
-      Element eElement = (Element) simulationNode;
-      // check if file is empty
-      if (eElement.getElementsByTagName("*").getLength() == 0) {
-        throw new InvalidFileFormatException(
-            String.format(resourceBundle.getString("EmptyXMLFile"), path));
-      }
-
-      // parse all configuration data presented as single (not nested) fields
-      parseSingleFields(eElement);
-
-      // check for empty essential inputs
-      if (type.isEmpty() || title.isEmpty() || author.isEmpty() || fileDescription.isEmpty()
-          || displayDescription.isEmpty() || stateColor.isEmpty()) {
-        throw new InputMissingParametersException(
-            String.format(resourceBundle.getString("MissingParameter"), path));
-      }
-
-      // check if both width and height are not given
-      if (width == 0 && height == 0) {
-        throw new InputMissingParametersException(
-            String.format(resourceBundle.getString("MissingWidthAndHeight"), path));
-      }
-
-      // validate values that define the simulation
-      validateSimulationValues();
-
-      // parse initial states
-      String rawStates = eElement.getElementsByTagName("initial_states").item(0).getTextContent();
-      if (!rawStates.isEmpty()) {
-        parseStates(rawStates);
-      }
-      int totalNumStates = states.size();
-
-      // parse parameters
-      Node parametersNode = eElement.getElementsByTagName("parameters").item(0);
-      Element parameterElement = (Element) parametersNode;
-      NodeList parametersNodeList = parameterElement.getElementsByTagName("*");
-      parseParameters(parametersNodeList);
-
-      // parse random configuration states
-      Node randomConfigNode = eElement.getElementsByTagName("random_configuration_by_total_states")
-          .item(0);
-      Element randomConfigElement = (Element) randomConfigNode;
-      NodeList randomConfigNodeList = randomConfigElement.getElementsByTagName("*");
-      if (randomConfigNodeList.getLength() != 0) {
-        parseRandomConfig(randomConfigNodeList);
-        for (Integer value : randomConfigurationTotalStates.values()) {
-          totalNumStates += value;
-        }
-      }
-
-      // check if only width or height is given. If so, update the other based on the total number of states read
-      if (width == 0) {
-        width = totalNumStates / height;
-      } else if (height == 0) {
-        height = totalNumStates / width;
-      }
-
-      // Check if grid dimension is valid, throw exception otherwise
-      if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
-          || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
-        throw new InvalidGridBoundsException(
-            String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
-                states.size()));
-      }
+      return doc;
 
     } catch (FileNotFoundException e) {
       throw new InvalidFileFormatException(
@@ -519,41 +520,149 @@ public class XMLParser {
       throw new InvalidFileFormatException(
           String.format(resourceBundle.getString("ParserError"), path), e);
     }
+  }
+
+  /**
+   * Parse all simulation parameters, assigning values to attributes of the XmlParser
+   *
+   * @param doc Document object from which parameter values will be read
+   * @throws InputMissingParametersException when missing essential parameters or height and width
+   *                                         in the configuration file
+   * @throws InvalidValueException           when a value defining the simulation is negative or
+   *                                         does not exist
+   * @throws InvalidGridBoundsException      when the user loads a configuration file that has cell
+   *                                         locations specified outside the grid’s bounds
+   */
+  private void parseSimulation(Document doc) throws InputMissingParametersException,
+      InvalidValueException,
+      InvalidGridBoundsException {
+
+    // obtaining the simulation node containing all the configuration data
+    Node simulationNode = doc.getElementsByTagName("simulation").item(0);
+
+    Element element = (Element) simulationNode;
+
+    // check if simulation node is empty
+    if (element.getElementsByTagName("*").getLength() == 0) {
+      throw new InvalidFileFormatException(
+          String.format(resourceBundle.getString("EmptyXMLFile")));
+    }
+
+    // parse all configuration data presented as single (not nested) fields
+    parseSingleFields(element);
+
+    // parse initial states
+    parseStates(element.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
+    totalNumStates = states.size();
+
+    // parse parameters
+    parseParameters(element.getElementsByTagName(PARAMETERS_FIELD_NAME).item(0));
+
+    // parse random configuration states
+    parseRandomConfig(element.getElementsByTagName(RANDOM_CONFIG_FIELD_NAME)
+        .item(0));
+    for (Integer value : randomConfigurationTotalStates.values()) {
+      totalNumStates += value;
+    }
 
   }
 
   /**
-   * Validate values that define the simulation
+   * Validate the simulation, handling any potential errors
+   *
+   * @throws InputMissingParametersException when missing essential parameters or height and width
+   *                                         in the configuration file
+   * @throws InvalidValueException           when value is negative or does not exist
+   * @throws InvalidCellStateException,      when a cell's state is invalid for given simulation
+   * @throws InvalidGridBoundsException      when the user loads a configuration file that has cell
+   *                                         locations specified outside the grid’s bounds
+   */
+  private void validateSimulation() throws InputMissingParametersException,
+      InvalidValueException,
+      InvalidCellStateException,
+      InvalidGridBoundsException {
+    // check for empty essential inputs
+    checkEmptyInputs();
+
+    // validate essential input parameters that define the simulation
+    validateEssentialInputs();
+
+    // check if only width or height is given.
+    // If so, update the other based on the total number of states read
+    if (width == 0) {
+      width = totalNumStates / height;
+    } else if (height == 0) {
+      height = totalNumStates / width;
+    }
+
+    // Check if grid dimension is valid, throw exception otherwise
+    if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
+        || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
+      throw new InvalidGridBoundsException(
+          String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
+              states.size()));
+    }
+  }
+
+  /**
+   * Check for empty inputs for the essential simulation parameters
+   *
+   * @throws InputMissingParametersException when missing essential parameters or height and width
+   *                                         in the configuration file
+   */
+  private void checkEmptyInputs() throws InputMissingParametersException {
+    // check for empty essential inputs
+    if (type.isEmpty() || title.isEmpty() || author.isEmpty() || fileDescription.isEmpty()
+        || displayDescription.isEmpty() || stateColor.isEmpty()) {
+      throw new InputMissingParametersException(
+          String.format(resourceBundle.getString("MissingParameter")));
+    }
+
+    // check if both width and height are not given
+    if (width == 0 && height == 0) {
+      throw new InputMissingParametersException(
+          String.format(resourceBundle.getString("MissingWidthAndHeight")));
+    }
+
+  }
+
+  /**
+   * Validate inputs for the essential simulation parameters
    *
    * @throws InvalidValueException when value is negative or does not exist
    */
-  private void validateSimulationValues() throws InvalidValueException {
+  private void validateEssentialInputs() throws InvalidValueException {
     // check if width or height is negative
     if (width < 0 || height < 0) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NegativeValueError"), "Width or Height"));
     }
+
     // check if simulation type exists
     if (!SIMULATION_TYPES.contains(type)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentSimulationType"), type));
     }
+
     // check if neighborhood type exists
     if (!NEIGHBORHOOD_TYPES.contains(neighborhoodType)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentNeighborhoodType"),
               neighborhoodType));
     }
+
     // check if cell shape exists
     if (!CELL_SHAPES.contains(cellShape)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentCellShape"), cellShape));
     }
+
     // check if grid edge type exists
     if (!GRID_EDGE_TYPES.contains(gridEdgeType)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentGridEdgeType"), gridEdgeType));
     }
+
   }
 
   /**
@@ -570,27 +679,27 @@ public class XMLParser {
   /**
    * Parse all single data fields read from the XML file that set up the simulation
    *
-   * @param eElement, simulation element from the XML file
+   * @param element, simulation element from the XML file
    */
-  private void parseSingleFields(Element eElement) {
-    type = eElement.getElementsByTagName("type").item(0).getTextContent();
-    title = eElement.getElementsByTagName("title").item(0).getTextContent();
-    author = eElement.getElementsByTagName("author").item(0).getTextContent();
-    fileDescription = eElement.getElementsByTagName("file_description").item(0).getTextContent();
-    displayDescription = eElement.getElementsByTagName("display_description").item(0)
+  private void parseSingleFields(Element element) {
+    type = element.getElementsByTagName("type").item(0).getTextContent();
+    title = element.getElementsByTagName("title").item(0).getTextContent();
+    author = element.getElementsByTagName("author").item(0).getTextContent();
+    fileDescription = element.getElementsByTagName("file_description").item(0).getTextContent();
+    displayDescription = element.getElementsByTagName("display_description").item(0)
         .getTextContent();
-    stateColor = eElement.getElementsByTagName("state_colors").item(0).getTextContent();
-    neighborhoodType = eElement.getElementsByTagName("neighborhood_type").item(0).getTextContent();
-    String widthString = eElement.getElementsByTagName("width").item(0).getTextContent();
-    String heightString = eElement.getElementsByTagName("height").item(0).getTextContent();
+    stateColor = element.getElementsByTagName("state_colors").item(0).getTextContent();
+    neighborhoodType = element.getElementsByTagName("neighborhood_type").item(0).getTextContent();
+    String widthString = element.getElementsByTagName("width").item(0).getTextContent();
+    String heightString = element.getElementsByTagName("height").item(0).getTextContent();
     if (!widthString.isEmpty()) {
       width = Integer.parseInt(widthString);
     }
     if (!heightString.isEmpty()) {
       height = Integer.parseInt(heightString);
     }
-    gridEdgeType = eElement.getElementsByTagName("grid_edge_type").item(0).getTextContent();
-    cellShape = eElement.getElementsByTagName("cell_shape").item(0).getTextContent();
+    gridEdgeType = element.getElementsByTagName("grid_edge_type").item(0).getTextContent();
+    cellShape = element.getElementsByTagName("cell_shape").item(0).getTextContent();
 
   }
 
@@ -598,11 +707,15 @@ public class XMLParser {
    * Parse the parameters in the XML file, populating the parameters hashmap that maps parameter
    * names to values.
    *
-   * @param parametersNodeList, the list of parameters read from the XML file
+   * @param parametersNode, the node containing the list of parameters read from the XML file
    * @throws InvalidValueException when a parameter value is negative
    */
-  private void parseParameters(NodeList parametersNodeList) throws InvalidValueException {
-    // iterate through the parameters node list to obtain the value for each parameter and create new entries in the parameters hashmap
+  private void parseParameters(Node parametersNode) throws InvalidValueException {
+    Element parameterElement = (Element) parametersNode;
+    NodeList parametersNodeList = parameterElement.getElementsByTagName("*");
+
+    // iterate through the parameters node list to obtain the value for each parameter
+    // and create new entries in the parameters hashmap
     for (int i = 0; i < parametersNodeList.getLength(); i++) {
       Node parameterNode = parametersNodeList.item(i);
       String name = parameterNode.getNodeName();
@@ -614,7 +727,7 @@ public class XMLParser {
       Double value = Double.parseDouble(valueString);
       if (value < 0) {
         throw new InvalidValueException(
-            String.format(resourceBundle.getString("NegativeValueError"), "Parameter " + name));
+            String.format(resourceBundle.getString("NegativeParameterValueError"), name));
       }
       parameters.put(name, value);
     }
@@ -624,19 +737,26 @@ public class XMLParser {
    * Parse the random configuration states in the XML file, populating the
    * randomConfigurationTotalStates hashmap that maps states to their predefined number.
    *
-   * @param randomConfigNodeList, the list of random configuration states read from the XML file
+   * @param randomConfigNode, the node containing the list of random configuration states read from
+   *                          the XML file
    * @throws InvalidValueException when a random configuration value is negative
    */
-  private void parseRandomConfig(NodeList randomConfigNodeList) throws InvalidValueException {
-    // iterate through the parameters node list to obtain the value for each parameter and create new entries in the parameters hashmap
+  private void parseRandomConfig(Node randomConfigNode) throws InvalidValueException {
+    Element randomConfigElement = (Element) randomConfigNode;
+    NodeList randomConfigNodeList = randomConfigElement.getElementsByTagName("*");
+    if (randomConfigNodeList.getLength() == 0) {
+      return;
+    }
+
+    // iterate through the parameters node list to obtain the value for each parameter
+    // and create new entries in the parameters hashmap
     for (int i = 0; i < randomConfigNodeList.getLength(); i++) {
-      Node randomConfigNode = randomConfigNodeList.item(i);
-      String name = randomConfigNode.getNodeName();
-      Integer value = Integer.parseInt(randomConfigNode.getTextContent());
+      Node currRandConfigNode = randomConfigNodeList.item(i);
+      String name = currRandConfigNode.getNodeName();
+      Integer value = Integer.parseInt(currRandConfigNode.getTextContent());
       if (value < 0) {
         throw new InvalidValueException(
-            String.format(resourceBundle.getString("NegativeValueError"),
-                name + " random configuration"));
+            String.format(resourceBundle.getString("NegativeRandConfigValueError"), name));
       }
       randomConfigurationTotalStates.put(name, value);
     }
@@ -651,55 +771,55 @@ public class XMLParser {
   private String assignDefaultValueToParameter(String name) {
     ResourceBundle defaultParametersResourceBundle = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + "DefaultParameters");
-    switch (this.type) {
-      case "Fire":
+
+    return switch (this.type) {
+      case FIRE_NAME -> {
         if (name.equals("probTreeIgnites")) {
-          return defaultParametersResourceBundle.getString("probTreeIgnites");
+          yield defaultParametersResourceBundle.getString("probTreeIgnites");
         } else if (name.equals("probTreeCreated")) {
-          return defaultParametersResourceBundle.getString("probTreeCreated");
-        } else {
-          return defaultParametersResourceBundle.getString("neighborsToIgnite");
+          yield defaultParametersResourceBundle.getString("probTreeCreated");
         }
-
-      case "GameOfLife":
+        yield defaultParametersResourceBundle.getString("neighborsToIgnite");
+      }
+      case GAMEOFLIFE_NAME -> {
         if (name.equals("aliveToAliveMin")) {
-          return defaultParametersResourceBundle.getString("aliveToAliveMin");
+          yield defaultParametersResourceBundle.getString("aliveToAliveMin");
         } else if (name.equals("aliveToAliveMax")) {
-          return defaultParametersResourceBundle.getString("aliveToAliveMax");
+          yield defaultParametersResourceBundle.getString("aliveToAliveMax");
         } else if (name.equals("deadToAliveMin")) {
-          return defaultParametersResourceBundle.getString("deadToAliveMin");
-        } else {
-          return defaultParametersResourceBundle.getString("deadToAliveMax");
+          yield defaultParametersResourceBundle.getString("deadToAliveMin");
         }
-
-      case "Percolation":
-        return defaultParametersResourceBundle.getString("percolatedNeighbors");
-
-      case "Schnelling":
-        return defaultParametersResourceBundle.getString("proportionNeededToStay");
-
-      case "Wator":
+        yield defaultParametersResourceBundle.getString("deadToAliveMax");
+      }
+      case PERCOLATION_NAME -> defaultParametersResourceBundle.getString("percolatedNeighbors");
+      case SCHELLING_NAME -> defaultParametersResourceBundle.getString("proportionNeededToStay");
+      case WATOR_NAME -> {
         if (name.equals("fishAgeOfReproduction")) {
-          return defaultParametersResourceBundle.getString("fishAgeOfReproduction");
+          yield defaultParametersResourceBundle.getString("fishAgeOfReproduction");
         } else if (name.equals("sharkAgeOfReproduction")) {
-          return defaultParametersResourceBundle.getString("sharkAgeOfReproduction");
+          yield defaultParametersResourceBundle.getString("sharkAgeOfReproduction");
         } else if (name.equals("energyBoost")) {
-          return defaultParametersResourceBundle.getString("energyBoost");
-        } else {
-          return defaultParametersResourceBundle.getString("initialEnergy");
+          yield defaultParametersResourceBundle.getString("energyBoost");
         }
-    }
-    return "";
+        yield defaultParametersResourceBundle.getString("initialEnergy");
+      }
+      default -> "";
+    };
   }
 
   /**
    * Convert the states data read in as a single String from the XML configuration file to an
    * ArrayList of Integers.
    *
-   * @param rawStates, single String indicating states for each cell on the simulation grid
+   * @param statesNode, node containing the single String indicating states for each cell in the
+   *                    simulation
    * @throws InvalidCellStateException, when a cell's state is invalid for given simulation
    */
-  private void parseStates(String rawStates) throws InvalidCellStateException {
+  private void parseStates(Node statesNode) throws InvalidCellStateException {
+    String rawStates = statesNode.getTextContent();
+    if (rawStates.isEmpty()) {
+      return;
+    }
     this.states.clear();
     String[] states = rawStates.split(" ");
     for (String state : states) {
@@ -723,7 +843,7 @@ public class XMLParser {
    * @throws TransformerException,         exception handling potential errors from converting to
    *                                       XML file format
    */
-  public void createXML(String filename, String folderName)
+  public void createXml(String filename, String folderName)
       throws ParserConfigurationException, TransformerException {
     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -734,7 +854,7 @@ public class XMLParser {
     doc.appendChild(rootElement);
 
     // add all single data fields
-    addElementsToXMLFile(doc, rootElement);
+    addElementsToXmlFile(doc, rootElement);
 
     // Add initial states field
     // Convert Integer ArrayList recording the current states of cell to a single String
@@ -743,13 +863,13 @@ public class XMLParser {
       states.add(String.valueOf(cell));
     }
     String convertedStatesData = String.join(" ", states);
-    addElement(doc, rootElement, "initial_states", convertedStatesData);
+    addElement(doc, rootElement, INITIAL_STATES_FIELD_NAME, convertedStatesData);
 
     // Add parameters field
-    addElement(doc, rootElement, "parameters", null);
+    addElement(doc, rootElement, PARAMETERS_FIELD_NAME, null);
 
     // Add random configuration states field
-    addElement(doc, rootElement, "random_configuration_by_total_states", null);
+    addElement(doc, rootElement, RANDOM_CONFIG_FIELD_NAME, null);
 
     // write document to a new file
     try (FileOutputStream output =
@@ -767,7 +887,7 @@ public class XMLParser {
    * @param doc,         XML document being written to
    * @param rootElement, root simulation element
    */
-  private void addElementsToXMLFile(Document doc, Element rootElement) {
+  private void addElementsToXmlFile(Document doc, Element rootElement) {
     addElement(doc, rootElement, "type", type);
     addElement(doc, rootElement, "title", title);
     addElement(doc, rootElement, "author", author);
@@ -791,9 +911,9 @@ public class XMLParser {
    */
   private void addElement(Document doc, Element rootElement, String name, String content) {
     Element element = doc.createElement(name);
-    if (name.equals("parameters") && !parameters.isEmpty()) {
+    if (name.equals(PARAMETERS_FIELD_NAME) && !parameters.isEmpty()) {
       createParameters(doc, element);
-    } else if (name.equals("random_configuration_by_total_states")
+    } else if (name.equals(RANDOM_CONFIG_FIELD_NAME)
         && !randomConfigurationTotalStates.isEmpty()) {
       createRandomConfigStates(doc, element);
     } else {
