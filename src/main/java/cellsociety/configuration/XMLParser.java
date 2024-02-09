@@ -88,6 +88,7 @@ public class XMLParser {
   private String cellShape;
   private String gridEdgeType;
   private Map<String, Integer> randomConfigurationTotalStates;
+  private int totalNumStates;
 
   /**
    * Constructor for initializing the states ArrayList and parameters HashMap
@@ -414,17 +415,46 @@ public class XMLParser {
    * @throws InvalidValueException,           when a value defining the simulation is negative or
    *                                          does not exist
    * @throws InvalidCellStateException,       when a cell's state is invalid for given simulation
+   *                                          <p>
+   *                                          <p>
+   *                                          single level of abstraction - have the methods and
+   *                                          submethods match the tree structure of the XML file
+   *                                          <p>
+   *                                          write a method for each section - have readXML like
+   *                                          plain english - go down is level of abstraction
    */
   public void readXML(String path)
       throws InvalidFileFormatException, InputMissingParametersException, InvalidValueException, InvalidCellStateException, InvalidGridBoundsException {
+    // parse file to Document object
+    Document doc = parseFile(path);
+
+    // parse simulation parameters
+    parseSimulation(doc);
+
+    // validate simulation, handling any potential errors
+    validateSimulation();
+
+  }
+
+  private Document parseFile(String path) throws InvalidFileFormatException {
     try {
       // create a new File object for the XML file
       File file = new File(path);
+
+      // check file extension (only accepts .xml files)
       if (!getFileExtension(file.getName()).equals("xml")) {
         throw new InvalidFileFormatException(
             String.format(resourceBundle.getString("InvalidFileType"), path));
       }
+      return createDocument(file, path);
+    } catch (NullPointerException e) {
+      throw new InvalidFileFormatException(
+          String.format(resourceBundle.getString("FileNotFound"), path), e);
+    }
+  }
 
+  private Document createDocument(File file, String path) throws InvalidFileFormatException {
+    try {
       // create a new instance of document builder factory that allows for a document builder
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -437,74 +467,7 @@ public class XMLParser {
       Document doc = db.parse(file);
       doc.getDocumentElement().normalize();
 
-      // obtaining the simulation node containing all the configuration data
-      Node simulationNode = doc.getElementsByTagName("simulation").item(0);
-
-      Element eElement = (Element) simulationNode;
-      // check if file is empty
-      if (eElement.getElementsByTagName("*").getLength() == 0) {
-        throw new InvalidFileFormatException(
-            String.format(resourceBundle.getString("EmptyXMLFile"), path));
-      }
-
-      // parse all configuration data presented as single (not nested) fields
-      parseSingleFields(eElement);
-
-      // check for empty essential inputs
-      if (type.isEmpty() || title.isEmpty() || author.isEmpty() || fileDescription.isEmpty()
-          || displayDescription.isEmpty() || stateColor.isEmpty()) {
-        throw new InputMissingParametersException(
-            String.format(resourceBundle.getString("MissingParameter"), path));
-      }
-
-      // check if both width and height are not given
-      if (width == 0 && height == 0) {
-        throw new InputMissingParametersException(
-            String.format(resourceBundle.getString("MissingWidthAndHeight"), path));
-      }
-
-      // validate values that define the simulation
-      validateSimulationValues();
-
-      // parse initial states
-      String rawStates = eElement.getElementsByTagName("initial_states").item(0).getTextContent();
-      if (!rawStates.isEmpty()) {
-        parseStates(rawStates);
-      }
-      int totalNumStates = states.size();
-
-      // parse parameters
-      Node parametersNode = eElement.getElementsByTagName("parameters").item(0);
-      Element parameterElement = (Element) parametersNode;
-      NodeList parametersNodeList = parameterElement.getElementsByTagName("*");
-      parseParameters(parametersNodeList);
-
-      // parse random configuration states
-      Node randomConfigNode = eElement.getElementsByTagName("random_configuration_by_total_states")
-          .item(0);
-      Element randomConfigElement = (Element) randomConfigNode;
-      NodeList randomConfigNodeList = randomConfigElement.getElementsByTagName("*");
-      if (randomConfigNodeList.getLength() != 0) {
-        parseRandomConfig(randomConfigNodeList);
-        for (Integer value : randomConfigurationTotalStates.values()) {
-          totalNumStates += value;
-        }
-      }
-
-      // check if only width or height is given. If so, update the other based on the total number of states read
-      if (width == 0) {
-        width = totalNumStates / height;
-      } else if (height == 0) {
-        height = totalNumStates / width;
-      }
-
-      // Check if grid dimension is valid, throw exception otherwise
-      if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
-          || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
-        throw new InvalidGridBoundsException(
-            String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
-                states.size()));
-      }
+      return doc;
 
     } catch (FileNotFoundException e) {
       throw new InvalidFileFormatException(
@@ -519,40 +482,109 @@ public class XMLParser {
       throw new InvalidFileFormatException(
           String.format(resourceBundle.getString("ParserError"), path), e);
     }
+  }
+
+  private void parseSimulation(Document doc)
+      throws InputMissingParametersException, InvalidValueException, InvalidGridBoundsException {
+    // obtaining the simulation node containing all the configuration data
+    Node simulationNode = doc.getElementsByTagName("simulation").item(0);
+
+    Element eElement = (Element) simulationNode;
+
+    // check if simulation node is empty
+    if (eElement.getElementsByTagName("*").getLength() == 0) {
+      throw new InvalidFileFormatException(
+          String.format(resourceBundle.getString("EmptyXMLFile")));
+    }
+
+    // parse all configuration data presented as single (not nested) fields
+    parseSingleFields(eElement);
+
+    // parse initial states
+    parseStates(eElement.getElementsByTagName("initial_states").item(0));
+    totalNumStates = states.size();
+
+    // parse parameters
+    parseParameters(eElement.getElementsByTagName("parameters").item(0));
+
+    // parse random configuration states
+    parseRandomConfig(eElement.getElementsByTagName("random_configuration_by_total_states")
+        .item(0));
+    for (Integer value : randomConfigurationTotalStates.values()) {
+      totalNumStates += value;
+    }
 
   }
 
   /**
-   * Validate values that define the simulation
+   * Validate the simulation, handling any potential errors
    *
-   * @throws InvalidValueException when value is negative or does not exist
+   * @throws InputMissingParametersException when missing essential parameters or height and width
+   *                                         in the configuration file
+   * @throws InvalidValueException           when value is negative or does not exist
+   * @throws InvalidCellStateException,      when a cell's state is invalid for given simulation
+   * @throws InvalidGridBoundsException      when the user loads a configuration file that has cell
+   *                                         locations specified outside the grid’s bounds
    */
-  private void validateSimulationValues() throws InvalidValueException {
+  private void validateSimulation()
+      throws InputMissingParametersException, InvalidValueException, InvalidCellStateException, InvalidGridBoundsException {
+    // check for empty essential inputs
+    if (type.isEmpty() || title.isEmpty() || author.isEmpty() || fileDescription.isEmpty()
+        || displayDescription.isEmpty() || stateColor.isEmpty()) {
+      throw new InputMissingParametersException(
+          String.format(resourceBundle.getString("MissingParameter")));
+    }
+
+    // check if both width and height are not given
+    if (width == 0 && height == 0) {
+      throw new InputMissingParametersException(
+          String.format(resourceBundle.getString("MissingWidthAndHeight")));
+    }
+
     // check if width or height is negative
     if (width < 0 || height < 0) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NegativeValueError"), "Width or Height"));
     }
+
     // check if simulation type exists
     if (!SIMULATION_TYPES.contains(type)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentSimulationType"), type));
     }
+
     // check if neighborhood type exists
     if (!NEIGHBORHOOD_TYPES.contains(neighborhoodType)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentNeighborhoodType"),
               neighborhoodType));
     }
+
     // check if cell shape exists
     if (!CELL_SHAPES.contains(cellShape)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentCellShape"), cellShape));
     }
+
     // check if grid edge type exists
     if (!GRID_EDGE_TYPES.contains(gridEdgeType)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentGridEdgeType"), gridEdgeType));
+    }
+
+    // check if only width or height is given. If so, update the other based on the total number of states read
+    if (width == 0) {
+      width = totalNumStates / height;
+    } else if (height == 0) {
+      height = totalNumStates / width;
+    }
+
+    // Check if grid dimension is valid, throw exception otherwise
+    if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
+        || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
+      throw new InvalidGridBoundsException(
+          String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
+              states.size()));
     }
   }
 
@@ -598,10 +630,13 @@ public class XMLParser {
    * Parse the parameters in the XML file, populating the parameters hashmap that maps parameter
    * names to values.
    *
-   * @param parametersNodeList, the list of parameters read from the XML file
+   * @param parametersNode, the node containing the list of parameters read from the XML file
    * @throws InvalidValueException when a parameter value is negative
    */
-  private void parseParameters(NodeList parametersNodeList) throws InvalidValueException {
+  private void parseParameters(Node parametersNode) throws InvalidValueException {
+    Element parameterElement = (Element) parametersNode;
+    NodeList parametersNodeList = parameterElement.getElementsByTagName("*");
+
     // iterate through the parameters node list to obtain the value for each parameter and create new entries in the parameters hashmap
     for (int i = 0; i < parametersNodeList.getLength(); i++) {
       Node parameterNode = parametersNodeList.item(i);
@@ -624,15 +659,21 @@ public class XMLParser {
    * Parse the random configuration states in the XML file, populating the
    * randomConfigurationTotalStates hashmap that maps states to their predefined number.
    *
-   * @param randomConfigNodeList, the list of random configuration states read from the XML file
+   * @param randomConfigNode, the node containing the list of random configuration states read from
+   *                          the XML file
    * @throws InvalidValueException when a random configuration value is negative
    */
-  private void parseRandomConfig(NodeList randomConfigNodeList) throws InvalidValueException {
+  private void parseRandomConfig(Node randomConfigNode) throws InvalidValueException {
+    Element randomConfigElement = (Element) randomConfigNode;
+    NodeList randomConfigNodeList = randomConfigElement.getElementsByTagName("*");
+    if (randomConfigNodeList.getLength() == 0) {
+      return;
+    }
     // iterate through the parameters node list to obtain the value for each parameter and create new entries in the parameters hashmap
     for (int i = 0; i < randomConfigNodeList.getLength(); i++) {
-      Node randomConfigNode = randomConfigNodeList.item(i);
-      String name = randomConfigNode.getNodeName();
-      Integer value = Integer.parseInt(randomConfigNode.getTextContent());
+      Node currRandConfigNode = randomConfigNodeList.item(i);
+      String name = currRandConfigNode.getNodeName();
+      Integer value = Integer.parseInt(currRandConfigNode.getTextContent());
       if (value < 0) {
         throw new InvalidValueException(
             String.format(resourceBundle.getString("NegativeValueError"),
@@ -696,10 +737,15 @@ public class XMLParser {
    * Convert the states data read in as a single String from the XML configuration file to an
    * ArrayList of Integers.
    *
-   * @param rawStates, single String indicating states for each cell on the simulation grid
+   * @param statesNode, node containing the single String indicating states for each cell in the
+   *                    simulation
    * @throws InvalidCellStateException, when a cell's state is invalid for given simulation
    */
-  private void parseStates(String rawStates) throws InvalidCellStateException {
+  private void parseStates(Node statesNode) throws InvalidCellStateException {
+    String rawStates = statesNode.getTextContent();
+    if (rawStates.isEmpty()) {
+      return;
+    }
     this.states.clear();
     String[] states = rawStates.split(" ");
     for (String state : states) {

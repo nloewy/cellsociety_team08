@@ -14,7 +14,7 @@ import javax.xml.transform.TransformerException;
 public class XMLTester {
 
   public static void main(String[] args) throws ParserConfigurationException, TransformerException {
-    String path = "data/exception_tests/GameOfLifeInvalidCellStateTest.xml";
+    String path = "data/exception_tests/FireGridBoundsRandConfigTest.xml";
 
     XMLParser xmlParser = new XMLParser();
     xmlParser.readXML(path);
