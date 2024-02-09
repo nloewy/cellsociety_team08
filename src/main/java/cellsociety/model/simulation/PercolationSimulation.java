@@ -1,17 +1,14 @@
 package cellsociety.model.simulation;
 
-import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.CellShape;
-import cellsociety.model.core.HexagonShape;
 import cellsociety.model.core.PercolationCell;
-import cellsociety.model.core.RectangleShape;
 import cellsociety.model.neighborhood.Neighborhood;
+import cellsociety.model.simulation.Records.PercolationRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import cellsociety.model.simulation.Records.PercolationRecord;
 import java.util.Map;
 
 /**

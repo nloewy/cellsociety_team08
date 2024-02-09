@@ -1,7 +1,6 @@
 package cellsociety.model.core;
 
 import cellsociety.model.simulation.WatorSimulation;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +34,8 @@ public class WatorCell extends Cell {
    * @param y            is the y-coordinate of the cell on the 2-dimensional grid
    */
 
-  public WatorCell(int initialState, int x, int y, CellShape shapeType, Map<String,Integer> params) {
+  public WatorCell(int initialState, int x, int y, CellShape shapeType,
+      Map<String, Integer> params) {
     super(initialState, x, y, shapeType);
     myCurrentAge = 0;
     myNextEnergy = -1;
@@ -45,7 +45,7 @@ public class WatorCell extends Cell {
     sharkAgeOfReproduction = params.get("sharkAgeOfReproduction");
     initialEnergy = params.get("initialEnergy");
     energyBoost = params.get("energyBoost");
-    if(initialState == WatorSimulation.SHARK) {
+    if (initialState == WatorSimulation.SHARK) {
       myCurrentEnergy = initialEnergy;
     }
   }
@@ -116,7 +116,7 @@ public class WatorCell extends Cell {
   /**
    * Filters a list of WatorCell objects to retreive all Cells of a certain state
    *
-   * @param state    target state in filtering operation
+   * @param state target state in filtering operation
    * @return a (copy) of a filtered list of all cells in cellList with a currentState equal to state
    */
   private List<WatorCell> getNeighborsOfState(int state) {
@@ -131,7 +131,6 @@ public class WatorCell extends Cell {
 
   /**
    * Updates a cell to put it in an empty state
-   *
    */
   private void fillEmptyCell() {
     updateStateEnergyAge(WatorSimulation.EMPTY, -1, -1);
@@ -140,7 +139,6 @@ public class WatorCell extends Cell {
 
   /**
    * Increases the age of a cell by 1, keeping other parameters constant
-   *
    */
   private void increaseFishAge() {
     updateStateEnergyAge(WatorSimulation.FISH, getAge() + 1, -1);
@@ -154,14 +152,17 @@ public class WatorCell extends Cell {
    * @param nextCell    the cell the shark is attempting to move to
    */
   private void handleSharkMoveToEmptySpace(WatorCell currentCell, WatorCell nextCell) {
-    if (nextCell.getNextState() ==  WatorSimulation.SHARK) { //another shark is already moving to nextCell
+    if (nextCell.getNextState()
+        == WatorSimulation.SHARK) { //another shark is already moving to nextCell
       currentCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1,
           currentCell.getAge() + 1);
     } else {
-      nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1, currentCell.getAge() + 1);
+      nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1,
+          currentCell.getAge() + 1);
       if (currentCell.getAge() >= sharkAgeOfReproduction) {
         currentCell.updateStateEnergyAge(WatorSimulation.SHARK, initialEnergy, 0); //create shark
-        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1, 0); //reproducing Shark
+        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1,
+            0); //reproducing Shark
       } else {
         fillEmptyCell();
       }
@@ -177,14 +178,16 @@ public class WatorCell extends Cell {
    *                    move
    */
   private void handleSharkEatFish(WatorCell currentCell, WatorCell nextCell) {
-    if (nextCell.getNextState() == WatorSimulation.SHARK || nextCell.getNextState() == WatorSimulation.FISH) {
+    if (nextCell.getNextState() == WatorSimulation.SHARK
+        || nextCell.getNextState() == WatorSimulation.FISH) {
       //another shark or fish is already moving to nextCell
       currentCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1,
           currentCell.getAge() + 1);
     } else {
       if (currentCell.getAge() >= sharkAgeOfReproduction) {
         currentCell.updateStateEnergyAge(WatorSimulation.SHARK, initialEnergy, 0);
-        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() + energyBoost, 0);
+        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() + energyBoost,
+            0);
 
       } else {
         fillEmptyCell();
@@ -197,7 +200,6 @@ public class WatorCell extends Cell {
 
   /**
    * Handles case where a shark is surrounded by sharks (cannot move). Shark ages and loses energy.
-   *
    */
   private void handleSharkCantMove() {
     if (getEnergy() > 1) {
@@ -211,7 +213,6 @@ public class WatorCell extends Cell {
   /**
    * Specific transition function for a fish cell in Wator Simulation. Calls the proper helper
    * function for transitioning based on the current state of neighbors.
-   *
    */
   private void updateFish() {
     List<WatorCell> emptyNeighbors = getNeighborsOfState(WatorSimulation.EMPTY);
@@ -220,7 +221,8 @@ public class WatorCell extends Cell {
       increaseFishAge();
     } else {
       WatorCell nextCell = ((WatorCell) emptyNeighbors.get(0));
-      if (nextCell.getNextState() == WatorSimulation.SHARK || nextCell.getNextState() == WatorSimulation.FISH) {
+      if (nextCell.getNextState() == WatorSimulation.SHARK
+          || nextCell.getNextState() == WatorSimulation.FISH) {
         increaseFishAge();
       } else {
         if (getAge() < fishAgeOfReproduction) {
@@ -237,7 +239,6 @@ public class WatorCell extends Cell {
   /**
    * Specific transition function for a shark cell in Wator Simulation. Calls the proper helper
    * function for transitioning based on the current state of neighbors.
-   *
    */
   private void updateShark() {
     List<WatorCell> emptyNeighbors = getNeighborsOfState(WatorSimulation.EMPTY);
@@ -260,23 +261,23 @@ public class WatorCell extends Cell {
   }
 
   public void transition() {
-      switch (getCurrentState()) {
-        case WatorSimulation.EMPTY: {
-          setNextState(WatorSimulation.EMPTY);
-          break;
-        }
-        case WatorSimulation.FISH: {
-          updateFish();
-          break;
-        }
-        case WatorSimulation.SHARK: {
-          updateShark();
-          break;
-        }
-        default:
-          break; //TODO: check exception
+    switch (getCurrentState()) {
+      case WatorSimulation.EMPTY: {
+        setNextState(WatorSimulation.EMPTY);
+        break;
       }
+      case WatorSimulation.FISH: {
+        updateFish();
+        break;
+      }
+      case WatorSimulation.SHARK: {
+        updateShark();
+        break;
+      }
+      default:
+        break; //TODO: check exception
     }
   }
+}
 
 

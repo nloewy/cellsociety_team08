@@ -2,8 +2,6 @@ package cellsociety.model.core;
 
 import cellsociety.Point;
 import cellsociety.model.neighborhood.Neighborhood;
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

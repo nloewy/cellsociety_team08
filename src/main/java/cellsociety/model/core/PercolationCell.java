@@ -1,14 +1,14 @@
 package cellsociety.model.core;
+
 import cellsociety.model.simulation.PercolationSimulation;
-import cellsociety.model.simulation.Records.PercolationRecord;
-import java.util.HashMap;
 import java.util.Map;
 
 public class PercolationCell extends Cell {
 
   private double percolatedNeighbors;
 
-  public PercolationCell(int initialState, int row, int col, CellShape shapeType, Map<String, Integer> params) {
+  public PercolationCell(int initialState, int row, int col, CellShape shapeType,
+      Map<String, Integer> params) {
     super(initialState, row, col, shapeType);
     percolatedNeighbors = params.get("percolatedNeighbors");
   }
@@ -16,7 +16,6 @@ public class PercolationCell extends Cell {
   /**
    * Handles transition of open cell in PercolationSimulation. Open cells with at least
    * neighersPercolatedRequired will become percolated, and otherwise will remain open.
-   *
    */
   private void handleOpenCell() {
     int numPercolatedNeighbors = countNeighborsInState(PercolationSimulation.PERCOLATED);

@@ -1,10 +1,7 @@
 package cellsociety.model.simulation;
 
-import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.CellShape;
-import cellsociety.model.core.HexagonShape;
-import cellsociety.model.core.RectangleShape;
 import cellsociety.model.core.SchellingCell;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.SchellingRecord;
