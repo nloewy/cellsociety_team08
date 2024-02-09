@@ -202,9 +202,9 @@ public class Controller {
     simulationModel = switch (simulationType) {
       case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList,
           new GameOfLifeRecord(xmlParser.getParameters().get("aliveToAliveMin").intValue(),
-          xmlParser.getParameters().get("deadToAliveMax").intValue(),
           xmlParser.getParameters().get("aliveToAliveMax").intValue(),
-          xmlParser.getParameters().get("deadToAliveMin").intValue(), gridType, cellShape));
+          xmlParser.getParameters().get("deadToAliveMin").intValue(),
+          xmlParser.getParameters().get("deadToAliveMax").intValue(), gridType, cellShape));
       case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList,
           new PercolationRecord(xmlParser.getParameters().get("percolatedNeighbors").intValue(),
               gridType, cellShape));
@@ -285,7 +285,7 @@ public class Controller {
       ArrayList<Integer> newStates = new ArrayList<>();
       Iterator<Cell> iterator = simulationModel.getIterator();
       while (iterator.hasNext()) {
-        newStates.add(iterator.next().getState().getCurrentStatus());
+        newStates.add(iterator.next().getCurrentState());
       }
       xmlParser.setStates(newStates);
       xmlParser.createXml("savedSimulation" + xmlParser.getType(),
@@ -352,8 +352,9 @@ public class Controller {
    * returns simulation to its initial state when reset button is pressed
    */
   private void onResetSimulation() {
-    simulationModel.initializeMyGrid(xmlParser.getHeight(), xmlParser.getWidth(),
-        xmlParser.getStates(), xmlParser.getCellShape());
+    simulationModel.createCellsAndGrid(xmlParser.getHeight(), xmlParser.getWidth(),
+        xmlParser.getStates(), xmlParser.getCellShape(), getNeighborhoodObject(
+            xmlParser.getNeighborhoodType()));
     simulationPage.updateView(simulationModel.getIterator());
   }
 

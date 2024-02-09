@@ -1,6 +1,11 @@
 package cellsociety.model.simulation;
 
+import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
+import cellsociety.model.core.CellShape;
+import cellsociety.model.core.HexagonShape;
+import cellsociety.model.core.RectangleShape;
+import cellsociety.model.core.SchellingCell;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.SchellingRecord;
 import java.util.ArrayList;
@@ -14,13 +19,9 @@ import java.util.List;
  * author @noah loewy
  */
 
-public class SchellingSimulation extends SimpleCellSimulation {
+public class SchellingSimulation extends Simulation {
 
-  public static final int PLACEHOLDER = -1;
-  public static final int GROUPA = 0;
-  public static final int GROUPB = 1;
   public static final int EMPTY = 2;
-
   private List<Cell> myCellsToMove;
   private List<Cell> myEmptyCells;
   private double proportionNeededToStay;
@@ -33,19 +34,37 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * @param hoodType,              the definition of neighbors
    * @param stateList,             a list of the integer representation of each cells state, by
    *                               rows, then cols
-   * @param proportionNeededToStay the minimum proportion of neighboring cells (excluding empty
-   *                               cells) that are of the same state as the given cell, for a cell
-   *                               to remain in their current state
-   * @param gridType               type of grid used in simulation
    */
   public SchellingSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       SchellingRecord r) {
-    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    super(hoodType,  r.gridType());
     myCellsToMove = new ArrayList<>();
     myEmptyCells = new ArrayList<>();
     this.proportionNeededToStay = r.proportionNeededToStay();
+    createCellsAndGrid(row, col, stateList,r.cellShape(), hoodType);
   }
 
+  public void createCellsAndGrid(int row, int col, List<Integer> stateList,
+      String cellShape, Neighborhood hoodType){
+    List<Cell> cellList = cellMaker(row, col,stateList,hoodType, cellShape);
+    initializeMyGrid(row, col, cellList);
+    for(Cell cell : cellList) {
+      cell.initializeNeighbors(hoodType, myGrid);
+    }
+  }
+  public List<Cell> cellMaker(int row, int col, List<Integer> stateList, Neighborhood hoodType,
+      String cellShape){
+    List<Cell> cellList = new ArrayList<>();
+    for (int i = 0; i < stateList.size(); i++) {
+      CellShape shape = switch (cellShape) {
+        case "square" -> new RectangleShape();
+        case "hexagon" -> new HexagonShape();
+        default -> throw new InvalidValueException("Cell Shape Does Not Exist");
+      };
+      cellList.add(new SchellingCell(stateList.get(i),i/col,i%col,shape));
+    }
+    return cellList;
+  }
   /**
    * Given a cell in either group A or group B, places the cell in either myCellsToMove, or updates
    * its future state to its current-state, depending on the state-makeup of its neighbors
@@ -53,20 +72,18 @@ public class SchellingSimulation extends SimpleCellSimulation {
    * @param currentCell a cell in group A or B preparing to transition
    */
   private void handleDemographicCell(Cell currentCell) {
-    List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
+    List<Cell> neighbors = currentCell.getNeighbors();
     int totalNeighbors = neighbors.size();
-    int numEmptyNeighbors = countNeighborsInState(neighbors, EMPTY);
-    int numNeighborsSameState = countNeighborsInState(neighbors,
-        currentCell.getState().getCurrentStatus());
-    if (currentCell.getState().getCurrentStatus() != EMPTY) {
-      if (totalNeighbors != numEmptyNeighbors
+    int numEmptyNeighbors = currentCell.countNeighborsInState(EMPTY);
+    int numNeighborsSameState = currentCell.countNeighborsInState(currentCell.getCurrentState());
+    if (totalNeighbors != numEmptyNeighbors
           && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
           < proportionNeededToStay) {
         myCellsToMove.add(currentCell);
-      } else {
-        currentCell.setNextState(currentCell.getState().getCurrentStatus());
-      }
+    } else {
+        currentCell.setNextState(currentCell.getCurrentState());
     }
+
   }
 
   /**
@@ -78,14 +95,14 @@ public class SchellingSimulation extends SimpleCellSimulation {
     int shorterListLength = Math.min(myCellsToMove.size(), myEmptyCells.size());
     int longerListLength = Math.max(myCellsToMove.size(), myEmptyCells.size());
     for (int i = 0; i < shorterListLength; i++) {
-      myEmptyCells.get(i).setNextState(myCellsToMove.get(i).getState().getCurrentStatus());
+      myEmptyCells.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
       myCellsToMove.get(i).setNextState(EMPTY);
     }
     for (int i = shorterListLength; i < longerListLength; i++) {
       if (myCellsToMove.size() < myEmptyCells.size()) {
-        myEmptyCells.get(i).setNextState(myEmptyCells.get(i).getState().getCurrentStatus());
+        myEmptyCells.get(i).setNextState(myEmptyCells.get(i).getCurrentState());
       } else {
-        myCellsToMove.get(i).setNextState(myCellsToMove.get(i).getState().getCurrentStatus());
+        myCellsToMove.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
       }
     }
 
@@ -104,7 +121,8 @@ public class SchellingSimulation extends SimpleCellSimulation {
 
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
-      if (currentCell.getState().getCurrentStatus() == EMPTY) {
+      currentCell.transition();
+      if (currentCell.getCurrentState() == EMPTY) {
         myEmptyCells.add(currentCell);
       }
       handleDemographicCell(currentCell);

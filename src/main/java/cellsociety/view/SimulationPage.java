@@ -294,7 +294,7 @@ public class SimulationPage {
       Point location = c.getLocation();
       int col = (int) location.getCol();
       int row = (int) location.getRow();
-      board[row][col].updateState(c.getState().getCurrentStatus());
+      board[row][col].updateState(c.getCurrentState());
     }
   }
 
