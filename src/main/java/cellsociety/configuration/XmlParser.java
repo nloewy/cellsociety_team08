@@ -611,7 +611,7 @@ public class XmlParser {
         || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
       throw new InvalidGridBoundsException(
           String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
-              states.size()));
+              totalNumStates));
     }
   }
 
@@ -712,6 +712,9 @@ public class XmlParser {
     gridEdgeType = element.getElementsByTagName(GRID_EDGE_TYPE_FIELD_NAME).item(0).getTextContent();
     cellShape = element.getElementsByTagName(CELL_SHAPE_FIELD_NAME).item(0).getTextContent();
     language = element.getElementsByTagName(LANGUAGE_FIELD_NAME).item(0).getTextContent();
+
+    // update resource bundle given language
+    resourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Errors" + language);
 
   }
 
@@ -928,7 +931,7 @@ public class XmlParser {
    */
   private void addInitialStatesElement(Document doc, Element rootElement) {
     // Convert Integer ArrayList recording the current states of cell to a single String
-    ArrayList<String> states = new ArrayList<>();
+    List<String> states = new ArrayList<>();
     for (Integer cell : this.states) {
       states.add(String.valueOf(cell));
     }
