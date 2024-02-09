@@ -20,6 +20,7 @@ public class LifeCell extends Cell {
     deadToAliveMax = params.get("deadToAliveMax");
   }
 
+  @Override
   public void transition() {
     int aliveNeighbors = countNeighborsInState(GameOfLifeSimulation.ALIVE);
     if (getCurrentState() == GameOfLifeSimulation.ALIVE) {
