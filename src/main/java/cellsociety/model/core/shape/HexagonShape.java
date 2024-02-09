@@ -4,16 +4,25 @@ import cellsociety.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the location of a Rectangular Shaped Cell on a 2D Grid
+ *
+ * @author Noah Loewy
+ */
+
 public class HexagonShape implements CellShape {
 
   /**
-   * Constructs a cell object
+   * Returns a list of vertices representing the corners of a hexagon shape on a grid. Hexagons are
+   * latticed in a staggered pattern, where odd rows are shifted right. Each cell on the grid is
+   * assumed to take up 1 square unit. The vertices are calculated based on the provided row and
+   * column indices, representing the top-left corner of the hexagon.
    *
-   * @param row is the x-coordinate of the cell on the 2-dimensional grid
-   * @param col is the y-coordinate of the cell on the 2-dimensional grid
+   * @param row  the row index of the top-left corner of the hexagon
+   * @param col  the column index of the top-left corner of the hexagon
+   * @return a list of Point objects representing the vertices of the hexagon
    */
   public List<Point> getVertices(int row, int col) {
-    double shapeOffset = .5;
     double currOffset;
     if (row % 2 == 1) {
       currOffset = .5;
@@ -23,6 +32,7 @@ public class HexagonShape implements CellShape {
     final double[][] offsets = {{.25, 0}, {1, 0}, {1.25, .5}, {1, 1}, {.25, 1}, {1, .5}};
     List<Point> vertices = new ArrayList<>();
     for (double[] offset : offsets) {
+      double shapeOffset = .5; //hexagons in odd rows are shifted by .5
       vertices.add(new Point(row + offset[0], col + offset[1] + currOffset, shapeOffset));
     }
     return vertices;

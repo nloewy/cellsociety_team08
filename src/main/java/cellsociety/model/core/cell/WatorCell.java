@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an extension of the Cell, and serves as the atomic unit of the Wator simulation.
+ * Represents an extension of the Cell, and serves as the atomic unit of the Wator Simulation.
  * Contains extra instance variables that typical cells do not have, referencing energy and age.
  *
  * @author Noah Loewy
@@ -21,23 +21,38 @@ public class WatorCell extends Cell<WatorCell> {
   private int myNextAge;
   private int myNextEnergy;
 
+  /**
+   * Initial amount of energy points that a shark is born with. A shark dies once it runs out of
+   * energy.
+   */
   private final int initialEnergy;
+  /**
+   * Energy points gained by a shark for eating a fish cell. One unit of energy is lost per timestep
+   */
   private final int energyBoost;
+  /**
+   * Number of chronons (timesteps) that must pass since birth of a shark until the shark is fertile
+   */
   private final int sharkAgeOfReproduction;
+  /**
+   * Number of chronons (timesteps) that must pass since birth of a fish until the fish is fertile
+   */
   private final int fishAgeOfReproduction;
 
   /**
-   * Constructs a Wator cell object
+   * Constructs a Percolation Cell object for the Percolation simulation
    *
-   * @param initialState is the original state of the cell, either randomly set or determined from a
-   *                     configuration file
-   * @param x            is the x-coordinate of the cell on the 2-dimensional grid
-   * @param y            is the y-coordinate of the cell on the 2-dimensional grid
+   * @param initialState  the integer representation of the cell's current state
+   * @param row           the row the cell is positioned at as represented on a 2D coordinate grid
+   * @param col           the column the cell is positioned at as represented on a 2D coordinate
+   *                      grid
+   * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
+   * @param params        map of string parameter names to their values. Description of parameters
+   *                      can be found at te declaration of the instance variables.
    */
-
-  public WatorCell(int initialState, int x, int y, CellShape shapeType,
+  public WatorCell(int initialState, int row, int col, CellShape shapeType,
       Map<String, Integer> params) {
-    super(initialState, x, y, shapeType);
+    super(initialState, row, col, shapeType);
     myCurrentAge = 0;
     myNextEnergy = -1;
     myNextAge = -1;
@@ -68,9 +83,9 @@ public class WatorCell extends Cell<WatorCell> {
   /**
    * Sets the values of a cell's next state, energy, and age.
    *
-   * @param state  is the current occupant of the cell (Shark, Fish, or Empty)
-   * @param energy is the energy remaining for a shark, or -1
-   * @param age    is the number of timesteps since birth of the shark/fish, or -1
+   * @param state   is the current occupant of the cell (Shark, Fish, or Empty)
+   * @param energy  is the energy remaining for a shark, or -1
+   * @param age     is the number of timesteps since birth of the shark/fish, or -1
    */
   private void updateStateEnergyAge(int state, int energy, int age) {
     setNextState(state);
@@ -81,7 +96,7 @@ public class WatorCell extends Cell<WatorCell> {
   /**
    * Retrieves myCurrentEnergy instance variable
    *
-   * @return myCurrentEnergy, the current energy remaining for a shark, or -1
+   * @return the current energy remaining for a shark, or -1
    */
   private int getEnergy() {
     return myCurrentEnergy;
@@ -90,7 +105,7 @@ public class WatorCell extends Cell<WatorCell> {
   /**
    * Retrieves myCurrentAge instance variable
    *
-   * @return myCurrentAge, the number of timesteps since birth of the shark/fish, or -1
+   * @return the number of timesteps since birth of the shark/fish, or -1
    */
   private int getAge() {
     return myCurrentAge;
@@ -99,7 +114,7 @@ public class WatorCell extends Cell<WatorCell> {
   /**
    * Updates myNextEnergy instance variable
    *
-   * @param energy the energy remaining for a shark after this timestep, or -1
+   * @param energy  the energy remaining for a shark after this timestep, or -1
    */
   private void setNextEnergy(int energy) {
     myNextEnergy = energy;
@@ -108,16 +123,16 @@ public class WatorCell extends Cell<WatorCell> {
   /**
    * Updates myNextEnergy instance variable
    *
-   * @param time the number of timesteps since birth of the shark/fish after this timestep, or -1
+   * @param time  the number of time steps since birth of the shark/fish after this timestep, or -1
    */
   private void setNextAge(int time) {
     myNextAge = time;
   }
 
   /**
-   * Filters a list of WatorCell objects to retreive all Cells of a certain state
+   * Filters a list of WatorCell objects to retrieve all Cells of a certain state
    *
-   * @param state target state in filtering operation
+   * @param state  target state in filtering operation
    * @return a (copy) of a filtered list of all cells in cellList with a currentState equal to state
    */
   private List<WatorCell> getNeighborsOfState(int state) {
@@ -142,14 +157,14 @@ public class WatorCell extends Cell<WatorCell> {
    * Increases the age of a cell by 1, keeping other parameters constant
    */
   private void increaseFishAge() {
-    updateStateEnergyAge(WatorSimulation.FISH, getAge() + 1, -1);
+    updateStateEnergyAge(WatorSimulation.FISH, -1, getAge() + 1);
   }
 
   /**
    * Handles movement of shark from one cell to another. This assumes the cell the shark is
    * attempting to move to is already determined. Shark will reproduce if necessary.
    *
-   * @param nextCell the cell the shark is attempting to move to
+   * @param nextCell  the cell the shark is attempting to move to
    */
   private void handleSharkMoveToEmptySpace(WatorCell nextCell) {
     if (nextCell.getNextState()
@@ -171,9 +186,10 @@ public class WatorCell extends Cell<WatorCell> {
 
   /**
    * Handles shark's hunting of fish. Shark will move to cell with fish and eat the fish if no cell
-   * is already planning to occupy that cell. Shark will reproduce if necessary
+   * is already planning to occupy that cell. Shark will reproduce if necessary, resetting their own
+   * age too in the process.
    *
-   * @param nextCell the cell where the prey (fish) is first located, and where the shark will move
+   * @param nextCell  the cell where the prey (fish) is first located, and where the shark will move
    */
   private void handleSharkEatFish(WatorCell nextCell) {
     if (nextCell.getNextState() == WatorSimulation.SHARK
@@ -258,6 +274,10 @@ public class WatorCell extends Cell<WatorCell> {
     }
   }
 
+  /**
+   * Handles transition of Wator Cell. Calls the proper helper function for transitioning based on
+   * the state of the Wator Cell being updated.
+   */
   @Override
   public void transition() {
     switch (getCurrentState()) {

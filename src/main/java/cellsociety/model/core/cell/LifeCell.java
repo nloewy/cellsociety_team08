@@ -4,13 +4,45 @@ import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import java.util.Map;
 
+/**
+ * Represents an extension of the Cell, and serves as the atomic unit of the Fire simulation.
+ * Contains private methods that allow for the transition of Fire Cell objects at each timestep.
+ *
+ * @author Noah Loewy
+ */
+
 public class LifeCell extends Cell {
 
+  /**
+   * Minimum number of alive neighbors required for an alive cell to remain alive and avoid death by
+   * underpopulation
+   */
   private double aliveToAliveMin;
+  /**
+   * Maximum number of alive neighbors required for an alive cell to remain alive and avoid death by
+   * overpopulation
+   */
   private double aliveToAliveMax;
+  /**
+   * Minimum number of alive neighbors required for a dead cell to become alive by reproduction
+   */
   private double deadToAliveMin;
+  /**
+   * Maximum number of alive neighbors required for a dead cell to become alive by reproduction
+   */
   private double deadToAliveMax;
 
+  /**
+   * Constructs a Life Cell object for the Game of Life simulation
+   *
+   * @param initialState  the integer representation of the cell's current state
+   * @param row           the row the cell is positioned at as represented on a 2D coordinate grid
+   * @param col           the column the cell is positioned at as represented on a 2D coordinate
+   *                      grid
+   * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
+   * @param params        map of string parameter names to their values. Description of parameters
+   *                      can be found at te declaration of the instance variables.
+   */
   public LifeCell(int initialState, int row, int col, CellShape shapeType,
       Map<String, Integer> params) {
     super(initialState, row, col, shapeType);
@@ -20,6 +52,10 @@ public class LifeCell extends Cell {
     deadToAliveMax = params.get("deadToAliveMax");
   }
 
+  /**
+   * Represents a timestep update for a LifeCell. Calls the proper helper function for transitioning
+   * based on the state of the Life Cell being updated.
+   */
   @Override
   public void transition() {
     int aliveNeighbors = countNeighborsInState(GameOfLifeSimulation.ALIVE);
@@ -32,9 +68,9 @@ public class LifeCell extends Cell {
   }
 
   /**
-   * Handles transition of alive cell in GameOfLifeSimulation. Dead cells with no less than
-   * deadToAliveMin and no more than deadToAliveMax living neighbors will remain alive, whereas all
-   * other alive cells will die
+   * Handles transition of alive cell in GameOfLifeSimulation. Alive cells with no less than
+   * aliveToAliveMin and no more than aliveToAliveMax living neighbors will remain alive, whereas
+   * all other alive cells will die
    */
   private void handleAliveCell(int aliveNeighbors) {
     if (aliveNeighbors >= aliveToAliveMin && aliveNeighbors <= aliveToAliveMax) {
@@ -44,6 +80,11 @@ public class LifeCell extends Cell {
     }
   }
 
+  /**
+   * Handles transition of dead cell in GameOfLifeSimulation. Dead cells with no less than
+   * deadToAliveMin and no more than deadToAliveMax living neighbors will become alive, whereas all
+   * other dead cells will remain dead
+   */
   private void handleDeadCell(int aliveNeighbors) {
     if (aliveNeighbors >= deadToAliveMin && aliveNeighbors <= deadToAliveMax) {
       setNextState(GameOfLifeSimulation.ALIVE);
