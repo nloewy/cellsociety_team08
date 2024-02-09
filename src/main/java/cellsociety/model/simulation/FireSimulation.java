@@ -49,27 +49,16 @@ public class FireSimulation extends Simulation {
     this.neighborsToIgnite = r.neighborsToIgnite();
     this.probTreeIgnites = r.probTreeIgnites();
     this.probTreeCreated = r.probTreeCreated();
-    createCellsAndGrid(row, col, stateList, r.cellShape(), hoodType);
+    CellShape shape = getCellShape(r.cellShape());
+    createCellsAndGrid(row, col, stateList, shape, hoodType);
   }
 
-  public void createCellsAndGrid(int row, int col, List<Integer> stateList,
-      String cellShape, Neighborhood hoodType) {
-    List<Cell> cellList = cellMaker(row, col, stateList, hoodType, cellShape);
-    initializeMyGrid(row, col, cellList);
-    for (Cell cell : cellList) {
-      cell.initializeNeighbors(hoodType, myGrid);
-    }
-  }
 
-  public List<Cell> cellMaker(int row, int col, List<Integer> stateList, Neighborhood hoodType,
-      String cellShape) {
+  public List<Cell> cellMaker(int col, List<Integer> stateList,
+      CellShape shape) {
     List<Cell> cellList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
-      CellShape shape = switch (cellShape) {
-        case "square" -> new RectangleShape();
-        case "hexagon" -> new HexagonShape();
-        default -> throw new InvalidValueException("Cell Shape Does Not Exist");
-      };
+
       Map<String, Double> params = new HashMap<>();
       params.put("neighborsToIgnite", (double) neighborsToIgnite);
       params.put("probTreeIgnites", probTreeIgnites);

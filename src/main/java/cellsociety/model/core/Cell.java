@@ -37,13 +37,14 @@ public abstract class Cell { //<T extends State> {
     myCurrentState = initialState;
     myNextState = PLACEHOLDER;
     myLocation = new Point(row, col);
-    myVertices = shapeType.getVertices(row,col);
+    myVertices = shapeType.getVertices(row, col);
   }
 
   public void initializeNeighbors(Neighborhood hoodType, Grid grid) {
     myNeighbors = hoodType.getNeighbors(grid, this);
 
   }
+
   /**
    * This function updates the state of the cell after calling the transition function. The new
    * currentState takes the value of the nextState placeholder, and nextState is set to placeholder
@@ -77,7 +78,7 @@ public abstract class Cell { //<T extends State> {
    * Given a list of cells, and an integer representing a state, determines the number of cells in
    * the list that are currently at that state
    *
-   * @param state,     an integer, representing the state to check for
+   * @param state, an integer, representing the state to check for
    * @return count, representing the number of cells in neighbors where myCurrentState == state
    */
   public int countNeighborsInState(int state) {
@@ -89,6 +90,7 @@ public abstract class Cell { //<T extends State> {
     }
     return count;
   }
+
   public List<Cell> getNeighbors() {
     return myNeighbors;
   }
