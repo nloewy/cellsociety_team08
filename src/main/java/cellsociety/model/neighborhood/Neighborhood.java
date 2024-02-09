@@ -1,7 +1,7 @@
 package cellsociety.model.neighborhood;
 
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.Grid;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.grid.Grid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

@@ -1,19 +1,15 @@
 package cellsociety.model.simulation;
 
 import cellsociety.exception.InvalidValueException;
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.Grid;
-import cellsociety.model.core.HexagonCell;
-import cellsociety.model.core.RectangleCell;
-import cellsociety.model.core.State;
-import cellsociety.model.core.WarpedGrid;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.grid.Grid;
+import cellsociety.model.core.grid.WarpedGrid;
+import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.HexagonShape;
+import cellsociety.model.core.shape.RectangleShape;
 import cellsociety.model.neighborhood.Neighborhood;
-import com.sun.jdi.InvalidCodeIndexException;
-import java.util.ArrayList;
-import java.util.InvalidPropertiesFormatException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
@@ -22,7 +18,7 @@ import java.util.function.Function;
  * @author Noah Loewy
  */
 
-public abstract class Simulation<T extends Cell> {
+public abstract class Simulation {
 
   protected Neighborhood myNeighborhood;
   protected Grid myGrid;
@@ -41,37 +37,25 @@ public abstract class Simulation<T extends Cell> {
    * @param gridType   type of grid used in simulation
    */
 
-  public Simulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      String gridType, String cellShape) {
-
+  public Simulation(Neighborhood hoodType, String gridType) {
     myNeighborhood = hoodType;
     myGridType = gridType;
-    initializeMyGrid(row, col, stateList, cellShape);
   }
 
-  public void initializeMyGrid(int row, int col, List<Integer> stateList, String cellShape) {
-    List<Cell> cellList = new ArrayList<>();
-    for (int i = 0; i < stateList.size(); i++) {
-      Cell newCell = switch (cellShape) {
-        case "square" -> new RectangleCell(stateList.get(i), i / col, i % col);
-        case "hexagon" -> new HexagonCell(stateList.get(i), i / col, i % col);
-        default -> throw new InvalidValueException("Cell Shape Does Not Exist");
-      };
-      cellList.add(newCell);
-    }
-
+  public void initializeMyGrid(int row, int col, List<Cell> cellList) {
+    System.out.println(myGridType);
     myGrid = switch (myGridType) {
       case "Normal" -> new Grid(row, col, cellList);
       case "Warped" -> new WarpedGrid(row, col, cellList);
       default -> throw new InvalidValueException("Edge Type Does Not Exist");
     };
+    Iterator<Cell> iterator = myGrid.iterator();
+    while (iterator.hasNext()) {
+      Cell cell = iterator.next();
+      cell.setNeighborhood(myNeighborhood.getNeighbors(myGrid, cell));
+    }
   }
 
-  /**
-   * This abstract function will assign each cell a new value for their myNextState, based on the
-   * current grid configuration and the rules of the simulation
-   */
-  public abstract void transitionFunction();
 
   /**
    * Iterates through all available cells and updates the current state based on the results of the
@@ -85,25 +69,37 @@ public abstract class Simulation<T extends Cell> {
     }
   }
 
-
-  /**
-   * Given a list of cells, and an integer representing a state, determines the number of cells in
-   * the list that are currently at that state
-   *
-   * @param neighbors, a list of cells, representing the neighbors of a central cell
-   * @param state,     an integer, representing the state to check for
-   * @return count, representing the number of cells in neighbors where myCurrentState == state
-   */
-  public int countNeighborsInState(List<T> neighbors, int state) {
-    int count = 0;
-    for (T c : neighbors) {
-      if (c.getState().getCurrentStatus() == state) {
-        count++;
-      }
+  public void createCellsAndGrid(int row, int col, List<Integer> stateList,
+      CellShape shape, Neighborhood hoodType) {
+    List<Cell> cellList = cellMaker(col, stateList, shape);
+    initializeMyGrid(row, col, cellList);
+    for (Cell cell : cellList) {
+      cell.initializeNeighbors(hoodType, myGrid);
     }
-    return count;
   }
 
+  public abstract List<Cell> cellMaker(int col, List<Integer> stateList, CellShape cellShape);
+
+
+  public CellShape getCellShape(String shapeStr) {
+    return switch (shapeStr) {
+      case "square" -> new RectangleShape();
+      case "hexagon" -> new HexagonShape();
+      default -> throw new InvalidValueException("Cell Shape Does Not Exist");
+    };
+  }
+
+  /**
+   * Transition function for Percolation. All cells remain in their state, unless the cell is open,
+   * in which the cell is passed into the helper function handleOpenCell for transitioning
+   */
+  public void transitionFunction() {
+    Iterator<Cell> gridIterator = getIterator();
+    while (gridIterator.hasNext()) {
+      Cell currentCell = gridIterator.next();
+      currentCell.transition();
+    }
+  }
   public Neighborhood getNeighborhood() {
     return myNeighborhood;
   }
@@ -118,7 +114,7 @@ public abstract class Simulation<T extends Cell> {
    *
    * @return Iterator object that can iterate through my grid
    */
-  public Iterator<T> getIterator() {
+  public Iterator<Cell> getIterator() {
     return myGrid.iterator();
   }
 

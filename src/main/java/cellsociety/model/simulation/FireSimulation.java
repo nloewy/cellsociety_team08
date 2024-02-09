@@ -1,12 +1,14 @@
 package cellsociety.model.simulation;
 
-import static java.lang.Math.random;
-
-import cellsociety.model.core.Cell;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.cell.FireCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.FireRecord;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the spreading of a wild fire in a forest
@@ -14,7 +16,7 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class FireSimulation extends SimpleCellSimulation {
+public class FireSimulation extends Simulation {
 
   public static final int EMPTY = 0;
   public static final int TREE = 1;
@@ -29,83 +31,31 @@ public class FireSimulation extends SimpleCellSimulation {
   /**
    * Initializes a FireSimulation object
    *
-   * @param row,              the number of rows in the 2-dimensional grid
-   * @param col,              the number of columns in the 2-dimensional grid
-   * @param hoodType,         the definition of neighbors
-   * @param stateList,        a list of the integer representation of each cells state, by rows,
-   *                          then cols
-   * @param neighborsToIgnite the number of burning neighbors needed for a tree to catch fire
-   * @param probTreeIgnites   probability a tree (not meeting the required number of burning
-   *                          neighbors) catches fire
-   * @param probTreeCreated   probability an empty cell becomes a tree
-   * @param gridType          type of grid used in simulation
+   * @param row,       the number of rows in the 2-dimensional grid
+   * @param col,       the number of columns in the 2-dimensional grid
+   * @param hoodType,  the definition of neighbors
+   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
   public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       FireRecord r) {
-    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    super(hoodType, r.gridType());
     this.neighborsToIgnite = r.neighborsToIgnite();
     this.probTreeIgnites = r.probTreeIgnites();
     this.probTreeCreated = r.probTreeCreated();
+    createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  /**
-   * Handles transition of empty cell in FireSimulation. Empty cells transition to trees with
-   * probability probTreeCreated, and remain empty with probability 1 - probTreeCreated
-   *
-   * @param currentCell the transitioning cell object
-   */
-  private void handleEmptyCell(Cell currentCell) {
-    if (random() <= probTreeCreated) {
-      currentCell.setNextState(TREE);
-    } else {
-      currentCell.setNextState(EMPTY);
-    }
-  }
 
-  /**
-   * Handles transition of tree cell in FireSimulation. Tree cells with at least neighborsToIgnite
-   * burning neighbors will always burn. Tree cells that do not meet the required amount of burning
-   * neighbors will burn with probability probTreeIgnites, and remain trees with probability 1 -
-   * probTreeIgnites
-   *
-   * @param currentCell the transitioning cell object
-   */
-  private void handleTreeCell(Cell currentCell) {
-    List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
-    int burningNeighbors = countNeighborsInState(neighbors, BURNING);
-    if (burningNeighbors >= neighborsToIgnite || random() <= probTreeIgnites) {
-      currentCell.setNextState(BURNING);
-    } else {
-      currentCell.setNextState(TREE);
+  public List<Cell> cellMaker(int col, List<Integer> stateList,
+      CellShape shape) {
+    List<Cell> cellList = new ArrayList<>();
+    Map<String, Double> params = new HashMap<>();
+    params.put("neighborsToIgnite", (double) neighborsToIgnite);
+    params.put("probTreeIgnites", probTreeIgnites);
+    params.put("probTreeCreated", probTreeCreated);
+    for (int i = 0; i < stateList.size(); i++) {
+      cellList.add(new FireCell(stateList.get(i), i / col, i % col, shape, params));
     }
-  }
-
-  /**
-   * Iterates through each cell, and calls the proper helper function for transitioning based on the
-   * current state of the cell in the Fire Simulation
-   */
-  @Override
-  public void transitionFunction() {
-    Iterator<Cell> gridIterator = getIterator();
-    while (gridIterator.hasNext()) {
-      Cell currentCell = gridIterator.next();
-      switch (currentCell.getState().getCurrentStatus()) {
-        case EMPTY: {
-          handleEmptyCell(currentCell);
-          break;
-        }
-        case BURNING: {
-          currentCell.setNextState(EMPTY);
-          break;
-        }
-        case TREE: {
-          handleTreeCell(currentCell);
-          break;
-        }
-        default:
-          break;
-          //TODO: check if exception needed
-      }
-    }
+    return cellList;
   }
 }

@@ -1,10 +1,14 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.Cell;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.cell.LifeCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.GameOfLifeRecord;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This cellular automata simulation represents Conway's Game of Life.
@@ -12,7 +16,7 @@ import java.util.List;
  * author @Noah Loewy
  */
 
-public class GameOfLifeSimulation extends SimpleCellSimulation {
+public class GameOfLifeSimulation extends Simulation {
 
   public static final int DEAD = 0;
   public static final int ALIVE = 1;
@@ -25,84 +29,34 @@ public class GameOfLifeSimulation extends SimpleCellSimulation {
   /**
    * Initializes a GameOfLifeSimulation object
    *
-   * @param row,            the number of rows in the 2-dimensional grid
-   * @param col,            the number of columns in the 2-dimensional grid
-   * @param hoodType,       the definition of neighbors
-   * @param stateList,      a list of the integer representation of each cells state, by rows, then
-   *                        cols
-   * @param aliveToAliveMin minimum number of living cells that can be neighbors of a living cell to
-   *                        avoid death by underpopulation
-   * @param aliveToAliveMax maximum number of living cells can be neighbors of a living cell to
-   *                        avoid death by overpopulation
-   * @param deadToAliveMin  minimum number of living cells that can be neighbors of a dead cell to
-   *                        allow reproduction
-   * @param deadToAliveMax  maximum number of living cells that can be neighbors of a dead cell * to
-   *                        allow reproduction
-   * @param gridType        type of grid used in simulation
+   * @param row,       the number of rows in the 2-dimensional grid
+   * @param col,       the number of columns in the 2-dimensional grid
+   * @param hoodType,  the definition of neighbors
+   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
   public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       GameOfLifeRecord r) {
-    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    super(hoodType, r.gridType());
     this.aliveToAliveMin = r.aliveToAliveMin();
     this.aliveToAliveMax = r.aliveToAliveMax();
     this.deadToAliveMin = r.deadToAliveMin();
     this.deadToAliveMax = r.deadToAliveMax();
+    createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  /**
-   * Handles transition of alive cell in GameOfLifeSimulation. Alive cells with no less than
-   * aliveToAliveMin and no more than aliveToAliveMax living neighbors will remain alive, whereas
-   * all other alive cells will die
-   *
-   * @param currentCell the transitioning cell object
-   */
-  private void handleAliveCell(Cell currentCell, int aliveNeighbors) {
-    if (aliveNeighbors >= aliveToAliveMin && aliveNeighbors <= aliveToAliveMax) {
-      currentCell.setNextState(ALIVE);
-    } else {
-      currentCell.setNextState(DEAD);
+  public List<Cell> cellMaker(int col, List<Integer> stateList,
+      CellShape shape) {
+    List<Cell> cellList = new ArrayList<>();
+    Map<String, Integer> params = new HashMap<>();
+    params.put("aliveToAliveMin", aliveToAliveMin);
+    params.put("aliveToAliveMax", aliveToAliveMax);
+    params.put("deadToAliveMin", deadToAliveMin);
+    params.put("deadToAliveMax", deadToAliveMax);
+    for (int i = 0; i < stateList.size(); i++) {
+      cellList.add(new LifeCell(stateList.get(i), i / col, i % col, shape, params));
     }
-  }
-
-  /**
-   * Handles transition of alive cell in GameOfLifeSimulation. Dead cells with no less than
-   * deadToAliveMin and no more than deadToAliveMax living neighbors will remain alive, whereas all
-   * other alive cells will die
-   *
-   * @param currentCell the transitioning cell object
-   */
-  private void handleDeadCell(Cell currentCell, int aliveNeighbors) {
-    if (aliveNeighbors >= deadToAliveMin && aliveNeighbors <= deadToAliveMax) {
-      currentCell.setNextState(ALIVE);
-    } else {
-      currentCell.setNextState(DEAD);
-    }
-  }
-
-  /**
-   * Iterates through each cell, and calls the proper helper function for transitioning based on the
-   * current state of the cell in the Game of Life Simulation
-   */
-  @Override
-  public void transitionFunction() {
-    Iterator<Cell> gridIterator = getIterator();
-    while (gridIterator.hasNext()) {
-      Cell currentCell = gridIterator.next();
-      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
-      int aliveNeighbors = countNeighborsInState(neighbors, ALIVE);
-      System.out.print("Neighbors of " + currentCell.getLocation().toString() + " :");
-      for (Cell c : neighbors) {
-        System.out.print(c.getLocation().toString() + " ");
-      }
-      System.out.println();
-      System.out.println(
-          "Alive Neighbors of " + currentCell.getLocation().toString() + "  : " + aliveNeighbors);
-      if (currentCell.getState().getCurrentStatus() == ALIVE) {
-        handleAliveCell(currentCell, aliveNeighbors);
-      }
-      if (currentCell.getState().getCurrentStatus() == DEAD) {
-        handleDeadCell(currentCell, aliveNeighbors);
-      }
-    }
+    return cellList;
   }
 }
+
+

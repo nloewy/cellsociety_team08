@@ -1,6 +1,5 @@
 package cellsociety.view.cellview;
 
-import cellsociety.model.core.Cell;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;

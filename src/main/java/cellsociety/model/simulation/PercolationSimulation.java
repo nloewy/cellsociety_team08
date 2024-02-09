@@ -1,10 +1,14 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.Cell;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.cell.PercolationCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
-import java.util.Iterator;
-import java.util.List;
 import cellsociety.model.simulation.Records.PercolationRecord;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This cellular automata simulation represents the CS201 Percolation Assignment
@@ -12,7 +16,7 @@ import cellsociety.model.simulation.Records.PercolationRecord;
  * author @noah loewy
  */
 
-public class PercolationSimulation extends SimpleCellSimulation {
+public class PercolationSimulation extends Simulation {
 
   public static final int OPEN = 0;
   public static final int PERCOLATED = 1;
@@ -24,53 +28,26 @@ public class PercolationSimulation extends SimpleCellSimulation {
   /**
    * Initializes a PercolationSimulation object
    *
-   * @param row,                the number of rows in the 2-dimensional grid
-   * @param col,                the number of columns in the 2-dimensional grid
-   * @param hoodType,           the definition of neighbors
-   * @param stateList,          a list of the integer representation of each cells state, by rows,
-   *                            then cols
-   * @param percolatedNeighbors minimum number of percolated neighbors an open cell must have for it
-   *                            to percolate
-   * @param gridType            type of grid used in simulation
+   * @param row,       the number of rows in the 2-dimensional grid
+   * @param col,       the number of columns in the 2-dimensional grid
+   * @param hoodType,  the definition of neighbors
+   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
   public PercolationSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       PercolationRecord r) {
-    super(row, col, hoodType, stateList, r.gridType(), r.cellShape());
+    super(hoodType, r.gridType());
     this.percolatedNeighbors = r.percolatedNeighbors();
+    createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  /**
-   * Handles transition of open cell in PercolationSimulation. Open cells with at least
-   * neighersPercolatedRequired will become percolated, and otherwise will remain open.
-   *
-   * @param currentCell the transitioning cell object
-   * @param neighbors   all cells in the neighborhood of the transitioning cell, under the current
-   *                    definition of neighborhood
-   */
-  private void handleOpenCell(Cell currentCell, List<Cell> neighbors) {
-    int numPercolatedNeighbors = countNeighborsInState(neighbors, PERCOLATED);
-    if (numPercolatedNeighbors >= percolatedNeighbors) {
-      currentCell.setNextState(PERCOLATED);
-    } else {
-      currentCell.setNextState(OPEN);
+  public List<Cell> cellMaker(int col, List<Integer> stateList,
+      CellShape shape) {
+    List<Cell> cellList = new ArrayList<>();
+    Map<String, Integer> params = new HashMap<>();
+    params.put("percolatedNeighbors", percolatedNeighbors);
+    for (int i = 0; i < stateList.size(); i++) {
+      cellList.add(new PercolationCell(stateList.get(i), i / col, i % col, shape, params));
     }
-  }
-
-  /**
-   * Transition function for Percolation. All cells remain in their state, unless the cell is open,
-   * in which the cell is passed into the helper function handleOpenCell for transitioning
-   */
-  @Override
-  public void transitionFunction() {
-    Iterator<Cell> gridIterator = getIterator();
-    while (gridIterator.hasNext()) {
-      Cell currentCell = gridIterator.next();
-      List<Cell> neighbors = getNeighborhood().getNeighbors(getGrid(), currentCell);
-      if (currentCell.getState().getCurrentStatus() == OPEN) {
-        handleOpenCell(currentCell, neighbors);
-      } else {
-        currentCell.setNextState(currentCell.getState().getCurrentStatus());
-      }
-    }
+    return cellList;
   }
 }

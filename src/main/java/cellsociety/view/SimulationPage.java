@@ -1,7 +1,7 @@
 package cellsociety.view;
 
 import cellsociety.Point;
-import cellsociety.model.core.Cell;
+import cellsociety.model.core.cell.Cell;
 import cellsociety.view.cellview.CellView;
 import cellsociety.view.cellview.FireCellView;
 import cellsociety.view.cellview.GameOfLifeCellView;
@@ -330,7 +330,7 @@ public class SimulationPage {
       Point location = c.getLocation();
       int col = (int) location.getCol();
       int row = (int) location.getRow();
-      int state = c.getState().getCurrentStatus();
+      int state = c.getCurrentState();
       board[row][col].updateState(state);
 
       if (!stateCount.containsKey(state)){

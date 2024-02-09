@@ -1,7 +1,7 @@
 package cellsociety.view;
 
 import cellsociety.configuration.XmlParser;
-import cellsociety.model.core.Cell;
+import cellsociety.model.core.cell.Cell;
 import cellsociety.model.neighborhood.MooreNeighborhood;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.neighborhood.VonNeumannNeighborhood;
@@ -34,8 +34,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 /**
  * This class is the main driver of the simulation.
@@ -202,9 +200,9 @@ public class Controller {
     simulationModel = switch (simulationType) {
       case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList,
           new GameOfLifeRecord(xmlParser.getParameters().get("aliveToAliveMin").intValue(),
-          xmlParser.getParameters().get("deadToAliveMax").intValue(),
           xmlParser.getParameters().get("aliveToAliveMax").intValue(),
-          xmlParser.getParameters().get("deadToAliveMin").intValue(), gridType, cellShape));
+          xmlParser.getParameters().get("deadToAliveMin").intValue(),
+          xmlParser.getParameters().get("deadToAliveMax").intValue(), gridType, cellShape));
       case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList,
           new PercolationRecord(xmlParser.getParameters().get("percolatedNeighbors").intValue(),
               gridType, cellShape));
@@ -285,14 +283,14 @@ public class Controller {
       ArrayList<Integer> newStates = new ArrayList<>();
       Iterator<Cell> iterator = simulationModel.getIterator();
       while (iterator.hasNext()) {
-        newStates.add(iterator.next().getState().getCurrentStatus());
+        newStates.add(iterator.next().getCurrentState());
       }
       xmlParser.setStates(newStates);
       xmlParser.createXml("savedSimulation" + xmlParser.getType(),
           xmlParser.getType().toLowerCase());
 
       showMessage(AlertType.INFORMATION, String.format(textConfig.getString(FILE_SAVED_KEY)));
-    } catch (ParserConfigurationException | TransformerException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -352,8 +350,9 @@ public class Controller {
    * returns simulation to its initial state when reset button is pressed
    */
   private void onResetSimulation() {
-    simulationModel.initializeMyGrid(xmlParser.getHeight(), xmlParser.getWidth(),
-        xmlParser.getStates(), xmlParser.getCellShape());
+    simulationModel.createCellsAndGrid(xmlParser.getHeight(), xmlParser.getWidth(),
+        xmlParser.getStates(), simulationModel.getCellShape(xmlParser.getCellShape()), getNeighborhoodObject(
+            xmlParser.getNeighborhoodType()));
     simulationPage.updateView(simulationModel.getIterator());
     simulationPage.resetGraph();
   }
