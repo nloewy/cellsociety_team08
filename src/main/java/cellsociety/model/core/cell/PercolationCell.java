@@ -1,5 +1,6 @@
-package cellsociety.model.core;
+package cellsociety.model.core.cell;
 
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.simulation.PercolationSimulation;
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package cellsociety.view;
 
 import cellsociety.Point;
-import cellsociety.model.core.Cell;
+import cellsociety.model.core.cell.Cell;
 import cellsociety.view.cellview.CellView;
 import cellsociety.view.cellview.FireCellView;
 import cellsociety.view.cellview.GameOfLifeCellView;

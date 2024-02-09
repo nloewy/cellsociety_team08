@@ -1,7 +1,8 @@
-package cellsociety.model.core;
+package cellsociety.model.core.cell;
 
 import static java.lang.Math.random;
 
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.simulation.FireSimulation;
 import java.util.Map;
 

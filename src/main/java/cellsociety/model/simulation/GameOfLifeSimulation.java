@@ -1,13 +1,12 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.CellShape;
-import cellsociety.model.core.LifeCell;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.cell.LifeCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.GameOfLifeRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,35 +41,21 @@ public class GameOfLifeSimulation extends Simulation {
     this.aliveToAliveMax = r.aliveToAliveMax();
     this.deadToAliveMin = r.deadToAliveMin();
     this.deadToAliveMax = r.deadToAliveMax();
-    CellShape shape = getCellShape(r.cellShape());
-    createCellsAndGrid(row, col, stateList, shape, hoodType);
+    createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
   public List<Cell> cellMaker(int col, List<Integer> stateList,
       CellShape shape) {
     List<Cell> cellList = new ArrayList<>();
+    Map<String, Integer> params = new HashMap<>();
+    params.put("aliveToAliveMin", aliveToAliveMin);
+    params.put("aliveToAliveMax", aliveToAliveMax);
+    params.put("deadToAliveMin", deadToAliveMin);
+    params.put("deadToAliveMax", deadToAliveMax);
     for (int i = 0; i < stateList.size(); i++) {
-      Map<String, Integer> params = new HashMap<>();
-      params.put("aliveToAliveMin", aliveToAliveMin);
-      params.put("aliveToAliveMax", aliveToAliveMax);
-      params.put("deadToAliveMin", deadToAliveMin);
-      params.put("deadToAliveMax", deadToAliveMax);
       cellList.add(new LifeCell(stateList.get(i), i / col, i % col, shape, params));
     }
     return cellList;
-  }
-
-  /**
-   * Iterates through each cell, and calls the proper helper function for transitioning based on the
-   * current state of the cell in the Game of Life Simulation
-   */
-  @Override
-  public void transitionFunction() {
-    Iterator<Cell> gridIterator = getIterator();
-    while (gridIterator.hasNext()) {
-      Cell currentCell = gridIterator.next();
-      currentCell.transition();
-    }
   }
 }
 

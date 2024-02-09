@@ -1,8 +1,8 @@
 package cellsociety.model.neighborhood;
 
 import cellsociety.Point;
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.Grid;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.grid.Grid;
 
 
 public class VonNeumannNeighborhood extends Neighborhood {

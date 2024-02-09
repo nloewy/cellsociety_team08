@@ -1,13 +1,12 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.CellShape;
-import cellsociety.model.core.PercolationCell;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.cell.PercolationCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.PercolationRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,24 +43,11 @@ public class PercolationSimulation extends Simulation {
   public List<Cell> cellMaker(int col, List<Integer> stateList,
       CellShape shape) {
     List<Cell> cellList = new ArrayList<>();
+    Map<String, Integer> params = new HashMap<>();
+    params.put("percolatedNeighbors", percolatedNeighbors);
     for (int i = 0; i < stateList.size(); i++) {
-      Map<String, Integer> params = new HashMap<>();
-      params.put("percolatedNeighbors", percolatedNeighbors);
       cellList.add(new PercolationCell(stateList.get(i), i / col, i % col, shape, params));
     }
     return cellList;
-  }
-
-  /**
-   * Transition function for Percolation. All cells remain in their state, unless the cell is open,
-   * in which the cell is passed into the helper function handleOpenCell for transitioning
-   */
-  @Override
-  public void transitionFunction() {
-    Iterator<Cell> gridIterator = getIterator();
-    while (gridIterator.hasNext()) {
-      Cell currentCell = gridIterator.next();
-      currentCell.transition();
-    }
   }
 }

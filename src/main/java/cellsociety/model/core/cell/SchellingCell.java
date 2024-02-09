@@ -1,5 +1,7 @@
-package cellsociety.model.core;
+package cellsociety.model.core.cell;
 
+
+import cellsociety.model.core.shape.CellShape;
 
 public class SchellingCell extends Cell {
 

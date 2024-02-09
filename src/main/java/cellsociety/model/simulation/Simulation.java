@@ -1,12 +1,12 @@
 package cellsociety.model.simulation;
 
 import cellsociety.exception.InvalidValueException;
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.CellShape;
-import cellsociety.model.core.Grid;
-import cellsociety.model.core.HexagonShape;
-import cellsociety.model.core.RectangleShape;
-import cellsociety.model.core.WarpedGrid;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.grid.Grid;
+import cellsociety.model.core.grid.WarpedGrid;
+import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.HexagonShape;
+import cellsociety.model.core.shape.RectangleShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
 import java.util.List;
@@ -56,11 +56,6 @@ public abstract class Simulation {
     }
   }
 
-  /**
-   * This abstract function will assign each cell a new value for their myNextState, based on the
-   * current grid configuration and the rules of the simulation
-   */
-  public abstract void transitionFunction();
 
   /**
    * Iterates through all available cells and updates the current state based on the results of the
@@ -94,6 +89,17 @@ public abstract class Simulation {
     };
   }
 
+  /**
+   * Transition function for Percolation. All cells remain in their state, unless the cell is open,
+   * in which the cell is passed into the helper function handleOpenCell for transitioning
+   */
+  public void transitionFunction() {
+    Iterator<Cell> gridIterator = getIterator();
+    while (gridIterator.hasNext()) {
+      Cell currentCell = gridIterator.next();
+      currentCell.transition();
+    }
+  }
   public Neighborhood getNeighborhood() {
     return myNeighborhood;
   }

@@ -1,6 +1,7 @@
-package cellsociety.model.core;
+package cellsociety.model.core.grid;
 
 import cellsociety.Point;
+import cellsociety.model.core.cell.Cell;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

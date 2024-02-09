@@ -1,8 +1,8 @@
 package cellsociety.model.neighborhood;
 
 import cellsociety.Point;
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.Grid;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.grid.Grid;
 /**
  * Represents a neighborhood where neighbors are characterized as points that share a common vertex
  * or side on the coordinate grid
