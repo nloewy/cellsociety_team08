@@ -10,6 +10,7 @@ import cellsociety.view.cellview.SchellingCellView;
 import cellsociety.view.cellview.WatorCellView;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -42,12 +43,16 @@ public class SimulationPage {
   private Button pauseSimulationButton;
   private Button saveSimulationButton;
   private Button resetSimulationButton;
+  private Button simulationGraphButton;
   private Text simulationTitleDisplay;
   private Slider speedSlider;
   private Label speedLabel;
   private ResourceBundle buttonLabels;
   private ResourceBundle configProperties;
   private ResourceBundle textProperties;
+  private SimulationGraph graph;
+  private Map<Integer, Integer> stateCount;
+  private int totalCellCount;
 
   //config file number keys
   public static final String SCENE_HEIGHT_KEY = "SCENE_HEIGHT";
@@ -104,12 +109,15 @@ public class SimulationPage {
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
 
+    stateCount = new HashMap<>();
+    graph = new SimulationGraph(stateCount);
+
     root = new Group();
     grid = new GridPane();
     scene = new Scene(root, configDouble(SCENE_WIDTH_KEY),
         configDouble(SCENE_HEIGHT_KEY));
 
-    buttonLabels = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLabels");
+    buttonLabels = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLabelsEnglish");
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
@@ -145,6 +153,7 @@ public class SimulationPage {
         saveSimulationButton,
         pauseSimulationButton,
         resetSimulationButton,
+        simulationGraphButton,
         simulationTitleDisplay,
         speedSlider,
         speedLabel
@@ -199,8 +208,33 @@ public class SimulationPage {
         eventHandlers.get("resetSimulationHandler"),
         configInt(BUTTON_START_X_KEY),
         configInt(RESET_BUTTON_Y_KEY));
+    simulationGraphButton = new Button("Show Graph");
+    simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
   }
 
+  public void resetGraph(){
+    graph.resetGraph();
+  }
+
+  public void toggleGraphVisibility(){
+    if (graph.getGraphSection().isVisible()){
+      graph.getGraphSection().setVisible(false);
+      simulationGraphButton.setText("Show Graph");
+      closeGraph();
+    } else {
+      graph.getGraphSection().setVisible(true);
+      showGraph();
+      simulationGraphButton.setText("Close Graph");
+    }
+  }
+
+  private void showGraph() {
+    root.getChildren().add(graph.getGraphSection());
+  }
+
+  private void closeGraph(){
+    root.getChildren().remove(graph.getGraphSection());
+  }
 
   /**
    * initialize the cellview objects in the grid according to the current simulation
@@ -289,13 +323,24 @@ public class SimulationPage {
    * @param gridIterator the cell model iterator of the grid model
    */
   public void updateView(Iterator<Cell> gridIterator) {
+    stateCount.clear();
+
     while (gridIterator.hasNext()) {
       Cell c = gridIterator.next();
       Point location = c.getLocation();
       int col = (int) location.getCol();
       int row = (int) location.getRow();
-      board[row][col].updateState(c.getCurrentState());
+      int state = c.getCurrentState();
+      board[row][col].updateState(state);
+
+      if (!stateCount.containsKey(state)){
+        stateCount.put(state,0);
+      }
+      stateCount.replace(state,stateCount.get(state)+1);
     }
+    //TODO: update graph with new map
+
+    graph.updateGraph(stateCount);
   }
 
   /**

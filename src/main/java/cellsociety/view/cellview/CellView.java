@@ -2,12 +2,14 @@ package cellsociety.view.cellview;
 
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 
 public abstract class CellView extends Region {
 
+  private CellShape shapes;
   private Rectangle rec;
 
   public CellView(int state, double width, double height) {
@@ -39,7 +41,16 @@ public abstract class CellView extends Region {
     return rec;
   }
 
+  public Rectangle getRecTangleGraphic(){
+    return shapes.getRectangle();
+  }
+
+  public Polygon getHexagonGraphic(){
+    return shapes.getHexagon();
+  }
+
   //TODO: add the r's to the gridpane not the cellviews, avoid extending the region because you
   // don't want to add a bunch of unnecesary packages when extending.
+
 }
 
