@@ -1,6 +1,5 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.FireCell;
 import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
@@ -11,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents the spreading of a wild fire in a forest
+ * Represents the spreading of a wildfire in a forest
  *
  * @author Noah Loewy
  */
 
-public class FireSimulation extends Simulation {
+public class FireSimulation extends Simulation<FireCell> {
 
   public static final int EMPTY = 0;
   public static final int TREE = 1;
@@ -46,8 +45,8 @@ public class FireSimulation extends Simulation {
   }
 
 
-  public List<Cell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
-    List<Cell> cellList = new ArrayList<>();
+  public List<FireCell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
+    List<FireCell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();
     params.put("neighborsToIgnite", (double) neighborsToIgnite);
     params.put("probTreeIgnites", probTreeIgnites);

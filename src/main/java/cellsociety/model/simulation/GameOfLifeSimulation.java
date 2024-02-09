@@ -1,6 +1,5 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.LifeCell;
 import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
@@ -16,7 +15,7 @@ import java.util.Map;
  * author @Noah Loewy
  */
 
-public class GameOfLifeSimulation extends Simulation {
+public class GameOfLifeSimulation extends Simulation<LifeCell> {
 
   public static final int DEAD = 0;
   public static final int ALIVE = 1;
@@ -44,8 +43,8 @@ public class GameOfLifeSimulation extends Simulation {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public List<Cell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
-    List<Cell> cellList = new ArrayList<>();
+  public List<LifeCell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
+    List<LifeCell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();
     params.put("aliveToAliveMin", aliveToAliveMin);
     params.put("aliveToAliveMax", aliveToAliveMax);

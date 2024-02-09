@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This cellular automata simulation represents the Predator-Prey simulation developed by Alexander K
- * Dewdney
+ * This cellular automata simulation represents the Predator-Prey simulation developed by Alexander
+ * K Dewdney
  * <p>
  * author @noah loewy
  */
 
-public class WatorSimulation extends Simulation {
+public class WatorSimulation extends Simulation<WatorCell> {
 
   public static final int EMPTY = 0;
   public static final int FISH = 1;
@@ -39,9 +39,9 @@ public class WatorSimulation extends Simulation {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public List<Cell> cellMaker(int col, List<Integer> stateList,
+  public List<WatorCell> cellMaker(int col, List<Integer> stateList,
       CellShape cellShape) {
-    List<Cell> cellList = new ArrayList<>();
+    List<WatorCell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();
     params.put("fishAgeOfReproduction", fishAgeOfReproduction);
     params.put("sharkAgeOfReproduction", sharkAgeOfReproduction);
@@ -61,7 +61,7 @@ public class WatorSimulation extends Simulation {
   @Override
   public void transitionFunction() {
     for (int cellToUpdate : UPDATE_ORDER) {
-      Iterator<Cell> gridIterator = getIterator();
+      Iterator<WatorCell> gridIterator = getIterator();
       while (gridIterator.hasNext()) {
         Cell currentCell = gridIterator.next();
         if (currentCell.getNextState() == Cell.PLACEHOLDER &&

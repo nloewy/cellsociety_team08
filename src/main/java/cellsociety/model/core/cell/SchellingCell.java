@@ -9,22 +9,16 @@ import java.util.Map;
 public class SchellingCell extends Cell {
 
   private double proportionNeededToStay;
-  private boolean emptyList;
-  private boolean toMove;
 
   public SchellingCell(int initialState, int row, int col, CellShape shapeType,
       Map<String, Double> params) {
     super(initialState, row, col, shapeType);
     proportionNeededToStay = params.get("proportionNeededToStay");
-    emptyList = false;
-    toMove = false;
   }
 
   @Override
   public void updateStates() {
     super.updateStates();
-    toMove = false;
-    emptyList = false;
   }
 
   /**
@@ -34,22 +28,14 @@ public class SchellingCell extends Cell {
   @Override
   public void transition() {
     if (getCurrentState() == SchellingSimulation.EMPTY) {
-      emptyList = true;
+      setNextState(SchellingSimulation.TEMP_EMPTY);
     }
     handleDemographicCell();
   }
 
-  public boolean getToEmptyList() {
-    return emptyList;
-  }
-
-  public boolean getToMove() {
-    return toMove;
-  }
-
   private void handleDemographicCell() {
     if (isNotSatsfied()) {
-      toMove = true;
+      setNextState(SchellingSimulation.TEMP_TO_MOVE);
     } else {
       setNextState(getCurrentState());
     }

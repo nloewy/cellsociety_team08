@@ -18,10 +18,10 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public abstract class Simulation {
+public abstract class Simulation<T extends Cell> {
 
-  protected Neighborhood myNeighborhood;
-  protected Grid myGrid;
+  private Neighborhood myNeighborhood;
+  private Grid myGrid;
   private String myGridType;
 
   public Simulation() {
@@ -39,16 +39,16 @@ public abstract class Simulation {
     myGridType = gridType;
   }
 
-  public void initializeMyGrid(int row, int col, List<Cell> cellList) {
+  public void initializeMyGrid(int row, int col, List<T> cellList) {
     System.out.println(myGridType);
     myGrid = switch (myGridType) {
       case "Normal" -> new Grid(row, col, cellList);
       case "Warped" -> new WarpedGrid(row, col, cellList);
       default -> throw new InvalidValueException("Edge Type Does Not Exist");
     };
-    Iterator<Cell> iterator = myGrid.iterator();
+    Iterator<T> iterator = myGrid.iterator();
     while (iterator.hasNext()) {
-      Cell cell = iterator.next();
+      T cell = iterator.next();
       cell.setNeighborhood(myNeighborhood.getNeighbors(myGrid, cell));
     }
   }
@@ -59,23 +59,23 @@ public abstract class Simulation {
    * transition function
    */
   public void processUpdate() {
-    Iterator<Cell> iterator = myGrid.iterator();
+    Iterator<T> iterator = myGrid.iterator();
     while (iterator.hasNext()) {
-      Cell cell = iterator.next();
+      T cell = iterator.next();
       cell.updateStates();
     }
   }
 
   public void createCellsAndGrid(int row, int col, List<Integer> stateList,
       CellShape shape, Neighborhood hoodType) {
-    List<Cell> cellList = cellMaker(col, stateList, shape);
+    List<T> cellList = cellMaker(col, stateList, shape);
     initializeMyGrid(row, col, cellList);
-    for (Cell cell : cellList) {
+    for (T cell : cellList) {
       cell.initializeNeighbors(hoodType, myGrid);
     }
   }
 
-  public abstract List<Cell> cellMaker(int col, List<Integer> stateList, CellShape cellShape);
+  public abstract List<T> cellMaker(int col, List<Integer> stateList, CellShape cellShape);
 
 
   public CellShape getCellShape(String shapeStr) {
@@ -91,9 +91,9 @@ public abstract class Simulation {
    * in which the cell is passed into the helper function handleOpenCell for transitioning
    */
   public void transitionFunction() {
-    Iterator<Cell> gridIterator = getIterator();
+    Iterator<T> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
-      Cell currentCell = gridIterator.next();
+      T currentCell = gridIterator.next();
       currentCell.transition();
     }
   }
@@ -112,7 +112,7 @@ public abstract class Simulation {
    *
    * @return Iterator object that can iterate through my grid
    */
-  public Iterator<Cell> getIterator() {
+  public Iterator<T> getIterator() {
     return myGrid.iterator();
   }
 

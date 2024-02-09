@@ -1,6 +1,5 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.SchellingCell;
 import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
@@ -18,11 +17,14 @@ import java.util.Map;
  * author @noah loewy
  */
 
-public class SchellingSimulation extends Simulation {
+public class SchellingSimulation extends Simulation<SchellingCell> {
 
   public static final int EMPTY = 2;
-  private List<Cell> myCellsToMove;
-  private List<Cell> myEmptyCells;
+  public static final int TEMP_EMPTY = 3;
+  public static final int TEMP_TO_MOVE = 4;
+
+  private List<SchellingCell> myCellsToMove;
+  private List<SchellingCell> myEmptyCells;
   private double proportionNeededToStay;
 
   /**
@@ -42,8 +44,8 @@ public class SchellingSimulation extends Simulation {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public List<Cell> cellMaker(int col, List<Integer> stateList, CellShape cellShape) {
-    List<Cell> cellList = new ArrayList<>();
+  public List<SchellingCell> cellMaker(int col, List<Integer> stateList, CellShape cellShape) {
+    List<SchellingCell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();
     params.put("proportionNeededToStay", proportionNeededToStay);
     for (int i = 0; i < stateList.size(); i++) {
@@ -52,26 +54,19 @@ public class SchellingSimulation extends Simulation {
     return cellList;
   }
 
-  /**
-   * Sets the state of all cells that contain an agent that is moving to empty, and set their new
-   * cells to occupied. Also handles case when the amount of agents wanting to leave exceeds the
-   * number of available spots.
-   */
   private void moveCells() {
+    Collections.shuffle(myEmptyCells);
+    Collections.shuffle(myCellsToMove);
     int shorterListLength = Math.min(myCellsToMove.size(), myEmptyCells.size());
-    int longerListLength = Math.max(myCellsToMove.size(), myEmptyCells.size());
+    List<SchellingCell> remainingList =
+        (myCellsToMove.size() < myEmptyCells.size()) ? myEmptyCells : myCellsToMove;
     for (int i = 0; i < shorterListLength; i++) {
       myEmptyCells.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
       myCellsToMove.get(i).setNextState(EMPTY);
     }
-    for (int i = shorterListLength; i < longerListLength; i++) {
-      if (myCellsToMove.size() < myEmptyCells.size()) {
-        myEmptyCells.get(i).setNextState(myEmptyCells.get(i).getCurrentState());
-      } else {
-        myCellsToMove.get(i).setNextState(myCellsToMove.get(i).getCurrentState());
-      }
+    for (int i = shorterListLength; i < remainingList.size(); i++) {
+      remainingList.get(i).setNextState(remainingList.get(i).getCurrentState());
     }
-
   }
 
   /**
@@ -81,24 +76,19 @@ public class SchellingSimulation extends Simulation {
    */
   @Override
   public void transitionFunction() {
-    Iterator<Cell> gridIterator = getIterator();
+    Iterator<SchellingCell> gridIterator = getIterator();
     myCellsToMove.clear();
     myEmptyCells.clear();
     while (gridIterator.hasNext()) {
-      Cell currentCell = gridIterator.next();
+      SchellingCell currentCell = gridIterator.next();
       currentCell.transition();
-    }
-    Iterator<Cell> gridIterator2 = getIterator();
-    while (gridIterator2.hasNext()) {
-      SchellingCell currentCell = (SchellingCell) gridIterator2.next();
-      if (currentCell.getToEmptyList()) {
+      if (currentCell.getCurrentState() == TEMP_EMPTY) {
         myEmptyCells.add(currentCell);
       }
-      if (currentCell.getToMove()) {
+      if (currentCell.getCurrentState() == TEMP_TO_MOVE) {
         myCellsToMove.add(currentCell);
       }
     }
-    Collections.shuffle(myCellsToMove);
     moveCells();
   }
 }

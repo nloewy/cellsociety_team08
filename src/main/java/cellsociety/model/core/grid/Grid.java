@@ -3,7 +3,6 @@ package cellsociety.model.core.grid;
 import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,52 +35,12 @@ public class Grid<T extends Cell> {
 
   }
 
-  /**
-   * Determines if (x,y) is a legal cell in the grid.
-   *
-   * @param p, the coordinates of a potential grid cell on a 2d-plane
-   * @return boolean, highlighting if p is a legal cell in the grid
-   */
-  private boolean inBounds(Point p) {
-    double x = p.getRow();
-    double y = p.getCol();
-    return inBoundsX(x) && inBoundsY(y);
-  }
-
-  /**
-   * Determines if the x coordinate of a potential cell is in bounds
-   *
-   * @param x, the x coordinate of a potential grid cell
-   * @return boolean, highlighting if 0<=x<myNumRows
-   */
-  private boolean inBoundsX(double x) {
-    return x >= 0 && x < myNumRows;
-  }
-
-  /**
-   * Determines if the y coordinate of a potential cell is in bounds
-   *
-   * @param y, the y coordinate of a potential grid cell
-   * @return boolean, highlighting if 0<=y<myNumCols
-   */
-  private boolean inBoundsY(double y) {
-    return y >= 0 && y < myNumCols;
-  }
-
-
   public int getNumRows() {
     return myNumRows;
   }
 
   public int getNumCols() {
     return myNumCols;
-  }
-
-  public T getCellAtLocation(Point p) {
-    if (!inBounds(p)) {
-      throw new IndexOutOfBoundsException();
-    }
-    return myGrid.get((myNumCols * (int) p.getRow() + (int) p.getCol()));
   }
 
   /**
@@ -91,9 +50,7 @@ public class Grid<T extends Cell> {
    * @return Iterator object that can iterate through my grid
    */
   public Iterator<T> iterator() {
-    List<T> grid = new ArrayList<>(myGrid);
-    Collections.shuffle(grid);
-    return grid.iterator();
+    return myGrid.iterator();
   }
 
   public boolean containsVertex(Point p, List<Point> vertices) {

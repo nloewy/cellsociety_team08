@@ -42,7 +42,6 @@ public abstract class Cell<T extends Cell<T>> {
 
   public void initializeNeighbors(Neighborhood hoodType, Grid grid) {
     myNeighbors = hoodType.getNeighbors(grid, this);
-
   }
 
   /**
@@ -60,10 +59,6 @@ public abstract class Cell<T extends Cell<T>> {
     return myNextState;
   }
 
-  public void setCurrentState(int currentState) {
-    myCurrentState = currentState;
-  }
-
   public void setNextState(int nextState) {
     myNextState = nextState;
   }
@@ -72,7 +67,6 @@ public abstract class Cell<T extends Cell<T>> {
     myCurrentState = myNextState;
     myNextState = PLACEHOLDER;
   }
-
 
   /**
    * Given a list of cells, and an integer representing a state, determines the number of cells in
@@ -83,7 +77,7 @@ public abstract class Cell<T extends Cell<T>> {
    */
   public int countNeighborsInState(int state) {
     int count = 0;
-    for (Cell c : getNeighbors()) {
+    for (T c : getNeighbors()) {
       if (c.getCurrentState() == state) {
         count++;
       }
@@ -108,6 +102,7 @@ public abstract class Cell<T extends Cell<T>> {
   public List<Point> getVertices() {
     return myVertices;
   }
+
 
   public Point getCentroid() {
     double rowSum = 0;

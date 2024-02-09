@@ -1,6 +1,5 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.PercolationCell;
 import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
@@ -16,7 +15,7 @@ import java.util.Map;
  * author @noah loewy
  */
 
-public class PercolationSimulation extends Simulation {
+public class PercolationSimulation extends Simulation<PercolationCell> {
 
   public static final int OPEN = 0;
   public static final int PERCOLATED = 1;
@@ -40,8 +39,8 @@ public class PercolationSimulation extends Simulation {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public List<Cell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
-    List<Cell> cellList = new ArrayList<>();
+  public List<PercolationCell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
+    List<PercolationCell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();
     params.put("percolatedNeighbors", percolatedNeighbors);
     for (int i = 0; i < stateList.size(); i++) {
