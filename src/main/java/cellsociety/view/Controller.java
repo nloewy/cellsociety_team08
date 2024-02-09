@@ -355,6 +355,7 @@ public class Controller {
     simulationModel.initializeMyGrid(xmlParser.getHeight(), xmlParser.getWidth(),
         xmlParser.getStates(), xmlParser.getCellShape());
     simulationPage.updateView(simulationModel.getIterator());
+    simulationPage.resetGraph();
   }
 
 
