@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
 import java.util.ResourceBundle;
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
@@ -36,15 +35,15 @@ import org.xml.sax.SAXException;
 
 
 /**
- * The XMLParser reads and stores all data from a given XML configuration file, handling all
+ * The XmlParser reads and stores all data from a given XML configuration file, handling all
  * potential error by throwing exceptions, calculating certain values or assigning default values.
- * Using the values stored in its attributes, the XMLParser may also write and save a new XML
+ * Using the values stored in its attributes, the XmlParser may also write and save a new XML
  * configuration file.
  *
  * @author Judy He
  */
 
-public class XMLParser {
+public class XmlParser {
 
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.configuration.";
   // names for simulation types
@@ -54,7 +53,6 @@ public class XMLParser {
   public static final String SCHELLING_NAME = "Schelling";
   public static final String WATOR_NAME = "Wator";
   public static final String SUGAR_NAME = "Sugar";
-
   public static final Set<String> SIMULATION_TYPES = new HashSet<>(
       Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME));
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
@@ -89,7 +87,9 @@ public class XMLParser {
   private String author; // author of configuration file
   private String fileDescription; // description of configuration file
   private String displayDescription; // description to be displayed on GUI
-  private String stateColor; // states and corresponding colors of the simulation to be displayed on GUI
+
+  // states and corresponding colors of the simulation to be displayed on GUI
+  private String stateColor;
   private int width; // number of columns
   private int height; // number of rows
   private String neighborhoodType; // adjacent or cardinal
@@ -104,7 +104,7 @@ public class XMLParser {
   /**
    * Constructor for initializing the states ArrayList and parameters HashMap
    */
-  public XMLParser() {
+  public XmlParser() {
     states = new ArrayList<>();
     parameters = new HashMap<>();
     randomConfigurationTotalStates = new HashMap<>();
@@ -414,7 +414,7 @@ public class XMLParser {
   }
 
   /**
-   * Read an XML configuration file, initializing all attributes in the XMLParser
+   * Read an XML configuration file, initializing all attributes in the XmlParser
    *
    * @param path, the path to the XML configuration file being read
    * @throws InvalidFileFormatException,      when the user loads a configuration file that has
@@ -426,16 +426,13 @@ public class XMLParser {
    * @throws InvalidValueException,           when a value defining the simulation is negative or
    *                                          does not exist
    * @throws InvalidCellStateException,       when a cell's state is invalid for given simulation
-   *                                          <p>
-   *                                          <p>
-   *                                          single level of abstraction - have the methods and
-   *                                          submethods match the tree structure of the XML file
-   *                                          <p>
-   *                                          write a method for each section - have readXML like
-   *                                          plain english - go down is level of abstraction
    */
-  public void readXML(String path)
-      throws InvalidFileFormatException, InputMissingParametersException, InvalidValueException, InvalidCellStateException, InvalidGridBoundsException {
+  public void readXml(String path) throws InvalidFileFormatException,
+                                          InputMissingParametersException,
+                                          InvalidValueException,
+                                          InvalidCellStateException,
+                                          InvalidGridBoundsException {
+
     // parse file to Document object
     Document doc = parseFile(path);
 
@@ -495,31 +492,32 @@ public class XMLParser {
     }
   }
 
-  private void parseSimulation(Document doc)
-      throws InputMissingParametersException, InvalidValueException, InvalidGridBoundsException {
+  private void parseSimulation(Document doc) throws InputMissingParametersException,
+                                                    InvalidValueException,
+                                                    InvalidGridBoundsException {
     // obtaining the simulation node containing all the configuration data
     Node simulationNode = doc.getElementsByTagName("simulation").item(0);
 
-    Element eElement = (Element) simulationNode;
+    Element element = (Element) simulationNode;
 
     // check if simulation node is empty
-    if (eElement.getElementsByTagName("*").getLength() == 0) {
+    if (element.getElementsByTagName("*").getLength() == 0) {
       throw new InvalidFileFormatException(
           String.format(resourceBundle.getString("EmptyXMLFile")));
     }
 
     // parse all configuration data presented as single (not nested) fields
-    parseSingleFields(eElement);
+    parseSingleFields(element);
 
     // parse initial states
-    parseStates(eElement.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
+    parseStates(element.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
     totalNumStates = states.size();
 
     // parse parameters
-    parseParameters(eElement.getElementsByTagName(PARAMETERS_FIELD_NAME).item(0));
+    parseParameters(element.getElementsByTagName(PARAMETERS_FIELD_NAME).item(0));
 
     // parse random configuration states
-    parseRandomConfig(eElement.getElementsByTagName(RANDOM_CONFIG_FIELD_NAME)
+    parseRandomConfig(element.getElementsByTagName(RANDOM_CONFIG_FIELD_NAME)
         .item(0));
     for (Integer value : randomConfigurationTotalStates.values()) {
       totalNumStates += value;
@@ -537,9 +535,10 @@ public class XMLParser {
    * @throws InvalidGridBoundsException      when the user loads a configuration file that has cell
    *                                         locations specified outside the grid’s bounds
    */
-  private void validateSimulation()
-      throws InputMissingParametersException, InvalidValueException, InvalidCellStateException, InvalidGridBoundsException {
-
+  private void validateSimulation() throws InputMissingParametersException,
+                                          InvalidValueException,
+                                          InvalidCellStateException,
+                                          InvalidGridBoundsException {
     // check for empty essential inputs
     checkEmptyInputs();
 
@@ -626,27 +625,27 @@ public class XMLParser {
   /**
    * Parse all single data fields read from the XML file that set up the simulation
    *
-   * @param eElement, simulation element from the XML file
+   * @param element, simulation element from the XML file
    */
-  private void parseSingleFields(Element eElement) {
-    type = eElement.getElementsByTagName("type").item(0).getTextContent();
-    title = eElement.getElementsByTagName("title").item(0).getTextContent();
-    author = eElement.getElementsByTagName("author").item(0).getTextContent();
-    fileDescription = eElement.getElementsByTagName("file_description").item(0).getTextContent();
-    displayDescription = eElement.getElementsByTagName("display_description").item(0)
+  private void parseSingleFields(Element element) {
+    type = element.getElementsByTagName("type").item(0).getTextContent();
+    title = element.getElementsByTagName("title").item(0).getTextContent();
+    author = element.getElementsByTagName("author").item(0).getTextContent();
+    fileDescription = element.getElementsByTagName("file_description").item(0).getTextContent();
+    displayDescription = element.getElementsByTagName("display_description").item(0)
         .getTextContent();
-    stateColor = eElement.getElementsByTagName("state_colors").item(0).getTextContent();
-    neighborhoodType = eElement.getElementsByTagName("neighborhood_type").item(0).getTextContent();
-    String widthString = eElement.getElementsByTagName("width").item(0).getTextContent();
-    String heightString = eElement.getElementsByTagName("height").item(0).getTextContent();
+    stateColor = element.getElementsByTagName("state_colors").item(0).getTextContent();
+    neighborhoodType = element.getElementsByTagName("neighborhood_type").item(0).getTextContent();
+    String widthString = element.getElementsByTagName("width").item(0).getTextContent();
+    String heightString = element.getElementsByTagName("height").item(0).getTextContent();
     if (!widthString.isEmpty()) {
       width = Integer.parseInt(widthString);
     }
     if (!heightString.isEmpty()) {
       height = Integer.parseInt(heightString);
     }
-    gridEdgeType = eElement.getElementsByTagName("grid_edge_type").item(0).getTextContent();
-    cellShape = eElement.getElementsByTagName("cell_shape").item(0).getTextContent();
+    gridEdgeType = element.getElementsByTagName("grid_edge_type").item(0).getTextContent();
+    cellShape = element.getElementsByTagName("cell_shape").item(0).getTextContent();
 
   }
 
@@ -661,7 +660,8 @@ public class XMLParser {
     Element parameterElement = (Element) parametersNode;
     NodeList parametersNodeList = parameterElement.getElementsByTagName("*");
 
-    // iterate through the parameters node list to obtain the value for each parameter and create new entries in the parameters hashmap
+    // iterate through the parameters node list to obtain the value for each parameter
+    // and create new entries in the parameters hashmap
     for (int i = 0; i < parametersNodeList.getLength(); i++) {
       Node parameterNode = parametersNodeList.item(i);
       String name = parameterNode.getNodeName();
@@ -787,7 +787,7 @@ public class XMLParser {
    * @throws TransformerException,         exception handling potential errors from converting to
    *                                       XML file format
    */
-  public void createXML(String filename, String folderName)
+  public void createXml(String filename, String folderName)
       throws ParserConfigurationException, TransformerException {
     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -798,7 +798,7 @@ public class XMLParser {
     doc.appendChild(rootElement);
 
     // add all single data fields
-    addElementsToXMLFile(doc, rootElement);
+    addElementsToXmlFile(doc, rootElement);
 
     // Add initial states field
     // Convert Integer ArrayList recording the current states of cell to a single String
@@ -831,7 +831,7 @@ public class XMLParser {
    * @param doc,         XML document being written to
    * @param rootElement, root simulation element
    */
-  private void addElementsToXMLFile(Document doc, Element rootElement) {
+  private void addElementsToXmlFile(Document doc, Element rootElement) {
     addElement(doc, rootElement, "type", type);
     addElement(doc, rootElement, "title", title);
     addElement(doc, rootElement, "author", author);
