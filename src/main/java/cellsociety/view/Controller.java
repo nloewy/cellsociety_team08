@@ -1,6 +1,6 @@
 package cellsociety.view;
 
-import cellsociety.configuration.XMLParser;
+import cellsociety.configuration.XmlParser;
 import cellsociety.model.core.Cell;
 import cellsociety.model.neighborhood.MooreNeighborhood;
 import cellsociety.model.neighborhood.Neighborhood;
@@ -48,7 +48,7 @@ public class Controller {
 
   private Stage stage;
   private SimulationPage simulationPage;
-  private XMLParser xmlParser;
+  private XmlParser xmlParser;
   private Simulation simulationModel;
   private Timeline animation;
   private int speed;
@@ -89,7 +89,7 @@ public class Controller {
     if (dataFile == null) {
       return;
     }
-    xmlParser = new XMLParser();
+    xmlParser = new XmlParser();
     parseFile(dataFile.getPath());
 
     setSimulation(); //loads view and model
@@ -127,7 +127,7 @@ public class Controller {
    * @param filePath: the file path to the xml file.
    */
   private void parseFile(String filePath) {
-    xmlParser.readXML(filePath);
+    xmlParser.readXml(filePath);
   }
 
 
@@ -288,7 +288,7 @@ public class Controller {
         newStates.add(iterator.next().getState().getCurrentStatus());
       }
       xmlParser.setStates(newStates);
-      xmlParser.createXML("savedSimulation" + xmlParser.getType(),
+      xmlParser.createXml("savedSimulation" + xmlParser.getType(),
           xmlParser.getType().toLowerCase());
 
       showMessage(AlertType.INFORMATION, String.format(textConfig.getString(FILE_SAVED_KEY)));
