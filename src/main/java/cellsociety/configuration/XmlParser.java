@@ -899,6 +899,12 @@ public class XmlParser {
     addElement(doc, rootElement, RANDOM_CONFIG_FIELD_NAME, null);
   }
 
+  /**
+   * Add all single data fields to XML document
+   *
+   * @param doc,         XML document being written to
+   * @param rootElement, root simulation element
+   */
   private void addSingleElements(Document doc, Element rootElement) {
     addElement(doc, rootElement, TYPE_FIELD_NAME, type);
     addElement(doc, rootElement, TITLE_FIELD_NAME, title);
@@ -914,6 +920,12 @@ public class XmlParser {
     addElement(doc, rootElement, LANGUAGE_FIELD_NAME, language);
   }
 
+  /**
+   * Add the initial states field to XML document
+   *
+   * @param doc,         XML document being written to
+   * @param rootElement, root simulation element
+   */
   private void addInitialStatesElement(Document doc, Element rootElement) {
     // Convert Integer ArrayList recording the current states of cell to a single String
     ArrayList<String> states = new ArrayList<>();
