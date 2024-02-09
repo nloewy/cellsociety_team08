@@ -5,11 +5,11 @@ import cellsociety.exception.InvalidCellStateException;
 import cellsociety.exception.InvalidFileFormatException;
 import cellsociety.exception.InvalidGridBoundsException;
 import cellsociety.exception.InvalidValueException;
+import cellsociety.exception.SavingFileException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -90,8 +90,19 @@ public class XmlParser {
       put(WATOR_NAME, WATOR_CELL_STATES);
     }};
 
-  // define names for the field parameters, random configuration,
-  // and initial states as written in the XML configuration files
+  // define names for the field as written in the XML configuration files
+  public static final String TYPE_FIELD_NAME = "type";
+  public static final String TITLE_FIELD_NAME = "title";
+  public static final String AUTHOR_FIELD_NAME = "author";
+  public static final String FILE_DES_FIELD_NAME = "file_description";
+  public static final String DISPLAY_DES_FIELD_NAME = "display_description";
+  public static final String WIDTH_FIELD_NAME = "width";
+  public static final String HEIGHT_FIELD_NAME = "height";
+  public static final String NEIGHBORHOOD_TYPE_FIELD_NAME = "neighborhood_type";
+  public static final String STATE_COLORS_FIELD_NAME = "state_colors";
+  public static final String LANGUAGE_FIELD_NAME = "language";
+  public static final String CELL_SHAPE_FIELD_NAME = "cell_shape";
+  public static final String GRID_EDGE_TYPE_FIELD_NAME = "grid_edge_type";
   public static final String PARAMETERS_FIELD_NAME = "parameters";
   public static final String RANDOM_CONFIG_FIELD_NAME = "random_configuration_by_total_states";
   public static final String INITIAL_STATES_FIELD_NAME = "initial_states";
@@ -600,7 +611,7 @@ public class XmlParser {
         || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
       throw new InvalidGridBoundsException(
           String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
-              states.size()));
+              totalNumStates));
     }
   }
 
@@ -682,24 +693,29 @@ public class XmlParser {
    * @param element, simulation element from the XML file
    */
   private void parseSingleFields(Element element) {
-    type = element.getElementsByTagName("type").item(0).getTextContent();
-    title = element.getElementsByTagName("title").item(0).getTextContent();
-    author = element.getElementsByTagName("author").item(0).getTextContent();
-    fileDescription = element.getElementsByTagName("file_description").item(0).getTextContent();
-    displayDescription = element.getElementsByTagName("display_description").item(0)
+    type = element.getElementsByTagName(TYPE_FIELD_NAME).item(0).getTextContent();
+    title = element.getElementsByTagName(TITLE_FIELD_NAME).item(0).getTextContent();
+    author = element.getElementsByTagName(AUTHOR_FIELD_NAME).item(0).getTextContent();
+    fileDescription = element.getElementsByTagName(FILE_DES_FIELD_NAME).item(0).getTextContent();
+    displayDescription = element.getElementsByTagName(DISPLAY_DES_FIELD_NAME).item(0)
         .getTextContent();
-    stateColor = element.getElementsByTagName("state_colors").item(0).getTextContent();
-    neighborhoodType = element.getElementsByTagName("neighborhood_type").item(0).getTextContent();
-    String widthString = element.getElementsByTagName("width").item(0).getTextContent();
-    String heightString = element.getElementsByTagName("height").item(0).getTextContent();
+    stateColor = element.getElementsByTagName(STATE_COLORS_FIELD_NAME).item(0).getTextContent();
+    neighborhoodType = element.getElementsByTagName(NEIGHBORHOOD_TYPE_FIELD_NAME).item(0)
+        .getTextContent();
+    String widthString = element.getElementsByTagName(WIDTH_FIELD_NAME).item(0).getTextContent();
+    String heightString = element.getElementsByTagName(HEIGHT_FIELD_NAME).item(0).getTextContent();
     if (!widthString.isEmpty()) {
       width = Integer.parseInt(widthString);
     }
     if (!heightString.isEmpty()) {
       height = Integer.parseInt(heightString);
     }
-    gridEdgeType = element.getElementsByTagName("grid_edge_type").item(0).getTextContent();
-    cellShape = element.getElementsByTagName("cell_shape").item(0).getTextContent();
+    gridEdgeType = element.getElementsByTagName(GRID_EDGE_TYPE_FIELD_NAME).item(0).getTextContent();
+    cellShape = element.getElementsByTagName(CELL_SHAPE_FIELD_NAME).item(0).getTextContent();
+    language = element.getElementsByTagName(LANGUAGE_FIELD_NAME).item(0).getTextContent();
+
+    // update resource bundle given language
+    resourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Errors" + language);
 
   }
 
@@ -838,47 +854,60 @@ public class XmlParser {
    *
    * @param filename,   name of the new XML file
    * @param folderName, folder in which the new XML file will be stored
-   * @throws ParserConfigurationException, exception handling potential errors from parsing
-   *                                       configuration
-   * @throws TransformerException,         exception handling potential errors from converting to
-   *                                       XML file format
+   * @throws InvalidFileFormatException, when specified path to file is invalid
+   * @throws SavingFileException,        when errors occur during conversion to XML file
    */
-  public void createXml(String filename, String folderName)
-      throws ParserConfigurationException, TransformerException {
-    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+  public void createXml(String filename, String folderName) throws InvalidFileFormatException,
+      SavingFileException {
+
+    // create new Document object
+    Document doc = createNewDoc();
 
     // create root element simulation
-    Document doc = docBuilder.newDocument();
     Element rootElement = doc.createElement("simulation");
     doc.appendChild(rootElement);
 
-    // add all single data fields
+    // add all data fields to root element
     addElementsToXmlFile(doc, rootElement);
 
-    // Add initial states field
-    // Convert Integer ArrayList recording the current states of cell to a single String
-    ArrayList<String> states = new ArrayList<>();
-    for (Integer cell : this.states) {
-      states.add(String.valueOf(cell));
+    // write document to a new file
+    String path = "data/" + folderName + "/" + filename + ".xml";
+    writeXml(doc, path);
+  }
+
+  /**
+   * Create new Document object for writing new XML file
+   *
+   * @return Document object to be written.
+   */
+  private Document createNewDoc() {
+    try {
+      DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+      return docBuilder.newDocument();
+    } catch (ParserConfigurationException e) {
+      throw new SavingFileException(resourceBundle.getString("DocumentCreationError"));
     }
-    String convertedStatesData = String.join(" ", states);
-    addElement(doc, rootElement, INITIAL_STATES_FIELD_NAME, convertedStatesData);
+  }
+
+  /**
+   * Add all data fields to XML document
+   *
+   * @param doc,         XML document being written to
+   * @param rootElement, root simulation element
+   */
+  private void addElementsToXmlFile(Document doc, Element rootElement) {
+    // Add all single elements
+    addSingleElements(doc, rootElement);
+
+    // Add initial states field
+    addInitialStatesElement(doc, rootElement);
 
     // Add parameters field
     addElement(doc, rootElement, PARAMETERS_FIELD_NAME, null);
 
     // Add random configuration states field
     addElement(doc, rootElement, RANDOM_CONFIG_FIELD_NAME, null);
-
-    // write document to a new file
-    try (FileOutputStream output =
-        new FileOutputStream("data/" + folderName + "/" + filename + ".xml")) {
-      writeXml(doc, output);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
   }
 
   /**
@@ -887,18 +916,35 @@ public class XmlParser {
    * @param doc,         XML document being written to
    * @param rootElement, root simulation element
    */
-  private void addElementsToXmlFile(Document doc, Element rootElement) {
-    addElement(doc, rootElement, "type", type);
-    addElement(doc, rootElement, "title", title);
-    addElement(doc, rootElement, "author", author);
-    addElement(doc, rootElement, "file_description", fileDescription);
-    addElement(doc, rootElement, "display_description", displayDescription);
-    addElement(doc, rootElement, "width", String.valueOf(width));
-    addElement(doc, rootElement, "height", String.valueOf(height));
-    addElement(doc, rootElement, "neighborhood_type", neighborhoodType);
-    addElement(doc, rootElement, "grid_edge_type", gridEdgeType);
-    addElement(doc, rootElement, "cell_shape", cellShape);
-    addElement(doc, rootElement, "state_colors", stateColor);
+  private void addSingleElements(Document doc, Element rootElement) {
+    addElement(doc, rootElement, TYPE_FIELD_NAME, type);
+    addElement(doc, rootElement, TITLE_FIELD_NAME, title);
+    addElement(doc, rootElement, AUTHOR_FIELD_NAME, author);
+    addElement(doc, rootElement, FILE_DES_FIELD_NAME, fileDescription);
+    addElement(doc, rootElement, DISPLAY_DES_FIELD_NAME, displayDescription);
+    addElement(doc, rootElement, WIDTH_FIELD_NAME, String.valueOf(width));
+    addElement(doc, rootElement, HEIGHT_FIELD_NAME, String.valueOf(height));
+    addElement(doc, rootElement, NEIGHBORHOOD_TYPE_FIELD_NAME, neighborhoodType);
+    addElement(doc, rootElement, GRID_EDGE_TYPE_FIELD_NAME, gridEdgeType);
+    addElement(doc, rootElement, CELL_SHAPE_FIELD_NAME, cellShape);
+    addElement(doc, rootElement, STATE_COLORS_FIELD_NAME, stateColor);
+    addElement(doc, rootElement, LANGUAGE_FIELD_NAME, language);
+  }
+
+  /**
+   * Add the initial states field to XML document
+   *
+   * @param doc,         XML document being written to
+   * @param rootElement, root simulation element
+   */
+  private void addInitialStatesElement(Document doc, Element rootElement) {
+    // Convert Integer ArrayList recording the current states of cell to a single String
+    List<String> states = new ArrayList<>();
+    for (Integer cell : this.states) {
+      states.add(String.valueOf(cell));
+    }
+    String convertedStatesData = String.join(" ", states);
+    addElement(doc, rootElement, INITIAL_STATES_FIELD_NAME, convertedStatesData);
   }
 
   /**
@@ -956,21 +1002,31 @@ public class XmlParser {
   /**
    * Write XML document to output stream, saving as a file
    *
-   * @param doc,    Document object being written to
-   * @param output, output stream used by the new file
+   * @param doc,  Document object being written to
+   * @param path, specified path to which the new file will be stored
    * @throws TransformerException, exception handling potential errors from converting to XML file
    *                               format
    */
-  private static void writeXml(Document doc, OutputStream output) throws TransformerException {
-    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    Transformer transformer = transformerFactory.newTransformer();
+  private void writeXml(Document doc, String path) throws InvalidFileFormatException,
+      SavingFileException {
+    try {
+      FileOutputStream output = new FileOutputStream(path);
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
 
-    // formatting XML file
-    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      // formatting XML file
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-    DOMSource source = new DOMSource(doc);
-    StreamResult result = new StreamResult(output);
-    transformer.transform(source, result);
+      DOMSource source = new DOMSource(doc);
+      StreamResult result = new StreamResult(output);
+      transformer.transform(source, result);
+
+    } catch (FileNotFoundException e) {
+      throw new InvalidFileFormatException(
+          String.format(resourceBundle.getString("PathNotFound"), path), e);
+    } catch (TransformerException e) {
+      throw new SavingFileException(resourceBundle.getString("DocumentCreationError"), e);
+    }
 
   }
 
