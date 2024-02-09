@@ -110,6 +110,7 @@ public class SimulationPage {
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
 
     stateCount = new HashMap<>();
+    graph = new SimulationGraph(stateCount);
 
     root = new Group();
     grid = new GridPane();
@@ -133,8 +134,6 @@ public class SimulationPage {
 
     grid.setLayoutY(configDouble(GRID_START_Y_KEY));
     grid.setLayoutX(configDouble(GRID_START_X_KEY));
-
-    graph = new SimulationGraph(stateCount);
 
     initializeButtons(eventHandlers);
     initializeSlider();
@@ -211,6 +210,10 @@ public class SimulationPage {
         configInt(RESET_BUTTON_Y_KEY));
     simulationGraphButton = new Button("graph");
     simulationGraphButton.setOnAction(event -> showGraph());
+  }
+
+  public void resetGraph(){
+    graph.resetGraph();
   }
 
   private void showGraph() {
@@ -321,6 +324,7 @@ public class SimulationPage {
     }
     //TODO: update graph with new map
 
+    graph.updateGraph(stateCount);
   }
 
   /**
