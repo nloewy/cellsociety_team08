@@ -1,13 +1,12 @@
 package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
-import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.cell.LifeCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.GameOfLifeRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +41,7 @@ public class GameOfLifeSimulation extends Simulation {
     this.aliveToAliveMax = r.aliveToAliveMax();
     this.deadToAliveMin = r.deadToAliveMin();
     this.deadToAliveMax = r.deadToAliveMax();
-    CellShape shape = getCellShape(r.cellShape());
-    createCellsAndGrid(row, col, stateList, shape, hoodType);
+    createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
   public List<Cell> cellMaker(int col, List<Integer> stateList,

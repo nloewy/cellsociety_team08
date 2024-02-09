@@ -2,11 +2,11 @@ package cellsociety.model.simulation;
 
 import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.cell.Cell;
-import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.grid.Grid;
+import cellsociety.model.core.grid.WarpedGrid;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.shape.HexagonShape;
 import cellsociety.model.core.shape.RectangleShape;
-import cellsociety.model.core.grid.WarpedGrid;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
 import java.util.List;

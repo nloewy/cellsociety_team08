@@ -1,8 +1,8 @@
 package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
-import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.cell.WatorCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.WatorRecord;
 import java.util.ArrayList;

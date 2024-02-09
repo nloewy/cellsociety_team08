@@ -1,13 +1,12 @@
 package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
-import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.cell.FireCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.FireRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +42,7 @@ public class FireSimulation extends Simulation {
     this.neighborsToIgnite = r.neighborsToIgnite();
     this.probTreeIgnites = r.probTreeIgnites();
     this.probTreeCreated = r.probTreeCreated();
-    CellShape shape = getCellShape(r.cellShape());
-    createCellsAndGrid(row, col, stateList, shape, hoodType);
+    createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
 

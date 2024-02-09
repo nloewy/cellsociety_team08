@@ -1,13 +1,12 @@
 package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
-import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.cell.PercolationCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.PercolationRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

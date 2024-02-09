@@ -1,8 +1,8 @@
 package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
-import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.cell.SchellingCell;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.SchellingRecord;
 import java.util.ArrayList;

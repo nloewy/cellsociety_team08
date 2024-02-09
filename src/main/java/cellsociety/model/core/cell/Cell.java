@@ -1,8 +1,8 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.Point;
-import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.grid.Grid;
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.List;
 
