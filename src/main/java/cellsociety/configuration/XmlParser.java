@@ -46,7 +46,8 @@ import org.xml.sax.SAXException;
 public class XmlParser {
 
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.configuration.";
-  // names for simulation types
+
+  // define name for each simulation type
   public static final String FIRE_NAME = "Fire";
   public static final String GAMEOFLIFE_NAME = "GameOfLife";
   public static final String PERCOLATION_NAME = "Percolation";
@@ -55,33 +56,48 @@ public class XmlParser {
   public static final String SUGAR_NAME = "Sugar";
   public static final Set<String> SIMULATION_TYPES = new HashSet<>(
       Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME));
+
+  // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
       Arrays.asList("adjacent", "cardinal", "Moore", "VonNeumann"));
+  // define valid cell shapes
   public static final Set<String> CELL_SHAPES = new HashSet<>(
       Arrays.asList("square", "hexagon"));
+  // define valid grid edge types
   public static final Set<String> GRID_EDGE_TYPES = new HashSet<>(
       Arrays.asList("Normal", "Warped"));
+  // define valid cell states for Fire simulation
+
   public static final Set<String> FIRE_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
+  // define valid cell states for GameOfLife simulation
   public static final Set<String> GAMEOFLIFE_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1"));
+  // define valid cell states for Percolation simulation
   public static final Set<String> PERCOLATION_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
+  // define valid cell states for Schelling simulation
   public static final Set<String> SCHELLING_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
+  // define valid cell states for Wator simulation
   public static final Set<String> WATOR_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
   public static final Map<String, Set<String>> SIMULATION_CELL_STATES = new HashMap<>() {{
-      put(FIRE_NAME, FIRE_CELL_STATES);
-      put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
-      put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
-      put(SCHELLING_NAME, SCHELLING_CELL_STATES);
-      put(WATOR_NAME, WATOR_CELL_STATES);
-    }};
+    put(FIRE_NAME, FIRE_CELL_STATES);
+    put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
+    put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
+    put(SCHELLING_NAME, SCHELLING_CELL_STATES);
+    put(WATOR_NAME, WATOR_CELL_STATES);
+  }};
+
+
+  // define names for the field parameters, random configuration,
+  // and initial states as written in the XML configuration files
   public static final String PARAMETERS_FIELD_NAME = "parameters";
   public static final String RANDOM_CONFIG_FIELD_NAME = "random_configuration_by_total_states";
   public static final String INITIAL_STATES_FIELD_NAME = "initial_states";
-  private ResourceBundle resourceBundle;
+
+  private ResourceBundle resourceBundle; // resource bundle for error handling messages
   private String type; // simulation type
   private String title; // simulation title
   private String author; // author of configuration file
@@ -428,10 +444,10 @@ public class XmlParser {
    * @throws InvalidCellStateException,       when a cell's state is invalid for given simulation
    */
   public void readXml(String path) throws InvalidFileFormatException,
-                                          InputMissingParametersException,
-                                          InvalidValueException,
-                                          InvalidCellStateException,
-                                          InvalidGridBoundsException {
+      InputMissingParametersException,
+      InvalidValueException,
+      InvalidCellStateException,
+      InvalidGridBoundsException {
 
     // parse file to Document object
     Document doc = parseFile(path);
@@ -444,6 +460,13 @@ public class XmlParser {
 
   }
 
+  /**
+   * Parse file and convert file to Document object given file path
+   *
+   * @param path, path to the file being read
+   * @return Document object representing the file
+   * @throws InvalidFileFormatException when file is not found or file type is not xml
+   */
   private Document parseFile(String path) throws InvalidFileFormatException {
     try {
       // create a new File object for the XML file
@@ -461,6 +484,14 @@ public class XmlParser {
     }
   }
 
+  /**
+   * Create Document object given parsed File object and path to file in case errors occur
+   *
+   * @param file, file to be represented by Document object
+   * @param path, path to file
+   * @return Document object representing the file
+   * @throws InvalidFileFormatException, when XML file is empty, badly formatted or not found
+   */
   private Document createDocument(File file, String path) throws InvalidFileFormatException {
     try {
       // create a new instance of document builder factory that allows for a document builder
@@ -492,9 +523,20 @@ public class XmlParser {
     }
   }
 
+  /**
+   * Parse all simulation parameters, assigning values to attributes of the XmlParser
+   *
+   * @param doc Document object from which parameter values will be read
+   * @throws InputMissingParametersException when missing essential parameters or height and width
+   *                                         in the configuration file
+   * @throws InvalidValueException           when a value defining the simulation is negative or
+   *                                         does not exist
+   * @throws InvalidGridBoundsException      when the user loads a configuration file that has cell
+   *                                         locations specified outside the grid’s bounds
+   */
   private void parseSimulation(Document doc) throws InputMissingParametersException,
-                                                    InvalidValueException,
-                                                    InvalidGridBoundsException {
+      InvalidValueException,
+      InvalidGridBoundsException {
 
     // obtaining the simulation node containing all the configuration data
     Node simulationNode = doc.getElementsByTagName("simulation").item(0);
@@ -537,9 +579,9 @@ public class XmlParser {
    *                                         locations specified outside the grid’s bounds
    */
   private void validateSimulation() throws InputMissingParametersException,
-                                          InvalidValueException,
-                                          InvalidCellStateException,
-                                          InvalidGridBoundsException {
+      InvalidValueException,
+      InvalidCellStateException,
+      InvalidGridBoundsException {
     // check for empty essential inputs
     checkEmptyInputs();
 
@@ -563,6 +605,12 @@ public class XmlParser {
     }
   }
 
+  /**
+   * Check for empty inputs for the essential simulation parameters
+   *
+   * @throws InputMissingParametersException when missing essential parameters or height and width
+   *                                         in the configuration file
+   */
   private void checkEmptyInputs() throws InputMissingParametersException {
     // check for empty essential inputs
     if (type.isEmpty() || title.isEmpty() || author.isEmpty() || fileDescription.isEmpty()
@@ -579,6 +627,11 @@ public class XmlParser {
 
   }
 
+  /**
+   * Validate inputs for the essential simulation parameters
+   *
+   * @throws InvalidValueException when value is negative or does not exist
+   */
   private void validateEssentialInputs() throws InvalidValueException {
     // check if width or height is negative
     if (width < 0 || height < 0) {
