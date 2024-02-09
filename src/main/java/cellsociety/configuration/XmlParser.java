@@ -12,12 +12,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -564,7 +568,6 @@ public class XmlParser {
 
     // parse initial states
     parseStates(element.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
-    totalNumStates = states.size();
 
     // parse parameters
     parseParameters(element.getElementsByTagName(PARAMETERS_FIELD_NAME).item(0));
@@ -572,11 +575,12 @@ public class XmlParser {
     // parse random configuration states
     parseRandomConfig(element.getElementsByTagName(RANDOM_CONFIG_FIELD_NAME)
         .item(0));
-    for (Integer value : randomConfigurationTotalStates.values()) {
-      totalNumStates += value;
-    }
+
+    totalNumStates = states.size();
 
   }
+
+
 
   /**
    * Validate the simulation, handling any potential errors
@@ -763,9 +767,7 @@ public class XmlParser {
     if (randomConfigNodeList.getLength() == 0) {
       return;
     }
-
-    // iterate through the parameters node list to obtain the value for each parameter
-    // and create new entries in the parameters hashmap
+    List<Integer> resultList = new ArrayList<>();
     for (int i = 0; i < randomConfigNodeList.getLength(); i++) {
       Node currRandConfigNode = randomConfigNodeList.item(i);
       String name = currRandConfigNode.getNodeName();
@@ -776,6 +778,21 @@ public class XmlParser {
       }
       randomConfigurationTotalStates.put(name, value);
     }
+      Pattern pattern = Pattern.compile("num(\\d+)");
+      for (Map.Entry<String, Integer> entry : randomConfigurationTotalStates.entrySet()) {
+        String key = entry.getKey();
+        Integer repeat = entry.getValue();
+        Matcher matcher = pattern.matcher(key);
+        if (matcher.find()) {
+          int num = Integer.parseInt(matcher.group(1));
+          for (int z = 0; z < repeat; z++) {
+            resultList.add(num);
+        }
+      }
+    }
+    Collections.shuffle(resultList, new Random());
+    states = resultList;
+
   }
 
   /**

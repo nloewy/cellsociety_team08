@@ -46,8 +46,7 @@ public class FireSimulation extends Simulation {
   }
 
 
-  public List<Cell> cellMaker(int col, List<Integer> stateList,
-      CellShape shape) {
+  public List<Cell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
     List<Cell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();
     params.put("neighborsToIgnite", (double) neighborsToIgnite);
