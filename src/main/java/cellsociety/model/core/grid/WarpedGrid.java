@@ -4,9 +4,9 @@ import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
 import java.util.List;
 
-public class WarpedGrid extends Grid {
+public class WarpedGrid<T extends Cell<T>> extends Grid<T> {
 
-  public WarpedGrid(int rows, int cols, List<Cell> cellList) {
+  public WarpedGrid(int rows, int cols, List<T> cellList) {
     super(rows, cols, cellList);
   }
 

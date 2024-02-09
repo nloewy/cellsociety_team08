@@ -30,8 +30,8 @@ public abstract class Simulation {
   /**
    * Constructs a basic Simulation object
    *
-   * @param hoodType,  the definition of neighbors
-   * @param gridType   type of grid used in simulation
+   * @param hoodType, the definition of neighbors
+   * @param gridType  type of grid used in simulation
    */
 
   public Simulation(Neighborhood hoodType, String gridType) {
@@ -97,6 +97,7 @@ public abstract class Simulation {
       currentCell.transition();
     }
   }
+
   public Neighborhood getNeighborhood() {
     return myNeighborhood;
   }

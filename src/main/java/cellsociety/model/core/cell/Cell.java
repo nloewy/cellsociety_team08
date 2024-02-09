@@ -109,7 +109,6 @@ public abstract class Cell<T extends Cell<T>> {
     return myVertices;
   }
 
-
   public Point getCentroid() {
     double rowSum = 0;
     double colSum = 0;

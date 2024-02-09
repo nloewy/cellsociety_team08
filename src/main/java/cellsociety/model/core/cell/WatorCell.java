@@ -258,6 +258,7 @@ public class WatorCell extends Cell<WatorCell> {
     }
   }
 
+  @Override
   public void transition() {
     switch (getCurrentState()) {
       case WatorSimulation.EMPTY: {

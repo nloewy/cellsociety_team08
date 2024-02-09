@@ -7,8 +7,10 @@ import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.SchellingRecord;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This cellular automata simulation represents the Schelling Segregation Model.
@@ -36,37 +38,18 @@ public class SchellingSimulation extends Simulation {
     super(hoodType, r.gridType());
     myCellsToMove = new ArrayList<>();
     myEmptyCells = new ArrayList<>();
-    this.proportionNeededToStay = r.proportionNeededToStay();
+    proportionNeededToStay = r.proportionNeededToStay();
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
   public List<Cell> cellMaker(int col, List<Integer> stateList, CellShape cellShape) {
     List<Cell> cellList = new ArrayList<>();
+    Map<String, Double> params = new HashMap<>();
+    params.put("proportionNeededToStay", proportionNeededToStay);
     for (int i = 0; i < stateList.size(); i++) {
-      cellList.add(new SchellingCell(stateList.get(i), i / col, i % col, cellShape));
+      cellList.add(new SchellingCell(stateList.get(i), i / col, i % col, cellShape, params));
     }
     return cellList;
-  }
-
-  /**
-   * Given a cell in either group A or group B, places the cell in either myCellsToMove, or updates
-   * its future state to its current-state, depending on the state-makeup of its neighbors
-   *
-   * @param currentCell a cell in group A or B preparing to transition
-   */
-  private void handleDemographicCell(Cell currentCell) {
-    List<SchellingCell> neighbors = currentCell.getNeighbors();
-    int totalNeighbors = neighbors.size();
-    int numEmptyNeighbors = currentCell.countNeighborsInState(EMPTY);
-    int numNeighborsSameState = currentCell.countNeighborsInState(currentCell.getCurrentState());
-    if (totalNeighbors != numEmptyNeighbors
-        && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
-        < proportionNeededToStay) {
-      myCellsToMove.add(currentCell);
-    } else {
-      currentCell.setNextState(currentCell.getCurrentState());
-    }
-
   }
 
   /**
@@ -101,14 +84,19 @@ public class SchellingSimulation extends Simulation {
     Iterator<Cell> gridIterator = getIterator();
     myCellsToMove.clear();
     myEmptyCells.clear();
-
     while (gridIterator.hasNext()) {
       Cell currentCell = gridIterator.next();
       currentCell.transition();
-      if (currentCell.getCurrentState() == EMPTY) {
+    }
+    Iterator<Cell> gridIterator2 = getIterator();
+    while (gridIterator2.hasNext()) {
+      SchellingCell currentCell = (SchellingCell) gridIterator2.next();
+      if (currentCell.getToEmptyList()) {
         myEmptyCells.add(currentCell);
       }
-      handleDemographicCell(currentCell);
+      if (currentCell.getToMove()) {
+        myCellsToMove.add(currentCell);
+      }
     }
     Collections.shuffle(myCellsToMove);
     moveCells();

@@ -3,6 +3,7 @@ package cellsociety.model.core.grid;
 import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,12 +15,12 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class Grid {
+public class Grid<T extends Cell> {
 
 
   private int myNumRows;
   private int myNumCols;
-  private List<Cell> myGrid;
+  private List<T> myGrid;
 
   /**
    * Constructs a cell object
@@ -28,7 +29,7 @@ public class Grid {
    * @param cols      is the number of columns in the grid
    * @param cellList, a list of the cells, by rows, then cols
    */
-  public Grid(int rows, int cols, List<Cell> cellList) {
+  public Grid(int rows, int cols, List<T> cellList) {
     myNumRows = rows;
     myNumCols = cols;
     myGrid = new ArrayList<>(cellList);
@@ -76,7 +77,7 @@ public class Grid {
     return myNumCols;
   }
 
-  public Cell getCellAtLocation(Point p) {
+  public T getCellAtLocation(Point p) {
     if (!inBounds(p)) {
       throw new IndexOutOfBoundsException();
     }
@@ -89,8 +90,10 @@ public class Grid {
    *
    * @return Iterator object that can iterate through my grid
    */
-  public Iterator iterator() {
-    return myGrid.iterator();
+  public Iterator<T> iterator() {
+    List<T> grid = new ArrayList<>(myGrid);
+    Collections.shuffle(grid);
+    return grid.iterator();
   }
 
   public boolean containsVertex(Point p, List<Point> vertices) {
