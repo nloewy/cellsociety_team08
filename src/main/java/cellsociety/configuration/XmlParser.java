@@ -90,8 +90,19 @@ public class XmlParser {
       put(WATOR_NAME, WATOR_CELL_STATES);
     }};
 
-  // define names for the field parameters, random configuration,
-  // and initial states as written in the XML configuration files
+  // define names for the field as written in the XML configuration files
+  public static final String TYPE_FIELD_NAME = "type";
+  public static final String TITLE_FIELD_NAME = "title";
+  public static final String AUTHOR_FIELD_NAME = "author";
+  public static final String FILE_DES_FIELD_NAME = "file_description";
+  public static final String DISPLAY_DES_FIELD_NAME = "display_description";
+  public static final String WIDTH_FIELD_NAME = "width";
+  public static final String HEIGHT_FIELD_NAME = "height";
+  public static final String NEIGHBORHOOD_TYPE_FIELD_NAME = "neighborhood_type";
+  public static final String STATE_COLORS_FIELD_NAME = "state_colors";
+  public static final String LANGUAGE_FIELD_NAME = "language";
+  public static final String CELL_SHAPE_FIELD_NAME = "cell_shape";
+  public static final String GRID_EDGE_TYPE_FIELD_NAME = "grid_edge_type";
   public static final String PARAMETERS_FIELD_NAME = "parameters";
   public static final String RANDOM_CONFIG_FIELD_NAME = "random_configuration_by_total_states";
   public static final String INITIAL_STATES_FIELD_NAME = "initial_states";
@@ -682,24 +693,25 @@ public class XmlParser {
    * @param element, simulation element from the XML file
    */
   private void parseSingleFields(Element element) {
-    type = element.getElementsByTagName("type").item(0).getTextContent();
-    title = element.getElementsByTagName("title").item(0).getTextContent();
-    author = element.getElementsByTagName("author").item(0).getTextContent();
-    fileDescription = element.getElementsByTagName("file_description").item(0).getTextContent();
-    displayDescription = element.getElementsByTagName("display_description").item(0)
+    type = element.getElementsByTagName(TYPE_FIELD_NAME).item(0).getTextContent();
+    title = element.getElementsByTagName(TITLE_FIELD_NAME).item(0).getTextContent();
+    author = element.getElementsByTagName(AUTHOR_FIELD_NAME).item(0).getTextContent();
+    fileDescription = element.getElementsByTagName(FILE_DES_FIELD_NAME).item(0).getTextContent();
+    displayDescription = element.getElementsByTagName(DISPLAY_DES_FIELD_NAME).item(0)
         .getTextContent();
-    stateColor = element.getElementsByTagName("state_colors").item(0).getTextContent();
-    neighborhoodType = element.getElementsByTagName("neighborhood_type").item(0).getTextContent();
-    String widthString = element.getElementsByTagName("width").item(0).getTextContent();
-    String heightString = element.getElementsByTagName("height").item(0).getTextContent();
+    stateColor = element.getElementsByTagName(STATE_COLORS_FIELD_NAME).item(0).getTextContent();
+    neighborhoodType = element.getElementsByTagName(NEIGHBORHOOD_TYPE_FIELD_NAME).item(0).getTextContent();
+    String widthString = element.getElementsByTagName(WIDTH_FIELD_NAME).item(0).getTextContent();
+    String heightString = element.getElementsByTagName(HEIGHT_FIELD_NAME).item(0).getTextContent();
     if (!widthString.isEmpty()) {
       width = Integer.parseInt(widthString);
     }
     if (!heightString.isEmpty()) {
       height = Integer.parseInt(heightString);
     }
-    gridEdgeType = element.getElementsByTagName("grid_edge_type").item(0).getTextContent();
-    cellShape = element.getElementsByTagName("cell_shape").item(0).getTextContent();
+    gridEdgeType = element.getElementsByTagName(GRID_EDGE_TYPE_FIELD_NAME).item(0).getTextContent();
+    cellShape = element.getElementsByTagName(CELL_SHAPE_FIELD_NAME).item(0).getTextContent();
+    language = element.getElementsByTagName(LANGUAGE_FIELD_NAME).item(0).getTextContent();
 
   }
 
@@ -888,17 +900,18 @@ public class XmlParser {
    * @param rootElement, root simulation element
    */
   private void addElementsToXmlFile(Document doc, Element rootElement) {
-    addElement(doc, rootElement, "type", type);
-    addElement(doc, rootElement, "title", title);
-    addElement(doc, rootElement, "author", author);
-    addElement(doc, rootElement, "file_description", fileDescription);
-    addElement(doc, rootElement, "display_description", displayDescription);
-    addElement(doc, rootElement, "width", String.valueOf(width));
-    addElement(doc, rootElement, "height", String.valueOf(height));
-    addElement(doc, rootElement, "neighborhood_type", neighborhoodType);
-    addElement(doc, rootElement, "grid_edge_type", gridEdgeType);
-    addElement(doc, rootElement, "cell_shape", cellShape);
-    addElement(doc, rootElement, "state_colors", stateColor);
+    addElement(doc, rootElement, TYPE_FIELD_NAME, type);
+    addElement(doc, rootElement, TITLE_FIELD_NAME, title);
+    addElement(doc, rootElement, AUTHOR_FIELD_NAME, author);
+    addElement(doc, rootElement, FILE_DES_FIELD_NAME, fileDescription);
+    addElement(doc, rootElement, DISPLAY_DES_FIELD_NAME, displayDescription);
+    addElement(doc, rootElement, WIDTH_FIELD_NAME, String.valueOf(width));
+    addElement(doc, rootElement, HEIGHT_FIELD_NAME, String.valueOf(height));
+    addElement(doc, rootElement, NEIGHBORHOOD_TYPE_FIELD_NAME, neighborhoodType);
+    addElement(doc, rootElement, GRID_EDGE_TYPE_FIELD_NAME, gridEdgeType);
+    addElement(doc, rootElement, CELL_SHAPE_FIELD_NAME, cellShape);
+    addElement(doc, rootElement, STATE_COLORS_FIELD_NAME, stateColor);
+    addElement(doc, rootElement, LANGUAGE_FIELD_NAME, language);
   }
 
   /**
