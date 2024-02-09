@@ -13,15 +13,15 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public abstract class Cell { //<T extends State> {
+public abstract class Cell<T extends Cell<T>> {
 
   public static final int PLACEHOLDER = -1;
-  private int myCurrentState; //T myState;
+  private int myCurrentState;
 
   private int myNextState;
   private Point myLocation;
   private List<Point> myVertices;
-  private List<Cell> myNeighbors;
+  private List<T> myNeighbors;
   private Point myCentroid;
 
 
@@ -91,7 +91,7 @@ public abstract class Cell { //<T extends State> {
     return count;
   }
 
-  public List<Cell> getNeighbors() {
+  public List<T> getNeighbors() {
     return myNeighbors;
   }
 
@@ -121,7 +121,7 @@ public abstract class Cell { //<T extends State> {
     return myCentroid;
   }
 
-  public void setNeighborhood(List<Cell> neighbors) {
+  public void setNeighborhood(List<T> neighbors) {
     myNeighbors = neighbors;
   }
 }

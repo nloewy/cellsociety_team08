@@ -15,7 +15,7 @@ import cellsociety.model.simulation.Records.SchellingRecord;
 import cellsociety.model.simulation.Records.WatorRecord;
 import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.Simulation;
-//import cellsociety.model.simulation.WatorSimulation;
+import cellsociety.model.simulation.WatorSimulation;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -212,11 +212,11 @@ public class Controller {
           xmlParser.getParameters().get("probTreeCreated"),gridType, cellShape));
       case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList,
           new SchellingRecord(xmlParser.getParameters().get("proportionNeededToStay"),gridType, cellShape));
-//      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
-//          new WatorRecord(xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
-//          xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
-//          xmlParser.getParameters().get("initialEnergy").intValue(),
-//          xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape));
+      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
+          new WatorRecord(xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
+          xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
+          xmlParser.getParameters().get("initialEnergy").intValue(),
+          xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape));
       default -> null;
     };
   }
