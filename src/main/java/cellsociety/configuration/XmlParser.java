@@ -72,12 +72,12 @@ public class XmlParser {
   public static final Set<String> WATOR_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
   public static final Map<String, Set<String>> SIMULATION_CELL_STATES = new HashMap<>() {{
-    put(FIRE_NAME, FIRE_CELL_STATES);
-    put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
-    put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
-    put(SCHELLING_NAME, SCHELLING_CELL_STATES);
-    put(WATOR_NAME, WATOR_CELL_STATES);
-  }};
+      put(FIRE_NAME, FIRE_CELL_STATES);
+      put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
+      put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
+      put(SCHELLING_NAME, SCHELLING_CELL_STATES);
+      put(WATOR_NAME, WATOR_CELL_STATES);
+    }};
   public static final String PARAMETERS_FIELD_NAME = "parameters";
   public static final String RANDOM_CONFIG_FIELD_NAME = "random_configuration_by_total_states";
   public static final String INITIAL_STATES_FIELD_NAME = "initial_states";
@@ -495,6 +495,7 @@ public class XmlParser {
   private void parseSimulation(Document doc) throws InputMissingParametersException,
                                                     InvalidValueException,
                                                     InvalidGridBoundsException {
+
     // obtaining the simulation node containing all the configuration data
     Node simulationNode = doc.getElementsByTagName("simulation").item(0);
 
@@ -545,7 +546,8 @@ public class XmlParser {
     // validate essential input parameters that define the simulation
     validateEssentialInputs();
 
-    // check if only width or height is given. If so, update the other based on the total number of states read
+    // check if only width or height is given.
+    // If so, update the other based on the total number of states read
     if (width == 0) {
       width = totalNumStates / height;
     } else if (height == 0) {
@@ -693,7 +695,9 @@ public class XmlParser {
     if (randomConfigNodeList.getLength() == 0) {
       return;
     }
-    // iterate through the parameters node list to obtain the value for each parameter and create new entries in the parameters hashmap
+
+    // iterate through the parameters node list to obtain the value for each parameter
+    // and create new entries in the parameters hashmap
     for (int i = 0; i < randomConfigNodeList.getLength(); i++) {
       Node currRandConfigNode = randomConfigNodeList.item(i);
       String name = currRandConfigNode.getNodeName();
