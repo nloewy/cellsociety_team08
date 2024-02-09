@@ -208,16 +208,32 @@ public class SimulationPage {
         eventHandlers.get("resetSimulationHandler"),
         configInt(BUTTON_START_X_KEY),
         configInt(RESET_BUTTON_Y_KEY));
-    simulationGraphButton = new Button("graph");
-    simulationGraphButton.setOnAction(event -> showGraph());
+    simulationGraphButton = new Button("Show Graph");
+    simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
   }
 
   public void resetGraph(){
     graph.resetGraph();
   }
 
+  public void toggleGraphVisibility(){
+    if (graph.getGraphSection().isVisible()){
+      graph.getGraphSection().setVisible(false);
+      simulationGraphButton.setText("Show Graph");
+      closeGraph();
+    } else {
+      graph.getGraphSection().setVisible(true);
+      showGraph();
+      simulationGraphButton.setText("Close Graph");
+    }
+  }
+
   private void showGraph() {
     root.getChildren().add(graph.getGraphSection());
+  }
+
+  private void closeGraph(){
+    root.getChildren().remove(graph.getGraphSection());
   }
 
   /**

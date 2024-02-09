@@ -35,6 +35,7 @@ public class SimulationGraph {
   }
 
   private void initializeChart(Map<Integer, Integer> stateCount) {
+    getGraphSection().setVisible(false);
     // Iterate over the entries of the stateCount map
     for (Map.Entry<Integer, Integer> entry : stateCount.entrySet()) {
       // Add a data point to the series for each state count
