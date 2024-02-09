@@ -1,14 +1,8 @@
 package cellsociety.model.simulation;
 
-import static java.lang.Math.random;
-
-import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.CellShape;
 import cellsociety.model.core.FireCell;
-import cellsociety.model.core.HexagonShape;
-import cellsociety.model.core.HexagonShape;
-import cellsociety.model.core.RectangleShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.FireRecord;
 import java.util.ArrayList;

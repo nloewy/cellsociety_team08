@@ -1,12 +1,8 @@
 package cellsociety.model.simulation;
 
-import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
 import cellsociety.model.core.CellShape;
-import cellsociety.model.core.FireCell;
-import cellsociety.model.core.HexagonShape;
 import cellsociety.model.core.LifeCell;
-import cellsociety.model.core.RectangleShape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.GameOfLifeRecord;
 import java.util.ArrayList;

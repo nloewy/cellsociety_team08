@@ -1,13 +1,17 @@
 package cellsociety.model.core;
+
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import java.util.Map;
 
 public class LifeCell extends Cell {
+
   private double aliveToAliveMin;
   private double aliveToAliveMax;
   private double deadToAliveMin;
   private double deadToAliveMax;
-  public LifeCell(int initialState, int row, int col, CellShape shapeType, Map<String, Integer> params) {
+
+  public LifeCell(int initialState, int row, int col, CellShape shapeType,
+      Map<String, Integer> params) {
     super(initialState, row, col, shapeType);
     aliveToAliveMin = params.get("aliveToAliveMin");
     aliveToAliveMax = params.get("aliveToAliveMax");
@@ -24,11 +28,11 @@ public class LifeCell extends Cell {
       handleDeadCell(aliveNeighbors);
     }
   }
+
   /**
    * Handles transition of alive cell in GameOfLifeSimulation. Dead cells with no less than
    * deadToAliveMin and no more than deadToAliveMax living neighbors will remain alive, whereas all
    * other alive cells will die
-   *
    */
   private void handleAliveCell(int aliveNeighbors) {
     if (aliveNeighbors >= aliveToAliveMin && aliveNeighbors <= aliveToAliveMax) {

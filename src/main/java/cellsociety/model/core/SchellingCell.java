@@ -10,7 +10,7 @@ public class SchellingCell extends Cell {
 
   @Override
   public void transition() {
-    }
-
   }
+
+}
 
