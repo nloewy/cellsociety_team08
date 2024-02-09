@@ -5,11 +5,11 @@ import cellsociety.exception.InvalidCellStateException;
 import cellsociety.exception.InvalidFileFormatException;
 import cellsociety.exception.InvalidGridBoundsException;
 import cellsociety.exception.InvalidValueException;
+import cellsociety.exception.SavingFileException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -853,33 +853,40 @@ public class XmlParser {
    *
    * @param filename,   name of the new XML file
    * @param folderName, folder in which the new XML file will be stored
-   * @throws ParserConfigurationException, exception handling potential errors from parsing
-   *                                       configuration
-   * @throws TransformerException,         exception handling potential errors from converting to
-   *                                       XML file format
+   * @throws InvalidFileFormatException, when specified path to file is invalid
+   * @throws SavingFileException, when errors occur during conversion to XML file
    */
-  public void createXml(String filename, String folderName)
-      throws ParserConfigurationException, TransformerException {
+  public void createXml (String filename, String folderName) throws InvalidFileFormatException,
+                                                                    SavingFileException {
 
-    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+    // create new Document object
+    Document doc = createNewDoc();
 
     // create root element simulation
-    Document doc = docBuilder.newDocument();
     Element rootElement = doc.createElement("simulation");
     doc.appendChild(rootElement);
 
-    // add all data fields
+    // add all data fields to root element
     addElementsToXmlFile(doc, rootElement);
 
     // write document to a new file
-    try (FileOutputStream output =
-        new FileOutputStream("data/" + folderName + "/" + filename + ".xml")) {
-      writeXml(doc, output);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    String path = "data/" + folderName + "/" + filename + ".xml";
+    writeXml(doc, path);
+  }
 
+  /**
+   * Create new Document object for writing new XML file
+   * @return Document object to be written.
+   */
+  private Document createNewDoc() {
+    try {
+      DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+      return docBuilder.newDocument();
+    }
+    catch (ParserConfigurationException e) {
+      throw new SavingFileException(resourceBundle.getString("DocumentCreationError"));
+    }
   }
 
   /**
@@ -995,20 +1002,30 @@ public class XmlParser {
    * Write XML document to output stream, saving as a file
    *
    * @param doc,    Document object being written to
-   * @param output, output stream used by the new file
+   * @param path, specified path to which the new file will be stored
    * @throws TransformerException, exception handling potential errors from converting to XML file
    *                               format
    */
-  private static void writeXml(Document doc, OutputStream output) throws TransformerException {
-    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    Transformer transformer = transformerFactory.newTransformer();
+  private void writeXml(Document doc, String path) throws InvalidFileFormatException,
+                                                          SavingFileException {
+    try {
+      FileOutputStream output = new FileOutputStream(path);
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
 
-    // formatting XML file
-    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      // formatting XML file
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-    DOMSource source = new DOMSource(doc);
-    StreamResult result = new StreamResult(output);
-    transformer.transform(source, result);
+      DOMSource source = new DOMSource(doc);
+      StreamResult result = new StreamResult(output);
+      transformer.transform(source, result);
+
+    } catch (FileNotFoundException e) {
+      throw new InvalidFileFormatException(
+          String.format(resourceBundle.getString("PathNotFound"), path), e);
+    } catch (TransformerException e) {
+      throw new SavingFileException(resourceBundle.getString("DocumentCreationError"), e);
+    }
 
   }
 
