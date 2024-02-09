@@ -857,6 +857,7 @@ public class XmlParser {
    */
   public void createXml(String filename, String folderName)
       throws ParserConfigurationException, TransformerException {
+
     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -865,23 +866,8 @@ public class XmlParser {
     Element rootElement = doc.createElement("simulation");
     doc.appendChild(rootElement);
 
-    // add all single data fields
+    // add all data fields
     addElementsToXmlFile(doc, rootElement);
-
-    // Add initial states field
-    // Convert Integer ArrayList recording the current states of cell to a single String
-    ArrayList<String> states = new ArrayList<>();
-    for (Integer cell : this.states) {
-      states.add(String.valueOf(cell));
-    }
-    String convertedStatesData = String.join(" ", states);
-    addElement(doc, rootElement, INITIAL_STATES_FIELD_NAME, convertedStatesData);
-
-    // Add parameters field
-    addElement(doc, rootElement, PARAMETERS_FIELD_NAME, null);
-
-    // Add random configuration states field
-    addElement(doc, rootElement, RANDOM_CONFIG_FIELD_NAME, null);
 
     // write document to a new file
     try (FileOutputStream output =
@@ -894,12 +880,26 @@ public class XmlParser {
   }
 
   /**
-   * Add all single data fields to XML document
+   * Add all data fields to XML document
    *
    * @param doc,         XML document being written to
    * @param rootElement, root simulation element
    */
   private void addElementsToXmlFile(Document doc, Element rootElement) {
+    // Add all single elements
+    addSingleElements(doc, rootElement);
+
+    // Add initial states field
+    addInitialStatesElement(doc, rootElement);
+
+    // Add parameters field
+    addElement(doc, rootElement, PARAMETERS_FIELD_NAME, null);
+
+    // Add random configuration states field
+    addElement(doc, rootElement, RANDOM_CONFIG_FIELD_NAME, null);
+  }
+
+  private void addSingleElements(Document doc, Element rootElement) {
     addElement(doc, rootElement, TYPE_FIELD_NAME, type);
     addElement(doc, rootElement, TITLE_FIELD_NAME, title);
     addElement(doc, rootElement, AUTHOR_FIELD_NAME, author);
@@ -912,6 +912,16 @@ public class XmlParser {
     addElement(doc, rootElement, CELL_SHAPE_FIELD_NAME, cellShape);
     addElement(doc, rootElement, STATE_COLORS_FIELD_NAME, stateColor);
     addElement(doc, rootElement, LANGUAGE_FIELD_NAME, language);
+  }
+
+  private void addInitialStatesElement(Document doc, Element rootElement) {
+    // Convert Integer ArrayList recording the current states of cell to a single String
+    ArrayList<String> states = new ArrayList<>();
+    for (Integer cell : this.states) {
+      states.add(String.valueOf(cell));
+    }
+    String convertedStatesData = String.join(" ", states);
+    addElement(doc, rootElement, INITIAL_STATES_FIELD_NAME, convertedStatesData);
   }
 
   /**
