@@ -1,8 +1,8 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.CellShape;
-import cellsociety.model.core.FireCell;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.cell.FireCell;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.FireRecord;
 import java.util.ArrayList;
@@ -51,24 +51,13 @@ public class FireSimulation extends Simulation {
   public List<Cell> cellMaker(int col, List<Integer> stateList,
       CellShape shape) {
     List<Cell> cellList = new ArrayList<>();
+    Map<String, Double> params = new HashMap<>();
+    params.put("neighborsToIgnite", (double) neighborsToIgnite);
+    params.put("probTreeIgnites", probTreeIgnites);
+    params.put("probTreeCreated", probTreeCreated);
     for (int i = 0; i < stateList.size(); i++) {
-
-      Map<String, Double> params = new HashMap<>();
-      params.put("neighborsToIgnite", (double) neighborsToIgnite);
-      params.put("probTreeIgnites", probTreeIgnites);
-      params.put("probTreeCreated", probTreeCreated);
-
       cellList.add(new FireCell(stateList.get(i), i / col, i % col, shape, params));
     }
     return cellList;
-  }
-
-  @Override
-  public void transitionFunction() {
-    Iterator<Cell> gridIterator = getIterator();
-    while (gridIterator.hasNext()) {
-      Cell currentCell = gridIterator.next();
-      currentCell.transition();
-    }
   }
 }

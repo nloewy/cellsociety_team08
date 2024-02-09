@@ -1,4 +1,4 @@
-package cellsociety.model.core;
+package cellsociety.model.core.shape;
 
 import cellsociety.Point;
 import java.util.List;

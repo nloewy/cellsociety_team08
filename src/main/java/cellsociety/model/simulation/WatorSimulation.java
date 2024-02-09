@@ -1,8 +1,8 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.core.Cell;
-import cellsociety.model.core.CellShape;
-import cellsociety.model.core.WatorCell;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.cell.WatorCell;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.WatorRecord;
 import java.util.ArrayList;
@@ -38,15 +38,16 @@ public class WatorSimulation extends Simulation {
     this.energyBoost = r.energyBoost();
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
+
   public List<Cell> cellMaker(int col, List<Integer> stateList,
       CellShape cellShape) {
     List<Cell> cellList = new ArrayList<>();
+    Map<String, Integer> params = new HashMap<>();
+    params.put("fishAgeOfReproduction", fishAgeOfReproduction);
+    params.put("sharkAgeOfReproduction", sharkAgeOfReproduction);
+    params.put("initialEnergy", initialEnergy);
+    params.put("energyBoost", energyBoost);
     for (int i = 0; i < stateList.size(); i++) {
-      Map<String, Integer> params = new HashMap<>();
-      params.put("fishAgeOfReproduction", fishAgeOfReproduction);
-      params.put("sharkAgeOfReproduction", sharkAgeOfReproduction);
-      params.put("initialEnergy", initialEnergy);
-      params.put("energyBoost", energyBoost);
       cellList.add(new WatorCell(stateList.get(i), i / col, i % col, cellShape, params));
     }
     return cellList;

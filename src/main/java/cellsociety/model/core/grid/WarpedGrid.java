@@ -1,6 +1,8 @@
-package cellsociety.model.core;
+package cellsociety.model.core.grid;
 
 import cellsociety.Point;
+import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.grid.Grid;
 import java.util.List;
 
 public class WarpedGrid extends Grid {

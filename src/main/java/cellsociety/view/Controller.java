@@ -1,7 +1,7 @@
 package cellsociety.view;
 
 import cellsociety.configuration.XmlParser;
-import cellsociety.model.core.Cell;
+import cellsociety.model.core.cell.Cell;
 import cellsociety.model.neighborhood.MooreNeighborhood;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.neighborhood.VonNeumannNeighborhood;
@@ -34,8 +34,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 /**
  * This class is the main driver of the simulation.

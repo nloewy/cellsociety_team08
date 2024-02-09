@@ -1,5 +1,6 @@
-package cellsociety.model.core;
+package cellsociety.model.core.cell;
 
+import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.simulation.WatorSimulation;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,7 @@
-package cellsociety.model.core;
+package cellsociety.model.core.shape;
 
 import cellsociety.Point;
+import cellsociety.model.core.shape.CellShape;
 import java.util.ArrayList;
 import java.util.List;
 
