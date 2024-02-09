@@ -72,7 +72,7 @@ public class WatorCell extends Cell<WatorCell> {
    * @param energy is the energy remaining for a shark, or -1
    * @param age    is the number of timesteps since birth of the shark/fish, or -1
    */
-  public void updateStateEnergyAge(int state, int energy, int age) {
+  private void updateStateEnergyAge(int state, int energy, int age) {
     setNextState(state);
     setNextEnergy(energy);
     setNextAge(age);
@@ -83,7 +83,7 @@ public class WatorCell extends Cell<WatorCell> {
    *
    * @return myCurrentEnergy, the current energy remaining for a shark, or -1
    */
-  public int getEnergy() {
+  private int getEnergy() {
     return myCurrentEnergy;
   }
 
@@ -92,7 +92,7 @@ public class WatorCell extends Cell<WatorCell> {
    *
    * @return myCurrentAge, the number of timesteps since birth of the shark/fish, or -1
    */
-  public int getAge() {
+  private int getAge() {
     return myCurrentAge;
   }
 
@@ -101,7 +101,7 @@ public class WatorCell extends Cell<WatorCell> {
    *
    * @param energy the energy remaining for a shark after this timestep, or -1
    */
-  public void setNextEnergy(int energy) {
+  private void setNextEnergy(int energy) {
     myNextEnergy = energy;
   }
 
@@ -110,7 +110,7 @@ public class WatorCell extends Cell<WatorCell> {
    *
    * @param time the number of timesteps since birth of the shark/fish after this timestep, or -1
    */
-  public void setNextAge(int time) {
+  private void setNextAge(int time) {
     myNextAge = time;
   }
 

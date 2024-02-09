@@ -55,7 +55,7 @@ public class SchellingSimulation extends Simulation {
    * @param currentCell a cell in group A or B preparing to transition
    */
   private void handleDemographicCell(Cell currentCell) {
-    List<Cell> neighbors = currentCell.getNeighbors();
+    List<SchellingCell> neighbors = currentCell.getNeighbors();
     int totalNeighbors = neighbors.size();
     int numEmptyNeighbors = currentCell.countNeighborsInState(EMPTY);
     int numNeighborsSameState = currentCell.countNeighborsInState(currentCell.getCurrentState());

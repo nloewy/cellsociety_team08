@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This cellular automata simulation represents the Predator-Prey simulaton developed by Alexander K
+ * This cellular automata simulation represents the Predator-Prey simulation developed by Alexander K
  * Dewdney
  * <p>
  * author @noah loewy
