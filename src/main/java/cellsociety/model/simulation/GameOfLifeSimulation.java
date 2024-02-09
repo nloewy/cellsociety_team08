@@ -44,8 +44,7 @@ public class GameOfLifeSimulation extends Simulation {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public List<Cell> cellMaker(int col, List<Integer> stateList,
-      CellShape shape) {
+  public List<Cell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
     List<Cell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();
     params.put("aliveToAliveMin", aliveToAliveMin);

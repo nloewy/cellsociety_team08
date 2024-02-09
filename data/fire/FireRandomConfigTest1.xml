@@ -28,8 +28,8 @@
   <cell_shape>square</cell_shape>
   <grid_edge_type>Normal</grid_edge_type>
   <random_configuration_by_total_states>
-    <numTree>35</numTree>
-    <numBurning>10</numBurning>
-    <numEmpty>55</numEmpty>
+    <num1>35</num1>
+    <num2>10</num2>
+    <num0>55</num0>
   </random_configuration_by_total_states>
 </simulation>

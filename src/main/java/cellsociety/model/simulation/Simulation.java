@@ -30,10 +30,7 @@ public abstract class Simulation {
   /**
    * Constructs a basic Simulation object
    *
-   * @param row,       the number of rows in the 2-dimensional grid
-   * @param col,       the number of columns in the 2-dimensional grid
    * @param hoodType,  the definition of neighbors
-   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    * @param gridType   type of grid used in simulation
    */
 

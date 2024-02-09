@@ -40,8 +40,7 @@ public class SchellingSimulation extends Simulation {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public List<Cell> cellMaker(int col, List<Integer> stateList,
-      CellShape cellShape) {
+  public List<Cell> cellMaker(int col, List<Integer> stateList, CellShape cellShape) {
     List<Cell> cellList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
       cellList.add(new SchellingCell(stateList.get(i), i / col, i % col, cellShape));
