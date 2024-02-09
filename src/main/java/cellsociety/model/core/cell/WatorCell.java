@@ -21,10 +21,10 @@ public class WatorCell extends Cell<WatorCell> {
   private int myNextAge;
   private int myNextEnergy;
 
-  private int initialEnergy;
-  private int energyBoost;
-  private int sharkAgeOfReproduction;
-  private int fishAgeOfReproduction;
+  private final int initialEnergy;
+  private final int energyBoost;
+  private final int sharkAgeOfReproduction;
+  private final int fishAgeOfReproduction;
 
   /**
    * Constructs a Wator cell object
@@ -149,20 +149,19 @@ public class WatorCell extends Cell<WatorCell> {
    * Handles movement of shark from one cell to another. This assumes the cell the shark is
    * attempting to move to is already determined. Shark will reproduce if necessary.
    *
-   * @param currentCell the cell of the shark originally
-   * @param nextCell    the cell the shark is attempting to move to
+   * @param nextCell the cell the shark is attempting to move to
    */
-  private void handleSharkMoveToEmptySpace(WatorCell currentCell, WatorCell nextCell) {
+  private void handleSharkMoveToEmptySpace(WatorCell nextCell) {
     if (nextCell.getNextState()
         == WatorSimulation.SHARK) { //another shark is already moving to nextCell
-      currentCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1,
-          currentCell.getAge() + 1);
+      updateStateEnergyAge(WatorSimulation.SHARK, getEnergy() - 1,
+          getAge() + 1);
     } else {
-      nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1,
-          currentCell.getAge() + 1);
-      if (currentCell.getAge() >= sharkAgeOfReproduction) {
-        currentCell.updateStateEnergyAge(WatorSimulation.SHARK, initialEnergy, 0); //create shark
-        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1,
+      nextCell.updateStateEnergyAge(WatorSimulation.SHARK, getEnergy() - 1,
+          getAge() + 1);
+      if (getAge() >= sharkAgeOfReproduction) {
+        updateStateEnergyAge(WatorSimulation.SHARK, initialEnergy, 0); //create shark
+        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, getEnergy() - 1,
             0); //reproducing Shark
       } else {
         fillEmptyCell();
@@ -174,26 +173,24 @@ public class WatorCell extends Cell<WatorCell> {
    * Handles shark's hunting of fish. Shark will move to cell with fish and eat the fish if no cell
    * is already planning to occupy that cell. Shark will reproduce if necessary
    *
-   * @param currentCell the cell where the predator (shark) is first located
-   * @param nextCell    the cell where the prey (fish) is first located, and where the shark will
-   *                    move
+   * @param nextCell the cell where the prey (fish) is first located, and where the shark will move
    */
-  private void handleSharkEatFish(WatorCell currentCell, WatorCell nextCell) {
+  private void handleSharkEatFish(WatorCell nextCell) {
     if (nextCell.getNextState() == WatorSimulation.SHARK
         || nextCell.getNextState() == WatorSimulation.FISH) {
       //another shark or fish is already moving to nextCell
-      currentCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() - 1,
-          currentCell.getAge() + 1);
+      updateStateEnergyAge(WatorSimulation.SHARK, getEnergy() - 1,
+          getAge() + 1);
     } else {
-      if (currentCell.getAge() >= sharkAgeOfReproduction) {
-        currentCell.updateStateEnergyAge(WatorSimulation.SHARK, initialEnergy, 0);
-        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() + energyBoost,
+      if (getAge() >= sharkAgeOfReproduction) {
+        updateStateEnergyAge(WatorSimulation.SHARK, initialEnergy, 0);
+        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, getEnergy() + energyBoost,
             0);
 
       } else {
         fillEmptyCell();
-        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, currentCell.getEnergy() + energyBoost,
-            currentCell.getAge() + 1);
+        nextCell.updateStateEnergyAge(WatorSimulation.SHARK, getEnergy() + energyBoost,
+            getAge() + 1);
 
       }
     }
@@ -251,12 +248,12 @@ public class WatorCell extends Cell<WatorCell> {
     if (fishNeighbors.isEmpty() && emptyNeighbors.isEmpty()) {
       handleSharkCantMove();
     } else if (!fishNeighbors.isEmpty()) {
-      handleSharkEatFish(this, fishNeighbors.get(0));
+      handleSharkEatFish(fishNeighbors.get(0));
     } else {
       if (getEnergy() <= 1) {
         fillEmptyCell();
       } else {
-        handleSharkMoveToEmptySpace(this, emptyNeighbors.get(0));
+        handleSharkMoveToEmptySpace(emptyNeighbors.get(0));
       }
     }
   }
