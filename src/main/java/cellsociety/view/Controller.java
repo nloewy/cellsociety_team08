@@ -292,7 +292,7 @@ public class Controller {
           xmlParser.getType().toLowerCase());
 
       showMessage(AlertType.INFORMATION, String.format(textConfig.getString(FILE_SAVED_KEY)));
-    } catch (ParserConfigurationException | TransformerException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -353,7 +353,7 @@ public class Controller {
    */
   private void onResetSimulation() {
     simulationModel.createCellsAndGrid(xmlParser.getHeight(), xmlParser.getWidth(),
-        xmlParser.getStates(), xmlParser.getCellShape(), getNeighborhoodObject(
+        xmlParser.getStates(), simulationModel.getCellShape(xmlParser.getCellShape()), getNeighborhoodObject(
             xmlParser.getNeighborhoodType()));
     simulationPage.updateView(simulationModel.getIterator());
   }

@@ -2,7 +2,10 @@ package cellsociety.model.simulation;
 
 import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.Cell;
+import cellsociety.model.core.CellShape;
 import cellsociety.model.core.Grid;
+import cellsociety.model.core.HexagonShape;
+import cellsociety.model.core.RectangleShape;
 import cellsociety.model.core.WarpedGrid;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
@@ -71,11 +74,25 @@ public abstract class Simulation {
     }
   }
 
+  public void createCellsAndGrid(int row, int col, List<Integer> stateList,
+      CellShape shape, Neighborhood hoodType) {
+    List<Cell> cellList = cellMaker(col, stateList, shape);
+    initializeMyGrid(row, col, cellList);
+    for (Cell cell : cellList) {
+      cell.initializeNeighbors(hoodType, myGrid);
+    }
+  }
 
-  public abstract void createCellsAndGrid(int row, int col, List<Integer> stateList,
-      String cellShape, Neighborhood hoodType);
+  public abstract List<Cell> cellMaker(int col, List<Integer> stateList, CellShape cellShape);
 
 
+  public CellShape getCellShape(String shapeStr) {
+    return switch (shapeStr) {
+      case "square" -> new RectangleShape();
+      case "hexagon" -> new HexagonShape();
+      default -> throw new InvalidValueException("Cell Shape Does Not Exist");
+    };
+  }
 
   public Neighborhood getNeighborhood() {
     return myNeighborhood;

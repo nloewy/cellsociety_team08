@@ -29,42 +29,29 @@ public class SchellingSimulation extends Simulation {
   /**
    * Initializes a SchellingSimulation object
    *
-   * @param row,                   the number of rows in the 2-dimensional grid
-   * @param col,                   the number of columns in the 2-dimensional grid
-   * @param hoodType,              the definition of neighbors
-   * @param stateList,             a list of the integer representation of each cells state, by
-   *                               rows, then cols
+   * @param row,       the number of rows in the 2-dimensional grid
+   * @param col,       the number of columns in the 2-dimensional grid
+   * @param hoodType,  the definition of neighbors
+   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
    */
   public SchellingSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       SchellingRecord r) {
-    super(hoodType,  r.gridType());
+    super(hoodType, r.gridType());
     myCellsToMove = new ArrayList<>();
     myEmptyCells = new ArrayList<>();
     this.proportionNeededToStay = r.proportionNeededToStay();
-    createCellsAndGrid(row, col, stateList,r.cellShape(), hoodType);
+    createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public void createCellsAndGrid(int row, int col, List<Integer> stateList,
-      String cellShape, Neighborhood hoodType){
-    List<Cell> cellList = cellMaker(row, col,stateList,hoodType, cellShape);
-    initializeMyGrid(row, col, cellList);
-    for(Cell cell : cellList) {
-      cell.initializeNeighbors(hoodType, myGrid);
-    }
-  }
-  public List<Cell> cellMaker(int row, int col, List<Integer> stateList, Neighborhood hoodType,
-      String cellShape){
+  public List<Cell> cellMaker(int col, List<Integer> stateList,
+      CellShape cellShape) {
     List<Cell> cellList = new ArrayList<>();
     for (int i = 0; i < stateList.size(); i++) {
-      CellShape shape = switch (cellShape) {
-        case "square" -> new RectangleShape();
-        case "hexagon" -> new HexagonShape();
-        default -> throw new InvalidValueException("Cell Shape Does Not Exist");
-      };
-      cellList.add(new SchellingCell(stateList.get(i),i/col,i%col,shape));
+      cellList.add(new SchellingCell(stateList.get(i), i / col, i % col, cellShape));
     }
     return cellList;
   }
+
   /**
    * Given a cell in either group A or group B, places the cell in either myCellsToMove, or updates
    * its future state to its current-state, depending on the state-makeup of its neighbors
@@ -77,11 +64,11 @@ public class SchellingSimulation extends Simulation {
     int numEmptyNeighbors = currentCell.countNeighborsInState(EMPTY);
     int numNeighborsSameState = currentCell.countNeighborsInState(currentCell.getCurrentState());
     if (totalNeighbors != numEmptyNeighbors
-          && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
-          < proportionNeededToStay) {
-        myCellsToMove.add(currentCell);
+        && (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
+        < proportionNeededToStay) {
+      myCellsToMove.add(currentCell);
     } else {
-        currentCell.setNextState(currentCell.getCurrentState());
+      currentCell.setNextState(currentCell.getCurrentState());
     }
 
   }
