@@ -83,13 +83,12 @@ public class XmlParser {
   public static final Set<String> WATOR_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
   public static final Map<String, Set<String>> SIMULATION_CELL_STATES = new HashMap<>() {{
-    put(FIRE_NAME, FIRE_CELL_STATES);
-    put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
-    put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
-    put(SCHELLING_NAME, SCHELLING_CELL_STATES);
-    put(WATOR_NAME, WATOR_CELL_STATES);
-  }};
-
+      put(FIRE_NAME, FIRE_CELL_STATES);
+      put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
+      put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
+      put(SCHELLING_NAME, SCHELLING_CELL_STATES);
+      put(WATOR_NAME, WATOR_CELL_STATES);
+    }};
 
   // define names for the field parameters, random configuration,
   // and initial states as written in the XML configuration files
