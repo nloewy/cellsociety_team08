@@ -700,7 +700,8 @@ public class XmlParser {
     displayDescription = element.getElementsByTagName(DISPLAY_DES_FIELD_NAME).item(0)
         .getTextContent();
     stateColor = element.getElementsByTagName(STATE_COLORS_FIELD_NAME).item(0).getTextContent();
-    neighborhoodType = element.getElementsByTagName(NEIGHBORHOOD_TYPE_FIELD_NAME).item(0).getTextContent();
+    neighborhoodType = element.getElementsByTagName(NEIGHBORHOOD_TYPE_FIELD_NAME).item(0)
+        .getTextContent();
     String widthString = element.getElementsByTagName(WIDTH_FIELD_NAME).item(0).getTextContent();
     String heightString = element.getElementsByTagName(HEIGHT_FIELD_NAME).item(0).getTextContent();
     if (!widthString.isEmpty()) {
@@ -854,10 +855,10 @@ public class XmlParser {
    * @param filename,   name of the new XML file
    * @param folderName, folder in which the new XML file will be stored
    * @throws InvalidFileFormatException, when specified path to file is invalid
-   * @throws SavingFileException, when errors occur during conversion to XML file
+   * @throws SavingFileException,        when errors occur during conversion to XML file
    */
-  public void createXml (String filename, String folderName) throws InvalidFileFormatException,
-                                                                    SavingFileException {
+  public void createXml(String filename, String folderName) throws InvalidFileFormatException,
+      SavingFileException {
 
     // create new Document object
     Document doc = createNewDoc();
@@ -876,6 +877,7 @@ public class XmlParser {
 
   /**
    * Create new Document object for writing new XML file
+   *
    * @return Document object to be written.
    */
   private Document createNewDoc() {
@@ -883,8 +885,7 @@ public class XmlParser {
       DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
       return docBuilder.newDocument();
-    }
-    catch (ParserConfigurationException e) {
+    } catch (ParserConfigurationException e) {
       throw new SavingFileException(resourceBundle.getString("DocumentCreationError"));
     }
   }
@@ -1001,13 +1002,13 @@ public class XmlParser {
   /**
    * Write XML document to output stream, saving as a file
    *
-   * @param doc,    Document object being written to
+   * @param doc,  Document object being written to
    * @param path, specified path to which the new file will be stored
    * @throws TransformerException, exception handling potential errors from converting to XML file
    *                               format
    */
   private void writeXml(Document doc, String path) throws InvalidFileFormatException,
-                                                          SavingFileException {
+      SavingFileException {
     try {
       FileOutputStream output = new FileOutputStream(path);
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
