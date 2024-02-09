@@ -4,10 +4,31 @@ import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.simulation.PercolationSimulation;
 import java.util.Map;
 
+/**
+ * Represents an extension of the Cell, and serves as the atomic unit of the Percolation simulation.
+ * Contains private methods that allow for the transition of Percolation Cell objects at each
+ * timestep.
+ *
+ * @author Noah Loewy
+ */
 public class PercolationCell extends Cell {
 
+  /**
+   * Number of percolated neighbors required for open cell to percolate
+   */
   private double percolatedNeighbors;
 
+  /**
+   * Constructs a Percolation Cell object for the Percolation simulation
+   *
+   * @param initialState  the integer representation of the cell's current state
+   * @param row           the row the cell is positioned at as represented on a 2D coordinate grid
+   * @param col           the column the cell is positioned at as represented on a 2D coordinate
+   *                      grid
+   * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
+   * @param params        map of string parameter names to their values. Description of parameters
+   *                      can be found at te declaration of the instance variables.
+   */
   public PercolationCell(int initialState, int row, int col, CellShape shapeType,
       Map<String, Integer> params) {
     super(initialState, row, col, shapeType);
@@ -27,6 +48,10 @@ public class PercolationCell extends Cell {
     }
   }
 
+  /**
+   * Represents a timestep update for a PercolationCell. Calls the proper helper function for
+   * transitioning based on the state of the Percolation Cell being updated.
+   */
   @Override
   public void transition() {
     if (getCurrentState() == PercolationSimulation.OPEN) {

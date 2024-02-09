@@ -7,15 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * The Grid represents a list for our simulation, where each element in the grid represents a cell
- * located at some point on the xy plane. We try to abstract away the size and shape of the grid.
- * The grid takes in a generic kind of Cell.
+ * The Grid represents the Collection of Cells in our simulation, where each element in the grid
+ * represents some point on the xy plane. We try to abstract away the size and shape of the grid.
+ * The grid takes in a generic kind of Cell. This general Grid is finite, so cells on the edge will
+ * have fewer neighbors than cells in the center of the grid.
  *
  * @author Noah Loewy
  */
 
 public class Grid<T extends Cell> {
-
 
   private int myNumRows;
   private int myNumCols;
@@ -26,7 +26,7 @@ public class Grid<T extends Cell> {
    *
    * @param rows      is the number of rows in the grid
    * @param cols      is the number of columns in the grid
-   * @param cellList, a list of the cells, by rows, then cols
+   * @param cellList  a list of the cells in row-major order
    */
   public Grid(int rows, int cols, List<T> cellList) {
     myNumRows = rows;

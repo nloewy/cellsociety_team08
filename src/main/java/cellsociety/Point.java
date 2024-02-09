@@ -1,7 +1,5 @@
 package cellsociety;
 
-import static java.lang.Math.round;
-
 /**
  * Represents an x,y pairing in R^2 space
  *
@@ -10,10 +8,17 @@ import static java.lang.Math.round;
 
 public class Point {
 
-  private double myRow;
-  private double myCol;
-  private double myColOffset = 0;
+  private final double myRow;
+  private final double myCol;
+  private final double myColOffset;
 
+  /**
+   * Initializes a point object
+   *
+   * @param row     the row of the point on 2d plane
+   * @param col     the column of the point on 2d plane
+   * @param offset  the x-offset of the point, if it is on a lattice grid
+   */
   public Point(double row, double col, double offset) {
     myRow = row;
     myCol = col;
@@ -65,7 +70,6 @@ public class Point {
   /**
    * Indicates whether another object is equal to *this* one
    *
-   * @param other, an object in java
    * @return boolean, whether other object equals this instance
    */
 
@@ -73,6 +77,13 @@ public class Point {
     return myColOffset;
   }
 
+  /**
+   * Returns whether or not two points share a row and column
+   *
+   * @param  other Java object
+   * @return true if and only if this and other are both Point objects with equal row and columns
+   * values.
+   */
   @Override
   public boolean equals(Object other) {
     if (this == other) {
@@ -87,19 +98,5 @@ public class Point {
     Point otherPoint = (Point) other;
     return otherPoint.getRow() == myRow && otherPoint.getCol() == myCol;
 
-  }
-
-  /**
-   * Retrieves the hashcode of a Point object
-   *
-   * @return integer hashcode
-   */
-  @Override
-  public int hashCode() {
-    return (int) round(18 * myRow + myCol);
-  }
-
-  public String toString() {
-    return "(row:" + myRow + ",col" + myCol + ")";
   }
 }
