@@ -29,6 +29,17 @@ public class WatorSimulation extends Simulation<WatorCell> {
   private final int energyBoost;
   private final int initialEnergy;
 
+  /**
+   * Initializes a SchellingSimulation object
+   *
+   * @param row,       the number of rows in the 2-dimensional grid
+   * @param col,       the number of columns in the 2-dimensional grid
+   * @param hoodType,  the definition of neighbors
+   * @param stateList, a list of the integer representation of each cells state in row major order
+   * @param r,         a record of all parameters needed for Wator Simulation. Description of
+   *                   parameters can be found in the WatorCell class
+   */
+
   public WatorSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       WatorRecord r) {
     super(hoodType, r.gridType());
@@ -39,8 +50,17 @@ public class WatorSimulation extends Simulation<WatorCell> {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
+  /**
+   * Creates list of WatorCells objects to be passed into grid
+   *
+   * @param col       number of columns in grid for simulation
+   * @param stateList list of all cell's states in row major order
+   * @param shape     Shape object representing the shape of the cell as represented on 2d plane
+   * @return list of initialized WatorCells
+   */
+
   public List<WatorCell> cellMaker(int col, List<Integer> stateList,
-      Shape cellShape) {
+      Shape shape) {
     List<WatorCell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();
     params.put("fishAgeOfReproduction", fishAgeOfReproduction);
@@ -48,15 +68,15 @@ public class WatorSimulation extends Simulation<WatorCell> {
     params.put("initialEnergy", initialEnergy);
     params.put("energyBoost", energyBoost);
     for (int i = 0; i < stateList.size(); i++) {
-      cellList.add(new WatorCell(stateList.get(i), i / col, i % col, cellShape, params));
+      cellList.add(new WatorCell(stateList.get(i), i / col, i % col, shape, params));
     }
     return cellList;
   }
 
 
   /**
-   * Transition function for Wator World. Iterates through each cell and calls proper cell-specific
-   * transition function based on the state of the particular cell
+   * Transition function for Wator World. Iterates through each cell, starting with all the sharks,
+   * then fish, then empty, and calls the cell's transition function.
    */
   @Override
   public void transitionFunction() {
