@@ -10,7 +10,7 @@
   <height>5</height>
   <!-- 0 - DEAD / 1 - ALIVE -->
   <initial_states>1 1 1 0 1 0 0 0 0 0 1 1 1 1 1 0 1 0 0 0</initial_states>
-  <neighborhood_type>VonNeumann</neighborhood_type>
+  <neighborhood_type>Moore</neighborhood_type>
   <parameters>
     <aliveToAliveMin>2.0</aliveToAliveMin>
     <aliveToAliveMax>3.0</aliveToAliveMax>

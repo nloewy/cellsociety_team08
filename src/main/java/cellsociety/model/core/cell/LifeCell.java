@@ -1,6 +1,6 @@
 package cellsociety.model.core.cell;
 
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class LifeCell extends Cell {
    * @param params        map of string parameter names to their values. Description of parameters
    *                      can be found at te declaration of the instance variables.
    */
-  public LifeCell(int initialState, int row, int col, CellShape shapeType,
+  public LifeCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Integer> params) {
     super(initialState, row, col, shapeType);
     aliveToAliveMin = params.get("aliveToAliveMin");

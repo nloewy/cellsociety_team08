@@ -2,7 +2,7 @@ package cellsociety.model.core.cell;
 
 import static java.lang.Math.random;
 
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.simulation.FireSimulation;
 import java.util.Map;
 
@@ -31,15 +31,15 @@ public class FireCell extends Cell {
   /**
    * Constructs a Fire Cell object for the Catching Fire simulation
    *
-   * @param initialState  the integer representation of the cell's current state
-   * @param row           the row the cell is positioned at as represented on a 2D coordinate grid
-   * @param col           the column the cell is positioned at as represented on a 2D coordinate
-   *                      grid
-   * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
-   * @param params        map of string parameter names to their values. Description of parameters
-   *                      can be found at te declaration of the instance variables.
+   * @param initialState the integer representation of the cell's current state
+   * @param row          the row the cell is positioned at as represented on a 2D coordinate grid
+   * @param col          the column the cell is positioned at as represented on a 2D coordinate
+   *                     grid
+   * @param shapeType    the shape of a cell, as represented on a 2D coordinate grid
+   * @param params       map of string parameter names to their values. Description of parameters
+   *                     can be found at te declaration of the instance variables.
    */
-  public FireCell(int initialState, int row, int col, CellShape shapeType,
+  public FireCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Double> params) {
     super(initialState, row, col, shapeType);
     probTreeCreated = params.get("probTreeCreated");

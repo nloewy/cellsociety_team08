@@ -2,7 +2,7 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.WatorCell;
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.WatorRecord;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
   }
 
   public List<WatorCell> cellMaker(int col, List<Integer> stateList,
-      CellShape cellShape) {
+      Shape cellShape) {
     List<WatorCell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();
     params.put("fishAgeOfReproduction", fishAgeOfReproduction);

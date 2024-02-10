@@ -2,7 +2,7 @@ package cellsociety.model.core.cell;
 
 import cellsociety.Point;
 import cellsociety.model.core.grid.Grid;
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.List;
 
@@ -26,12 +26,13 @@ public abstract class Cell<T extends Cell<T>> {
   /**
    * Constructs a Generic Cell object. Note that Cell is an abstract class. This is because all
    * simulations use a specific kind of Cell, but they all share common methods.
-   * @param initialState  the integer representation of the cell's current state
-   * @param row           the row the cell is positioned at as represented on a 2D grid
-   * @param col           the column the cell is positioned at as represented on a 2D grid
-   * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
+   *
+   * @param initialState the integer representation of the cell's current state
+   * @param row          the row the cell is positioned at as represented on a 2D grid
+   * @param col          the column the cell is positioned at as represented on a 2D grid
+   * @param shapeType    the shape of a cell, as represented on a 2D coordinate grid
    */
-  public Cell(int initialState, int row, int col, CellShape shapeType) {
+  public Cell(int initialState, int row, int col, Shape shapeType) {
     myCurrentState = initialState;
     myNextState = PLACEHOLDER;
     myLocation = new Point(row, col);
@@ -41,8 +42,9 @@ public abstract class Cell<T extends Cell<T>> {
   /**
    * Constructs a Generic Cell object. Note that Cell is an abstract class. This is because all
    * simulations use a specific kind of Cell, but they all share common methods.
-   * @param hoodType  the integer representation of the cell's current state
-   * @param grid      the row the cell is positioned at as represented on a 2D coordinate grid
+   *
+   * @param hoodType the integer representation of the cell's current state
+   * @param grid     the row the cell is positioned at as represented on a 2D coordinate grid
    */
   public void initializeNeighbors(Neighborhood hoodType, Grid grid) {
     myNeighbors = hoodType.getNeighbors(grid, this);
@@ -69,6 +71,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Updates the myNextState instance variable
+   *
    * @param nextState the new value of myNextState
    */
   public void setNextState(int nextState) {
@@ -88,7 +91,7 @@ public abstract class Cell<T extends Cell<T>> {
    * Given an integer representing a target state, determines the number of neighboring cells that
    * have a current state matching the target state.
    *
-   * @param state  an integer, representing the state to check for
+   * @param state an integer, representing the state to check for
    * @return the number of neighboring cells where myCurrentState == state
    */
   public int countNeighborsInState(int state) {
