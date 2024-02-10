@@ -10,7 +10,7 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class HexagonShape implements CellShape {
+public class HexagonShape implements Shape {
 
   /**
    * Returns a list of vertices representing the corners of a hexagon shape on a grid. Hexagons are
@@ -18,8 +18,8 @@ public class HexagonShape implements CellShape {
    * assumed to take up 1 square unit. The vertices are calculated based on the provided row and
    * column indices, representing the top-left corner of the hexagon.
    *
-   * @param row  the row index of the top-left corner of the hexagon
-   * @param col  the column index of the top-left corner of the hexagon
+   * @param row the row index of the top-left corner of the hexagon
+   * @param col the column index of the top-left corner of the hexagon
    * @return a list of Point objects representing the vertices of the hexagon
    */
   public List<Point> getVertices(int row, int col) {
@@ -29,7 +29,7 @@ public class HexagonShape implements CellShape {
     } else {
       currOffset = 0.0;
     }
-    final double[][] offsets = {{.25, 0}, {1, 0}, {1.25, .5}, {1, 1}, {.25, 1}, {1, .5}};
+    final double[][] offsets = {{.25, 0}, {1, 0}, {1.25, .5}, {1, 1}, {.25, 1}, {0, .5}};
     List<Point> vertices = new ArrayList<>();
     for (double[] offset : offsets) {
       double shapeOffset = .5; //hexagons in odd rows are shifted by .5

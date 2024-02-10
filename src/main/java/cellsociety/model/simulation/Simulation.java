@@ -4,9 +4,9 @@ import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.grid.Grid;
 import cellsociety.model.core.grid.WarpedGrid;
-import cellsociety.model.core.shape.CellShape;
 import cellsociety.model.core.shape.HexagonShape;
 import cellsociety.model.core.shape.RectangleShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.Iterator;
 import java.util.List;
@@ -67,7 +67,7 @@ public abstract class Simulation<T extends Cell> {
   }
 
   public void createCellsAndGrid(int row, int col, List<Integer> stateList,
-      CellShape shape, Neighborhood hoodType) {
+      Shape shape, Neighborhood hoodType) {
     List<T> cellList = cellMaker(col, stateList, shape);
     initializeMyGrid(row, col, cellList);
     for (T cell : cellList) {
@@ -75,10 +75,10 @@ public abstract class Simulation<T extends Cell> {
     }
   }
 
-  public abstract List<T> cellMaker(int col, List<Integer> stateList, CellShape cellShape);
+  public abstract List<T> cellMaker(int col, List<Integer> stateList, Shape cellShape);
 
 
-  public CellShape getCellShape(String shapeStr) {
+  public Shape getCellShape(String shapeStr) {
     return switch (shapeStr) {
       case "square" -> new RectangleShape();
       case "hexagon" -> new HexagonShape();

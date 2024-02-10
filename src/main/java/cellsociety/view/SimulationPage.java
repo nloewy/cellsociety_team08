@@ -23,6 +23,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -35,7 +37,6 @@ import javafx.scene.text.Text;
 
 public class SimulationPage {
 
-  private GridPane grid;
   private Scene scene;
   private Group root;
   private CellView[][] board;
@@ -93,6 +94,7 @@ public class SimulationPage {
   public static final String SAVE_BUTTON_KEY = "SaveSimulationButton";
   public static final String SPEED_LABEL_TEXT_KEY = "speedLabel";
 
+  private Map<String, Double> gridProperties;
 
   /**
    * Constructs the view component of the simulation
@@ -104,18 +106,25 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String cellShape, String simulationType, String simulationName, int numRows, int numCols,
+  public SimulationPage(String cellShape, String simulationType, String simulationName, int numRows,
+      int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
-      Iterator<Cell> gridIterator) {
+      Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
 
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
+
+    gridProperties = new HashMap<>();
+    gridProperties.put("gridStartX", configDouble(GRID_START_X_KEY));
+    gridProperties.put("gridStartY", configDouble(GRID_START_Y_KEY));
+
+    gridProperties.put("gridWidth", configDouble(GRID_WIDTH_KEY));
+    gridProperties.put("gridHeight", configDouble(GRID_HEIGHT_KEY));
 
     stateCount = new HashMap<>();
     graph = new SimulationGraph(stateCount);
 
     root = new Group();
-    grid = new GridPane();
     scene = new Scene(root, configDouble(SCENE_WIDTH_KEY),
         configDouble(SCENE_HEIGHT_KEY));
 
@@ -124,18 +133,30 @@ public class SimulationPage {
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
     board = new CellView[numRows][numCols];
-    for(int row = 0; row < numRows; row++){
-      for(int col = 0; col < numCols; col++){
-        board[row][col] = initializeCellView(new ArrayList<>(), cellShape, simulationType, 0,
-            configDouble(GRID_WIDTH_KEY) / numCols,
-            configDouble(GRID_HEIGHT_KEY) / numRows);
-        grid.add(board[row][col].getCellGraphic(), col, row);
+    int ind = 0;
+    for (int row = 0; row < numRows; row++) {
+      for (int col = 0; col < numCols; col++) {
+        double width = gridProperties.get("gridWidth") / numCols;
+        double height = gridProperties.get("gridHeight") / numRows;
+        board[row][col] = switch (simulationType) {
+          case Controller.FIRE ->
+              new FireCellView(width, height, allVertices.get(ind), gridProperties);
+          case Controller.GAME_OF_LIFE ->
+              new GameOfLifeCellView(width, height, allVertices.get(ind), gridProperties);
+          case Controller.PERCOLATION ->
+              new PercolationCellView(width, height, allVertices.get(ind), gridProperties);
+          case Controller.SCHELLING ->
+              new SchellingCellView(width, height, allVertices.get(ind), gridProperties);
+          case Controller.WATOR ->
+              new WatorCellView(width, height, allVertices.get(ind), gridProperties);
+          default -> throw new IllegalStateException("Unexpected value: " + simulationType);
+        };
+        Shape shape = board[row][col].getCellGraphic();
+        root.getChildren().add(shape);
+        ind++;
       }
     }
     updateView(gridIterator);
-
-    grid.setLayoutY(configDouble(GRID_START_Y_KEY));
-    grid.setLayoutX(configDouble(GRID_START_X_KEY));
 
     initializeButtons(eventHandlers);
     initializeSlider();
@@ -148,7 +169,6 @@ public class SimulationPage {
     simulationTitleDisplay.setFont(new Font(40));
 
     root.getChildren().addAll(
-        grid,
         newSimulationButton,
         simulationInfoButton,
         startSimulationButton,
@@ -214,12 +234,12 @@ public class SimulationPage {
     simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
   }
 
-  public void resetGraph(){
+  public void resetGraph() {
     graph.resetGraph();
   }
 
-  public void toggleGraphVisibility(){
-    if (graph.getGraphSection().isVisible()){
+  public void toggleGraphVisibility() {
+    if (graph.getGraphSection().isVisible()) {
       graph.getGraphSection().setVisible(false);
       simulationGraphButton.setText("Show Graph");
       closeGraph();
@@ -234,29 +254,8 @@ public class SimulationPage {
     root.getChildren().add(graph.getGraphSection());
   }
 
-  private void closeGraph(){
+  private void closeGraph() {
     root.getChildren().remove(graph.getGraphSection());
-  }
-
-  /**
-   * initialize the cellview objects in the grid according to the current simulation
-   *
-   * @param simulationType a string that specifies the simulation type
-   * @param state          an integer that specifies the state the cell is in
-   * @param width          a double that specifies the width of a cell
-   * @param height         a double that specifies the height of a cell
-   * @return returns a CellView object
-   */
-  private CellView initializeCellView(List<Point> vertices, String shape, String simulationType, int state, double width,
-      double height) {
-    return switch (simulationType) {
-      case Controller.FIRE -> new FireCellView(shape, state, width, height, vertices);
-      case Controller.GAME_OF_LIFE -> new GameOfLifeCellView(shape, state, width, height, vertices);
-      case Controller.PERCOLATION -> new PercolationCellView(shape, state, width, height, vertices);
-      case Controller.SCHELLING -> new SchellingCellView(shape, state, width, height, vertices);
-      case Controller.WATOR -> new WatorCellView(shape, state, width, height, vertices);
-      default -> throw new IllegalStateException("Unexpected value: " + simulationType);
-    };
   }
 
 
@@ -285,8 +284,8 @@ public class SimulationPage {
    *
    * @param buttonText a string of the text on the button
    * @param handler    an event handler that gets hooked on the button
-   * @param colPos       an integer of the x position of the button
-   * @param rowPos       an integer of the y position of the button
+   * @param colPos     an integer of the x position of the button
+   * @param rowPos     an integer of the y position of the button
    * @return returns the button object
    */
   private Button makeButton(String buttonText, EventHandler<ActionEvent> handler, int colPos,
@@ -296,16 +295,6 @@ public class SimulationPage {
     ret.setLayoutX(colPos);
     ret.setLayoutY(rowPos);
     return ret;
-  }
-
-
-  /**
-   * gets the view component of the grid
-   *
-   * @return returns the grid pane
-   */
-  public GridPane getGrid() {
-    return grid;
   }
 
 
@@ -335,10 +324,10 @@ public class SimulationPage {
       int state = c.getCurrentState();
       board[row][col].updateState(state);
 
-      if (!stateCount.containsKey(state)){
-        stateCount.put(state,0);
+      if (!stateCount.containsKey(state)) {
+        stateCount.put(state, 0);
       }
-      stateCount.replace(state,stateCount.get(state)+1);
+      stateCount.replace(state, stateCount.get(state) + 1);
     }
 
     graph.updateGraph(stateCount);

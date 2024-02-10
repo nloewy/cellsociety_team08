@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Noah Loewy
  */
-public interface CellShape {
+public interface Shape {
 
   /** Returns a list of vertices representing the corners of the shape associated with a cell on a
    * grid. The vertices are calculated based on the provided row and column indices representing the
