@@ -98,6 +98,16 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
     }
   }
 
+
+  /**
+   * Resets instance variables lists each iteration
+   */
+  private void resetLists() {
+    myCellsToMoveA.clear();
+    myCellsToMoveB.clear();
+    myEmptyCellsA.clear();
+    myEmptyCellsB.clear();
+  }
   /**
    * Transition function for Segregation Model. Iterates through each cell and calls the transition
    * function, which will update the cell's next state to highlight if it would like to move to a
@@ -106,11 +116,8 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
    */
   @Override
   public void transitionFunction() {
+    resetLists();
     Iterator<SchellingCell> gridIterator = getIterator();
-    myCellsToMoveA.clear();
-    myCellsToMoveB.clear();
-    myEmptyCellsA.clear();
-    myEmptyCellsB.clear();
     while (gridIterator.hasNext()) {
       SchellingCell currentCell = gridIterator.next();
       currentCell.transition();
