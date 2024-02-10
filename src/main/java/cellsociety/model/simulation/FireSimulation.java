@@ -1,7 +1,7 @@
 package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.FireCell;
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.FireRecord;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class FireSimulation extends Simulation<FireCell> {
   }
 
 
-  public List<FireCell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
+  public List<FireCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<FireCell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();
     params.put("neighborsToIgnite", (double) neighborsToIgnite);

@@ -1,7 +1,7 @@
 package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.SchellingCell;
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.SchellingRecord;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public List<SchellingCell> cellMaker(int col, List<Integer> stateList, CellShape cellShape) {
+  public List<SchellingCell> cellMaker(int col, List<Integer> stateList, Shape cellShape) {
     List<SchellingCell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();
     params.put("proportionNeededToStay", proportionNeededToStay);

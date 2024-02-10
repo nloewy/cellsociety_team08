@@ -1,6 +1,6 @@
 package cellsociety.model.core.cell;
 
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.simulation.PercolationSimulation;
 import java.util.Map;
 
@@ -21,15 +21,15 @@ public class PercolationCell extends Cell {
   /**
    * Constructs a Percolation Cell object for the Percolation simulation
    *
-   * @param initialState  the integer representation of the cell's current state
-   * @param row           the row the cell is positioned at as represented on a 2D coordinate grid
-   * @param col           the column the cell is positioned at as represented on a 2D coordinate
-   *                      grid
-   * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
-   * @param params        map of string parameter names to their values. Description of parameters
-   *                      can be found at te declaration of the instance variables.
+   * @param initialState the integer representation of the cell's current state
+   * @param row          the row the cell is positioned at as represented on a 2D coordinate grid
+   * @param col          the column the cell is positioned at as represented on a 2D coordinate
+   *                     grid
+   * @param shapeType    the shape of a cell, as represented on a 2D coordinate grid
+   * @param params       map of string parameter names to their values. Description of parameters
+   *                     can be found at te declaration of the instance variables.
    */
-  public PercolationCell(int initialState, int row, int col, CellShape shapeType,
+  public PercolationCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Integer> params) {
     super(initialState, row, col, shapeType);
     percolatedNeighbors = params.get("percolatedNeighbors");

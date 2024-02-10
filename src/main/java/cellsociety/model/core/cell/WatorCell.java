@@ -1,6 +1,6 @@
 package cellsociety.model.core.cell;
 
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.simulation.WatorSimulation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +50,7 @@ public class WatorCell extends Cell<WatorCell> {
    * @param params        map of string parameter names to their values. Description of parameters
    *                      can be found at te declaration of the instance variables.
    */
-  public WatorCell(int initialState, int row, int col, CellShape shapeType,
+  public WatorCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Integer> params) {
     super(initialState, row, col, shapeType);
     myCurrentAge = 0;
@@ -132,7 +132,7 @@ public class WatorCell extends Cell<WatorCell> {
   /**
    * Filters a list of WatorCell objects to retrieve all Cells of a certain state
    *
-   * @param state  target state in filtering operation
+   * @param state target state in filtering operation
    * @return a (copy) of a filtered list of all cells in cellList with a currentState equal to state
    */
   private List<WatorCell> getNeighborsOfState(int state) {

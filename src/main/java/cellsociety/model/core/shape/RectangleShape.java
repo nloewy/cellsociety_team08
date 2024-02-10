@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Noah Loewy
  */
-public class RectangleShape implements CellShape {
+public class RectangleShape implements Shape {
 
   /**
    * Returns a list of vertices representing the corners of a square on a grid. Each cell on the
@@ -21,7 +21,7 @@ public class RectangleShape implements CellShape {
    * @return a list of Point objects representing the vertices of the square
    */
   public List<Point> getVertices(int row, int col) {
-    final double[][] offsets = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
+    final double[][] offsets = {{0, 0}, {1, 0}, {1, 1}, {0, 1}};
     List<Point> vertices = new ArrayList<>();
     for (double[] offset : offsets) {
       vertices.add(new Point(row + offset[0], col + offset[1]));

@@ -15,9 +15,9 @@ public class Point {
   /**
    * Initializes a point object
    *
-   * @param row     the row of the point on 2d plane
-   * @param col     the column of the point on 2d plane
-   * @param offset  the x-offset of the point, if it is on a lattice grid
+   * @param row    the row of the point on 2d plane
+   * @param col    the column of the point on 2d plane
+   * @param offset the x-offset of the point, if it is on a lattice grid
    */
   public Point(double row, double col, double offset) {
     myRow = row;
@@ -80,7 +80,7 @@ public class Point {
   /**
    * Returns whether or not two points share a row and column
    *
-   * @param  other Java object
+   * @param other Java object
    * @return true if and only if this and other are both Point objects with equal row and columns
    * values.
    */
@@ -99,4 +99,11 @@ public class Point {
     return otherPoint.getRow() == myRow && otherPoint.getCol() == myCol;
 
   }
+
+  public String toString() {
+    return myCol + ", " + myRow;
+  }
+
+
 }
+

@@ -1,7 +1,7 @@
 package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.LifeCell;
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.GameOfLifeRecord;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class GameOfLifeSimulation extends Simulation<LifeCell> {
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
-  public List<LifeCell> cellMaker(int col, List<Integer> stateList, CellShape shape) {
+  public List<LifeCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<LifeCell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();
     params.put("aliveToAliveMin", aliveToAliveMin);

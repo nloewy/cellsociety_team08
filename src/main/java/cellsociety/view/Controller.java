@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import cellsociety.Point;
 import cellsociety.configuration.XmlParser;
 import cellsociety.exception.InputMissingParametersException;
 import cellsociety.exception.InvalidCellStateException;
@@ -193,8 +194,6 @@ public class Controller {
   }
 
 
-
-
   /**
    * Sets up the simulation model component
    *
@@ -213,23 +212,24 @@ public class Controller {
     simulationModel = switch (simulationType) {
       case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList,
           new GameOfLifeRecord(xmlParser.getParameters().get("aliveToAliveMin").intValue(),
-          xmlParser.getParameters().get("aliveToAliveMax").intValue(),
-          xmlParser.getParameters().get("deadToAliveMin").intValue(),
-          xmlParser.getParameters().get("deadToAliveMax").intValue(), gridType, cellShape));
+              xmlParser.getParameters().get("aliveToAliveMax").intValue(),
+              xmlParser.getParameters().get("deadToAliveMin").intValue(),
+              xmlParser.getParameters().get("deadToAliveMax").intValue(), gridType, cellShape));
       case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList,
           new PercolationRecord(xmlParser.getParameters().get("percolatedNeighbors").intValue(),
               gridType, cellShape));
       case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList,
           new FireRecord(xmlParser.getParameters().get("neighborsToIgnite").intValue(),
-          xmlParser.getParameters().get("probTreeIgnites"),
-          xmlParser.getParameters().get("probTreeCreated"),gridType, cellShape));
+              xmlParser.getParameters().get("probTreeIgnites"),
+              xmlParser.getParameters().get("probTreeCreated"), gridType, cellShape));
       case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList,
-          new SchellingRecord(xmlParser.getParameters().get("proportionNeededToStay"),gridType, cellShape));
+          new SchellingRecord(xmlParser.getParameters().get("proportionNeededToStay"), gridType,
+              cellShape));
       case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
           new WatorRecord(xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
-          xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
-          xmlParser.getParameters().get("initialEnergy").intValue(),
-          xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape));
+              xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
+              xmlParser.getParameters().get("initialEnergy").intValue(),
+              xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape));
       default -> null;
     };
   }
@@ -240,9 +240,16 @@ public class Controller {
    */
   private void loadSimulationScene() {
     Map<String, EventHandler<ActionEvent>> handlers = makeMap();
-    simulationPage = new SimulationPage(xmlParser.getCellShape(), xmlParser.getType(), xmlParser.getTitle(),
+    Iterator<Cell> iter = simulationModel.getIterator();
+    List<List<Point>> allVertices = new ArrayList<>();
+    while (iter.hasNext()) {
+      allVertices.add(iter.next().getVertices());
+    }
+
+    simulationPage = new SimulationPage(xmlParser.getCellShape(), xmlParser.getType(),
+        xmlParser.getTitle(),
         xmlParser.getHeight(), xmlParser.getWidth(), handlers,
-        simulationModel.getIterator());
+        simulationModel.getIterator(), allVertices);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
 
@@ -358,7 +365,8 @@ public class Controller {
    */
   private void onResetSimulation() {
     simulationModel.createCellsAndGrid(xmlParser.getHeight(), xmlParser.getWidth(),
-        xmlParser.getStates(), simulationModel.getCellShape(xmlParser.getCellShape()), getNeighborhoodObject(
+        xmlParser.getStates(), simulationModel.getCellShape(xmlParser.getCellShape()),
+        getNeighborhoodObject(
             xmlParser.getNeighborhoodType()));
     simulationPage.updateView(simulationModel.getIterator());
     simulationPage.resetGraph();

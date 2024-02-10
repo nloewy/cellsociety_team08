@@ -2,14 +2,16 @@ package cellsociety.view.cellview;
 
 import cellsociety.Point;
 import java.util.List;
+import java.util.Map;
 
 /**
  * the view component of cells in the Wa-Tor simulation
  */
 public class WatorCellView extends CellView {
 
-  public WatorCellView(String shape, int state, double width, double height, List<Point> vertices) {
-    super(shape, state, width, height, vertices);
+  public WatorCellView(double width, double height, List<Point> vertices,
+      Map<String, Double> gridProperties) {
+    super(width, height, vertices, gridProperties);
   }
 
   /**

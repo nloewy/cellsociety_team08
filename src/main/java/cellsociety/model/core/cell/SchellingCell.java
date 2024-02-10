@@ -1,7 +1,7 @@
 package cellsociety.model.core.cell;
 
 
-import cellsociety.model.core.shape.CellShape;
+import cellsociety.model.core.shape.Shape;
 import cellsociety.model.simulation.SchellingSimulation;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class SchellingCell extends Cell {
    * @param params        map of string parameter names to their values. Description of parameters
    *                      can be found at te declaration of the instance variables.
    */
-  public SchellingCell(int initialState, int row, int col, CellShape shapeType,
+  public SchellingCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Double> params) {
     super(initialState, row, col, shapeType);
     proportionNeededToStay = params.get("proportionNeededToStay");
