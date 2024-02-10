@@ -82,10 +82,10 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
     while (gridIterator.hasNext()) {
       SchellingCell currentCell = gridIterator.next();
       currentCell.transition();
-      if (currentCell.getCurrentState() == TEMP_EMPTY) {
+      if (currentCell.getNextState() == TEMP_EMPTY) {
         myEmptyCells.add(currentCell);
       }
-      if (currentCell.getCurrentState() == TEMP_TO_MOVE) {
+      if (currentCell.getNextState() == TEMP_TO_MOVE) {
         myCellsToMove.add(currentCell);
       }
     }

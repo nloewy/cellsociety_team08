@@ -39,7 +39,9 @@ public class SchellingCell extends Cell {
     if (getCurrentState() == SchellingSimulation.EMPTY) {
       setNextState(SchellingSimulation.TEMP_EMPTY);
     }
+    else{
     handleDemographicCell();
+    }
   }
 
   /**
