@@ -1,12 +1,15 @@
 package cellsociety.view.cellview;
 
+import cellsociety.Point;
+import java.util.List;
+
 /**
  * the view component of cells in the spread of fire simulation
  */
 public class FireCellView extends CellView {
 
-  public FireCellView(int state, double width, double height) {
-    super(state, width, height);
+  public FireCellView(String shape, int state, double width, double height, List<Point> vertices) {
+    super(shape, state, width, height, vertices);
   }
 
   /**

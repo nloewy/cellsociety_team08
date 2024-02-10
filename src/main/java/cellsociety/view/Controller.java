@@ -159,8 +159,7 @@ public class Controller {
         xmlParser.getStates(), xmlParser.getType(), xmlParser.getGridEdgeType(),
         xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
-    loadSimulationScene(xmlParser.getType(), xmlParser.getTitle(), xmlParser.getHeight(),
-        xmlParser.getWidth());
+    loadSimulationScene();
   }
 
 
@@ -224,18 +223,12 @@ public class Controller {
 
   /**
    * sets up the simulation view component
-   *
-   * @param simulationType a string that specifies the type of the simulation
-   * @param simulationName a string that specifies the name of the simulation (type+pattern)
-   * @param numRows        the integer number of rows in the grid
-   * @param numCols        the integer number of columns in the grid
    */
-  private void loadSimulationScene(String simulationType, String simulationName, int numRows,
-      int numCols) {
+  private void loadSimulationScene() {
     Map<String, EventHandler<ActionEvent>> handlers = makeMap();
-    simulationPage = new SimulationPage(simulationType, simulationName, numRows, numCols, handlers,
+    simulationPage = new SimulationPage(xmlParser.getCellShape(), xmlParser.getType(), xmlParser.getTitle(),
+        xmlParser.getHeight(), xmlParser.getWidth(), handlers,
         simulationModel.getIterator());
-    System.out.println(simulationName);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
 

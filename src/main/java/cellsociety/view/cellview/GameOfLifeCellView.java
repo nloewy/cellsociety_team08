@@ -1,12 +1,15 @@
 package cellsociety.view.cellview;
 
+import cellsociety.Point;
+import java.util.List;
+
 /**
  * the view component of cells in the game of life simulation
  */
 public class GameOfLifeCellView extends CellView {
 
-  public GameOfLifeCellView(int state, double width, double height) {
-    super(state, width, height);
+  public GameOfLifeCellView(String shape, int state, double width, double height, List<Point> vertices) {
+    super(shape, state, width, height, vertices);
   }
 
   /**
