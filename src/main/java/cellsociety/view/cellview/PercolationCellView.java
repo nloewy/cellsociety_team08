@@ -1,12 +1,15 @@
 package cellsociety.view.cellview;
 
+import cellsociety.Point;
+import java.util.List;
+
 /**
  * the view component of cells in the percolation simulation
  */
 public class PercolationCellView extends CellView {
 
-  public PercolationCellView(int state, double width, double height) {
-    super(state, width, height);
+  public PercolationCellView(String shape, int state, double width, double height, List<Point> vertices) {
+    super(shape, state, width, height, vertices);
   }
 
   /**

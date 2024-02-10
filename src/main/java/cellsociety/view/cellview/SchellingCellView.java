@@ -1,12 +1,15 @@
 package cellsociety.view.cellview;
 
+import cellsociety.Point;
+import java.util.List;
+
 /**
  * the view component of cells in the Schelling's model of segregation simulation
  */
 public class SchellingCellView extends CellView {
 
-  public SchellingCellView(int state, double width, double height) {
-    super(state, width, height);
+  public SchellingCellView(String shape, int state, double width, double height, List<Point> vertices) {
+    super(shape, state, width, height, vertices);
   }
 
   /**
@@ -16,6 +19,7 @@ public class SchellingCellView extends CellView {
    */
   @Override
   public void setColors(int state) {
+    System.out.println("curr state: "+state);
     switch (state) {
       case 0 -> getCss("agent");
       case 1 -> getCss("agentX");

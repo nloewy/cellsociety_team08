@@ -8,7 +8,9 @@ import cellsociety.view.cellview.GameOfLifeCellView;
 import cellsociety.view.cellview.PercolationCellView;
 import cellsociety.view.cellview.SchellingCellView;
 import cellsociety.view.cellview.WatorCellView;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -102,7 +104,7 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String simulationType, String simulationName, int numRows, int numCols,
+  public SimulationPage(String cellShape, String simulationType, String simulationName, int numRows, int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator) {
 
@@ -124,7 +126,7 @@ public class SimulationPage {
     board = new CellView[numRows][numCols];
     for(int row = 0; row < numRows; row++){
       for(int col = 0; col < numCols; col++){
-        board[row][col] = initializeCellView(simulationType, 0,
+        board[row][col] = initializeCellView(new ArrayList<>(), cellShape, simulationType, 0,
             configDouble(GRID_WIDTH_KEY) / numCols,
             configDouble(GRID_HEIGHT_KEY) / numRows);
         grid.add(board[row][col].getCellGraphic(), col, row);
@@ -245,14 +247,14 @@ public class SimulationPage {
    * @param height         a double that specifies the height of a cell
    * @return returns a CellView object
    */
-  private CellView initializeCellView(String simulationType, int state, double width,
+  private CellView initializeCellView(List<Point> vertices, String shape, String simulationType, int state, double width,
       double height) {
     return switch (simulationType) {
-      case Controller.FIRE -> new FireCellView(state, width, height);
-      case Controller.GAME_OF_LIFE -> new GameOfLifeCellView(state, width, height);
-      case Controller.PERCOLATION -> new PercolationCellView(state, width, height);
-      case Controller.SCHELLING -> new SchellingCellView(state, width, height);
-      case Controller.WATOR -> new WatorCellView(state, width, height);
+      case Controller.FIRE -> new FireCellView(shape, state, width, height, vertices);
+      case Controller.GAME_OF_LIFE -> new GameOfLifeCellView(shape, state, width, height, vertices);
+      case Controller.PERCOLATION -> new PercolationCellView(shape, state, width, height, vertices);
+      case Controller.SCHELLING -> new SchellingCellView(shape, state, width, height, vertices);
+      case Controller.WATOR -> new WatorCellView(shape, state, width, height, vertices);
       default -> throw new IllegalStateException("Unexpected value: " + simulationType);
     };
   }
@@ -338,7 +340,6 @@ public class SimulationPage {
       }
       stateCount.replace(state,stateCount.get(state)+1);
     }
-    //TODO: update graph with new map
 
     graph.updateGraph(stateCount);
   }
