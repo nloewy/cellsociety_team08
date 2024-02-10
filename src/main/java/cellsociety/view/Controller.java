@@ -1,6 +1,11 @@
 package cellsociety.view;
 
 import cellsociety.configuration.XmlParser;
+import cellsociety.exception.InputMissingParametersException;
+import cellsociety.exception.InvalidCellStateException;
+import cellsociety.exception.InvalidFileFormatException;
+import cellsociety.exception.InvalidGridBoundsException;
+import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.neighborhood.MooreNeighborhood;
 import cellsociety.model.neighborhood.Neighborhood;
@@ -25,6 +30,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -77,30 +83,38 @@ public class Controller {
    * Constructs the controller class
    */
   public Controller() {
-    stage = new Stage();
+    try {
+      stage = new Stage();
 
-    textConfig = ResourceBundle.getBundle(TEXT_CONFIGURATION);
-    fileChooser = makeChooser(DATA_FILE_EXTENSION);
-    showMessage(AlertType.INFORMATION, String.format(textConfig.getString(UPLOAD_FILE_TEXT_KEY)));
+      textConfig = ResourceBundle.getBundle(TEXT_CONFIGURATION);
+      fileChooser = makeChooser(DATA_FILE_EXTENSION);
+      showMessage(AlertType.INFORMATION, String.format(textConfig.getString(UPLOAD_FILE_TEXT_KEY)));
 
-    File dataFile = chooseFile();
-    if (dataFile == null) {
-      return;
+      File dataFile = chooseFile();
+      if (dataFile == null) {
+        return;
+      }
+      xmlParser = new XmlParser();
+      parseFile(dataFile.getPath());
+
+      System.out.println("here");
+
+      setSimulation(); //loads view and model
+
+      speed = 1;
+
+      animation = new Timeline();
+      animation.setCycleCount(Timeline.INDEFINITE);
+      double frameDuration = 1.0 / (speed * simulationPage.configDouble(
+          SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
+      animation.getKeyFrames()
+          .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
+      animation.play();
     }
-    xmlParser = new XmlParser();
-    parseFile(dataFile.getPath());
-
-    setSimulation(); //loads view and model
-
-    speed = 1;
-
-    animation = new Timeline();
-    animation.setCycleCount(Timeline.INDEFINITE);
-    double frameDuration = 1.0 / (speed * simulationPage.configDouble(
-        SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
-    animation.getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
-    animation.play();
+    catch (InvalidFileFormatException | InvalidValueException | InvalidCellStateException | InputMissingParametersException | InvalidGridBoundsException e){
+      showMessage(AlertType.ERROR,e.getMessage());
+      Platform.exit();
+    }
   }
 
   /**
@@ -124,7 +138,7 @@ public class Controller {
    *
    * @param filePath: the file path to the xml file.
    */
-  private void parseFile(String filePath) {
+  private void parseFile(String filePath) throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException, InputMissingParametersException, InvalidCellStateException {
     xmlParser.readXml(filePath);
   }
 
