@@ -566,6 +566,12 @@ public class XmlParser {
     // parse all configuration data presented as single (not nested) fields
     parseSingleFields(element);
 
+    // check if simulation type exists
+    if (!SIMULATION_TYPES.contains(type)) {
+      throw new InvalidValueException(
+          String.format(resourceBundle.getString("NonExistentSimulationType"), type));
+    }
+
     // parse initial states
     parseStates(element.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
 
@@ -579,7 +585,6 @@ public class XmlParser {
     totalNumStates = states.size();
 
   }
-
 
 
   /**
@@ -651,12 +656,6 @@ public class XmlParser {
     if (width < 0 || height < 0) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NegativeValueError"), "Width or Height"));
-    }
-
-    // check if simulation type exists
-    if (!SIMULATION_TYPES.contains(type)) {
-      throw new InvalidValueException(
-          String.format(resourceBundle.getString("NonExistentSimulationType"), type));
     }
 
     // check if neighborhood type exists
@@ -778,15 +777,15 @@ public class XmlParser {
       }
       randomConfigurationTotalStates.put(name, value);
     }
-      Pattern pattern = Pattern.compile("num(\\d+)");
-      for (Map.Entry<String, Integer> entry : randomConfigurationTotalStates.entrySet()) {
-        String key = entry.getKey();
-        Integer repeat = entry.getValue();
-        Matcher matcher = pattern.matcher(key);
-        if (matcher.find()) {
-          int num = Integer.parseInt(matcher.group(1));
-          for (int z = 0; z < repeat; z++) {
-            resultList.add(num);
+    Pattern pattern = Pattern.compile("num(\\d+)");
+    for (Map.Entry<String, Integer> entry : randomConfigurationTotalStates.entrySet()) {
+      String key = entry.getKey();
+      Integer repeat = entry.getValue();
+      Matcher matcher = pattern.matcher(key);
+      if (matcher.find()) {
+        int num = Integer.parseInt(matcher.group(1));
+        for (int z = 0; z < repeat; z++) {
+          resultList.add(num);
         }
       }
     }
