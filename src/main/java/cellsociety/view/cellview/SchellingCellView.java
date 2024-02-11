@@ -23,9 +23,10 @@ public class SchellingCellView extends CellView {
   public void setColors(int state) {
     System.out.println("curr state: " + state);
     switch (state) {
-      case 0 -> getCss("agent");
+      case 0 -> getCss("no-agent");
       case 1 -> getCss("agentX");
-      case 2 -> getCss("no-agent");
+      case 2 -> getCss("agent");
+
       default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }

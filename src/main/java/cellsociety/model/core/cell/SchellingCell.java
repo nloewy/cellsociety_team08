@@ -37,7 +37,12 @@ public class SchellingCell extends Cell {
   @Override
   public void transition() {
     if (getCurrentState() == SchellingSimulation.EMPTY) {
-      setNextState(SchellingSimulation.TEMP_EMPTY);
+      if(isSatsfied(SchellingSimulation.GROUP_A)){
+        setNextState(SchellingSimulation.TEMP_EMPTY_A);
+      }
+      else if(isSatsfied(SchellingSimulation.GROUP_B)) {
+        setNextState(SchellingSimulation.TEMP_EMPTY_B);
+      }
     }
     else{
     handleDemographicCell();
@@ -50,10 +55,10 @@ public class SchellingCell extends Cell {
    * that indicates it would like to be moved to a vacant cell
    */
   private void handleDemographicCell() {
-    if (isSatsfied()) {
-      setNextState(SchellingSimulation.TEMP_TO_MOVE);
-    } else {
+    if (isSatsfied(getCurrentState())) {
       setNextState(getCurrentState());
+    } else {
+      setNextState(SchellingSimulation.TEMP_TO_MOVE);
     }
   }
 
@@ -65,11 +70,11 @@ public class SchellingCell extends Cell {
    *
    * @return boolean representing if current cell is satisfied
    */
-  private boolean isSatsfied() {
+  private boolean isSatsfied(int state) {
     List<SchellingCell> neighbors = getNeighbors();
     int totalNeighbors = neighbors.size();
     int numEmptyNeighbors = countNeighborsInState(SchellingSimulation.EMPTY);
-    int numNeighborsSameState = countNeighborsInState(getCurrentState());
+    int numNeighborsSameState = countNeighborsInState(state);
     return (totalNeighbors == numEmptyNeighbors
         || (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
         >= proportionNeededToStay);

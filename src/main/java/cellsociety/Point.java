@@ -100,8 +100,9 @@ public class Point {
 
   }
 
-  public String toString() {
-    return myCol + ", " + myRow;
+  @Override
+  public int hashCode() {
+    return (int) Math.round(31 * myCol + myRow);
   }
 
 
