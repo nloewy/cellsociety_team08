@@ -18,10 +18,11 @@ public class InvalidGridBoundsException extends RuntimeException {
   }
 
   /**
-   * Initializes an InvalidGridBoundsException based on a caught exception with a different message.
+   * Initializes an InvalidGridBoundsException based on a caught exception with a different
+   * message.
    *
    * @param message, message to be displayed when exception is thrown
-   * @param cause, the other exception that caused this exception
+   * @param cause,   the other exception that caused this exception
    */
   public InvalidGridBoundsException(String message, Throwable cause) {
     super(message, cause);

@@ -84,11 +84,12 @@ public class FireCell extends Cell<FireCell> {
     }
   }
 
-  public void setParams(Map<String, Double> params){
+  public void setParams(Map<String, Double> params) {
     neighborsToIgnite = (int) Math.floor(params.get("neighborsToIgnite"));
     probTreeIgnites = params.get("probTreeIgnites");
     probTreeCreated = params.get("probTreeCreated");
   }
+
   /**
    * Represents a timestep update for a FireCell. Calls the proper helper function for transitioning
    * based on the state of the Fire Cell being updated.

@@ -2,15 +2,12 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.FallingSandCell;
-import cellsociety.model.core.cell.WatorCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.FallingSandRecord;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This cellular automata simulation represents the Predator-Prey simulation developed by Alexander
@@ -64,8 +61,8 @@ public class FallingSandSimulation extends Simulation<FallingSandCell> {
 
 
   /**
-   * Transition function for Falling Sand. Iterates through each cell, starting with sand
-   * then water, then other, and calls the cell's transition function.
+   * Transition function for Falling Sand. Iterates through each cell, starting with sand then
+   * water, then other, and calls the cell's transition function.
    */
   @Override
   public void transitionFunction() {

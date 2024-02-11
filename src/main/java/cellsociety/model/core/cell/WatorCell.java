@@ -307,7 +307,8 @@ public class WatorCell extends Cell<WatorCell> {
       default -> "";
     };
   }
-  public void setParams(Map<String, Double> params){
+
+  public void setParams(Map<String, Double> params) {
     fishAgeOfReproduction = (int) Math.floor(params.get("fishAgeOfReproduction"));
     sharkAgeOfReproduction = (int) Math.floor(params.get("sharkAgeOfReproduction"));
     energyBoost = (int) Math.floor(params.get("energyBoost"));

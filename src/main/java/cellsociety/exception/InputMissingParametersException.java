@@ -21,7 +21,7 @@ public class InputMissingParametersException extends RuntimeException {
    * Initialize a new InputMissingParametersException given an error message and another exception
    *
    * @param message, error message to be displayed by GUI
-   * @param cause, the exception that prompted the InputMissingParametersException
+   * @param cause,   the exception that prompted the InputMissingParametersException
    */
   public InputMissingParametersException(String message, Throwable cause) {
     super(message, cause);

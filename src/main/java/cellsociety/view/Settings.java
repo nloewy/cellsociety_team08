@@ -21,11 +21,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Settings {
-  private Stage settingsPanel;
-  private Scene scene;
-  private VBox root;
-  private Map<String, Double> parameters;
-  private Button saveParametersButton;
+
+  private final Stage settingsPanel;
+  private final Scene scene;
+  private final VBox root;
+  private final Map<String, Double> parameters;
+  private final Button saveParametersButton;
   private List<String> avaliableEdgeTypes;
   private List<String> avaliableCellOutlines;
 
@@ -36,7 +37,8 @@ public class Settings {
   private String outline;
 
 
-  public Settings(String defaultEdge, Map<String, Double> parameters, EventHandler<ActionEvent> applyButtonHandler) {
+  public Settings(String defaultEdge, Map<String, Double> parameters,
+      EventHandler<ActionEvent> applyButtonHandler) {
     settingsPanel = new Stage();
     settingsPanel.setTitle("Parameter Settings");
 
@@ -48,13 +50,12 @@ public class Settings {
 
     root = new VBox(10);
     root.setPadding(new Insets(10));
-    scene = new Scene(root, 350,400);
+    scene = new Scene(root, 350, 400);
     settingsPanel.setScene(scene);
 
     setPanelFields();
     setEditEdge(defaultEdge);
     setEditOutline(outline);
-
 
     saveParametersButton = new Button("Apply");
     saveParametersButton.setOnAction(applyButtonHandler);
@@ -66,6 +67,7 @@ public class Settings {
     avaliableEdgeTypes.add("Normal");
     avaliableEdgeTypes.add("Warped");
   }
+
   private void initializeOutlineTypes() {
     avaliableCellOutlines = new ArrayList<>();
     avaliableCellOutlines.add("On");
@@ -107,11 +109,12 @@ public class Settings {
   }
 
   private void setPanelFields() {
-    for (Entry<String, Double> entry : parameters.entrySet()){
+    for (Entry<String, Double> entry : parameters.entrySet()) {
       Label spinnerLabel = new Label(entry.getKey());
       Spinner<Double> numberSpinner = new Spinner<>();
       numberSpinner.setEditable(true);
-      SpinnerValueFactory.DoubleSpinnerValueFactory valueFactory = new DoubleSpinnerValueFactory(0,100,entry.getValue(),0.1);
+      SpinnerValueFactory.DoubleSpinnerValueFactory valueFactory = new DoubleSpinnerValueFactory(0,
+          100, entry.getValue(), 0.1);
       numberSpinner.setValueFactory(valueFactory);
       numberSpinner.setPrefWidth(80);
 
@@ -131,8 +134,7 @@ public class Settings {
 
   public void saveChanges() {
     for (Node node : root.getChildren()) {
-      if (node instanceof HBox) {
-        HBox hbox = (HBox) node;
+      if (node instanceof HBox hbox) {
         for (Node child : hbox.getChildren()) {
           if (child instanceof Spinner) {
             Spinner<Double> spinner = (Spinner<Double>) child;
@@ -152,26 +154,27 @@ public class Settings {
         }
       }
     }
-      // Do something with the updated parameters map
-      System.out.println("Updated parameters: " + parameters);
+    // Do something with the updated parameters map
+    System.out.println("Updated parameters: " + parameters);
   }
-  public boolean getOutlineType(){
+
+  public boolean getOutlineType() {
     return outline == "On";
   }
 
-  public void showSettingsPanel(){
+  public void showSettingsPanel() {
     settingsPanel.show();
   }
 
-  public void closeSettingsPanel(){
+  public void closeSettingsPanel() {
     settingsPanel.hide();
   }
 
-  public Map<String, Double> getNewParameters(){
+  public Map<String, Double> getNewParameters() {
     return parameters;
   }
 
-  public String getNewEdgeType(){
+  public String getNewEdgeType() {
     return edge;
   }
 

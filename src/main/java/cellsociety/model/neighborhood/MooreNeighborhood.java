@@ -18,9 +18,9 @@ public class MooreNeighborhood extends Neighborhood {
    * Abstract method that determines if two cells are neighbors under a certain grid. This method
    * uses the Moore criterion for neighbors, which requires that the two cells share a vertex
    *
-   * @param cell1  potential neighbor of cell 2
-   * @param cell2  potential neighbor of cell 1
-   * @param grid   grid object for the simulation
+   * @param cell1 potential neighbor of cell 2
+   * @param cell2 potential neighbor of cell 1
+   * @param grid  grid object for the simulation
    * @return true if and only if cell1 and cell2 are Moore Neighbors
    */
   @Override
