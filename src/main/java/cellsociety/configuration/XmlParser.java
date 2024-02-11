@@ -73,9 +73,11 @@ public class XmlParser {
   public static final Set<String> SCHELLING_PARAMETERS = new HashSet<>(
       List.of("proportionNeededToStay"));
   public static final Set<String> WATOR_PARAMETERS = new HashSet<>(
-      Arrays.asList("fishAgeOfReproduction", "sharkAgeOfReproduction", "energyBoost", "initialEnergy"));
+      Arrays.asList("fishAgeOfReproduction", "sharkAgeOfReproduction", "energyBoost",
+          "initialEnergy"));
   public static final Set<String> SUGAR_PARAMETERS = new HashSet<>(
-      Arrays.asList("minVision", "maxVision", "minMetabolism", "maxMetabolism", "minInitialSugar", "maxInitialSugar", "growBackRate", "numAgents"));
+      Arrays.asList("minVision", "maxVision", "minMetabolism", "maxMetabolism", "minInitialSugar",
+          "maxInitialSugar", "growBackRate", "numAgents"));
 
   // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
@@ -877,7 +879,8 @@ public class XmlParser {
    *
    * @param name, name of the parameter
    * @return default value of the parameter
-   * @throws InvalidValueException when simulation type does not exist or a parameter does not exist for given simulation
+   * @throws InvalidValueException when simulation type does not exist or a parameter does not exist
+   *                               for given simulation
    */
   private String assignDefaultValueToParameter(String name) throws InvalidValueException {
     return switch (type) {
@@ -887,7 +890,8 @@ public class XmlParser {
       case SCHELLING_NAME -> findDefaultParameter(SCHELLING_PARAMETERS, name);
       case WATOR_NAME -> findDefaultParameter(WATOR_PARAMETERS, name);
       case SUGAR_NAME -> findDefaultParameter(SUGAR_PARAMETERS, name);
-      default -> throw new InvalidValueException(String.format(resourceBundle.getString("NonExistentSimulationType"), type));
+      default -> throw new InvalidValueException(
+          String.format(resourceBundle.getString("NonExistentSimulationType"), type));
     };
   }
 
@@ -895,19 +899,21 @@ public class XmlParser {
    * Find default value for a given parameter in the given simulation's set of parameters
    *
    * @param parameters, list of valid parameters for the give simulation
-   * @param name, name of the parameter with missing value
+   * @param name,       name of the parameter with missing value
    * @return String default value for the given parameter
    * @throws InvalidValueException when the given parameter does not exist for given simulation
    */
-  private String findDefaultParameter(Set<String> parameters, String name) throws InvalidValueException{
+  private String findDefaultParameter(Set<String> parameters, String name)
+      throws InvalidValueException {
     ResourceBundle defaultParametersResourceBundle = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + "DefaultParameters");
-    for (String parameter: parameters) {
+    for (String parameter : parameters) {
       if (name.equals(parameter) && name.equals("agentProportion")) {
-        int agentProportion = (int) Math.round(Double.parseDouble (defaultParametersResourceBundle.getString("agentProportion")) * getHeight() * getWidth());
+        int agentProportion = (int) Math.round(
+            Double.parseDouble(defaultParametersResourceBundle.getString("agentProportion"))
+                * getHeight() * getWidth());
         return Integer.toString(agentProportion);
-      }
-      else if (name.equals(parameter)) {
+      } else if (name.equals(parameter)) {
         return defaultParametersResourceBundle.getString(parameter);
       }
     }
@@ -1098,7 +1104,7 @@ public class XmlParser {
    * @param doc,  Document object being written to
    * @param path, specified path to which the new file will be stored
    * @throws InvalidFileFormatException, when errors occur from converting to XML file format
-   * @throws SavingFileException, when errors occur during saving the XML file
+   * @throws SavingFileException,        when errors occur during saving the XML file
    */
   private void writeXml(Document doc, String path) throws InvalidFileFormatException,
       SavingFileException {
