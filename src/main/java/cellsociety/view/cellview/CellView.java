@@ -12,7 +12,6 @@ import javafx.scene.shape.StrokeType;
 
 public abstract class CellView extends Region {
 
-
   private Polygon shape;
 
   public CellView(double width, double height, List<Point> vertices,
