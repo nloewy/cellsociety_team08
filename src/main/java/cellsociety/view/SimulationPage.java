@@ -2,13 +2,14 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.cell.SugarCell;
 import cellsociety.view.cellview.CellView;
 import cellsociety.view.cellview.FireCellView;
 import cellsociety.view.cellview.GameOfLifeCellView;
 import cellsociety.view.cellview.PercolationCellView;
 import cellsociety.view.cellview.SchellingCellView;
+import cellsociety.view.cellview.SugarCellView;
 import cellsociety.view.cellview.WatorCellView;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Polygon;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -106,7 +106,7 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String cellShape, String simulationType, String simulationName, int numRows,
+  public SimulationPage(String simulationType, String simulationName, int numRows,
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
@@ -149,6 +149,8 @@ public class SimulationPage {
               new SchellingCellView(width, height, allVertices.get(ind), gridProperties);
           case Controller.WATOR ->
               new WatorCellView(width, height, allVertices.get(ind), gridProperties);
+          case Controller.SUGAR ->
+              new SugarCellView(width, height, allVertices.get(ind), gridProperties);
           default -> throw new IllegalStateException("Unexpected value: " + simulationType);
         };
         Shape shape = board[row][col].getCellGraphic();
@@ -323,7 +325,6 @@ public class SimulationPage {
       int row = (int) location.getRow();
       int state = c.getCurrentState();
       board[row][col].updateState(state);
-
       if (!stateCount.containsKey(state)) {
         stateCount.put(state, 0);
       }

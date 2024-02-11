@@ -48,7 +48,7 @@ public class WatorCell extends Cell<WatorCell> {
    *                      grid
    * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
    * @param params        map of string parameter names to their values. Description of parameters
-   *                      can be found at te declaration of the instance variables.
+   *                      can be found at the declaration of the instance variables.
    */
   public WatorCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Integer> params) {

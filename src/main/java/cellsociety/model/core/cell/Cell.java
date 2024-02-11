@@ -159,4 +159,31 @@ public abstract class Cell<T extends Cell<T>> {
   public void setNeighborhood(List<T> neighborhood) {
     myNeighbors = neighborhood;
   }
+
+  public double distance(T cell) {
+    if(cell==null){ return Integer.MAX_VALUE;}
+    return Math.pow((getCentroid().getCol()-cell.getCentroid().getCol()),2) + Math.pow((getCentroid().getRow()-cell.getCentroid().getRow()),2);
+  }
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (other == null) {
+      return false;
+    }
+    if (getClass() != other.getClass()) {
+      return false;
+    }
+    Cell other1 = (Cell) other;
+    return (other1.getCentroid().getRow() == getCentroid().getRow() &&
+        other1.getCentroid().getCol() == getCentroid().getCol());
+  }
+
+  @Override
+  public int hashCode() {
+    return getCentroid().hashCode();
+  }
+
+
 }

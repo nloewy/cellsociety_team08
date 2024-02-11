@@ -6,7 +6,7 @@ import cellsociety.model.simulation.SchellingSimulation;
 import java.util.List;
 import java.util.Map;
 
-public class SchellingCell extends Cell {
+public class SchellingCell extends Cell<SchellingCell> {
 
   /**
    * Proportion of a cell's non-empty neighbors that share a state with them
@@ -22,7 +22,7 @@ public class SchellingCell extends Cell {
    *                      grid
    * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
    * @param params        map of string parameter names to their values. Description of parameters
-   *                      can be found at te declaration of the instance variables.
+   *                      can be found at the declaration of the instance variables.
    */
   public SchellingCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Double> params) {

@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Noah Loewy
  */
 
-public class LifeCell extends Cell {
+public class LifeCell extends Cell<LifeCell> {
 
   /**
    * Minimum number of alive neighbors required for an alive cell to remain alive and avoid death by
@@ -41,7 +41,7 @@ public class LifeCell extends Cell {
    *                      grid
    * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
    * @param params        map of string parameter names to their values. Description of parameters
-   *                      can be found at te declaration of the instance variables.
+   *                      can be found at the declaration of the instance variables.
    */
   public LifeCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Integer> params) {
