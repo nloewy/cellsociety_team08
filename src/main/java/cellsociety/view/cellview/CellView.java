@@ -34,6 +34,7 @@ public abstract class CellView{
     boxLocationY /= vertices.size();
     setStroke(shape);
 
+
     textBox = new Label("X");
 
 //    getChildren().addAll(shape, textBox); // Add shape and text box as children of CellView
@@ -41,10 +42,18 @@ public abstract class CellView{
 
   private void setStroke(Shape shape) {
     shape.setStroke(Color.BLACK); //TODO: read color from css file
-    shape.setStrokeWidth(1);
+    shape.setStrokeWidth(3);
     shape.setStrokeType(StrokeType.OUTSIDE);
   }
 
+  public void toggleStrokeWidth(boolean onOff) {
+    if(onOff) {
+      shape.setStrokeWidth(3);
+    }
+    else {
+      shape.setStrokeWidth(0);
+    }
+  }
   public abstract void setColors(int state);
 
   public void updateState(int state, String text) {

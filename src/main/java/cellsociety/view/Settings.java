@@ -27,8 +27,13 @@ public class Settings {
   private Map<String, Double> parameters;
   private Button saveParametersButton;
   private List<String> avaliableEdgeTypes;
+  private List<String> avaliableCellOutlines;
+
   private ComboBox<String> edgeTypeComboBox;
+  private ComboBox<String> outlineTypeComboBox;
+
   private String edge;
+  private String outline;
 
 
   public Settings(String defaultEdge, Map<String, Double> parameters, EventHandler<ActionEvent> applyButtonHandler) {
@@ -36,8 +41,10 @@ public class Settings {
     settingsPanel.setTitle("Parameter Settings");
 
     this.edge = defaultEdge;
+    this.outline = "On";
     this.parameters = parameters;
     initializeEdgeTypes();
+    initializeOutlineTypes();
 
     root = new VBox(10);
     root.setPadding(new Insets(10));
@@ -46,6 +53,8 @@ public class Settings {
 
     setPanelFields();
     setEditEdge(defaultEdge);
+    setEditOutline(outline);
+
 
     saveParametersButton = new Button("Apply");
     saveParametersButton.setOnAction(applyButtonHandler);
@@ -53,9 +62,14 @@ public class Settings {
   }
 
   private void initializeEdgeTypes() {
-    avaliableEdgeTypes = new ArrayList();
+    avaliableEdgeTypes = new ArrayList<>();
     avaliableEdgeTypes.add("Normal");
     avaliableEdgeTypes.add("Warped");
+  }
+  private void initializeOutlineTypes() {
+    avaliableCellOutlines = new ArrayList<>();
+    avaliableCellOutlines.add("On");
+    avaliableCellOutlines.add("Off");
   }
 
   private void setEditEdge(String defaultEdge) {
@@ -73,6 +87,23 @@ public class Settings {
       // You can associate the selected edge type with a label here
     });
     root.getChildren().add(edgeTypeBox);
+  }
+
+  private void setEditOutline(String defaultOutline) {
+    HBox outlineTypeBox = new HBox(10); // Create an HBox to contain the label and the ComboBox
+    Label outlineTypeLabel = new Label("Outline Type");
+
+    outlineTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableCellOutlines));
+    outlineTypeComboBox.getSelectionModel().select(defaultOutline); // Set default selection
+
+    outlineTypeBox.getChildren().addAll(outlineTypeLabel, outlineTypeComboBox);
+
+    outlineTypeComboBox.setOnAction(event -> {
+      String selectedOutlineType = outlineTypeComboBox.getSelectionModel().getSelectedItem();
+      System.out.println("Selected outline type: " + selectedOutlineType);
+      // You can associate the selected edge type with a label here
+    });
+    root.getChildren().add(outlineTypeBox);
   }
 
   private void setPanelFields() {
@@ -109,19 +140,23 @@ public class Settings {
             double value = spinner.getValue();
             parameters.put(label, value);
           }
-          if (child instanceof ComboBox){
-            ComboBox<String> edgeDropdown = (ComboBox<String>) child;
-            edge = edgeDropdown.getValue();
+          if (child instanceof ComboBox) {
+            if (child.equals(outlineTypeComboBox)) {
+              ComboBox<String> outlineDropdown = (ComboBox<String>) child;
+              outline = outlineDropdown.getValue();
+            } else if (child.equals(edgeTypeComboBox)) {
+              ComboBox<String> edgeDropdown = (ComboBox<String>) child;
+              edge = edgeDropdown.getValue();
+            }
           }
         }
       }
     }
-    // Do something with the updated parameters map
-    System.out.println("Updated parameters: " + parameters);
+      // Do something with the updated parameters map
+      System.out.println("Updated parameters: " + parameters);
   }
-
-  public void saveEdgeType(){
-
+  public boolean getOutlineType(){
+    return outline == "On";
   }
 
   public void showSettingsPanel(){
