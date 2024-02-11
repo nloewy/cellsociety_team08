@@ -96,7 +96,6 @@ public class SimulationPage {
   public static final String ABOUT_BUTTON_KEY = "SimulationInfoButton";
   public static final String SAVE_BUTTON_KEY = "SaveSimulationButton";
   public static final String SPEED_LABEL_TEXT_KEY = "speedLabel";
-
   private Map<String, Double> gridProperties;
 
   /**
@@ -113,7 +112,6 @@ public class SimulationPage {
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
-
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
 
@@ -274,6 +272,13 @@ public class SimulationPage {
     root.getChildren().remove(graph.getGraphSection());
   }
 
+  public void toggleOnOffCellOutlines (boolean onOffCellOutlines) {
+    for(int row = 0; row < board.length; row++) {
+      for(int col = 0; col<board[0].length; col++) {
+        board[row][col].toggleStrokeWidth(onOffCellOutlines);
+      }
+    }
+  }
 
   /**
    * adds an event listener for the speed slider

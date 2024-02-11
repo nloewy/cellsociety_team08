@@ -168,6 +168,7 @@ public class Controller {
     settingsPanel.closeSettingsPanel();
     simulationModel.setParams(settingsPanel.getNewParameters());
     simulationModel.setEdgeType(settingsPanel.getNewEdgeType());
+    simulationPage.toggleOnOffCellOutlines(settingsPanel.getOutlineType());
   }
 
   /**
