@@ -133,6 +133,7 @@ public class Controller {
 
 
   private void parseFile(String filePath) throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException, InputMissingParametersException, InvalidCellStateException {
+    xmlParser = new XmlParser();
     xmlParser.readXml(filePath);
   }
 
