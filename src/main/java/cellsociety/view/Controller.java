@@ -53,6 +53,7 @@ public class Controller {
   private ResourceBundle textConfig;
   private FileChooser fileChooser;
   private Settings settingsPanel;
+  private Boolean settingsChanged = false;
 
 
   //paths (will stay)
@@ -145,7 +146,14 @@ public class Controller {
         xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
     loadSimulationScene();
-    settingsPanel = new Settings(xmlParser.getParameters());
+    settingsPanel = new Settings(xmlParser.getParameters(), event -> onApplyClicked());
+  }
+
+  private void onApplyClicked() {
+    settingsChanged = true;
+    settingsPanel.saveParameters();
+    settingsPanel.closeSettingsPanel();
+//    simulationModel.setParams(settingsPanel.getNewParameters());
   }
 
   private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
@@ -260,6 +268,11 @@ public class Controller {
         newStates.add(iterator.next().getCurrentState());
       }
       xmlParser.setStates(newStates);
+
+      if (settingsChanged){
+        xmlParser.setParameters(settingsPanel.getNewParameters());
+      }
+
       xmlParser.createXml("savedSimulation" + xmlParser.getType(),
           xmlParser.getType().toLowerCase());
 
