@@ -22,14 +22,6 @@ Main extends Application {
 
 
   /**
-   * @see Application#start(Stage)
-   */
-  @Override
-  public void start(Stage primaryStage) {
-    new Controller();
-  }
-
-  /**
    * Start the program, give complete control to JavaFX.
    * <p>
    * Default version of main() is actually included within JavaFX, so this is not technically
@@ -37,5 +29,13 @@ Main extends Application {
    */
   public static void main(String[] args) {
     launch(args);
+  }
+
+  /**
+   * @see Application#start(Stage)
+   */
+  @Override
+  public void start(Stage primaryStage) {
+    new Controller();
   }
 }

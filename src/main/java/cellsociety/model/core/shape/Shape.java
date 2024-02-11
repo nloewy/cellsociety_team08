@@ -13,14 +13,15 @@ import java.util.List;
  */
 public interface Shape {
 
-  /** Returns a list of vertices representing the corners of the shape associated with a cell on a
+  /**
+   * Returns a list of vertices representing the corners of the shape associated with a cell on a
    * grid. The vertices are calculated based on the provided row and column indices representing the
    * top-left corner of the cell.
    *
-   * @param row  the row index of the top-left corner of the cell
-   * @param col  the column index of the top-left corner of the cell
+   * @param row the row index of the top-left corner of the cell
+   * @param col the column index of the top-left corner of the cell
    * @return a list of Point objects representing the vertices of the shape
    */
-  public List<Point> getVertices(int row, int col);
+  List<Point> getVertices(int row, int col);
 
 }

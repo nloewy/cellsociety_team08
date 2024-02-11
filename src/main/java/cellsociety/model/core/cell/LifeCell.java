@@ -93,7 +93,7 @@ public class LifeCell extends Cell<LifeCell> {
     }
   }
 
-  public void setParams(Map<String, Double> params){
+  public void setParams(Map<String, Double> params) {
     aliveToAliveMin = (int) Math.floor(params.get("aliveToAliveMin"));
     aliveToAliveMax = (int) Math.floor(params.get("aliveToAliveMax"));
     deadToAliveMin = (int) Math.floor(params.get("deadToAliveMin"));

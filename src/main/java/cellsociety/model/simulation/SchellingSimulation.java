@@ -27,14 +27,13 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
   public static final int TEMP_EMPTY_B = 5;
 
 
+  private final List<SchellingCell> myCellsToMoveA;
+  private final List<SchellingCell> myCellsToMoveB;
 
-  private List<SchellingCell> myCellsToMoveA;
-  private List<SchellingCell> myCellsToMoveB;
+  private final List<SchellingCell> myEmptyCellsA;
+  private final List<SchellingCell> myEmptyCellsB;
 
-  private List<SchellingCell> myEmptyCellsA;
-  private List<SchellingCell> myEmptyCellsB;
-
-  private double proportionNeededToStay;
+  private final double proportionNeededToStay;
 
   /**
    * Initializes a SchellingSimulation object
@@ -80,8 +79,9 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
    * Updates next state of cells so that in a random order, cells that are not satisfied can move to
    * empty cells that will satisfy them.
    *
-   * @param emptyList, a list of empty cells which would satisfy the agents in toMoveList.
-   * @param toMoveList, a list of cells that would be satisfied if they move to a cell in empty list
+   * @param emptyList,  a list of empty cells which would satisfy the agents in toMoveList.
+   * @param toMoveList, a list of cells that would be satisfied if they move to a cell in empty
+   *                    list
    */
   private void moveCells(List<SchellingCell> emptyList, List<SchellingCell> toMoveList) {
     Collections.shuffle(emptyList);
@@ -108,6 +108,7 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
     myEmptyCellsA.clear();
     myEmptyCellsB.clear();
   }
+
   /**
    * Transition function for Segregation Model. Iterates through each cell and calls the transition
    * function, which will update the cell's next state to highlight if it would like to move to a
@@ -127,10 +128,10 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
       if (currentCell.getNextState() == TEMP_EMPTY_B) {
         myEmptyCellsB.add(currentCell);
       }
-      if (currentCell.getNextState() == TEMP_TO_MOVE && currentCell.getCurrentState()==GROUP_A) {
+      if (currentCell.getNextState() == TEMP_TO_MOVE && currentCell.getCurrentState() == GROUP_A) {
         myCellsToMoveA.add(currentCell);
       }
-      if (currentCell.getNextState() == TEMP_TO_MOVE && currentCell.getCurrentState()==GROUP_B) {
+      if (currentCell.getNextState() == TEMP_TO_MOVE && currentCell.getCurrentState() == GROUP_B) {
         myCellsToMoveB.add(currentCell);
       }
     }

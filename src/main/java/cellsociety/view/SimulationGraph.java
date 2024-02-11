@@ -9,10 +9,10 @@ import javafx.scene.layout.StackPane;
 
 public class SimulationGraph {
 
-  private StackPane pane;
-  private LineChart<Number, Number> lineChart;
-  private XYChart.Series<Number, Number> series;
-  private Map<Integer, XYChart.Series<Number, Number>> seriesMap;
+  private final StackPane pane;
+  private final LineChart<Number, Number> lineChart;
+  private final XYChart.Series<Number, Number> series;
+  private final Map<Integer, XYChart.Series<Number, Number>> seriesMap;
 
   private int step;
 

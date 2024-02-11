@@ -21,9 +21,9 @@ public class VonNeumannNeighborhood extends Neighborhood {
    * uses the Von Neumann criterion for neighbors, which requires that the two cells share a vertex
    * and be directly vertically or horizontally adjacent to each other
    *
-   * @param cell1  potential neighbor of cell 2
-   * @param cell2  potential neighbor of cell 1
-   * @param grid   grid object for the simulation
+   * @param cell1 potential neighbor of cell 2
+   * @param cell2 potential neighbor of cell 1
+   * @param grid  grid object for the simulation
    * @return true if and only if cell1 and cell2 are Von Neumann Neighbors
    */
   @Override

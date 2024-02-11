@@ -96,14 +96,14 @@ public class XmlParser {
       Arrays.asList("0", "1", "2", "3"));
 
   public static final Map<String, Set<String>> SIMULATION_CELL_STATES = new HashMap<>() {{
-      put(FIRE_NAME, FIRE_CELL_STATES);
-      put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
-      put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
-      put(SCHELLING_NAME, SCHELLING_CELL_STATES);
-      put(WATOR_NAME, WATOR_CELL_STATES);
-      put(SUGAR_NAME, SUGAR_CELL_STATES);
-      put(FALLING_NAME, FALLING_CELL_STATES);
-    }};
+    put(FIRE_NAME, FIRE_CELL_STATES);
+    put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
+    put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
+    put(SCHELLING_NAME, SCHELLING_CELL_STATES);
+    put(WATOR_NAME, WATOR_CELL_STATES);
+    put(SUGAR_NAME, SUGAR_CELL_STATES);
+    put(FALLING_NAME, FALLING_CELL_STATES);
+  }};
 
   // define names for the field as written in the XML configuration files
   public static final String TYPE_FIELD_NAME = "type";
@@ -567,7 +567,6 @@ public class XmlParser {
     // parse initial states
     parseStates(element.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
 
-
     // parse parameters
     parseParameters(element.getElementsByTagName(PARAMETERS_FIELD_NAME).item(0));
 
@@ -839,22 +838,18 @@ public class XmlParser {
           yield defaultParametersResourceBundle.getString("maxVision");
         } else if (name.equals("minInitialSugar")) {
           yield defaultParametersResourceBundle.getString("minInitialSugar");
-        }
-        else if (name.equals("maxInitialSugar")) {
+        } else if (name.equals("maxInitialSugar")) {
           yield defaultParametersResourceBundle.getString("maxInitialSugar");
-        }
-        else if (name.equals("minMetabolism")) {
+        } else if (name.equals("minMetabolism")) {
           yield defaultParametersResourceBundle.getString("minMetabolism");
-        }
-        else if (name.equals("maxMetabolism")) {
+        } else if (name.equals("maxMetabolism")) {
           yield defaultParametersResourceBundle.getString("maxMetabolism");
-        }else if (name.equals("growBackRate")) {
+        } else if (name.equals("growBackRate")) {
           yield defaultParametersResourceBundle.getString("growBackRate");
-        }
-          else {
-            yield  Integer.toString((int) Math.round(Double.parseDouble
-                (defaultParametersResourceBundle.getString("agentProportion"))
-                *getHeight()*getWidth()));
+        } else {
+          yield Integer.toString((int) Math.round(Double.parseDouble
+              (defaultParametersResourceBundle.getString("agentProportion"))
+              * getHeight() * getWidth()));
         }
       }
       default -> "";

@@ -30,8 +30,6 @@ public class FallingSandCell extends Cell<FallingSandCell> {
   }
 
 
-
-
   /**
    * Handles transition of open cell in PercolationSimulation. Open cells with at least
    * neighersPercolatedRequired will become percolated, and otherwise will remain open.
@@ -39,51 +37,51 @@ public class FallingSandCell extends Cell<FallingSandCell> {
   private void handleSandCell() {
     FallingSandCell bestOption = null;
     double bestSlope = 0;
-    for(FallingSandCell cell : getNeighbors()) {
-        double newSlope = (cell.getCentroid().getRow() - getCentroid().getRow()) /
-            (cell.getCentroid().getCol() - getCentroid().getCol());
-        if (cell.getCentroid().getRow() > getCentroid().getRow()
-            && Math.abs(newSlope) > bestSlope) {
-          bestOption = cell;
-          bestSlope = Math.abs(newSlope);
+    for (FallingSandCell cell : getNeighbors()) {
+      double newSlope = (cell.getCentroid().getRow() - getCentroid().getRow()) /
+          (cell.getCentroid().getCol() - getCentroid().getCol());
+      if (cell.getCentroid().getRow() > getCentroid().getRow()
+          && Math.abs(newSlope) > bestSlope) {
+        bestOption = cell;
+        bestSlope = Math.abs(newSlope);
 
       }
     }
-    if(bestOption == null) {
+    if (bestOption == null) {
       setNextState(getCurrentState());
       return;
     }
-    if (bestOption.getCurrentState() == FallingSandSimulation.WATER){
+    if (bestOption.getCurrentState() == FallingSandSimulation.WATER) {
       setNextState(FallingSandSimulation.WATER);
       bestOption.setNextState(FallingSandSimulation.SAND);
-    }
-    else if(bestOption.getCurrentState() == FallingSandSimulation.EMPTY) {
+    } else if (bestOption.getCurrentState() == FallingSandSimulation.EMPTY) {
       bestOption.setNextState(FallingSandSimulation.SAND);
       setNextState(FallingSandSimulation.EMPTY);
       setCurrentState(FallingSandSimulation.EMPTY);
 
-    }
-    else
+    } else {
       setNextState(getCurrentState());
     }
+  }
 
   private void handleWaterCell() {
     List<FallingSandCell> options = new ArrayList<>();
     System.out.println("_______");
     for (FallingSandCell cell : getNeighbors()) {
       if (cell.getCentroid().getRow() >= getCentroid().getRow()) {
-        if(cell.getCurrentState()==FallingSandSimulation.EMPTY && cell.getNextState() == PLACEHOLDER) {
+        if (cell.getCurrentState() == FallingSandSimulation.EMPTY
+            && cell.getNextState() == PLACEHOLDER) {
           options.add(cell);
         }
       }
     }
-    if(options.isEmpty()) {
+    if (options.isEmpty()) {
       setNextState(getCurrentState());
       return;
     }
     Collections.shuffle(options);
     int index = 0;
-    while(index<options.size() && options.get(index).getNextState()!=PLACEHOLDER) {
+    while (index < options.size() && options.get(index).getNextState() != PLACEHOLDER) {
       index++;
     }
     if (index == options.size()) {
@@ -102,7 +100,6 @@ public class FallingSandCell extends Cell<FallingSandCell> {
   }
 
 
-
   /**
    * Represents a timestep update for a PercolationCell. Calls the proper helper function for
    * transitioning based on the state of the Percolation Cell being updated.
@@ -114,14 +111,13 @@ public class FallingSandCell extends Cell<FallingSandCell> {
       handleSandCell();
     } else if (getCurrentState() == FallingSandSimulation.WATER) {
       handleWaterCell();
-    }
-    else{
+    } else {
       setNextState(getCurrentState());
     }
-    System.out.println("=>"+getNextState());
+    System.out.println("=>" + getNextState());
   }
 
-  public void setParams(Map<String, Double> params){
+  public void setParams(Map<String, Double> params) {
   }
 
   public String getText() {
