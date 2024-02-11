@@ -30,7 +30,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
   private final int initialEnergy;
 
   /**
-   * Initializes a SchellingSimulation object
+   * Initializes a WatorSimulation object
    *
    * @param row,       the number of rows in the 2-dimensional grid
    * @param col,       the number of columns in the 2-dimensional grid

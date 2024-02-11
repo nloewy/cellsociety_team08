@@ -26,13 +26,23 @@ public class SugarSimulation extends Simulation<SugarCell> {
   public static final int MAX_AVAILABLE_SUGAR = 4;
   private final int minVision;
   private final int maxVision;
-
   private final int minInitialSugar;
   private final int maxInitialSugar;
   private final int minMetabolism;
   private final int maxMetabolism;
   private final int numAgents;
   private final int growBackRate;
+
+  /**
+   * Initializes a SugarSimulation object
+   *
+   * @param row,       the number of rows in the 2-dimensional grid
+   * @param col,       the number of columns in the 2-dimensional grid
+   * @param hoodType,  the definition of neighbors
+   * @param stateList, a list of the integer representation of each cells state in row major order
+   * @param r,         a record of all parameters needed for Sugar Simulation. Description of
+   *                   parameters can be found in the SugarCell class
+   */
 
   public SugarSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       SugarRecord r) {
@@ -45,7 +55,6 @@ public class SugarSimulation extends Simulation<SugarCell> {
     maxMetabolism = r.maxMetabolism();
     growBackRate = r.growBackRate();
     numAgents = r.numAgents();
-
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 
@@ -83,8 +92,8 @@ public class SugarSimulation extends Simulation<SugarCell> {
 
 
   /**
-   * Transition function for Wator World. Iterates through each cell, starting with all the sharks,
-   * then fish, then empty, and calls the cell's transition function.
+   * Transition function for Sugar Scape. Iterates through each cell, starting with all the agents,
+   * then empty cells, and calls the cell's transition function.
    */
   @Override
   public void transitionFunction() {

@@ -43,6 +43,10 @@ public abstract class Simulation<T extends Cell> {
     myGridType = gridType;
   }
 
+  /**
+   * Updates the method for calculating neighbors on edges
+   * @param newEdgeType, a string representing the new edge type.
+   */
   public void setEdgeType(String newEdgeType) {
     Iterator<T> iter = getIterator();
     List<T> lst = new ArrayList<>();
@@ -54,10 +58,15 @@ public abstract class Simulation<T extends Cell> {
     initializeMyGrid(myRow, myCol, lst);
   }
 
+  /**
+   * Initializes grid object
+   * @param row, number of rows in simulation
+   * @param col, number of columns in simulation
+   * @param cellList, all cells in simulation, listed in row major order
+   */
   public void initializeMyGrid(int row, int col, List<T> cellList) {
     myRow = row;
     myCol = col;
-    System.out.println(myGridType);
     myGrid = switch (myGridType) {
       case "Normal" -> new Grid(row, col, cellList);
       case "Warped" -> new WarpedGrid(row, col, cellList);
@@ -115,13 +124,6 @@ public abstract class Simulation<T extends Cell> {
     }
   }
 
-  public Neighborhood getNeighborhood() {
-    return myNeighborhood;
-  }
-
-  public Grid getGrid() {
-    return myGrid;
-  }
 
   /**
    * Retrieves the Grid's object that can access the grid of cells while hiding the Data Structure
@@ -129,11 +131,16 @@ public abstract class Simulation<T extends Cell> {
    *
    * @return Iterator object that can iterate through my grid
    */
+
   public Iterator<T> getIterator() {
     return myGrid.iterator();
   }
 
 
+  /**
+   * Calls the update parameters method for each individual cell in the simulation
+   * @param newParameters, the updated parameter values
+   */
   public void setParams(Map<String, Double> newParameters) {
     Iterator<T> iterator = myGrid.iterator();
     while (iterator.hasNext()) {

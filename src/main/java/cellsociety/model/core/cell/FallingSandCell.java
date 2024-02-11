@@ -31,8 +31,8 @@ public class FallingSandCell extends Cell<FallingSandCell> {
 
 
   /**
-   * Handles transition of open cell in PercolationSimulation. Open cells with at least
-   * neighersPercolatedRequired will become percolated, and otherwise will remain open.
+   * Handles transition of sand cell in Falling Sand Cell percolation. These sand cells will move
+   * downward, replacing empty cells or water cells when possible, each timestep.
    */
   private void handleSandCell() {
     FallingSandCell bestOption = null;
@@ -64,9 +64,12 @@ public class FallingSandCell extends Cell<FallingSandCell> {
     }
   }
 
+  /**
+   * Handles transition of water cell, so it randomly moves horizontally or downward into an empty
+   * space
+   */
   private void handleWaterCell() {
     List<FallingSandCell> options = new ArrayList<>();
-    System.out.println("_______");
     for (FallingSandCell cell : getNeighbors()) {
       if (cell.getCentroid().getRow() >= getCentroid().getRow()) {
         if (cell.getCurrentState() == FallingSandSimulation.EMPTY
@@ -74,10 +77,6 @@ public class FallingSandCell extends Cell<FallingSandCell> {
           options.add(cell);
         }
       }
-    }
-    if (options.isEmpty()) {
-      setNextState(getCurrentState());
-      return;
     }
     Collections.shuffle(options);
     int index = 0;
@@ -93,7 +92,6 @@ public class FallingSandCell extends Cell<FallingSandCell> {
       if (nextCell.getCurrentState() == FallingSandSimulation.EMPTY) {
         nextCell.setNextState(FallingSandSimulation.WATER);
         setCurrentState(FallingSandSimulation.EMPTY);
-
       }
     }
 
@@ -101,8 +99,8 @@ public class FallingSandCell extends Cell<FallingSandCell> {
 
 
   /**
-   * Represents a timestep update for a PercolationCell. Calls the proper helper function for
-   * transitioning based on the state of the Percolation Cell being updated.
+   * Represents a timestep update for a Falling Sand Cell. Calls the proper helper function for
+   * transitioning based on the state of the Falling Sand Cell being updated.
    */
   @Override
   public void transition() {
@@ -117,10 +115,4 @@ public class FallingSandCell extends Cell<FallingSandCell> {
     System.out.println("=>" + getNextState());
   }
 
-  public void setParams(Map<String, Double> params) {
-  }
-
-  public String getText() {
-    return "";
-  }
 }

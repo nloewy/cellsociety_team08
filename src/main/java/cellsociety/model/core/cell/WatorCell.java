@@ -300,6 +300,11 @@ public class WatorCell extends Cell<WatorCell> {
     }
   }
 
+
+  /**
+   * @return shark or fish emoji or empty string, depending on cell type
+   */
+
   public String getText() {
     return switch (getCurrentState()) {
       case WatorSimulation.SHARK -> "\uD83D\uDC20";
@@ -307,6 +312,10 @@ public class WatorCell extends Cell<WatorCell> {
       default -> "";
     };
   }
+
+  /**
+   * @param params, new simulation parameters for the WaTor World Simulation
+   */
 
   public void setParams(Map<String, Double> params) {
     fishAgeOfReproduction = (int) Math.floor(params.get("fishAgeOfReproduction"));

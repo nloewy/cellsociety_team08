@@ -79,13 +79,15 @@ public class SchellingCell extends Cell<SchellingCell> {
         >= proportionNeededToStay);
   }
 
+  /**
+   * @param params, new simulation parameters for the Schelling Simulation
+   */
+
   public void setParams(Map<String, Double> params) {
     proportionNeededToStay = params.get("proportionNeededToStay");
   }
 
-  public String getText() {
-    return "";
-  }
+
 
 }
 
