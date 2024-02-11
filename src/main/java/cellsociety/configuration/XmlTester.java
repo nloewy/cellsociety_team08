@@ -14,7 +14,7 @@ import javax.xml.transform.TransformerException;
 public class XmlTester {
 
   public static void main(String[] args) throws ParserConfigurationException, TransformerException {
-    String path = "data/exception_tests/nonExistentSimulationTest.xml";
+    String path = "data/exception_tests/InvalidSugarSimulationParamTest.xml";
 
     XmlParser xmlParser = new XmlParser();
     xmlParser.readXml(path);

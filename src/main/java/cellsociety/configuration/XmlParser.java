@@ -138,10 +138,9 @@ public class XmlParser {
   private String language;
   private String cellShape;
   private String gridEdgeType;
-
   private String sliderInitial;
   private Map<String, Integer> randomConfigurationTotalStates;
-  private int totalNumStates;
+  private int totalNumCells;
 
   /**
    * Constructor for initializing the states ArrayList and parameters HashMap
@@ -436,6 +435,42 @@ public class XmlParser {
   }
 
   /**
+   * Retrieves sliderInitial instance variable
+   *
+   * @return slider, the initial value of the slider in the GUI
+   */
+  public String getSliderInitial() {
+    return sliderInitial;
+  }
+
+  /**
+   * Updates sliderInitial instance variable
+   *
+   * @param sliderInitial, the initial value of the slider in the GUI
+   */
+  public void setSliderInitial(String sliderInitial) {
+    this.sliderInitial = sliderInitial;
+  }
+
+  /**
+   * Retrieves totalNumCells instance variable
+   *
+   * @return totalNumCells, the total number of cells used in the given simulation
+   */
+  public int getTotalNumCells() {
+    return totalNumCells;
+  }
+
+  /**
+   * Updates totalNumCells instance variable
+   *
+   * @param totalNumCells, the total number of cells used in the given simulation
+   */
+  public void setTotalNumCells(int totalNumCells) {
+    this.totalNumCells = totalNumCells;
+  }
+
+  /**
    * Read an XML configuration file, initializing all attributes in the XmlParser
    *
    * @param path, the path to the XML configuration file being read
@@ -567,7 +602,6 @@ public class XmlParser {
     // parse initial states
     parseStates(element.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
 
-
     // parse parameters
     parseParameters(element.getElementsByTagName(PARAMETERS_FIELD_NAME).item(0));
 
@@ -575,7 +609,7 @@ public class XmlParser {
     parseRandomConfig(element.getElementsByTagName(RANDOM_CONFIG_FIELD_NAME)
         .item(0));
 
-    totalNumStates = states.size();
+    totalNumCells = states.size();
 
   }
 
@@ -601,23 +635,7 @@ public class XmlParser {
     checkEmptyInputs();
 
     // validate essential input parameters that define the simulation
-    validateEssentialInputs();
-
-    // check if only width or height is given.
-    // If so, update the other based on the total number of states read
-    if (width == 0) {
-      width = totalNumStates / height;
-    } else if (height == 0) {
-      height = totalNumStates / width;
-    }
-
-    // Check if grid dimension is valid, throw exception otherwise
-    if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
-        || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
-      throw new InvalidGridBoundsException(
-          String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
-              totalNumStates));
-    }
+    validateSimulationInputs();
   }
 
   /**
@@ -643,11 +661,13 @@ public class XmlParser {
   }
 
   /**
-   * Validate inputs for the essential simulation parameters
+   * Validate inputs for the parameters defining the simulation
    *
-   * @throws InvalidValueException when value is negative or does not exist
+   * @throws InvalidValueException      when value is negative or does not exist
+   * @throws InvalidGridBoundsException when the user loads a configuration file that has cell
+   *                                    locations specified outside the grid’s bounds
    */
-  private void validateEssentialInputs() throws InvalidValueException {
+  private void validateSimulationInputs() throws InvalidValueException, InvalidGridBoundsException {
     // check if width or height is negative
     if (width < 0 || height < 0) {
       throw new InvalidValueException(
@@ -671,6 +691,35 @@ public class XmlParser {
     if (!GRID_EDGE_TYPES.contains(gridEdgeType)) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("NonExistentGridEdgeType"), gridEdgeType));
+    }
+
+    // check if only width or height is given.
+    // If so, update the other based on the total number of cells read
+    if (width == 0) {
+      width = totalNumCells / height;
+    } else if (height == 0) {
+      height = totalNumCells / width;
+    }
+
+    // check if grid dimension is valid, throw exception otherwise
+    if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
+        || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumCells) {
+      throw new InvalidGridBoundsException(
+          String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
+              totalNumCells));
+    }
+
+    // check if numAgents is larger than size of grid for Sugar Simulation
+    if (type.equals(SUGAR_NAME) && parameters.get("numAgents") > totalNumCells) {
+      throw new InvalidValueException(
+          String.format(resourceBundle.getString("SugarSimulationParamValueError"),
+              parameters.get("numAgents"),
+              totalNumCells));
+    }
+
+    // if random configurations exist, set the state of each cell by the random configurations
+    if (!randomConfigurationTotalStates.isEmpty()) {
+      setRandomlyConfiguredStates();
     }
 
   }
@@ -741,6 +790,7 @@ public class XmlParser {
         valueString = assignDefaultValueToParameter(name);
       }
       Double value = Double.parseDouble(valueString);
+      // check for negative values
       if (value < 0) {
         throw new InvalidValueException(
             String.format(resourceBundle.getString("NegativeParameterValueError"), name));
@@ -763,7 +813,6 @@ public class XmlParser {
     if (randomConfigNodeList.getLength() == 0) {
       return;
     }
-    List<Integer> resultList = new ArrayList<>();
     for (int i = 0; i < randomConfigNodeList.getLength(); i++) {
       Node currRandConfigNode = randomConfigNodeList.item(i);
       String name = currRandConfigNode.getNodeName();
@@ -774,6 +823,13 @@ public class XmlParser {
       }
       randomConfigurationTotalStates.put(name, value);
     }
+  }
+
+  /**
+   * Set the state for each cell in the simulation according to the random configuration parameters
+   */
+  private void setRandomlyConfiguredStates() {
+    List<Integer> resultList = new ArrayList<>();
     Pattern pattern = Pattern.compile("num(\\d+)");
     for (Map.Entry<String, Integer> entry : randomConfigurationTotalStates.entrySet()) {
       String key = entry.getKey();
@@ -788,8 +844,8 @@ public class XmlParser {
     }
     Collections.shuffle(resultList, new Random());
     states = resultList;
-
   }
+
 
   /**
    * Return the default value of a given parameter
@@ -839,22 +895,18 @@ public class XmlParser {
           yield defaultParametersResourceBundle.getString("maxVision");
         } else if (name.equals("minInitialSugar")) {
           yield defaultParametersResourceBundle.getString("minInitialSugar");
-        }
-        else if (name.equals("maxInitialSugar")) {
+        } else if (name.equals("maxInitialSugar")) {
           yield defaultParametersResourceBundle.getString("maxInitialSugar");
-        }
-        else if (name.equals("minMetabolism")) {
+        } else if (name.equals("minMetabolism")) {
           yield defaultParametersResourceBundle.getString("minMetabolism");
-        }
-        else if (name.equals("maxMetabolism")) {
+        } else if (name.equals("maxMetabolism")) {
           yield defaultParametersResourceBundle.getString("maxMetabolism");
-        }else if (name.equals("growBackRate")) {
+        } else if (name.equals("growBackRate")) {
           yield defaultParametersResourceBundle.getString("growBackRate");
-        }
-          else {
-            yield  Integer.toString((int) Math.round(Double.parseDouble
-                (defaultParametersResourceBundle.getString("agentProportion"))
-                *getHeight()*getWidth()));
+        } else {
+          yield Integer.toString((int) Math.round(Double.parseDouble
+              (defaultParametersResourceBundle.getString("agentProportion"))
+              * getHeight() * getWidth()));
         }
       }
       default -> "";
@@ -1068,6 +1120,4 @@ public class XmlParser {
     }
 
   }
-
-
 }
