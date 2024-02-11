@@ -29,7 +29,7 @@ public class HexagonShape implements Shape {
     } else {
       currOffset = 0.0;
     }
-    final double[][] offsets = {{.25, 0}, {1, 0}, {1.25, .5}, {1, 1}, {.25, 1}, {0, .5}};
+    final double[][] offsets = {{.25, 0}, {0, .5}, {.25, 1},  {1, 1},  {1.25, .5}, {1, 0}};
     List<Point> vertices = new ArrayList<>();
     for (double[] offset : offsets) {
       double shapeOffset = .5; //hexagons in odd rows are shifted by .5

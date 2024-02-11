@@ -13,9 +13,11 @@ import cellsociety.model.simulation.Records.FireRecord;
 import cellsociety.model.simulation.Records.GameOfLifeRecord;
 import cellsociety.model.simulation.Records.PercolationRecord;
 import cellsociety.model.simulation.Records.SchellingRecord;
+import cellsociety.model.simulation.Records.SugarRecord;
 import cellsociety.model.simulation.Records.WatorRecord;
 import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.Simulation;
+import cellsociety.model.simulation.SugarSimulation;
 import cellsociety.model.simulation.WatorSimulation;
 import java.io.File;
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ public class Controller {
   public static final String SCHELLING = "Schelling";
   public static final String WATOR = "Wator";
 
+  public static final String SUGAR = "Sugar";
   public static final String UPLOAD_FILE_TEXT_KEY = "uploadFile";
   public static final String SECOND_DELAY_KEY = "SECOND_DELAY";
   public static final String FILE_SAVED_KEY = "fileSaved";
@@ -216,6 +219,15 @@ public class Controller {
               xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
               xmlParser.getParameters().get("initialEnergy").intValue(),
               xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape));
+      case SUGAR -> new SugarSimulation(numRows, numCols, neighborhoodType, stateList,
+          new SugarRecord(xmlParser.getParameters().get("minVision").intValue(),
+              xmlParser.getParameters().get("maxVision").intValue(),
+              xmlParser.getParameters().get("minInitialSugar").intValue(),
+              xmlParser.getParameters().get("maxInitialSugar").intValue(),
+              xmlParser.getParameters().get("minMetabolism").intValue(),
+              xmlParser.getParameters().get("maxMetabolism").intValue(),
+              xmlParser.getParameters().get("growBackRate").intValue(),
+              xmlParser.getParameters().get("numAgents").intValue(), gridType, cellShape));
       default -> null;
     };
   }
@@ -232,10 +244,9 @@ public class Controller {
       allVertices.add(iter.next().getVertices());
     }
 
-    simulationPage = new SimulationPage(xmlParser.getCellShape(), xmlParser.getType(),
-        xmlParser.getTitle(),
-        xmlParser.getHeight(), xmlParser.getWidth(), handlers,
-        simulationModel.getIterator(), allVertices);
+    simulationPage = new SimulationPage(xmlParser.getType(), xmlParser.getTitle(),
+        xmlParser.getHeight(), xmlParser.getWidth(), handlers, simulationModel.getIterator(),
+        allVertices);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
 

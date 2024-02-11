@@ -28,4 +28,5 @@ public class RectangleShape implements Shape {
     }
     return vertices;
   }
+
 }

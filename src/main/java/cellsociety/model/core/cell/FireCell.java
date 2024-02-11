@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Noah Loewy
  */
 
-public class FireCell extends Cell {
+public class FireCell extends Cell<FireCell> {
 
   /**
    * Probability an empty Cell transitions to a tree cell
@@ -37,7 +37,7 @@ public class FireCell extends Cell {
    *                     grid
    * @param shapeType    the shape of a cell, as represented on a 2D coordinate grid
    * @param params       map of string parameter names to their values. Description of parameters
-   *                     can be found at te declaration of the instance variables.
+   *                     can be found at the declaration of the instance variables.
    */
   public FireCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Double> params) {
@@ -45,6 +45,15 @@ public class FireCell extends Cell {
     probTreeCreated = params.get("probTreeCreated");
     probTreeIgnites = params.get("probTreeIgnites");
     neighborsToIgnite = params.get("neighborsToIgnite");
+  }
+
+
+  public String getText() {
+    return switch (getCurrentState()) {
+      case FireSimulation.BURNING -> "\uD83D\uDD25";
+      case FireSimulation.TREE -> "\uD83C\uDF32";
+      default -> "";
+    };
   }
 
 

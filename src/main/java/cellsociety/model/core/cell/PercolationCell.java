@@ -1,6 +1,7 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
+import cellsociety.model.simulation.GameOfLifeSimulation;
 import cellsociety.model.simulation.PercolationSimulation;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import java.util.Map;
  *
  * @author Noah Loewy
  */
-public class PercolationCell extends Cell {
+public class PercolationCell extends Cell<PercolationCell> {
 
   /**
    * Number of percolated neighbors required for open cell to percolate
@@ -27,7 +28,7 @@ public class PercolationCell extends Cell {
    *                     grid
    * @param shapeType    the shape of a cell, as represented on a 2D coordinate grid
    * @param params       map of string parameter names to their values. Description of parameters
-   *                     can be found at te declaration of the instance variables.
+   *                     can be found at the declaration of the instance variables.
    */
   public PercolationCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Integer> params) {
@@ -61,4 +62,7 @@ public class PercolationCell extends Cell {
     }
   }
 
+  public String getText() {
+    return "";
+  }
 }
