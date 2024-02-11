@@ -735,10 +735,11 @@ public class XmlParser {
     }
 
     // check if numAgents is larger than size of grid for Sugar Simulation
-    if (type.equals(SUGAR_NAME) && parameters.get("numAgents") > totalNumCells) {
+    String sugarCheckParam = "numAgents";
+    if (type.equals(SUGAR_NAME) && parameters.get(sugarCheckParam) > totalNumCells) {
       throw new InvalidValueException(
           String.format(resourceBundle.getString("SugarSimulationParamValueError"),
-              parameters.get("numAgents"),
+              parameters.get(sugarCheckParam),
               totalNumCells));
     }
 
