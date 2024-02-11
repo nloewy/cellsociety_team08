@@ -166,8 +166,8 @@ public class Controller {
     settingsChanged = true;
     settingsPanel.saveChanges();
     settingsPanel.closeSettingsPanel();
-//    simulationModel.setParams(settingsPanel.getNewParameters());
-//    simulationModel.setEdgeType(settingsPanel.getNewEdgeType());
+    simulationModel.setParams(settingsPanel.getNewParameters());
+    simulationModel.setEdgeType(settingsPanel.getNewEdgeType());
   }
 
   /**

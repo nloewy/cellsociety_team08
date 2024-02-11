@@ -8,8 +8,10 @@ import cellsociety.model.core.shape.HexagonShape;
 import cellsociety.model.core.shape.RectangleShape;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract Class that runs the simulation of a cellular automata. Subclasses will implement
@@ -23,6 +25,8 @@ public abstract class Simulation<T extends Cell> {
   private Neighborhood myNeighborhood;
   private Grid myGrid;
   private String myGridType;
+  private int myRow;
+  private int myCol;
 
   public Simulation() {
   }
@@ -39,7 +43,20 @@ public abstract class Simulation<T extends Cell> {
     myGridType = gridType;
   }
 
+  public void setEdgeType(String newEdgeType) {
+    Iterator<T> iter = getIterator();
+    List<T> lst = new ArrayList<>();
+    while (iter.hasNext()) {
+      T cell = iter.next();
+      lst.add(cell);
+    }
+    myGridType = newEdgeType;
+    initializeMyGrid(myRow, myCol, lst);
+  }
+
   public void initializeMyGrid(int row, int col, List<T> cellList) {
+    myRow = row;
+    myCol = col;
     System.out.println(myGridType);
     myGrid = switch (myGridType) {
       case "Normal" -> new Grid(row, col, cellList);
@@ -116,4 +133,17 @@ public abstract class Simulation<T extends Cell> {
     return myGrid.iterator();
   }
 
+  public static boolean isInteger(double number) {
+    return Math.floor(number) == number;
+
+  }
+
+  public void setParams(Map<String, Double> newParameters) {
+    Iterator<T> iterator = myGrid.iterator();
+    while (iterator.hasNext()) {
+      T cell = iterator.next();
+      cell.setParams(newParameters);
+    }
+
+  }
 }

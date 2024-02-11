@@ -25,21 +25,21 @@ public class WatorCell extends Cell<WatorCell> {
    * Initial amount of energy points that a shark is born with. A shark dies once it runs out of
    * energy.
    */
-  private final int initialEnergy;
+  private int initialEnergy;
   /**
    * Energy points gained by a shark for eating a fish cell. One unit of energy is lost per
    * timestep
    */
-  private final int energyBoost;
+  private int energyBoost;
   /**
    * Number of chronons (timesteps) that must pass since birth of a shark until the shark is
    * fertile
    */
-  private final int sharkAgeOfReproduction;
+  private int sharkAgeOfReproduction;
   /**
    * Number of chronons (timesteps) that must pass since birth of a fish until the fish is fertile
    */
-  private final int fishAgeOfReproduction;
+  private int fishAgeOfReproduction;
 
   /**
    * Constructs a Percolation Cell object for the Percolation simulation
@@ -307,6 +307,13 @@ public class WatorCell extends Cell<WatorCell> {
       default -> "";
     };
   }
+  public void setParams(Map<String, Double> params){
+    fishAgeOfReproduction = (int) Math.floor(params.get("fishAgeOfReproduction"));
+    sharkAgeOfReproduction = (int) Math.floor(params.get("sharkAgeOfReproduction"));
+    energyBoost = (int) Math.floor(params.get("energyBoost"));
+    initialEnergy = (int) Math.floor(params.get("initialEnergy"));
+  }
+
 }
 
 

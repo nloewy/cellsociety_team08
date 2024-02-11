@@ -165,9 +165,11 @@ public class SugarCell extends Cell<SugarCell> {
     return "";
   }
 
-  public int getCurrentSugar() {
-    return myCurrentAgentSugar;
+  public void setParams(Map<String, Double> params) {
+    sugarGrowBackRate = (int) Math.floor(params.get("growBackRate"));
   }
 }
+
+
 
 

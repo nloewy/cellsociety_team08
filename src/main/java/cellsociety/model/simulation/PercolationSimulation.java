@@ -21,7 +21,7 @@ public class PercolationSimulation extends Simulation<PercolationCell> {
   public static final int PERCOLATED = 1;
   //public static final int BLOCKED = 2;
 
-  private final int percolatedNeighbors;
+  private int percolatedNeighbors;
 
 
   /**

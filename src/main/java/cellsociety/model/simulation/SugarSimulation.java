@@ -32,7 +32,7 @@ public class SugarSimulation extends Simulation<SugarCell> {
   private final int minMetabolism;
   private final int maxMetabolism;
 
-  private final int growBackRate;
+  private int growBackRate;
   private final int numAgents;
 
   public SugarSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
@@ -104,24 +104,5 @@ public class SugarSimulation extends Simulation<SugarCell> {
         }
       }
     }
-    Iterator<SugarCell> gridIterator = getIterator();
-    while (gridIterator.hasNext()) {
-      SugarCell currentCell = gridIterator.next();
-      if (currentCell.getLocation().getCol() == 0) {
-        System.out.println();
-      }
-      System.out.print(
-          currentCell.getCurrentState() + ":" + currentCell.getCurrentSugar() + "    ");
-
-
     }
-    System.out.println();
-
-    System.out.println();
-
-    System.out.println();
-
-    System.out.println();
-
-  }
 }

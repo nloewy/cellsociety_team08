@@ -20,10 +20,10 @@ public class GameOfLifeSimulation extends Simulation<LifeCell> {
   public static final int DEAD = 0;
   public static final int ALIVE = 1;
 
-  private final int aliveToAliveMin;
-  private final int aliveToAliveMax;
-  private final int deadToAliveMin;
-  private final int deadToAliveMax;
+  private int aliveToAliveMin;
+  private int aliveToAliveMax;
+  private int deadToAliveMin;
+  private int deadToAliveMax;
 
   /**
    * Initializes a GameOfLifeSimulation object
@@ -66,6 +66,8 @@ public class GameOfLifeSimulation extends Simulation<LifeCell> {
     }
     return cellList;
   }
+
 }
+
 
 

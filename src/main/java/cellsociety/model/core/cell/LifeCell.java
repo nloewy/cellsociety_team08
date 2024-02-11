@@ -93,6 +93,13 @@ public class LifeCell extends Cell<LifeCell> {
     }
   }
 
+  public void setParams(Map<String, Double> params){
+    aliveToAliveMin = (int) Math.floor(params.get("aliveToAliveMin"));
+    aliveToAliveMax = (int) Math.floor(params.get("aliveToAliveMax"));
+    deadToAliveMin = (int) Math.floor(params.get("deadToAliveMin"));
+    deadToAliveMax = (int) Math.floor(params.get("deadToAliveMax"));
+  }
+
   public String getText() {
     return switch (getCurrentState()) {
       case GameOfLifeSimulation.ALIVE -> "\uD83D\uDC7C";
