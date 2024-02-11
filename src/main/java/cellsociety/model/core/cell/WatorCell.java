@@ -1,6 +1,7 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
+import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.WatorSimulation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -296,6 +297,14 @@ public class WatorCell extends Cell<WatorCell> {
       default:
         break; //TODO: check exception
     }
+  }
+
+  public String getText() {
+    return switch (getCurrentState()) {
+      case WatorSimulation.SHARK -> "\uD83D\uDC20";
+      case WatorSimulation.FISH -> "\uD83D\uDC1F";
+      default -> "";
+    };
   }
 }
 

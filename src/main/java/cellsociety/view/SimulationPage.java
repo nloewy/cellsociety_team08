@@ -153,8 +153,12 @@ public class SimulationPage {
               new SugarCellView(width, height, allVertices.get(ind), gridProperties);
           default -> throw new IllegalStateException("Unexpected value: " + simulationType);
         };
+
         Shape shape = board[row][col].getCellGraphic();
         root.getChildren().add(shape);
+        root.getChildren().add(board[row][col].getTextBox());
+        board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
+        board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
         ind++;
       }
     }
@@ -324,11 +328,13 @@ public class SimulationPage {
       int col = (int) location.getCol();
       int row = (int) location.getRow();
       int state = c.getCurrentState();
-      board[row][col].updateState(state);
+      board[row][col].updateState(state, c.getText());
       if (!stateCount.containsKey(state)) {
         stateCount.put(state, 0);
       }
       stateCount.replace(state, stateCount.get(state) + 1);
+      board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
+      board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
     }
 
     graph.updateGraph(stateCount);

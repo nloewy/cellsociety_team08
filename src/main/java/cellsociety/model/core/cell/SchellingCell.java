@@ -2,6 +2,7 @@ package cellsociety.model.core.cell;
 
 
 import cellsociety.model.core.shape.Shape;
+import cellsociety.model.simulation.GameOfLifeSimulation;
 import cellsociety.model.simulation.SchellingSimulation;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,7 @@ public class SchellingCell extends Cell<SchellingCell> {
     }
   }
 
+
   /**
    * Indicates whether or not a current cell is satisfied with their current state. Cells are
    * satisfied if and only if they are surrounded entirely by empty cells, or if the proportion of
@@ -79,5 +81,9 @@ public class SchellingCell extends Cell<SchellingCell> {
         || (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
         >= proportionNeededToStay);
   }
+  public String getText() {
+    return "";
+  }
+
 }
 

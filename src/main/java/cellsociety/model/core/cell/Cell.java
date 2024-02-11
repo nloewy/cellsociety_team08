@@ -87,6 +87,8 @@ public abstract class Cell<T extends Cell<T>> {
     myNextState = PLACEHOLDER;
   }
 
+  public abstract String getText();
+
   /**
    * Given an integer representing a target state, determines the number of neighboring cells that
    * have a current state matching the target state.

@@ -48,6 +48,15 @@ public class FireCell extends Cell<FireCell> {
   }
 
 
+  public String getText() {
+    return switch (getCurrentState()) {
+      case FireSimulation.BURNING -> "\uD83D\uDD25";
+      case FireSimulation.TREE -> "\uD83C\uDF32";
+      default -> "";
+    };
+  }
+
+
   /**
    * Handles transition of empty cell in FireSimulation. Empty cells transition to trees with
    * probability probTreeCreated, and remain empty with probability 1 - probTreeCreated

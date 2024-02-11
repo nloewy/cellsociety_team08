@@ -1,6 +1,7 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
+import cellsociety.model.simulation.FireSimulation;
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import java.util.Map;
 
@@ -91,6 +92,14 @@ public class LifeCell extends Cell<LifeCell> {
     } else {
       setNextState(GameOfLifeSimulation.DEAD);
     }
+  }
+
+  public String getText() {
+    return switch (getCurrentState()) {
+      case GameOfLifeSimulation.ALIVE -> "\uD83D\uDC7C";
+      case GameOfLifeSimulation.DEAD -> "\uD83D\uDC7B";
+      default -> "";
+    };
   }
 }
 

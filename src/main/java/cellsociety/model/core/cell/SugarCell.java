@@ -1,6 +1,7 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
+import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.SugarSimulation;
 import java.util.HashSet;
 import java.util.Map;
@@ -133,10 +134,6 @@ public class SugarCell extends Cell<SugarCell> {
         if (newAgentSugar > 0) {
           nextCell.setNextStateAgentSugarVisionMetabolism(0, newAgentSugar, myCurrentVision,
               sugarMetabolism);
-          System.out.println(
-              getLocation().getRow() + "," + getLocation().getCol() + "==>" + nextCell.getLocation()
-                  .getRow() + "," + nextCell.getLocation().getCol());
-          System.out.println(newAgentSugar);
         } else { //we assume that if an agent goes to a new cell and dies, that new cell is unavailable for the timestep
           nextCell.setNextStateAgentSugarVisionMetabolism(
               Math.min(SugarSimulation.MAX_AVAILABLE_SUGAR,
@@ -160,6 +157,13 @@ public class SugarCell extends Cell<SugarCell> {
           PLACEHOLDER, PLACEHOLDER);
 
     }
+  }
+
+  public String getText() {
+    if(myCurrentAgentSugar > 0) {
+      return "\uD83C\uDF6C";
+    }
+    return "";
   }
 
   public int getCurrentSugar() {

@@ -1,28 +1,46 @@
 package cellsociety.view.cellview;
 
+import static javafx.scene.text.Font.font;
+
 import cellsociety.Point;
 import java.util.List;
 import java.util.Map;
-import javafx.scene.layout.Region;
+import javafx.geometry.Bounds;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
-
-public abstract class CellView extends Region {
-
+public abstract class CellView extends Group {
 
   private Polygon shape;
+  private Label textBox;
 
+  private int boxLocationX;
+  private int boxLocationY;
   public CellView(double width, double height, List<Point> vertices,
       Map<String, Double> gridProperties) {
     shape = new Polygon();
     for (Point vertex : vertices) {
       shape.getPoints().addAll(width * vertex.getCol() + gridProperties.get("gridStartX"),
           height * vertex.getRow() + gridProperties.get("gridStartY"));
+      boxLocationX+=width * vertex.getCol() + gridProperties.get("gridStartX");
+      boxLocationY+=height * vertex.getRow() + gridProperties.get("gridStartY");
     }
+
+    boxLocationX/=vertices.size();
+    boxLocationY/=vertices.size();
     setStroke(shape);
+
+
+    textBox = new Label("X");
+
+    getChildren().addAll(shape, textBox); // Add shape and text box as children of CellView
   }
 
   private void setStroke(Shape shape) {
@@ -33,9 +51,9 @@ public abstract class CellView extends Region {
 
   public abstract void setColors(int state);
 
-
-  public void updateState(int state) {
+  public void updateState(int state, String text) {
     getCellGraphic().getStyleClass().clear();
+    textBox.setText(text);
     setColors(state);
   }
 
@@ -44,13 +62,25 @@ public abstract class CellView extends Region {
     shape.getStyleClass().add(idName);
   }
 
-
   public Shape getCellGraphic() {
     return shape;
   }
 
-  //TODO: add the r's to the gridpane not the cellviews, avoid extending the region because you
-  // don't want to add a bunch of unnecesary packages when extending.
+  // Getter for the text box
+  public Label getTextBox() {
+    return textBox;
 
+  }
+  public double getBoxLocationX() {
+
+    Bounds textBounds = textBox.getLayoutBounds();
+    double textBoxWidth = textBounds.getWidth();
+    return boxLocationX-textBoxWidth;
+  }
+
+public double getBoxLocationY() {
+  Bounds textBounds = textBox.getLayoutBounds();
+  double textBoxHeight = textBounds.getHeight();
+  return boxLocationY-textBoxHeight;
 }
-
+}
