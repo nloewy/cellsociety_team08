@@ -21,6 +21,7 @@
     <growBackRate> 1 </growBackRate>
     <numAgents> 35 </numAgents>
   </parameters>
+  <slider>1</slider>
   <state_colors>
     State 0: agent 0 -- red
     State 1: agent x -- blue

@@ -20,5 +20,6 @@
     <parameters>
         <percolatedNeighbors>1.0</percolatedNeighbors>
     </parameters>
-    <random_configuration_by_total_states/>
+  <slider>1</slider>
+  <random_configuration_by_total_states/>
 </simulation>

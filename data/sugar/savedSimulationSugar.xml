@@ -27,5 +27,6 @@
         <minInitialSugar>5.0</minInitialSugar>
         <maxMetabolism>6.0</maxMetabolism>
     </parameters>
-    <random_configuration_by_total_states/>
+  <slider>1</slider>
+  <random_configuration_by_total_states/>
 </simulation>

@@ -22,5 +22,6 @@
         <aliveToAliveMax>3.0</aliveToAliveMax>
         <deadToAliveMin>3.0</deadToAliveMin>
     </parameters>
+    <slider>1</slider>
     <random_configuration_by_total_states/>
 </simulation>
