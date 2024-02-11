@@ -11,7 +11,8 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 
-public abstract class CellView extends Group {
+
+public abstract class CellView{
 
   private Polygon shape;
   private Label textBox;
@@ -35,7 +36,7 @@ public abstract class CellView extends Group {
 
     textBox = new Label("X");
 
-    getChildren().addAll(shape, textBox); // Add shape and text box as children of CellView
+//    getChildren().addAll(shape, textBox); // Add shape and text box as children of CellView
   }
 
   private void setStroke(Shape shape) {

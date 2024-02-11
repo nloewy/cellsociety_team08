@@ -17,14 +17,18 @@ import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 
 /**
  * This class controls the simulation's view component, controls the simulation grid view, and
@@ -45,6 +49,7 @@ public class SimulationPage {
   private Button saveSimulationButton;
   private Button resetSimulationButton;
   private Button simulationGraphButton;
+  private Button settingsButton;
   private Text simulationTitleDisplay;
   private Slider speedSlider;
   private Label speedLabel;
@@ -180,6 +185,7 @@ public class SimulationPage {
         pauseSimulationButton,
         resetSimulationButton,
         simulationGraphButton,
+        settingsButton,
         simulationTitleDisplay,
         speedSlider,
         speedLabel
@@ -237,6 +243,11 @@ public class SimulationPage {
         configInt(RESET_BUTTON_Y_KEY));
     simulationGraphButton = new Button("Show Graph");
     simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
+    settingsButton = makeButton("Settings", eventHandlers.get("settingsHandler"), configInt(BUTTON_START_X_KEY), 600);
+  }
+
+  public Button getSettingsButton(){
+    return settingsButton;
   }
 
   public void resetGraph() {
