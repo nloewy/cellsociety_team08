@@ -63,6 +63,20 @@ public class XmlParser {
       Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME,
           SUGAR_NAME, FALLING_NAME));
 
+  // define valid parameters for each simulation
+  public static final Set<String> FIRE_PARAMETERS = new HashSet<>(
+      Arrays.asList("probTreeIgnites", "probTreeCreated", "neighborsToIgnite"));
+  public static final Set<String> GAMEOFLIFE_PARAMETERS = new HashSet<>(
+      Arrays.asList("aliveToAliveMin", "aliveToAliveMax", "deadToAliveMin", "deadToAliveMax"));
+  public static final Set<String> PERCOLATION_PARAMETERS = new HashSet<>(
+      List.of("percolatedNeighbors"));
+  public static final Set<String> SCHELLING_PARAMETERS = new HashSet<>(
+      List.of("proportionNeededToStay"));
+  public static final Set<String> WATOR_PARAMETERS = new HashSet<>(
+      Arrays.asList("fishAgeOfReproduction", "sharkAgeOfReproduction", "energyBoost", "initialEnergy"));
+  public static final Set<String> SUGAR_PARAMETERS = new HashSet<>(
+      Arrays.asList("minVision", "maxVision", "minMetabolism", "maxMetabolism", "minInitialSugar", "maxInitialSugar", "growBackRate", "numAgents"));
+
   // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
       Arrays.asList("adjacent", "cardinal", "Moore", "VonNeumann"));
@@ -72,8 +86,8 @@ public class XmlParser {
   // define valid grid edge types
   public static final Set<String> GRID_EDGE_TYPES = new HashSet<>(
       Arrays.asList("Normal", "Warped"));
-  // define valid cell states for Fire simulation
 
+  // define valid cell states for Fire simulation
   public static final Set<String> FIRE_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
   // define valid cell states for GameOfLife simulation
@@ -635,7 +649,10 @@ public class XmlParser {
     checkEmptyInputs();
 
     // validate essential input parameters that define the simulation
-    validateSimulationInputs();
+    validateEssentialInputs();
+
+    // validate parameters that define the dynamics of the simulation
+    validateFunctionalParameters();
   }
 
   /**
@@ -667,7 +684,7 @@ public class XmlParser {
    * @throws InvalidGridBoundsException when the user loads a configuration file that has cell
    *                                    locations specified outside the grid’s bounds
    */
-  private void validateSimulationInputs() throws InvalidValueException, InvalidGridBoundsException {
+  private void validateEssentialInputs() throws InvalidValueException, InvalidGridBoundsException {
     // check if width or height is negative
     if (width < 0 || height < 0) {
       throw new InvalidValueException(
@@ -693,6 +710,12 @@ public class XmlParser {
           String.format(resourceBundle.getString("NonExistentGridEdgeType"), gridEdgeType));
     }
 
+  }
+
+  /**
+   * Validate parameters that define the dynamics of the simulation
+   */
+  private void validateFunctionalParameters() {
     // check if only width or height is given.
     // If so, update the other based on the total number of cells read
     if (width == 0) {
@@ -730,7 +753,7 @@ public class XmlParser {
    * @param fileName, name of file
    * @return file extension
    */
-  public String getFileExtension(String fileName) {
+  private String getFileExtension(String fileName) {
     int dotIndex = fileName.lastIndexOf('.');
     return fileName.substring(dotIndex + 1);
   }
@@ -784,6 +807,8 @@ public class XmlParser {
     for (int i = 0; i < parametersNodeList.getLength(); i++) {
       Node parameterNode = parametersNodeList.item(i);
       String name = parameterNode.getNodeName();
+      // check if parameter name is valid for given simulation
+
       String valueString = parameterNode.getTextContent();
       // check if parameter value is not given (empty). If yes, assign default value.
       if (valueString.isEmpty()) {
@@ -852,65 +877,43 @@ public class XmlParser {
    *
    * @param name, name of the parameter
    * @return default value of the parameter
+   * @throws InvalidValueException when simulation type does not exist or a parameter does not exist for given simulation
    */
-  private String assignDefaultValueToParameter(String name) {
+  private String assignDefaultValueToParameter(String name) throws InvalidValueException {
+    return switch (type) {
+      case FIRE_NAME -> findDefaultParameter(FIRE_PARAMETERS, name);
+      case GAMEOFLIFE_NAME -> findDefaultParameter(GAMEOFLIFE_PARAMETERS, name);
+      case PERCOLATION_NAME -> findDefaultParameter(PERCOLATION_PARAMETERS, name);
+      case SCHELLING_NAME -> findDefaultParameter(SCHELLING_PARAMETERS, name);
+      case WATOR_NAME -> findDefaultParameter(WATOR_PARAMETERS, name);
+      case SUGAR_NAME -> findDefaultParameter(SUGAR_PARAMETERS, name);
+      default -> throw new InvalidValueException(String.format(resourceBundle.getString("NonExistentSimulationType"), type));
+    };
+  }
+
+  /**
+   * Find default value for a given parameter in the given simulation's set of parameters
+   *
+   * @param parameters, list of valid parameters for the give simulation
+   * @param name, name of the parameter with missing value
+   * @return String default value for the given parameter
+   * @throws InvalidValueException when the given parameter does not exist for given simulation
+   */
+  private String findDefaultParameter(Set<String> parameters, String name) throws InvalidValueException{
     ResourceBundle defaultParametersResourceBundle = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + "DefaultParameters");
-
-    return switch (this.type) {
-      case FIRE_NAME -> {
-        if (name.equals("probTreeIgnites")) {
-          yield defaultParametersResourceBundle.getString("probTreeIgnites");
-        } else if (name.equals("probTreeCreated")) {
-          yield defaultParametersResourceBundle.getString("probTreeCreated");
-        }
-        yield defaultParametersResourceBundle.getString("neighborsToIgnite");
+    for (String parameter: parameters) {
+      if (name.equals(parameter) && name.equals("agentProportion")) {
+        return Integer.toString((int) Math.round(Double.parseDouble
+            (defaultParametersResourceBundle.getString("agentProportion"))
+            * getHeight() * getWidth()));
       }
-      case GAMEOFLIFE_NAME -> {
-        if (name.equals("aliveToAliveMin")) {
-          yield defaultParametersResourceBundle.getString("aliveToAliveMin");
-        } else if (name.equals("aliveToAliveMax")) {
-          yield defaultParametersResourceBundle.getString("aliveToAliveMax");
-        } else if (name.equals("deadToAliveMin")) {
-          yield defaultParametersResourceBundle.getString("deadToAliveMin");
-        }
-        yield defaultParametersResourceBundle.getString("deadToAliveMax");
+      else if (name.equals(parameter)) {
+        return defaultParametersResourceBundle.getString(parameter);
       }
-      case PERCOLATION_NAME -> defaultParametersResourceBundle.getString("percolatedNeighbors");
-      case SCHELLING_NAME -> defaultParametersResourceBundle.getString("proportionNeededToStay");
-      case WATOR_NAME -> {
-        if (name.equals("fishAgeOfReproduction")) {
-          yield defaultParametersResourceBundle.getString("fishAgeOfReproduction");
-        } else if (name.equals("sharkAgeOfReproduction")) {
-          yield defaultParametersResourceBundle.getString("sharkAgeOfReproduction");
-        } else if (name.equals("energyBoost")) {
-          yield defaultParametersResourceBundle.getString("energyBoost");
-        }
-        yield defaultParametersResourceBundle.getString("initialEnergy");
-      }
-      case SUGAR_NAME -> {
-        if (name.equals("minVision")) {
-          yield defaultParametersResourceBundle.getString("minVision");
-        } else if (name.equals("maxVision")) {
-          yield defaultParametersResourceBundle.getString("maxVision");
-        } else if (name.equals("minInitialSugar")) {
-          yield defaultParametersResourceBundle.getString("minInitialSugar");
-        } else if (name.equals("maxInitialSugar")) {
-          yield defaultParametersResourceBundle.getString("maxInitialSugar");
-        } else if (name.equals("minMetabolism")) {
-          yield defaultParametersResourceBundle.getString("minMetabolism");
-        } else if (name.equals("maxMetabolism")) {
-          yield defaultParametersResourceBundle.getString("maxMetabolism");
-        } else if (name.equals("growBackRate")) {
-          yield defaultParametersResourceBundle.getString("growBackRate");
-        } else {
-          yield Integer.toString((int) Math.round(Double.parseDouble
-              (defaultParametersResourceBundle.getString("agentProportion"))
-              * getHeight() * getWidth()));
-        }
-      }
-      default -> "";
-    };
+    }
+    throw new InvalidValueException(
+        String.format(resourceBundle.getString("NonExistentMissingParameter"), name, type));
   }
 
   /**
