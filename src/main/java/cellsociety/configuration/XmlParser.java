@@ -904,9 +904,8 @@ public class XmlParser {
         DEFAULT_RESOURCE_PACKAGE + "DefaultParameters");
     for (String parameter: parameters) {
       if (name.equals(parameter) && name.equals("agentProportion")) {
-        return Integer.toString((int) Math.round(Double.parseDouble
-            (defaultParametersResourceBundle.getString("agentProportion"))
-            * getHeight() * getWidth()));
+        int agentProportion = (int) Math.round(Double.parseDouble (defaultParametersResourceBundle.getString("agentProportion")) * getHeight() * getWidth());
+        return Integer.toString(agentProportion);
       }
       else if (name.equals(parameter)) {
         return defaultParametersResourceBundle.getString(parameter);
@@ -1098,8 +1097,8 @@ public class XmlParser {
    *
    * @param doc,  Document object being written to
    * @param path, specified path to which the new file will be stored
-   * @throws TransformerException, exception handling potential errors from converting to XML file
-   *                               format
+   * @throws InvalidFileFormatException, when errors occur from converting to XML file format
+   * @throws SavingFileException, when errors occur during saving the XML file
    */
   private void writeXml(Document doc, String path) throws InvalidFileFormatException,
       SavingFileException {
