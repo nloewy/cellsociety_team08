@@ -2,6 +2,11 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.configuration.XmlParser;
+import cellsociety.exception.InputMissingParametersException;
+import cellsociety.exception.InvalidCellStateException;
+import cellsociety.exception.InvalidFileFormatException;
+import cellsociety.exception.InvalidGridBoundsException;
+import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.neighborhood.MooreNeighborhood;
 import cellsociety.model.neighborhood.Neighborhood;
@@ -28,6 +33,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -56,6 +62,8 @@ public class Controller {
   private boolean simulationRunning = false;
   private ResourceBundle textConfig;
   private FileChooser fileChooser;
+  private Settings settingsPanel;
+  private Boolean settingsChanged = false;
 
 
   private int sliderStart;
@@ -82,69 +90,59 @@ public class Controller {
    * Constructs the controller class
    */
   public Controller() {
-    stage = new Stage();
+    try {
+      stage = new Stage();
 
-    textConfig = ResourceBundle.getBundle(TEXT_CONFIGURATION);
-    fileChooser = makeChooser(DATA_FILE_EXTENSION);
-    showMessage(AlertType.INFORMATION, String.format(textConfig.getString(UPLOAD_FILE_TEXT_KEY)));
+      textConfig = ResourceBundle.getBundle(TEXT_CONFIGURATION);
+      fileChooser = makeChooser(DATA_FILE_EXTENSION);
+      showMessage(AlertType.INFORMATION, String.format(textConfig.getString(UPLOAD_FILE_TEXT_KEY)));
 
-    File dataFile = chooseFile();
-    if (dataFile == null) {
-      return;
+      File dataFile = chooseFile();
+      if (dataFile == null) {
+        return;
+      }
+      xmlParser = new XmlParser();
+      parseFile(dataFile.getPath());
+
+      setSimulation(); //loads view and model
+
+      speed = 1;
+
+      animation = new Timeline();
+      animation.setCycleCount(Timeline.INDEFINITE);
+      double frameDuration = 1.0 / (speed * simulationPage.configDouble(
+          SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
+      animation.getKeyFrames()
+          .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
+      animation.play();
     }
-    xmlParser = new XmlParser();
-    parseFile(dataFile.getPath());
-
-    setSimulation(); //loads view and model
-
-    speed = 1;
-
-    animation = new Timeline();
-    animation.setCycleCount(Timeline.INDEFINITE);
-    double frameDuration = 1.0 / (speed * simulationPage.configDouble(
-        SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
-    animation.getKeyFrames()
-        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
-    animation.play();
+    catch (InvalidFileFormatException | InvalidValueException | InvalidCellStateException | InputMissingParametersException | InvalidGridBoundsException e){
+      showMessage(AlertType.ERROR,e.getMessage());
+      Platform.exit();
+    }
   }
 
-  /**
-   * this method is responsible for calling update on the model and the view upon each step in the
-   * simulation
-   */
   private void step() {
     if (simulationRunning) {
-      //update model
       simulationModel.transitionFunction();
       simulationModel.processUpdate();
 
-      //update view
       simulationPage.updateView(simulationModel.getIterator());
     }
   }
 
 
-  /**
-   * Calls the xmlParser to read the xml file according to the specified filepath
-   *
-   * @param filePath: the file path to the xml file.
-   */
-  private void parseFile(String filePath) {
+  private void parseFile(String filePath) throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException, InputMissingParametersException, InvalidCellStateException {
+    xmlParser = new XmlParser();
     xmlParser.readXml(filePath);
   }
 
-
-  /**
-   * pauses the simulation
-   */
   private void pauseSimulation() {
     simulationRunning = false;
   }
 
-
   /**
    * Opens a dialog box for user to choose the xml file they want to run
-   *
    * @return returns the datafile the user selected
    */
   private File chooseFile() {
@@ -152,10 +150,6 @@ public class Controller {
     return dataFile;
   }
 
-
-  /**
-   * Set up the simulation model and view
-   */
   private void setSimulation() {
     String neighborhoodTypeString = xmlParser.getNeighborhoodType();
     Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
@@ -165,10 +159,16 @@ public class Controller {
         xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
     loadSimulationScene();
+    settingsPanel = new Settings(xmlParser.getGridEdgeType(), xmlParser.getParameters(), event -> onApplyClicked());
   }
 
-
-
+  private void onApplyClicked() {
+    settingsChanged = true;
+    settingsPanel.saveChanges();
+    settingsPanel.closeSettingsPanel();
+//    simulationModel.setParams(settingsPanel.getNewParameters());
+//    simulationModel.setEdgeType(settingsPanel.getNewEdgeType());
+  }
 
   /**
    * gets the neighborhood object based on the neighborhood type string
@@ -185,17 +185,14 @@ public class Controller {
     };
   }
 
-
   /**
    * Sets up the simulation model component
-   *
    * @param numRows          the integer number of rows in the simulation grid
    * @param numCols          the integer number of columns in the simulation grid
    * @param neighborhoodType the neighborhood type object
    * @param stateList        a list that specifies the initial state of all cells in the grid
    * @param simulationType   a string that specifies the simulation type
    */
-
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType, String gridType, String cellShape) {
     xmlParser.getParameters().forEach((key, value) -> System.out.println(key + ": " + value));
@@ -240,7 +237,7 @@ public class Controller {
    * sets up the simulation view component
    */
   private void loadSimulationScene() {
-    Map<String, EventHandler<ActionEvent>> handlers = makeMap();
+    Map<String, EventHandler<ActionEvent>> handlers = makeHandlersMap();
     Iterator<Cell> iter = simulationModel.getIterator();
     List<List<Point>> allVertices = new ArrayList<>();
     while (iter.hasNext()) {
@@ -265,10 +262,9 @@ public class Controller {
 
   /**
    * makes the map of event handlers to pass into the simulation view
-   *
    * @return returns the map of handler name to the event handler
    */
-  private Map<String, EventHandler<ActionEvent>> makeMap() {
+  private Map<String, EventHandler<ActionEvent>> makeHandlersMap() {
     Map<String, EventHandler<ActionEvent>> map = new HashMap<>();
     map.put("newSimulationHandler", event -> onNewSimulationClicked());
     map.put("infoButtonHandler", event -> onInfoButtonClicked());
@@ -276,17 +272,18 @@ public class Controller {
     map.put("saveSimulationHandler", event -> onSaveSimulation());
     map.put("pauseSimulationHandler", event -> onPauseSimulation());
     map.put("resetSimulationHandler", event -> onResetSimulation());
+    map.put("settingsHandler", event -> onSettingsClicked());
     return map;
   }
 
+  private void onSettingsClicked() {
+    pauseSimulation();
+    settingsPanel.showSettingsPanel();
+  }
 
-  /**
-   * pauses the simulation when the pause button is clicked
-   */
   private void onPauseSimulation() {
     pauseSimulation();
   }
-
 
   /**
    * saves the current state of the simulation as a new xml file when the save simulation button is
@@ -300,6 +297,11 @@ public class Controller {
         newStates.add(iterator.next().getCurrentState());
       }
       xmlParser.setStates(newStates);
+
+      if (settingsChanged){
+        xmlParser.setParameters(settingsPanel.getNewParameters());
+      }
+
       xmlParser.createXml("savedSimulation" + xmlParser.getType(),
           xmlParser.getType().toLowerCase());
 
@@ -310,17 +312,10 @@ public class Controller {
   }
 
 
-  /**
-   * un-pause the simulation when the start button is clicked
-   */
   private void onStartSimulation() {
     simulationRunning = true;
   }
 
-
-  /**
-   * shows the simulation information dialog box when about button is pressed
-   */
   private void onInfoButtonClicked() {
     Alert simulationInfo = new Alert(AlertType.INFORMATION);
 
@@ -345,10 +340,6 @@ public class Controller {
   }
 
 
-  /**
-   * switch simulation and reload the view and model components of the new simulation when new
-   * simulation button is clicked
-   */
   private void onNewSimulationClicked() {
     simulationRunning = false;
     File dataFile = chooseFile();
@@ -359,10 +350,6 @@ public class Controller {
     setSimulation();
   }
 
-
-  /**
-   * returns simulation to its initial state when reset button is pressed
-   */
   private void onResetSimulation() {
     simulationModel.createCellsAndGrid(xmlParser.getHeight(), xmlParser.getWidth(),
         xmlParser.getStates(), simulationModel.getCellShape(xmlParser.getCellShape()),
@@ -372,10 +359,8 @@ public class Controller {
     simulationPage.resetGraph();
   }
 
-
   /**
    * Shows a message dialog box according to the type and message text arguments
-   *
    * @param type    an AlertType object that specifies the type of the message
    * @param message a string that contains the content of the message
    */
