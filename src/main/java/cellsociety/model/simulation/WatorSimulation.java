@@ -24,10 +24,10 @@ public class WatorSimulation extends Simulation<WatorCell> {
   public static final int FISH = 1;
   public static final int SHARK = 2;
   public static final int[] UPDATE_ORDER = {SHARK, FISH, EMPTY};
-  private final int fishAgeOfReproduction;
-  private final int sharkAgeOfReproduction;
-  private final int energyBoost;
-  private final int initialEnergy;
+  private int fishAgeOfReproduction;
+  private int sharkAgeOfReproduction;
+  private int energyBoost;
+  private int initialEnergy;
 
   /**
    * Initializes a SchellingSimulation object

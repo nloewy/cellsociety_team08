@@ -1,7 +1,6 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
-import cellsociety.model.simulation.GameOfLifeSimulation;
 import cellsociety.model.simulation.PercolationSimulation;
 import java.util.Map;
 
@@ -60,6 +59,10 @@ public class PercolationCell extends Cell<PercolationCell> {
     } else {
       setNextState(getCurrentState());
     }
+  }
+
+  public void setParams(Map<String, Double> params){
+    percolatedNeighbors = (int) Math.floor(params.get("percolatedNeighbors"));
   }
 
   public String getText() {

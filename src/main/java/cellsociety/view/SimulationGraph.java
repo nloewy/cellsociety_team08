@@ -2,15 +2,13 @@ package cellsociety.view;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
-import javafx.scene.Group;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 public class SimulationGraph {
+
   private StackPane pane;
   private LineChart<Number, Number> lineChart;
   private XYChart.Series<Number, Number> series;
@@ -67,7 +65,7 @@ public class SimulationGraph {
         series.getData().add(new XYChart.Data<>(step, count));
       }
     }
-    step ++;
+    step++;
   }
 
   public LineChart<Number, Number> getLineChart() {
@@ -78,7 +76,7 @@ public class SimulationGraph {
 //    series.getData().add(new XYChart.Data<>(step, cellCounts));
 //  }
 
-  public void resetGraph(){
+  public void resetGraph() {
     for (XYChart.Series<Number, Number> series : lineChart.getData()) {
       series.getData().clear();
     }
@@ -86,7 +84,7 @@ public class SimulationGraph {
     step = 0;
   }
 
-  public StackPane getGraphSection(){
+  public StackPane getGraphSection() {
     return pane;
   }
 

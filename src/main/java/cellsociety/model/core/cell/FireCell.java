@@ -18,15 +18,15 @@ public class FireCell extends Cell<FireCell> {
   /**
    * Probability an empty Cell transitions to a tree cell
    */
-  private final double probTreeCreated;
+  private double probTreeCreated;
   /**
    * Probability an tree Cell with insufficient burning neighbors transitions to a burning cell
    */
-  private final double probTreeIgnites;
+  private double probTreeIgnites;
   /**
    * Number of burning neighbors a tree cell requires to transition to a burning cell.
    */
-  private final double neighborsToIgnite;
+  private double neighborsToIgnite;
 
   /**
    * Constructs a Fire Cell object for the Catching Fire simulation
@@ -84,6 +84,11 @@ public class FireCell extends Cell<FireCell> {
     }
   }
 
+  public void setParams(Map<String, Double> params){
+    neighborsToIgnite = (int) Math.floor(params.get("neighborsToIgnite"));
+    probTreeIgnites = params.get("probTreeIgnites");
+    probTreeCreated = params.get("probTreeCreated");
+  }
   /**
    * Represents a timestep update for a FireCell. Calls the proper helper function for transitioning
    * based on the state of the Fire Cell being updated.

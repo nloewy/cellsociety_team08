@@ -5,6 +5,7 @@ import cellsociety.model.core.grid.Grid;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The Cell is the atomic unit of our simulation. Each individual cell represents a location on a
@@ -188,4 +189,6 @@ public abstract class Cell<T extends Cell<T>> {
   }
 
 
+  public void setParams(Map<String, Double> newParameters) {
+  }
 }

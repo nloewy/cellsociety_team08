@@ -22,9 +22,9 @@ public class FireSimulation extends Simulation<FireCell> {
   public static final int BURNING = 2;
 
 
-  private final double probTreeIgnites;
-  private final double probTreeCreated;
-  private final int neighborsToIgnite;
+  private double probTreeIgnites;
+  private double probTreeCreated;
+  private int neighborsToIgnite;
 
 
   /**

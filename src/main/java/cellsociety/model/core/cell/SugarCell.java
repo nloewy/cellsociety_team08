@@ -1,7 +1,6 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
-import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.SugarSimulation;
 import java.util.HashSet;
 import java.util.Map;
@@ -160,15 +159,17 @@ public class SugarCell extends Cell<SugarCell> {
   }
 
   public String getText() {
-    if(myCurrentAgentSugar > 0) {
+    if (myCurrentAgentSugar > 0) {
       return "\uD83C\uDF6C";
     }
     return "";
   }
 
-  public int getCurrentSugar() {
-    return myCurrentAgentSugar;
+  public void setParams(Map<String, Double> params) {
+    sugarGrowBackRate = (int) Math.floor(params.get("growBackRate"));
   }
 }
+
+
 
 

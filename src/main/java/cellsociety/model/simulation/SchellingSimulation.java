@@ -137,4 +137,5 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
     moveCells(myEmptyCellsA, myCellsToMoveA);
     moveCells(myEmptyCellsB, myCellsToMoveB);
   }
+
 }
