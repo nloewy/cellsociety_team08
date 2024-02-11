@@ -17,11 +17,10 @@ import java.util.Map;
 public abstract class Cell<T extends Cell<T>> {
 
   public static final int PLACEHOLDER = -1;
-  private int myCurrentState;
-
-  private int myNextState;
   private final Point myLocation;
   private final List<Point> myVertices;
+  private int myCurrentState;
+  private int myNextState;
   private List<T> myNeighbors;
 
   /**
@@ -61,6 +60,10 @@ public abstract class Cell<T extends Cell<T>> {
    */
   public int getCurrentState() {
     return myCurrentState;
+  }
+
+  public void setCurrentState(int state) {
+    myCurrentState = state;
   }
 
   /**
@@ -164,9 +167,13 @@ public abstract class Cell<T extends Cell<T>> {
   }
 
   public double distance(T cell) {
-    if(cell==null){ return Integer.MAX_VALUE;}
-    return Math.pow((getCentroid().getCol()-cell.getCentroid().getCol()),2) + Math.pow((getCentroid().getRow()-cell.getCentroid().getRow()),2);
+    if (cell == null) {
+      return Integer.MAX_VALUE;
+    }
+    return Math.pow((getCentroid().getCol() - cell.getCentroid().getCol()), 2) + Math.pow(
+        (getCentroid().getRow() - cell.getCentroid().getRow()), 2);
   }
+
   @Override
   public boolean equals(Object other) {
     if (this == other) {

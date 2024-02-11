@@ -4,7 +4,6 @@ import cellsociety.Point;
 import java.util.List;
 import java.util.Map;
 import javafx.geometry.Bounds;
-import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -12,10 +11,10 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 
 
-public abstract class CellView{
+public abstract class CellView {
 
-  private Polygon shape;
-  private Label textBox;
+  private final Polygon shape;
+  private final Label textBox;
 
   private int boxLocationX;
   private int boxLocationY;
@@ -34,7 +33,6 @@ public abstract class CellView{
     boxLocationY /= vertices.size();
     setStroke(shape);
 
-
     textBox = new Label("X");
 
 //    getChildren().addAll(shape, textBox); // Add shape and text box as children of CellView
@@ -47,13 +45,13 @@ public abstract class CellView{
   }
 
   public void toggleStrokeWidth(boolean onOff) {
-    if(onOff) {
+    if (onOff) {
       shape.setStrokeWidth(3);
-    }
-    else {
+    } else {
       shape.setStrokeWidth(0);
     }
   }
+
   public abstract void setColors(int state);
 
   public void updateState(int state, String text) {

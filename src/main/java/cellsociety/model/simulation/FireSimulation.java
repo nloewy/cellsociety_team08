@@ -22,9 +22,9 @@ public class FireSimulation extends Simulation<FireCell> {
   public static final int BURNING = 2;
 
 
-  private double probTreeIgnites;
-  private double probTreeCreated;
-  private int neighborsToIgnite;
+  private final double probTreeIgnites;
+  private final double probTreeCreated;
+  private final int neighborsToIgnite;
 
 
   /**
@@ -49,9 +49,10 @@ public class FireSimulation extends Simulation<FireCell> {
 
   /**
    * Creates list of FireCell objects to be passed into grid
-   * @param col number of columns in grid for simulation
+   *
+   * @param col       number of columns in grid for simulation
    * @param stateList list of all cell's states in row major order
-   * @param shape Shape object representing the shape of the cell as represented on 2d plane
+   * @param shape     Shape object representing the shape of the cell as represented on 2d plane
    * @return list of initialized FireCells
    */
   public List<FireCell> cellMaker(int col, List<Integer> stateList, Shape shape) {

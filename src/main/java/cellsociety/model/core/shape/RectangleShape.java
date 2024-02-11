@@ -16,8 +16,8 @@ public class RectangleShape implements Shape {
    * grid is assumed to take up 1 square unit. The vertices are calculated based on the provided row
    * and column indices,representing the top-left corner of the square.
    *
-   * @param row  the row index of the top-left corner of the square
-   * @param col  the column index of the top-left corner of the square
+   * @param row the row index of the top-left corner of the square
+   * @param col the column index of the top-left corner of the square
    * @return a list of Point objects representing the vertices of the square
    */
   public List<Point> getVertices(int row, int col) {

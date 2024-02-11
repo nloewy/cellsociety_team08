@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-;
-
 /**
  * Represents an extension of the Cell, and serves as the atomic unit of the Wator Simulation.
  * Contains extra instance variables that typical cells do not have, referencing energy and age.

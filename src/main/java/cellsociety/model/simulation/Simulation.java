@@ -134,7 +134,6 @@ public abstract class Simulation<T extends Cell> {
   }
 
 
-
   public void setParams(Map<String, Double> newParameters) {
     Iterator<T> iterator = myGrid.iterator();
     while (iterator.hasNext()) {

@@ -2,15 +2,12 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.FallingSandCell;
-import cellsociety.model.core.cell.WatorCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.FallingSandRecord;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This cellular automata simulation represents the Predator-Prey simulation developed by Alexander
@@ -25,7 +22,7 @@ public class FallingSandSimulation extends Simulation<FallingSandCell> {
   public static final int SAND = 1;
   public static final int WATER = 2;
   public static final int METAL = 3;
-  public static final int[] UPDATE_ORDER = {SAND, WATER, EMPTY, METAL};
+  public static final int[] UPDATE_ORDER = {METAL, SAND, WATER, EMPTY};
 
   /**
    * Initializes a SchellingSimulation object
@@ -56,7 +53,6 @@ public class FallingSandSimulation extends Simulation<FallingSandCell> {
   public List<FallingSandCell> cellMaker(int col, List<Integer> stateList,
       Shape shape) {
     List<FallingSandCell> cellList = new ArrayList<>();
-
     for (int i = 0; i < stateList.size(); i++) {
       cellList.add(new FallingSandCell(stateList.get(i), i / col, i % col, shape));
     }
@@ -65,21 +61,30 @@ public class FallingSandSimulation extends Simulation<FallingSandCell> {
 
 
   /**
-   * Transition function for Wator World. Iterates through each cell, starting with all the sharks,
-   * then fish, then empty, and calls the cell's transition function.
+   * Transition function for Falling Sand. Iterates through each cell, starting with sand then
+   * water, then other, and calls the cell's transition function.
    */
   @Override
   public void transitionFunction() {
     for (int cellToUpdate : UPDATE_ORDER) {
-      Iterator<FallingSandCell> gridIterator = getIterator();
+      List<FallingSandCell> cellsToUpdate = new ArrayList<>();
 
+      // Collect cells to update in reverse order
+      Iterator<FallingSandCell> gridIterator = getIterator();
       while (gridIterator.hasNext()) {
         FallingSandCell currentCell = gridIterator.next();
         if (currentCell.getNextState() == Cell.PLACEHOLDER &&
             currentCell.getCurrentState() == cellToUpdate) {
-          currentCell.transition();
+          cellsToUpdate.add(currentCell);
         }
+      }
+
+      // Update cells in reverse order
+      for (int i = cellsToUpdate.size() - 1; i >= 0; i--) {
+        FallingSandCell currentCell = cellsToUpdate.get(i);
+        currentCell.transition();
       }
     }
   }
+
 }

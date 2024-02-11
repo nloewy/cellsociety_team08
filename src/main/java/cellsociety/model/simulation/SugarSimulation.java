@@ -31,9 +31,8 @@ public class SugarSimulation extends Simulation<SugarCell> {
   private final int maxInitialSugar;
   private final int minMetabolism;
   private final int maxMetabolism;
-
-  private int growBackRate;
   private final int numAgents;
+  private final int growBackRate;
 
   public SugarSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       SugarRecord r) {

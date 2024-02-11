@@ -36,26 +36,6 @@ import javafx.scene.text.Text;
 
 public class SimulationPage {
 
-  private Scene scene;
-  private Group root;
-  private CellView[][] board;
-  private Button newSimulationButton;
-  private Button simulationInfoButton;
-  private Button startSimulationButton;
-  private Button pauseSimulationButton;
-  private Button saveSimulationButton;
-  private Button resetSimulationButton;
-  private Button simulationGraphButton;
-  private Button settingsButton;
-  private Text simulationTitleDisplay;
-  private Slider speedSlider;
-  private Label speedLabel;
-  private ResourceBundle buttonLabels;
-  private ResourceBundle configProperties;
-  private ResourceBundle textProperties;
-  private SimulationGraph graph;
-  private Map<Integer, Integer> stateCount;
-
   //config file number keys
   public static final String SCENE_HEIGHT_KEY = "SCENE_HEIGHT";
   public static final String SCENE_WIDTH_KEY = "SCENE_WIDTH";
@@ -77,13 +57,11 @@ public class SimulationPage {
   public static final String SPEED_SLIDER_MIN_KEY = "SLIDER_MIN";
   public static final String SPEED_SLIDER_MAX_KEY = "SLIDER_MAX";
   public static final String SLIDER_DEFAULT_KEY = "SLIDER_DEFAULT";
-
   //paths
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
   public static final String STYLESHEET = "StyleSheet.css";
-
   //button label keys
   public static final String NEW_SIMULATION_BUTTON_KEY = "NewSimulationButton";
   public static final String RESET_BUTTON_KEY = "ResetButton";
@@ -92,7 +70,26 @@ public class SimulationPage {
   public static final String ABOUT_BUTTON_KEY = "SimulationInfoButton";
   public static final String SAVE_BUTTON_KEY = "SaveSimulationButton";
   public static final String SPEED_LABEL_TEXT_KEY = "speedLabel";
-  private Map<String, Double> gridProperties;
+  private final Scene scene;
+  private final Group root;
+  private final CellView[][] board;
+  private Button newSimulationButton;
+  private Button simulationInfoButton;
+  private Button startSimulationButton;
+  private Button pauseSimulationButton;
+  private Button saveSimulationButton;
+  private Button resetSimulationButton;
+  private Button simulationGraphButton;
+  private Button settingsButton;
+  private final Text simulationTitleDisplay;
+  private Slider speedSlider;
+  private Label speedLabel;
+  private final ResourceBundle buttonLabels;
+  private final ResourceBundle configProperties;
+  private final ResourceBundle textProperties;
+  private final SimulationGraph graph;
+  private final Map<Integer, Integer> stateCount;
+  private final Map<String, Double> gridProperties;
 
   /**
    * Constructs the view component of the simulation
@@ -239,10 +236,11 @@ public class SimulationPage {
         configInt(RESET_BUTTON_Y_KEY));
     simulationGraphButton = new Button("Show Graph");
     simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
-    settingsButton = makeButton("Settings", eventHandlers.get("settingsHandler"), configInt(BUTTON_START_X_KEY), 600);
+    settingsButton = makeButton("Settings", eventHandlers.get("settingsHandler"),
+        configInt(BUTTON_START_X_KEY), 600);
   }
 
-  public Button getSettingsButton(){
+  public Button getSettingsButton() {
     return settingsButton;
   }
 
@@ -270,9 +268,9 @@ public class SimulationPage {
     root.getChildren().remove(graph.getGraphSection());
   }
 
-  public void toggleOnOffCellOutlines (boolean onOffCellOutlines) {
-    for(int row = 0; row < board.length; row++) {
-      for(int col = 0; col<board[0].length; col++) {
+  public void toggleOnOffCellOutlines(boolean onOffCellOutlines) {
+    for (int row = 0; row < board.length; row++) {
+      for (int col = 0; col < board[0].length; col++) {
         board[row][col].toggleStrokeWidth(onOffCellOutlines);
       }
     }
