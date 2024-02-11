@@ -70,6 +70,9 @@ public abstract class Cell<T extends Cell<T>> {
     return myNextState;
   }
 
+  public void setCurrentState(int state) {
+    myCurrentState = state;
+  }
   /**
    * Updates the myNextState instance variable
    *

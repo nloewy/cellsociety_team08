@@ -40,19 +40,28 @@ public class FallingSandCell extends Cell<FallingSandCell> {
     FallingSandCell bestOption = null;
     double bestSlope = 0;
     for(FallingSandCell cell : getNeighbors()) {
-      double newSlope = (cell.getCentroid().getRow() - getCentroid().getRow()) /
-          (cell.getCentroid().getCol() - getCentroid().getCol());
-      if (cell.getCentroid().getRow() > getCentroid().getRow() && Math.abs(newSlope) > bestSlope) {
-        bestOption = cell;
-        bestSlope = Math.abs(newSlope);
+        double newSlope = (cell.getCentroid().getRow() - getCentroid().getRow()) /
+            (cell.getCentroid().getCol() - getCentroid().getCol());
+        if (cell.getCentroid().getRow() > getCentroid().getRow()
+            && Math.abs(newSlope) > bestSlope) {
+          bestOption = cell;
+          bestSlope = Math.abs(newSlope);
+
       }
     }
-    if (bestOption.getNextState() == FallingSandSimulation.WATER){
+    if(bestOption == null) {
+      setNextState(getCurrentState());
+      return;
+    }
+    if (bestOption.getCurrentState() == FallingSandSimulation.WATER){
       setNextState(FallingSandSimulation.WATER);
       bestOption.setNextState(FallingSandSimulation.SAND);
     }
-    else if(bestOption.getNextState() == FallingSandSimulation.EMPTY) {
+    else if(bestOption.getCurrentState() == FallingSandSimulation.EMPTY) {
       bestOption.setNextState(FallingSandSimulation.SAND);
+      setNextState(FallingSandSimulation.EMPTY);
+      setCurrentState(FallingSandSimulation.EMPTY);
+
     }
     else
       setNextState(getCurrentState());
@@ -60,20 +69,33 @@ public class FallingSandCell extends Cell<FallingSandCell> {
 
   private void handleWaterCell() {
     List<FallingSandCell> options = new ArrayList<>();
+    System.out.println("_______");
     for (FallingSandCell cell : getNeighbors()) {
-      if (cell.getCentroid().getRow() >= getLocation().getRow()) {
-        options.add(cell);
+      if (cell.getCentroid().getRow() >= getCentroid().getRow()) {
+        if(cell.getCurrentState()==FallingSandSimulation.EMPTY && cell.getNextState() == PLACEHOLDER) {
+          options.add(cell);
+        }
       }
     }
     if(options.isEmpty()) {
       setNextState(getCurrentState());
+      return;
     }
     Collections.shuffle(options);
-    FallingSandCell nextCell = options.get(0);
+    int index = 0;
+    while(index<options.size() && options.get(index).getNextState()!=PLACEHOLDER) {
+      index++;
+    }
+    if (index == options.size()) {
+      setNextState(getCurrentState());
+      return;
+    }
+    FallingSandCell nextCell = options.get(index);
     if (nextCell.getNextState() == PLACEHOLDER) {
       if (nextCell.getCurrentState() == FallingSandSimulation.EMPTY) {
         nextCell.setNextState(FallingSandSimulation.WATER);
-        setNextState(FallingSandSimulation.EMPTY);
+        setCurrentState(FallingSandSimulation.EMPTY);
+
       }
     }
 
