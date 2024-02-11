@@ -2,6 +2,8 @@ package cellsociety.view;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -21,7 +23,7 @@ public class Settings {
   private Map<String, Double> parameters;
   private Button saveParametersButton;
 
-  public Settings(Map<String, Double> parameters) {
+  public Settings(Map<String, Double> parameters, EventHandler<ActionEvent> applyButtonHandler) {
     settingsPanel = new Stage();
     settingsPanel.setTitle("Parameter Settings");
 
@@ -35,7 +37,7 @@ public class Settings {
     setPanelFields();
 
     saveParametersButton = new Button("Apply");
-    saveParametersButton.setOnAction(event -> saveParameters());
+    saveParametersButton.setOnAction(applyButtonHandler);
     root.getChildren().add(saveParametersButton);
   }
 
@@ -84,8 +86,12 @@ public class Settings {
     settingsPanel.show();
   }
 
-  public void hideSettingsPanel(){
+  public void closeSettingsPanel(){
     settingsPanel.hide();
+  }
+
+  public Map<String, Double> getNewParameters(){
+    return parameters;
   }
 
 }

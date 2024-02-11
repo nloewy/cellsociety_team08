@@ -31,7 +31,9 @@ public class GameOfLifeSimulation extends Simulation<LifeCell> {
    * @param row,       the number of rows in the 2-dimensional grid
    * @param col,       the number of columns in the 2-dimensional grid
    * @param hoodType,  the definition of neighbors
-   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
+   * @param stateList, a list of the integer representation of each cells state in row major order
+   * @param r,         a record of all parameters needed for Game of Life Simulation. Description of
+   *                   parameters can be found in the LifeCell class
    */
   public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       GameOfLifeRecord r) {
@@ -42,6 +44,15 @@ public class GameOfLifeSimulation extends Simulation<LifeCell> {
     this.deadToAliveMax = r.deadToAliveMax();
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
+
+  /**
+   * Creates list of LifeCell objects to be passed into grid
+   *
+   * @param col       number of columns in grid for simulation
+   * @param stateList list of all cell's states in row major order
+   * @param shape     Shape object representing the shape of the cell as represented on 2d plane
+   * @return list of initialized LifeCells
+   */
 
   public List<LifeCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<LifeCell> cellList = new ArrayList<>();

@@ -33,7 +33,9 @@ public class FireSimulation extends Simulation<FireCell> {
    * @param row,       the number of rows in the 2-dimensional grid
    * @param col,       the number of columns in the 2-dimensional grid
    * @param hoodType,  the definition of neighbors
-   * @param stateList, a list of the integer representation of each cells state, by rows, then cols
+   * @param stateList, a list of the integer representation of each cells state in row major order
+   * @param r,         a record of all parameters needed for Fire Simulation. Description of
+   *                   parameters can be found in the FireCell class
    */
   public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
       FireRecord r) {
@@ -45,6 +47,13 @@ public class FireSimulation extends Simulation<FireCell> {
   }
 
 
+  /**
+   * Creates list of FireCell objects to be passed into grid
+   * @param col number of columns in grid for simulation
+   * @param stateList list of all cell's states in row major order
+   * @param shape Shape object representing the shape of the cell as represented on 2d plane
+   * @return list of initialized FireCells
+   */
   public List<FireCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<FireCell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();
