@@ -1,13 +1,17 @@
 package cellsociety.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -22,12 +26,18 @@ public class Settings {
   private VBox root;
   private Map<String, Double> parameters;
   private Button saveParametersButton;
+  private List<String> avaliableEdgeTypes;
+  private ComboBox<String> edgeTypeComboBox;
+  private String edge;
 
-  public Settings(Map<String, Double> parameters, EventHandler<ActionEvent> applyButtonHandler) {
+
+  public Settings(String defaultEdge, Map<String, Double> parameters, EventHandler<ActionEvent> applyButtonHandler) {
     settingsPanel = new Stage();
     settingsPanel.setTitle("Parameter Settings");
 
+    this.edge = defaultEdge;
     this.parameters = parameters;
+    initializeEdgeTypes();
 
     root = new VBox(10);
     root.setPadding(new Insets(10));
@@ -35,10 +45,34 @@ public class Settings {
     settingsPanel.setScene(scene);
 
     setPanelFields();
+    setEditEdge(defaultEdge);
 
     saveParametersButton = new Button("Apply");
     saveParametersButton.setOnAction(applyButtonHandler);
     root.getChildren().add(saveParametersButton);
+  }
+
+  private void initializeEdgeTypes() {
+    avaliableEdgeTypes = new ArrayList();
+    avaliableEdgeTypes.add("Normal");
+    avaliableEdgeTypes.add("Warped");
+  }
+
+  private void setEditEdge(String defaultEdge) {
+    HBox edgeTypeBox = new HBox(10); // Create an HBox to contain the label and the ComboBox
+    Label edgeTypeLabel = new Label("Edge Type");
+
+    edgeTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableEdgeTypes));
+    edgeTypeComboBox.getSelectionModel().select(defaultEdge); // Set default selection
+
+    edgeTypeBox.getChildren().addAll(edgeTypeLabel, edgeTypeComboBox);
+
+    edgeTypeComboBox.setOnAction(event -> {
+      String selectedEdgeType = edgeTypeComboBox.getSelectionModel().getSelectedItem();
+      System.out.println("Selected edge type: " + selectedEdgeType);
+      // You can associate the selected edge type with a label here
+    });
+    root.getChildren().add(edgeTypeBox);
   }
 
   private void setPanelFields() {
@@ -64,7 +98,7 @@ public class Settings {
     }
   }
 
-  public void saveParameters() {
+  public void saveChanges() {
     for (Node node : root.getChildren()) {
       if (node instanceof HBox) {
         HBox hbox = (HBox) node;
@@ -75,11 +109,19 @@ public class Settings {
             double value = spinner.getValue();
             parameters.put(label, value);
           }
+          if (child instanceof ComboBox){
+            ComboBox<String> edgeDropdown = (ComboBox<String>) child;
+            edge = edgeDropdown.getValue();
+          }
         }
       }
     }
     // Do something with the updated parameters map
     System.out.println("Updated parameters: " + parameters);
+  }
+
+  public void saveEdgeType(){
+
   }
 
   public void showSettingsPanel(){
@@ -92,6 +134,10 @@ public class Settings {
 
   public Map<String, Double> getNewParameters(){
     return parameters;
+  }
+
+  public String getNewEdgeType(){
+    return edge;
   }
 
 }

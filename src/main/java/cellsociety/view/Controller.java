@@ -146,14 +146,15 @@ public class Controller {
         xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
     loadSimulationScene();
-    settingsPanel = new Settings(xmlParser.getParameters(), event -> onApplyClicked());
+    settingsPanel = new Settings(xmlParser.getGridEdgeType(), xmlParser.getParameters(), event -> onApplyClicked());
   }
 
   private void onApplyClicked() {
     settingsChanged = true;
-    settingsPanel.saveParameters();
+    settingsPanel.saveChanges();
     settingsPanel.closeSettingsPanel();
 //    simulationModel.setParams(settingsPanel.getNewParameters());
+//    simulationModel.setEdgeType(settingsPanel.getNewEdgeType());
   }
 
   private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
