@@ -2,11 +2,9 @@ package cellsociety.model.simulation;
 
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.SugarCell;
-import cellsociety.model.core.cell.WatorCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.simulation.Records.SugarRecord;
-import cellsociety.model.simulation.Records.WatorRecord;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,7 +21,6 @@ import java.util.Random;
  */
 
 public class SugarSimulation extends Simulation<SugarCell> {
-
 
 
   public static final int MAX_AVAILABLE_SUGAR = 4;
@@ -72,10 +69,12 @@ public class SugarSimulation extends Simulation<SugarCell> {
 
     for (int i = 0; i < stateList.size(); i++) {
       Map<String, Integer> params = new HashMap<>();
-      if(agentList.get(i)) {
-        params.put("vision", new Random().nextInt(maxVision+1-minVision) + minVision);
-        params.put("sugar", new Random().nextInt(maxInitialSugar+1-minInitialSugar) + minInitialSugar);
-        params.put("metabolism", new Random().nextInt(maxMetabolism+1-minMetabolism) + minMetabolism);
+      if (agentList.get(i)) {
+        params.put("vision", new Random().nextInt(maxVision + 1 - minVision) + minVision);
+        params.put("sugar",
+            new Random().nextInt(maxInitialSugar + 1 - minInitialSugar) + minInitialSugar);
+        params.put("metabolism",
+            new Random().nextInt(maxMetabolism + 1 - minMetabolism) + minMetabolism);
       }
       params.put("growBackRate", growBackRate);
       cellList.add(new SugarCell(stateList.get(i), i / col, i % col, shape, params));
@@ -84,14 +83,13 @@ public class SugarSimulation extends Simulation<SugarCell> {
   }
 
 
-
   /**
    * Transition function for Wator World. Iterates through each cell, starting with all the sharks,
    * then fish, then empty, and calls the cell's transition function.
    */
   @Override
   public void transitionFunction() {
-    for (int i = 0; i<2; i++) {
+    for (int i = 0; i < 2; i++) {
       Iterator<SugarCell> gridIterator = getIterator();
       while (gridIterator.hasNext()) {
         SugarCell currentCell = gridIterator.next();
@@ -109,10 +107,11 @@ public class SugarSimulation extends Simulation<SugarCell> {
     Iterator<SugarCell> gridIterator = getIterator();
     while (gridIterator.hasNext()) {
       SugarCell currentCell = gridIterator.next();
-      if(currentCell.getLocation().getCol()==0) {
+      if (currentCell.getLocation().getCol() == 0) {
         System.out.println();
       }
-      System.out.print(currentCell.getCurrentState() + ":" + currentCell.getCurrentSugar() + "    ");
+      System.out.print(
+          currentCell.getCurrentState() + ":" + currentCell.getCurrentSugar() + "    ");
 
 
     }

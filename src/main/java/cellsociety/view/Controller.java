@@ -168,8 +168,6 @@ public class Controller {
   }
 
 
-
-
   /**
    * gets the neighborhood object based on the neighborhood type string
    *

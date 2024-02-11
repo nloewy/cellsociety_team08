@@ -2,7 +2,6 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
-import cellsociety.model.core.cell.SugarCell;
 import cellsociety.view.cellview.CellView;
 import cellsociety.view.cellview.FireCellView;
 import cellsociety.view.cellview.GameOfLifeCellView;
@@ -10,10 +9,10 @@ import cellsociety.view.cellview.PercolationCellView;
 import cellsociety.view.cellview.SchellingCellView;
 import cellsociety.view.cellview.SugarCellView;
 import cellsociety.view.cellview.WatorCellView;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -23,7 +22,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -111,10 +109,8 @@ public class SimulationPage {
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
 
-
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
-
 
     gridProperties = new HashMap<>();
     gridProperties.put("gridStartX", configDouble(GRID_START_X_KEY));

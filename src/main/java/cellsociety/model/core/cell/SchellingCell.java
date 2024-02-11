@@ -2,7 +2,6 @@ package cellsociety.model.core.cell;
 
 
 import cellsociety.model.core.shape.Shape;
-import cellsociety.model.simulation.GameOfLifeSimulation;
 import cellsociety.model.simulation.SchellingSimulation;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +16,13 @@ public class SchellingCell extends Cell<SchellingCell> {
   /**
    * Constructs a Schelling Cell object for the Schelling's Model of Segregation simulation
    *
-   * @param initialState  the integer representation of the cell's current state
-   * @param row           the row the cell is positioned at as represented on a 2D coordinate grid
-   * @param col           the column the cell is positioned at as represented on a 2D coordinate
-   *                      grid
-   * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
-   * @param params        map of string parameter names to their values. Description of parameters
-   *                      can be found at the declaration of the instance variables.
+   * @param initialState the integer representation of the cell's current state
+   * @param row          the row the cell is positioned at as represented on a 2D coordinate grid
+   * @param col          the column the cell is positioned at as represented on a 2D coordinate
+   *                     grid
+   * @param shapeType    the shape of a cell, as represented on a 2D coordinate grid
+   * @param params       map of string parameter names to their values. Description of parameters
+   *                     can be found at the declaration of the instance variables.
    */
   public SchellingCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Double> params) {
@@ -38,15 +37,13 @@ public class SchellingCell extends Cell<SchellingCell> {
   @Override
   public void transition() {
     if (getCurrentState() == SchellingSimulation.EMPTY) {
-      if(isSatsfied(SchellingSimulation.GROUP_A)){
+      if (isSatsfied(SchellingSimulation.GROUP_A)) {
         setNextState(SchellingSimulation.TEMP_EMPTY_A);
-      }
-      else if(isSatsfied(SchellingSimulation.GROUP_B)) {
+      } else if (isSatsfied(SchellingSimulation.GROUP_B)) {
         setNextState(SchellingSimulation.TEMP_EMPTY_B);
       }
-    }
-    else{
-    handleDemographicCell();
+    } else {
+      handleDemographicCell();
     }
   }
 
@@ -81,6 +78,7 @@ public class SchellingCell extends Cell<SchellingCell> {
         || (double) numNeighborsSameState / (totalNeighbors - numEmptyNeighbors)
         >= proportionNeededToStay);
   }
+
   public String getText() {
     return "";
   }
