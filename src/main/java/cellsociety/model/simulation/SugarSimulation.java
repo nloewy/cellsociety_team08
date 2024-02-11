@@ -93,16 +93,10 @@ public class SugarSimulation extends Simulation<SugarCell> {
       Iterator<SugarCell> gridIterator = getIterator();
       while (gridIterator.hasNext()) {
         SugarCell currentCell = gridIterator.next();
-        if (i == 0 && currentCell.agentHere()) {
-          if (currentCell.getNextState() == Cell.PLACEHOLDER) {
-            currentCell.transition();
-          }
-        } else if (i == 1 && currentCell.agentHere() == false) {
-          if (currentCell.getNextState() == Cell.PLACEHOLDER) {
-            currentCell.transition();
-          }
+        if (i == 0 == currentCell.agentHere() && currentCell.getNextState() == Cell.PLACEHOLDER) {
+          currentCell.transition();
         }
       }
     }
-    }
+  }
 }

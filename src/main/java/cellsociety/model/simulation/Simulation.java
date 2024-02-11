@@ -133,10 +133,7 @@ public abstract class Simulation<T extends Cell> {
     return myGrid.iterator();
   }
 
-  public static boolean isInteger(double number) {
-    return Math.floor(number) == number;
 
-  }
 
   public void setParams(Map<String, Double> newParameters) {
     Iterator<T> iterator = myGrid.iterator();

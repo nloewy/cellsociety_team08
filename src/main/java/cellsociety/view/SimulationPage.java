@@ -3,6 +3,7 @@ package cellsociety.view;
 import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
 import cellsociety.view.cellview.CellView;
+import cellsociety.view.cellview.FallingCellView;
 import cellsociety.view.cellview.FireCellView;
 import cellsociety.view.cellview.GameOfLifeCellView;
 import cellsociety.view.cellview.PercolationCellView;
@@ -17,18 +18,14 @@ import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
 
 /**
  * This class controls the simulation's view component, controls the simulation grid view, and
@@ -58,7 +55,6 @@ public class SimulationPage {
   private ResourceBundle textProperties;
   private SimulationGraph graph;
   private Map<Integer, Integer> stateCount;
-  private int totalCellCount;
 
   //config file number keys
   public static final String SCENE_HEIGHT_KEY = "SCENE_HEIGHT";
@@ -152,6 +148,8 @@ public class SimulationPage {
               new WatorCellView(width, height, allVertices.get(ind), gridProperties);
           case Controller.SUGAR ->
               new SugarCellView(width, height, allVertices.get(ind), gridProperties);
+          case Controller.FALLING ->
+              new FallingCellView(width, height, allVertices.get(ind), gridProperties);
           default -> throw new IllegalStateException("Unexpected value: " + simulationType);
         };
 

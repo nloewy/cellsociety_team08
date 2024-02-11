@@ -11,9 +11,11 @@ import cellsociety.model.core.cell.Cell;
 import cellsociety.model.neighborhood.MooreNeighborhood;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.neighborhood.VonNeumannNeighborhood;
+import cellsociety.model.simulation.FallingSandSimulation;
 import cellsociety.model.simulation.FireSimulation;
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import cellsociety.model.simulation.PercolationSimulation;
+import cellsociety.model.simulation.Records.FallingSandRecord;
 import cellsociety.model.simulation.Records.FireRecord;
 import cellsociety.model.simulation.Records.GameOfLifeRecord;
 import cellsociety.model.simulation.Records.PercolationRecord;
@@ -78,8 +80,9 @@ public class Controller {
   public static final String PERCOLATION = "Percolation";
   public static final String SCHELLING = "Schelling";
   public static final String WATOR = "Wator";
-
   public static final String SUGAR = "Sugar";
+
+  public static final String FALLING = "Falling";
   public static final String UPLOAD_FILE_TEXT_KEY = "uploadFile";
   public static final String SECOND_DELAY_KEY = "SECOND_DELAY";
   public static final String FILE_SAVED_KEY = "fileSaved";
@@ -229,6 +232,8 @@ public class Controller {
               xmlParser.getParameters().get("maxMetabolism").intValue(),
               xmlParser.getParameters().get("growBackRate").intValue(),
               xmlParser.getParameters().get("numAgents").intValue(), gridType, cellShape));
+      case FALLING -> new FallingSandSimulation(numRows, numCols, neighborhoodType, stateList,
+          new FallingSandRecord(gridType, cellShape));
       default -> null;
     };
   }
@@ -331,7 +336,6 @@ public class Controller {
     textArea.setText(
         xmlParser.getDisplayDescription() + "\n\n" +
             "Author: " + xmlParser.getAuthor() + "\n\n" +
-            "States: " + xmlParser.getStateColor() + "\n" +
             "Parameters: " + xmlParser.getParameters()
     );
     textArea.setMinHeight(simulationPage.configInt(ABOUT_MIN_HEIGHT_KEY));
