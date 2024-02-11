@@ -2,13 +2,14 @@ package cellsociety.view;
 
 import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
+import cellsociety.model.core.cell.SugarCell;
 import cellsociety.view.cellview.CellView;
 import cellsociety.view.cellview.FireCellView;
 import cellsociety.view.cellview.GameOfLifeCellView;
 import cellsociety.view.cellview.PercolationCellView;
 import cellsociety.view.cellview.SchellingCellView;
+import cellsociety.view.cellview.SugarCellView;
 import cellsociety.view.cellview.WatorCellView;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Polygon;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -112,13 +111,15 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String cellShape, String simulationType, String simulationName, int numRows,
+  public SimulationPage(String simulationType, String simulationName, int numRows,
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
 
+
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
+
 
     gridProperties = new HashMap<>();
     gridProperties.put("gridStartX", configDouble(GRID_START_X_KEY));
@@ -155,10 +156,16 @@ public class SimulationPage {
               new SchellingCellView(width, height, allVertices.get(ind), gridProperties);
           case Controller.WATOR ->
               new WatorCellView(width, height, allVertices.get(ind), gridProperties);
+          case Controller.SUGAR ->
+              new SugarCellView(width, height, allVertices.get(ind), gridProperties);
           default -> throw new IllegalStateException("Unexpected value: " + simulationType);
         };
+
         Shape shape = board[row][col].getCellGraphic();
         root.getChildren().add(shape);
+        root.getChildren().add(board[row][col].getTextBox());
+        board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
+        board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
         ind++;
       }
     }
@@ -204,6 +211,7 @@ public class SimulationPage {
         textProperties.getString(SPEED_LABEL_TEXT_KEY) + (int) speedSlider.getValue());
     speedLabel.setLayoutX(configInt(BUTTON_START_X_KEY));
     speedLabel.setLayoutY(configInt(SPEED_LABEL_Y_KEY));
+
   }
 
 
@@ -287,6 +295,7 @@ public class SimulationPage {
    * @param speed an integer that specifies the current speed on the slider
    */
   public void updateSpeedLabel(int speed) {
+
     speedLabel.setText(textProperties.getString(SPEED_LABEL_TEXT_KEY) + speed);
   }
 
@@ -334,12 +343,13 @@ public class SimulationPage {
       int col = (int) location.getCol();
       int row = (int) location.getRow();
       int state = c.getCurrentState();
-      board[row][col].updateState(state);
-
+      board[row][col].updateState(state, c.getText());
       if (!stateCount.containsKey(state)) {
         stateCount.put(state, 0);
       }
       stateCount.replace(state, stateCount.get(state) + 1);
+      board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
+      board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
     }
 
     graph.updateGraph(stateCount);

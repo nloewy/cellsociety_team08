@@ -1,6 +1,7 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
+import cellsociety.model.simulation.FireSimulation;
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author Noah Loewy
  */
 
-public class LifeCell extends Cell {
+public class LifeCell extends Cell<LifeCell> {
 
   /**
    * Minimum number of alive neighbors required for an alive cell to remain alive and avoid death by
@@ -41,7 +42,7 @@ public class LifeCell extends Cell {
    *                      grid
    * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
    * @param params        map of string parameter names to their values. Description of parameters
-   *                      can be found at te declaration of the instance variables.
+   *                      can be found at the declaration of the instance variables.
    */
   public LifeCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Integer> params) {
@@ -91,6 +92,14 @@ public class LifeCell extends Cell {
     } else {
       setNextState(GameOfLifeSimulation.DEAD);
     }
+  }
+
+  public String getText() {
+    return switch (getCurrentState()) {
+      case GameOfLifeSimulation.ALIVE -> "\uD83D\uDC7C";
+      case GameOfLifeSimulation.DEAD -> "\uD83D\uDC7B";
+      default -> "";
+    };
   }
 }
 

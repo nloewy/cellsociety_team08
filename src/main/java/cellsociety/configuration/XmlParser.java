@@ -59,7 +59,7 @@ public class XmlParser {
   public static final String WATOR_NAME = "Wator";
   public static final String SUGAR_NAME = "Sugar";
   public static final Set<String> SIMULATION_TYPES = new HashSet<>(
-      Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME));
+      Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME, SUGAR_NAME));
 
   // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
@@ -86,12 +86,17 @@ public class XmlParser {
   // define valid cell states for Wator simulation
   public static final Set<String> WATOR_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
+
+  public static final Set<String> SUGAR_CELL_STATES = new HashSet<>(
+      Arrays.asList("0", "1", "2", "3", "4"));
+
   public static final Map<String, Set<String>> SIMULATION_CELL_STATES = new HashMap<>() {{
       put(FIRE_NAME, FIRE_CELL_STATES);
       put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
       put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
       put(SCHELLING_NAME, SCHELLING_CELL_STATES);
       put(WATOR_NAME, WATOR_CELL_STATES);
+      put(SUGAR_NAME, SUGAR_CELL_STATES);
     }};
 
   // define names for the field as written in the XML configuration files
@@ -110,6 +115,7 @@ public class XmlParser {
   public static final String PARAMETERS_FIELD_NAME = "parameters";
   public static final String RANDOM_CONFIG_FIELD_NAME = "random_configuration_by_total_states";
   public static final String INITIAL_STATES_FIELD_NAME = "initial_states";
+  public static final String SLIDER_FIELD_NAME = "slider";
 
   private ResourceBundle resourceBundle; // resource bundle for error handling messages
   private String type; // simulation type
@@ -128,6 +134,8 @@ public class XmlParser {
   private String language;
   private String cellShape;
   private String gridEdgeType;
+
+  private String sliderInitial;
   private Map<String, Integer> randomConfigurationTotalStates;
   private int totalNumStates;
 
@@ -575,6 +583,7 @@ public class XmlParser {
     // parse initial states
     parseStates(element.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
 
+
     // parse parameters
     parseParameters(element.getElementsByTagName(PARAMETERS_FIELD_NAME).item(0));
 
@@ -586,6 +595,9 @@ public class XmlParser {
 
   }
 
+  public int getInitialSlider() {
+    return Integer.parseInt(sliderInitial);
+  }
 
   /**
    * Validate the simulation, handling any potential errors
@@ -717,6 +729,8 @@ public class XmlParser {
     cellShape = element.getElementsByTagName(CELL_SHAPE_FIELD_NAME).item(0).getTextContent();
     language = element.getElementsByTagName(LANGUAGE_FIELD_NAME).item(0).getTextContent();
 
+    sliderInitial = element.getElementsByTagName(SLIDER_FIELD_NAME).item(0).getTextContent();
+
     // update resource bundle given language
     resourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Errors" + language);
 
@@ -835,6 +849,31 @@ public class XmlParser {
         }
         yield defaultParametersResourceBundle.getString("initialEnergy");
       }
+      case SUGAR_NAME -> {
+        if (name.equals("minVision")) {
+          yield defaultParametersResourceBundle.getString("minVision");
+        } else if (name.equals("maxVision")) {
+          yield defaultParametersResourceBundle.getString("maxVision");
+        } else if (name.equals("minInitialSugar")) {
+          yield defaultParametersResourceBundle.getString("minInitialSugar");
+        }
+        else if (name.equals("maxInitialSugar")) {
+          yield defaultParametersResourceBundle.getString("maxInitialSugar");
+        }
+        else if (name.equals("minMetabolism")) {
+          yield defaultParametersResourceBundle.getString("minMetabolism");
+        }
+        else if (name.equals("maxMetabolism")) {
+          yield defaultParametersResourceBundle.getString("maxMetabolism");
+        }else if (name.equals("growBackRate")) {
+          yield defaultParametersResourceBundle.getString("growBackRate");
+        }
+          else {
+            yield  Integer.toString((int) Math.round(Double.parseDouble
+                (defaultParametersResourceBundle.getString("agentProportion"))
+                *getHeight()*getWidth()));
+        }
+      }
       default -> "";
     };
   }
@@ -945,6 +984,8 @@ public class XmlParser {
     addElement(doc, rootElement, CELL_SHAPE_FIELD_NAME, cellShape);
     addElement(doc, rootElement, STATE_COLORS_FIELD_NAME, stateColor);
     addElement(doc, rootElement, LANGUAGE_FIELD_NAME, language);
+    addElement(doc, rootElement, SLIDER_FIELD_NAME, sliderInitial);
+
   }
 
   /**

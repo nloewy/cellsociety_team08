@@ -21,6 +21,7 @@
         <energyBoost>4</energyBoost>
         <initialEnergy>2</initialEnergy>
     </parameters>
+    <slider>1</slider>
     <state_colors>
         State 0: empty cell -- blue
         State 1: fish -- pink

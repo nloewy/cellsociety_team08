@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!-- References: https://en.wikipedia.org/wiki/Conway's_Game_of_Life-->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <simulation>
     <type>GameOfLife</type>
     <title>Conway's Game of Life Simulation: Test 1</title>
@@ -8,23 +7,21 @@
     <display_description>The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970. Its evolution is determined by its initial state, requiring no further input. It is Turing complete and can simulate a universal constructor or any other Turing machine.</display_description>
     <width>10</width>
     <height>10</height>
-    <!-- 0 - DEAD / 1 - ALIVE -->
-    <initial_states>1 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 1 1 0</initial_states>
     <neighborhood_type>Moore</neighborhood_type>
-    <parameters>
-        <aliveToAliveMin>2.0</aliveToAliveMin>
-        <aliveToAliveMax>3.0</aliveToAliveMax>
-        <deadToAliveMin>3.0</deadToAliveMin>
-        <deadToAliveMax>3.0</deadToAliveMax>
-    </parameters>
-    <slider>1</slider>
+    <grid_edge_type>Normal</grid_edge_type>
+    <cell_shape>square</cell_shape>
     <state_colors>
         State 0: dead cell -- white
         State 1: alive cell -- black
     </state_colors>
     <language>English</language>
-    <cell_shape>square</cell_shape>
-    <grid_edge_type>Normal</grid_edge_type>
-    <random_configuration_by_total_states>
-    </random_configuration_by_total_states>
+    <initial_states>1 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 1 1 0</initial_states>
+    <parameters>
+        <aliveToAliveMin>2.0</aliveToAliveMin>
+        <deadToAliveMax>3.0</deadToAliveMax>
+        <aliveToAliveMax>3.0</aliveToAliveMax>
+        <deadToAliveMin>3.0</deadToAliveMin>
+    </parameters>
+    <slider>1</slider>
+    <random_configuration_by_total_states/>
 </simulation>

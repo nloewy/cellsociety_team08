@@ -1,6 +1,7 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
+import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.WatorSimulation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +49,7 @@ public class WatorCell extends Cell<WatorCell> {
    *                      grid
    * @param shapeType     the shape of a cell, as represented on a 2D coordinate grid
    * @param params        map of string parameter names to their values. Description of parameters
-   *                      can be found at te declaration of the instance variables.
+   *                      can be found at the declaration of the instance variables.
    */
   public WatorCell(int initialState, int row, int col, Shape shapeType,
       Map<String, Integer> params) {
@@ -296,6 +297,14 @@ public class WatorCell extends Cell<WatorCell> {
       default:
         break; //TODO: check exception
     }
+  }
+
+  public String getText() {
+    return switch (getCurrentState()) {
+      case WatorSimulation.SHARK -> "\uD83D\uDC20";
+      case WatorSimulation.FISH -> "\uD83D\uDC1F";
+      default -> "";
+    };
   }
 }
 

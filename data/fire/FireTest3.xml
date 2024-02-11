@@ -18,6 +18,8 @@
         <probTreeCreated>.2</probTreeCreated> <!-- The probability of that a tree is created-->
         <neighborsToIgnite>1</neighborsToIgnite> <!-- Number of neighbors to ignite-->
     </parameters>
+    <slider>1</slider>
+
     <state_colors>
         State 0: empty ground/burnt tree -- grey
         State 1: tree -- green

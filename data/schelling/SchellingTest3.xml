@@ -17,6 +17,7 @@
     <parameters>
         <proportionNeededToStay>0.5</proportionNeededToStay>
     </parameters>
+    <slider>1</slider>
     <state_colors>
         State 0: agent 0 -- red
         State 1: agent x -- blue

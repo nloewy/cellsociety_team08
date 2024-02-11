@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation>
+    <type>Sugar</type>
+    <title>Sugar Scape Simulation</title>
+    <author>Noah Loewy</author>
+    <file_description>This file configures the Sugar Scape Simulation.</file_description>
+    <display_description> TBD</display_description>
+    <width>12</width>
+    <height>11</height>
+    <neighborhood_type>Moore</neighborhood_type>
+    <grid_edge_type>Warped</grid_edge_type>
+    <cell_shape>hexagon</cell_shape>
+    <state_colors>
+    State 0: agent 0 -- red
+    State 1: agent x -- blue
+    State 2: empty cell -- white
+  </state_colors>
+    <language>English</language>
+    <initial_states>1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 2 2 1 2 3 3 3 3 2 1 1 1 2 2 1 2 3 4 4 3 2 1 1 1 2 2 1 2 3 4 4 3 2 1 1 2 2 2 1 2 3 3 3 3 2 2 2 3 3 3 1 2 2 2 2 2 2 2 2 3 4 4 1 2 2 2 2 2 2 2 2 3 3 4 3 3 2 2 2 2 2 2 2 3 3 3 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1</initial_states>
+    <parameters>
+        <minVision>1.0</minVision>
+        <maxVision>3.0</maxVision>
+        <growBackRate>1.0</growBackRate>
+        <numAgents>35.0</numAgents>
+        <minMetabolism>1.0</minMetabolism>
+        <maxInitialSugar>25.0</maxInitialSugar>
+        <minInitialSugar>5.0</minInitialSugar>
+        <maxMetabolism>6.0</maxMetabolism>
+    </parameters>
+  <slider>1</slider>
+  <random_configuration_by_total_states/>
+</simulation>
