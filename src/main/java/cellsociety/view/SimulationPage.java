@@ -111,8 +111,10 @@ public class SimulationPage {
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
 
+
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
+
 
     gridProperties = new HashMap<>();
     gridProperties.put("gridStartX", configDouble(GRID_START_X_KEY));
@@ -203,6 +205,7 @@ public class SimulationPage {
         textProperties.getString(SPEED_LABEL_TEXT_KEY) + (int) speedSlider.getValue());
     speedLabel.setLayoutX(configInt(BUTTON_START_X_KEY));
     speedLabel.setLayoutY(configInt(SPEED_LABEL_Y_KEY));
+
   }
 
 
@@ -281,6 +284,7 @@ public class SimulationPage {
    * @param speed an integer that specifies the current speed on the slider
    */
   public void updateSpeedLabel(int speed) {
+
     speedLabel.setText(textProperties.getString(SPEED_LABEL_TEXT_KEY) + speed);
   }
 

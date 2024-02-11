@@ -58,6 +58,7 @@ public class Controller {
   private FileChooser fileChooser;
 
 
+  private int sliderStart;
   //paths (will stay)
   public static final String TEXT_CONFIGURATION = "cellsociety.Text";
   public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
@@ -165,6 +166,8 @@ public class Controller {
     System.out.println(xmlParser.getType());
     loadSimulationScene();
   }
+
+
 
 
   /**

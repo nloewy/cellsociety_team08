@@ -115,6 +115,7 @@ public class XmlParser {
   public static final String PARAMETERS_FIELD_NAME = "parameters";
   public static final String RANDOM_CONFIG_FIELD_NAME = "random_configuration_by_total_states";
   public static final String INITIAL_STATES_FIELD_NAME = "initial_states";
+  public static final String SLIDER_FIELD_NAME = "slider";
 
   private ResourceBundle resourceBundle; // resource bundle for error handling messages
   private String type; // simulation type
@@ -133,6 +134,8 @@ public class XmlParser {
   private String language;
   private String cellShape;
   private String gridEdgeType;
+
+  private String sliderInitial;
   private Map<String, Integer> randomConfigurationTotalStates;
   private int totalNumStates;
 
@@ -592,6 +595,9 @@ public class XmlParser {
 
   }
 
+  public int getInitialSlider() {
+    return Integer.parseInt(sliderInitial);
+  }
 
   /**
    * Validate the simulation, handling any potential errors
@@ -722,6 +728,8 @@ public class XmlParser {
     gridEdgeType = element.getElementsByTagName(GRID_EDGE_TYPE_FIELD_NAME).item(0).getTextContent();
     cellShape = element.getElementsByTagName(CELL_SHAPE_FIELD_NAME).item(0).getTextContent();
     language = element.getElementsByTagName(LANGUAGE_FIELD_NAME).item(0).getTextContent();
+
+    sliderInitial = element.getElementsByTagName(SLIDER_FIELD_NAME).item(0).getTextContent();
 
     // update resource bundle given language
     resourceBundle = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Errors" + language);
@@ -976,6 +984,8 @@ public class XmlParser {
     addElement(doc, rootElement, CELL_SHAPE_FIELD_NAME, cellShape);
     addElement(doc, rootElement, STATE_COLORS_FIELD_NAME, stateColor);
     addElement(doc, rootElement, LANGUAGE_FIELD_NAME, language);
+    addElement(doc, rootElement, SLIDER_FIELD_NAME, sliderInitial);
+
   }
 
   /**

@@ -17,6 +17,7 @@
     <deadToAliveMin>3.0</deadToAliveMin>
     <deadToAliveMax>3.0</deadToAliveMax>
   </parameters>
+  <slider>1</slider>
   <state_colors>
     State 0: dead cell -- white
     State 1: alive cell -- black

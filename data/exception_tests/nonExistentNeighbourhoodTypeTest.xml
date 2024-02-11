@@ -18,6 +18,7 @@
   <parameters>
     <percolatedNeighbors>1.0</percolatedNeighbors>
   </parameters>
+  <slider>1</slider>
   <state_colors>
     State 0: empty open site -- white
     State 1: full open site -- blue
