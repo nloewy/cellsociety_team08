@@ -93,12 +93,20 @@ public class LifeCell extends Cell<LifeCell> {
     }
   }
 
+  /**
+   * @param params, new simulation parameters for the Game of Life Simulation
+   */
+
   public void setParams(Map<String, Double> params) {
     aliveToAliveMin = (int) Math.floor(params.get("aliveToAliveMin"));
     aliveToAliveMax = (int) Math.floor(params.get("aliveToAliveMax"));
     deadToAliveMin = (int) Math.floor(params.get("deadToAliveMin"));
     deadToAliveMax = (int) Math.floor(params.get("deadToAliveMax"));
   }
+
+  /**
+   * @return angel or devil emoji, or empty string, depending on cell type
+   */
 
   public String getText() {
     return switch (getCurrentState()) {

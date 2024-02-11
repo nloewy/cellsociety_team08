@@ -48,6 +48,9 @@ public class FireCell extends Cell<FireCell> {
   }
 
 
+  /**
+   * @return fire or tree emoji, or empty string, depending on cell type
+   */
   public String getText() {
     return switch (getCurrentState()) {
       case FireSimulation.BURNING -> "\uD83D\uDD25";
@@ -83,6 +86,10 @@ public class FireCell extends Cell<FireCell> {
       setNextState(FireSimulation.TREE);
     }
   }
+
+  /**
+   * @param params, new simulation parameters for the Fire Simulation
+   */
 
   public void setParams(Map<String, Double> params) {
     neighborsToIgnite = (int) Math.floor(params.get("neighborsToIgnite"));

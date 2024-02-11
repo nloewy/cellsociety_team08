@@ -65,7 +65,5 @@ public class PercolationCell extends Cell<PercolationCell> {
     percolatedNeighbors = (int) Math.floor(params.get("percolatedNeighbors"));
   }
 
-  public String getText() {
-    return "";
-  }
+
 }
