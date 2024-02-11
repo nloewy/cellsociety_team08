@@ -19,11 +19,6 @@
     <percolatedNeighbors>1.0</percolatedNeighbors>
   </parameters>
   <slider>1</slider>
-  <state_colors>
-    State 0: empty open site -- white
-    State 1: full open site -- blue
-    State 2: blocked site -- black
-  </state_colors>
   <language>English</language>
   <cell_shape>square</cell_shape>
   <grid_edge_type>Warped</grid_edge_type>

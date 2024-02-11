@@ -28,6 +28,9 @@ public class Records {
                             int energyBoost, String gridType, String cellShape) {
 
   }
+  public record FallingSandRecord(String gridType, String cellShape) {
+
+  }
 
   public record SugarRecord(int minVision, int maxVision, int minInitialSugar, int maxInitialSugar,
                             int minMetabolism,

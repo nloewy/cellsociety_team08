@@ -58,6 +58,9 @@
 .no-agent{
   -fx-fill: white;
 }
+/*
+Sugar
+ */
 
 .sugar-0{
   -fx-fill: red;
@@ -75,4 +78,20 @@
 }
 .sugar-4{
   -fx-fill: green;
+}
+/*
+Falling Sand
+ */
+
+.empty{
+  -fx-fill: white;
+}
+.sand{
+  -fx-fill: yellow;
+}
+.water{
+  -fx-fill: blue;
+}
+.metal{
+  -fx-fill: black;
 }

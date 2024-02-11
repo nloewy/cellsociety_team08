@@ -19,11 +19,6 @@
     <proportionNeededToStay>0.5</proportionNeededToStay>
   </parameters>
   <slider>1</slider>
-  <state_colors>
-    State 0: agent 0 -- red
-    State 1: agent x -- blue
-    State 2: empty cell -- white
-  </state_colors>
   <language>English</language>
   <cell_shape>square</cell_shape>
   <grid_edge_type>Normal</grid_edge_type>

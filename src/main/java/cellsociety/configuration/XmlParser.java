@@ -58,8 +58,10 @@ public class XmlParser {
   public static final String SCHELLING_NAME = "Schelling";
   public static final String WATOR_NAME = "Wator";
   public static final String SUGAR_NAME = "Sugar";
+  public static final String FALLING_NAME = "Falling";
   public static final Set<String> SIMULATION_TYPES = new HashSet<>(
-      Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME, SUGAR_NAME));
+      Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME,
+          SUGAR_NAME, FALLING_NAME));
 
   // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
@@ -90,6 +92,9 @@ public class XmlParser {
   public static final Set<String> SUGAR_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2", "3", "4"));
 
+  public static final Set<String> FALLING_CELL_STATES = new HashSet<>(
+      Arrays.asList("0", "1", "2", "3"));
+
   public static final Map<String, Set<String>> SIMULATION_CELL_STATES = new HashMap<>() {{
       put(FIRE_NAME, FIRE_CELL_STATES);
       put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
@@ -97,6 +102,7 @@ public class XmlParser {
       put(SCHELLING_NAME, SCHELLING_CELL_STATES);
       put(WATOR_NAME, WATOR_CELL_STATES);
       put(SUGAR_NAME, SUGAR_CELL_STATES);
+      put(FALLING_NAME, FALLING_CELL_STATES);
     }};
 
   // define names for the field as written in the XML configuration files
@@ -108,7 +114,6 @@ public class XmlParser {
   public static final String WIDTH_FIELD_NAME = "width";
   public static final String HEIGHT_FIELD_NAME = "height";
   public static final String NEIGHBORHOOD_TYPE_FIELD_NAME = "neighborhood_type";
-  public static final String STATE_COLORS_FIELD_NAME = "state_colors";
   public static final String LANGUAGE_FIELD_NAME = "language";
   public static final String CELL_SHAPE_FIELD_NAME = "cell_shape";
   public static final String GRID_EDGE_TYPE_FIELD_NAME = "grid_edge_type";
@@ -125,7 +130,6 @@ public class XmlParser {
   private String displayDescription; // description to be displayed on GUI
 
   // states and corresponding colors of the simulation to be displayed on GUI
-  private String stateColor;
   private int width; // number of columns
   private int height; // number of rows
   private String neighborhoodType; // adjacent or cardinal
@@ -354,26 +358,6 @@ public class XmlParser {
    */
   public void setStates(List<Integer> states) {
     this.states = states;
-  }
-
-  /**
-   * Retrieves stateColor instance variable
-   *
-   * @return stateColor, a description for which color corresponds to which color for the given
-   * simulation
-   */
-  public String getStateColor() {
-    return stateColor;
-  }
-
-  /**
-   * Update stateColor instance variable
-   *
-   * @param stateColor, a description for which color corresponds to which color for the given
-   *                    simulation
-   */
-  public void setStateColor(String stateColor) {
-    this.stateColor = stateColor;
   }
 
   /**
@@ -645,7 +629,7 @@ public class XmlParser {
   private void checkEmptyInputs() throws InputMissingParametersException {
     // check for empty essential inputs
     if (type.isEmpty() || title.isEmpty() || author.isEmpty() || fileDescription.isEmpty()
-        || displayDescription.isEmpty() || stateColor.isEmpty()) {
+        || displayDescription.isEmpty()) {
       throw new InputMissingParametersException(
           String.format(resourceBundle.getString("MissingParameter")));
     }
@@ -714,7 +698,6 @@ public class XmlParser {
     fileDescription = element.getElementsByTagName(FILE_DES_FIELD_NAME).item(0).getTextContent();
     displayDescription = element.getElementsByTagName(DISPLAY_DES_FIELD_NAME).item(0)
         .getTextContent();
-    stateColor = element.getElementsByTagName(STATE_COLORS_FIELD_NAME).item(0).getTextContent();
     neighborhoodType = element.getElementsByTagName(NEIGHBORHOOD_TYPE_FIELD_NAME).item(0)
         .getTextContent();
     String widthString = element.getElementsByTagName(WIDTH_FIELD_NAME).item(0).getTextContent();
@@ -982,7 +965,6 @@ public class XmlParser {
     addElement(doc, rootElement, NEIGHBORHOOD_TYPE_FIELD_NAME, neighborhoodType);
     addElement(doc, rootElement, GRID_EDGE_TYPE_FIELD_NAME, gridEdgeType);
     addElement(doc, rootElement, CELL_SHAPE_FIELD_NAME, cellShape);
-    addElement(doc, rootElement, STATE_COLORS_FIELD_NAME, stateColor);
     addElement(doc, rootElement, LANGUAGE_FIELD_NAME, language);
     addElement(doc, rootElement, SLIDER_FIELD_NAME, sliderInitial);
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
+<simulation>
+  <type>Falling</type>
+  <title>Falling Sand/Water Simulation</title>
+  <author>Noah Loewy</author>
+  <file_description>This file configures the Falling Sand/Water Simulation.</file_description>
+  <display_description> </display_description>
+  <width>11</width>
+  <height>11</height>
+  <!-- 0 - EMPTY
+       1 - SAND
+       2 - WATER
+       3 - METAL -->
+  <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 2 2 2 2 2 3 0 0 0 0 3 2 2 2 2 2 3 0 0 3 3 3 3 3 3 3 3 3 3 3</initial_states>
+  <neighborhood_type>VonNeumann</neighborhood_type>
+  <parameters>
+  </parameters>
+  <slider>1</slider>
+  <language>English</language>
+  <cell_shape>square</cell_shape>
+  <grid_edge_type>Normal</grid_edge_type>
+  <random_configuration_by_total_states>
+  </random_configuration_by_total_states>
+</simulation>

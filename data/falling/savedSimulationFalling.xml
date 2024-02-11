@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation>
+    <type>Falling</type>
+    <title>Falling Sand/Water Simulation</title>
+    <author>Noah Loewy</author>
+    <file_description>This file configures the Falling Sand/Water Simulation.</file_description>
+    <display_description> </display_description>
+    <width>11</width>
+    <height>11</height>
+    <neighborhood_type>VonNeumann</neighborhood_type>
+    <grid_edge_type>Normal</grid_edge_type>
+    <cell_shape>square</cell_shape>
+    <language>English</language>
+    <slider>1</slider>
+    <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 2 2 2 2 2 3 0 0 0 0 3 2 2 2 2 2 3 0 0 3 3 3 3 3 3 3 3 3 3 3</initial_states>
+    <parameters/>
+    <random_configuration_by_total_states/>
+</simulation>
