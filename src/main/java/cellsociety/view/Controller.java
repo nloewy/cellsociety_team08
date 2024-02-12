@@ -71,7 +71,6 @@ public class Controller {
   public static final String FILE_SAVED_KEY = "fileSaved";
   public static final String UPLOAD_FILE_WINDOW_TITLE_KEY = "uploadFileWindowTitle";
   public static final String ABOUT_MIN_HEIGHT_KEY = "ABOUT_MIN_HEIGHT";
-  //  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
   private Stage stage;
   private SimulationPage simulationPage;
   private XmlParser xmlParser;
@@ -83,7 +82,6 @@ public class Controller {
   private FileChooser fileChooser;
   private Settings settingsPanel;
   private Boolean settingsChanged = false;
-  private int sliderStart;
 
   /**
    * Constructs the controller class
@@ -102,23 +100,22 @@ public class Controller {
       }
       xmlParser = new XmlParser();
       parseFile(dataFile.getPath());
-
-      setSimulation(); //loads view and model
-
-      speed = 1;
-
-      animation = new Timeline();
-      animation.setCycleCount(Timeline.INDEFINITE);
-      double frameDuration = 1.0 / (speed * simulationPage.configDouble(
-          SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
-      animation.getKeyFrames()
-          .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
-      animation.play();
+      setSimulation();
+      setAnimation();
     } catch (InvalidFileFormatException | InvalidValueException | InvalidCellStateException |
              InputMissingParametersException | InvalidGridBoundsException e) {
       showMessage(AlertType.ERROR, e.getMessage());
-      Platform.exit();
     }
+  }
+
+  private void setAnimation() {
+    animation = new Timeline();
+    animation.setCycleCount(Timeline.INDEFINITE);
+    double frameDuration = 1.0 / (simulationPage.configDouble(
+        SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
+    animation.getKeyFrames()
+        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
+    animation.play();
   }
 
   private void step() {
@@ -132,7 +129,8 @@ public class Controller {
 
 
   private void parseFile(String filePath)
-      throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException, InputMissingParametersException, InvalidCellStateException {
+      throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException,
+      InputMissingParametersException, InvalidCellStateException {
     xmlParser = new XmlParser();
     xmlParser.readXml(filePath);
   }
@@ -152,16 +150,12 @@ public class Controller {
   }
 
   private void setSimulation() {
-    String neighborhoodTypeString = xmlParser.getNeighborhoodType();
-    Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
-    loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType,
-        xmlParser.getStates(), xmlParser.getType(), xmlParser.getGridEdgeType(),
-        xmlParser.getCellShape());
-    System.out.println(xmlParser.getType());
+    loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(),
+        getNeighborhoodObject(xmlParser.getNeighborhoodType()), xmlParser.getStates(),
+        xmlParser.getType(), xmlParser.getGridEdgeType(), xmlParser.getCellShape());
     loadSimulationScene();
     settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(),
-        xmlParser.getParameters(),
-        event -> onApplyClicked());
+        xmlParser.getParameters(), event -> onApplyClicked());
   }
 
   private void onApplyClicked() {
@@ -181,7 +175,7 @@ public class Controller {
    *                               simulation is using
    * @return returns the neighborhood object
    */
-  private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
+  private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) throws IllegalStateException {
     return switch (neighborhoodTypeString) {
       case "Moore" -> new MooreNeighborhood();
       case "ExtendedMoore" -> new ExtendedMooreNeighborhood();
