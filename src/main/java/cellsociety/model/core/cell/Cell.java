@@ -49,6 +49,11 @@ public abstract class Cell<T extends Cell<T>> {
    */
   public void initializeNeighbors(Neighborhood hoodType, Grid grid) {
     myNeighbors = hoodType.getNeighbors(grid, this);
+    System.out.println(getLocation().getRow() + "," + getLocation().getCol());
+    for(Cell neighbor : myNeighbors) {
+      System.out.println(neighbor.getLocation().getRow() + "," + neighbor.getLocation().getCol());
+    }
+    System.out.println("__________");
   }
 
   /**

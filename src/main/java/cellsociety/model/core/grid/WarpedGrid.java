@@ -44,8 +44,12 @@ public class WarpedGrid<T extends Cell<T>> extends Grid<T> {
     if (super.containsVertex(vtx, vertices)) {
       return true;
     }
-    final double[][] translations = {{getNumRows(), vtx.getColOffset()}, {-getNumRows(),
-        vtx.getColOffset()}, {0, getNumCols()}, {0, -getNumCols()}};
+    double colOffset = 0;
+    if (getNumRows()%2==1) {
+      colOffset = vtx.getColOffset();
+    }
+    final double[][] translations = {{getNumRows(), colOffset}, {-getNumRows(),
+        colOffset}, {0, getNumCols()}, {0, -getNumCols()}};
     for (int i = 0; i < translations.length; i++) {
       if (super.containsVertex(vtx.translate(translations[i][0], translations[i][1]), vertices)) {
         return true;

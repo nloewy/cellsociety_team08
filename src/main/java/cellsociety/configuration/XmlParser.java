@@ -81,7 +81,7 @@ public class XmlParser {
 
   // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
-      Arrays.asList("adjacent", "cardinal", "Moore", "VonNeumann"));
+      Arrays.asList("ExtendedMoore", "Moore", "VonNeumann"));
   // define valid cell shapes
   public static final Set<String> CELL_SHAPES = new HashSet<>(
       Arrays.asList("square", "hexagon"));
