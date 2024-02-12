@@ -53,7 +53,7 @@ public class Grid<T extends Cell> {
     return myGrid.iterator();
   }
 
-  public boolean containsVertex(Point p, List<Point> vertices) {
-    return vertices.contains(p);
+  public boolean vertexEqual(Point vtx1, Point vtx2) {
+    return vtx1.equals(vtx2);
   }
 }

@@ -23,6 +23,7 @@ public abstract class Cell<T extends Cell<T>> {
   private int myNextState;
   private List<T> myNeighbors;
 
+
   /**
    * Constructs a Generic Cell object. Note that Cell is an abstract class. This is because all
    * simulations use a specific kind of Cell, but they all share common methods.
@@ -96,6 +97,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Sets text to be displayed for specific cell
+   *
    * @return the new text (or emoji) displayed in cell
    */
   public String getText() {
@@ -178,6 +180,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Calculates euclidian distance from current cell to another cell
+   *
    * @param cell, a cell object
    * @return distance, euclidian distance from centroid of one cell to another
    */
@@ -191,6 +194,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Checks if two objects are both cells at the same location
+   *
    * @param other, another object, probably a cell
    * @return true if and only if this and other are both cells at the same location
    */
@@ -213,6 +217,7 @@ public abstract class Cell<T extends Cell<T>> {
   /**
    * Gets hashcode of cell object (the hashcode of its centroid), as all cell objects have unique
    * centroids.
+   *
    * @return
    */
   @Override
@@ -223,6 +228,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Updates parameters of simulation
+   *
    * @param newParameters, map of param name to param value for all needed parameters
    */
   public void setParams(Map<String, Double> newParameters) {

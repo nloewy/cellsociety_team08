@@ -1,9 +1,8 @@
 package cellsociety.model.neighborhood;
 
-import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.grid.Grid;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * Represents a neighborhood where neighbors are characterized as points that share a common vertex
@@ -12,7 +11,7 @@ import java.util.List;
  * @author Noah Loewy
  */
 
-public class MooreNeighborhood extends Neighborhood {
+public class ExtendedMooreNeighborhood extends MooreNeighborhood {
 
   /**
    * Abstract method that determines if two cells are neighbors under a certain grid. This method
@@ -23,17 +22,19 @@ public class MooreNeighborhood extends Neighborhood {
    * @param grid  grid object for the simulation
    * @return true if and only if cell1 and cell2 are Moore Neighbors
    */
-  @Override
   public boolean isValidNeighbor(Cell cell1, Cell cell2, Grid grid) {
-    List<Point> vertices = cell1.getVertices();
-    List<Point> vertices2 = cell2.getVertices();
-    for (Point vtx : vertices) {
-      for (Point vtx2 : vertices2) {
-        if (grid.vertexEqual(vtx, vtx2)) {
-          return true;
-        }
+    if (super.isValidNeighbor(cell1, cell2, grid)) {
+      return true;
+    }
+    Iterator<Cell> iter = grid.iterator();
+    while (iter.hasNext()) {
+      Cell neighbor = iter.next();
+      if (super.isValidNeighbor(neighbor, cell2, grid) && super.isValidNeighbor(neighbor, cell1,
+          grid)) {
+        return true;
       }
     }
     return false;
   }
 }
+

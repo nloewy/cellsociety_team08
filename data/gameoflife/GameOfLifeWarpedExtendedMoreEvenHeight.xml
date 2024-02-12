@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- References: https://en.wikipedia.org/wiki/Conway's_Game_of_Life-->
+<simulation>
+  <type>GameOfLife</type>
+  <title>Conway's Game of Life Simulation: New Parameters</title>
+  <author>Noah Loewy</author>
+  <file_description>This file configures the Game of Life simulation.</file_description>
+  <display_description>The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970. Its evolution is determined by its initial state, requiring no further input. It is Turing complete and can simulate a universal constructor or any other Turing machine.</display_description>
+  <width>3</width>
+  <height>8</height>
+  <!-- 0 - DEAD / 1 - ALIVE -->
+  <initial_states>0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0</initial_states>
+  <neighborhood_type>ExtendedMoore</neighborhood_type>
+  <parameters>
+    <aliveToAliveMin>3.0</aliveToAliveMin>
+    <aliveToAliveMax>3.0</aliveToAliveMax>
+    <deadToAliveMin>10.0</deadToAliveMin>
+    <deadToAliveMax>10.0</deadToAliveMax>
+  </parameters>
+  <slider>1</slider>
+  <language>English</language>
+  <cell_shape>hexagon</cell_shape>
+  <grid_edge_type>Warped</grid_edge_type>
+  <random_configuration_by_total_states>
+  </random_configuration_by_total_states>
+</simulation>

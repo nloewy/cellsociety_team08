@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -25,8 +24,8 @@ import javafx.stage.Stage;
 
 public class Settings {
 
+  private static final String OPTIONS_PACKAGE = "cellsociety.avaliableOptions";
   private final ResourceBundle avaliableOptions;
-
   private final Stage settingsPanel;
   private final Scene scene;
   private final VBox root;
@@ -35,19 +34,15 @@ public class Settings {
   private List<String> avaliableEdgeTypes;
   private List<String> avaliableCellOutlines;
   private List<String> avaliableLanguages;
-
   private ComboBox<String> edgeTypeComboBox;
   private HBox edgeBox;
   private ComboBox<String> outlineTypeComboBox;
   private HBox outlineBox;
   private ComboBox<String> languageComboBox;
   private HBox languageBox;
-
   private String edge;
   private String outline;
   private String language;
-
-  private static final String OPTIONS_PACKAGE = "cellsociety.avaliableOptions";
 
 
   public Settings(String defaultLanguage, String defaultEdge, Map<String, Double> parameters,
@@ -95,7 +90,7 @@ public class Settings {
     avaliableCellOutlines.add("Off");
   }
 
-  private void initializeLanguages(){
+  private void initializeLanguages() {
     avaliableLanguages = new ArrayList<>();
     String languages = avaliableOptions.getString("languages");
     avaliableLanguages.addAll(Arrays.stream(languages.split(" ")).toList());
@@ -110,10 +105,6 @@ public class Settings {
 
     edgeTypeBox.getChildren().addAll(edgeTypeLabel, edgeTypeComboBox);
 
-    edgeTypeComboBox.setOnAction(event -> {
-      String selectedEdgeType = edgeTypeComboBox.getSelectionModel().getSelectedItem();
-      System.out.println("Selected edge type: " + selectedEdgeType);
-    });
     root.getChildren().add(edgeTypeBox);
   }
 
@@ -126,10 +117,6 @@ public class Settings {
 
     outlineTypeBox.getChildren().addAll(outlineTypeLabel, outlineTypeComboBox);
 
-    outlineTypeComboBox.setOnAction(event -> {
-      String selectedOutlineType = outlineTypeComboBox.getSelectionModel().getSelectedItem();
-      System.out.println("Selected outline type: " + selectedOutlineType);
-    });
     root.getChildren().add(outlineTypeBox);
   }
 
@@ -140,12 +127,8 @@ public class Settings {
     languageComboBox = new ComboBox<>(FXCollections.observableList(avaliableLanguages));
     languageComboBox.getSelectionModel().select(defaultLanguage); // Set default selection
 
-    languageBox.getChildren().addAll(languageLabel,languageComboBox);
+    languageBox.getChildren().addAll(languageLabel, languageComboBox);
 
-    languageComboBox.setOnAction(event -> {
-      String selectedLanguage = languageComboBox.getSelectionModel().getSelectedItem();
-      System.out.println("Selected language: " + selectedLanguage);
-    });
     root.getChildren().add(languageBox);
   }
 //
@@ -206,24 +189,17 @@ public class Settings {
             if (child.equals(outlineTypeComboBox)) {
               ComboBox<String> outlineDropdown = (ComboBox<String>) child;
               outline = outlineDropdown.getValue();
-              System.out.println(outline);
             } else if (child.equals(edgeTypeComboBox)) {
-              System.out.println("in edge type save");
               ComboBox<String> edgeDropdown = (ComboBox<String>) child;
               edge = edgeDropdown.getValue();
-              System.out.println(edge);
             } else if (child.equals(languageComboBox)) {
-              System.out.println("in language save");
               ComboBox<String> languageDropdown = (ComboBox<String>) child;
               language = languageDropdown.getValue();
-              System.out.println("insettings:" + language);
             }
           }
         }
       }
     }
-    // Do something with the updated parameters map
-    System.out.println("Updated parameters: " + parameters);
   }
 
   public boolean getOutlineType() {
@@ -246,7 +222,7 @@ public class Settings {
     return edge;
   }
 
-  public String getNewLanguage(){
+  public String getNewLanguage() {
     return language;
   }
 

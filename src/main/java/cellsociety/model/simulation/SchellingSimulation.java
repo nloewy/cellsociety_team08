@@ -25,14 +25,10 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
   public static final int TEMP_TO_MOVE = 3;
   public static final int TEMP_EMPTY_A = 4;
   public static final int TEMP_EMPTY_B = 5;
-
-
   private final List<SchellingCell> myCellsToMoveA;
   private final List<SchellingCell> myCellsToMoveB;
-
   private final List<SchellingCell> myEmptyCellsA;
   private final List<SchellingCell> myEmptyCellsB;
-
   private final double proportionNeededToStay;
 
   /**
@@ -65,6 +61,7 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
    * @return list of initialized SchellingCells
    */
 
+  @Override
   public List<SchellingCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<SchellingCell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();
@@ -98,17 +95,6 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
     }
   }
 
-
-  /**
-   * Resets instance variables lists each iteration
-   */
-  private void resetLists() {
-    myCellsToMoveA.clear();
-    myCellsToMoveB.clear();
-    myEmptyCellsA.clear();
-    myEmptyCellsB.clear();
-  }
-
   /**
    * Transition function for Segregation Model. Iterates through each cell and calls the transition
    * function, which will update the cell's next state to highlight if it would like to move to a
@@ -117,26 +103,31 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
    */
   @Override
   public void transitionFunction() {
-    resetLists();
     Iterator<SchellingCell> gridIterator = getIterator();
+    myCellsToMoveA.clear();
+    myCellsToMoveB.clear();
+    myEmptyCellsA.clear();
+    myEmptyCellsB.clear();
     while (gridIterator.hasNext()) {
       SchellingCell currentCell = gridIterator.next();
       currentCell.transition();
       if (currentCell.getNextState() == TEMP_EMPTY_A) {
+        currentCell.setCurrentState(EMPTY);
         myEmptyCellsA.add(currentCell);
-      }
-      if (currentCell.getNextState() == TEMP_EMPTY_B) {
+      } else if (currentCell.getNextState() == TEMP_EMPTY_B) {
         myEmptyCellsB.add(currentCell);
-      }
-      if (currentCell.getNextState() == TEMP_TO_MOVE && currentCell.getCurrentState() == GROUP_A) {
+        currentCell.setCurrentState(EMPTY);
+      } else if (currentCell.getNextState() == TEMP_TO_MOVE
+          && currentCell.getCurrentState() == GROUP_A) {
         myCellsToMoveA.add(currentCell);
-      }
-      if (currentCell.getNextState() == TEMP_TO_MOVE && currentCell.getCurrentState() == GROUP_B) {
+        currentCell.setCurrentState(GROUP_A);
+      } else if (currentCell.getNextState() != currentCell.getCurrentState()) {
         myCellsToMoveB.add(currentCell);
+        currentCell.setNextState(TEMP_TO_MOVE);
+
       }
     }
     moveCells(myEmptyCellsA, myCellsToMoveA);
     moveCells(myEmptyCellsB, myCellsToMoveB);
   }
-
 }

@@ -60,7 +60,6 @@ public class SchellingCell extends Cell<SchellingCell> {
     }
   }
 
-
   /**
    * Indicates whether or not a current cell is satisfied with their current state. Cells are
    * satisfied if and only if they are surrounded entirely by empty cells, or if the proportion of
@@ -69,6 +68,7 @@ public class SchellingCell extends Cell<SchellingCell> {
    *
    * @return boolean representing if current cell is satisfied
    */
+
   private boolean isSatsfied(int state) {
     List<SchellingCell> neighbors = getNeighbors();
     int totalNeighbors = neighbors.size();
@@ -86,7 +86,6 @@ public class SchellingCell extends Cell<SchellingCell> {
   public void setParams(Map<String, Double> params) {
     proportionNeededToStay = params.get("proportionNeededToStay");
   }
-
 
 
 }

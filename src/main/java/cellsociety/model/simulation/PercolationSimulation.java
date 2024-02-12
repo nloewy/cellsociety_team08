@@ -48,6 +48,7 @@ public class PercolationSimulation extends Simulation<PercolationCell> {
    * @return list of initialized PercolationCells
    */
 
+  @Override
   public List<PercolationCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<PercolationCell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();

@@ -28,14 +28,10 @@ public abstract class CellView {
       boxLocationX += width * vertex.getCol() + gridProperties.get("gridStartX");
       boxLocationY += height * vertex.getRow() + gridProperties.get("gridStartY");
     }
-
     boxLocationX /= vertices.size();
     boxLocationY /= vertices.size();
     setStroke(shape);
-
     textBox = new Label("X");
-
-//    getChildren().addAll(shape, textBox); // Add shape and text box as children of CellView
   }
 
   private void setStroke(Shape shape) {
