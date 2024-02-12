@@ -151,8 +151,9 @@ public class Controller {
         getNeighborhoodObject(xmlParser.getNeighborhoodType()), xmlParser.getStates(),
         xmlParser.getType(), xmlParser.getGridEdgeType(), xmlParser.getCellShape());
     loadSimulationScene();
+
     settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(),
-        xmlParser.getParameters(), event -> onApplyClicked());
+        xmlParser.getParameters(), xmlParser.getType(), event -> onApplyClicked());
   }
 
   private void onApplyClicked() {

@@ -44,15 +44,17 @@ public class Settings {
   private final List<ComboBox<String>> comboBoxes = new ArrayList<>();
   private String outline;
   private String language;
+  private String simulationType;
 
 
   public Settings(String defaultLanguage, String defaultEdge, Map<String, Double> parameters,
-      EventHandler<ActionEvent> applyButtonHandler) {
+      String simulationType, EventHandler<ActionEvent> applyButtonHandler) {
 
     avaliableOptions = ResourceBundle.getBundle(OPTIONS_PACKAGE);
     settingsPanel = new Stage();
     settingsPanel.setTitle("Parameter Settings");
 
+    this.simulationType = simulationType;
     this.edge = defaultEdge;
     this.outline = "On";
     this.parameters = parameters;
@@ -114,18 +116,21 @@ public class Settings {
 
   private void setPanelFields() {
     for (Entry<String, Double> entry : parameters.entrySet()) {
-      Label spinnerLabel = new Label(entry.getKey());
-      Spinner<Double> numberSpinner = new Spinner<>();
-      numberSpinner.setEditable(true);
-      SpinnerValueFactory.DoubleSpinnerValueFactory valueFactory = new DoubleSpinnerValueFactory(0,
-          100, entry.getValue(), 0.1);
-      numberSpinner.setValueFactory(valueFactory);
-      numberSpinner.setPrefWidth(80);
-      numberSpinner.setUserData(entry.getKey());
-      HBox hbox = new HBox(SETTINGS_BOX_SPACING);
-      hbox.getChildren().addAll(spinnerLabel, numberSpinner);
-      numberSpinners.add(numberSpinner);
-      root.getChildren().add(hbox);
+      if (!simulationType.equals(Controller.SUGAR) || entry.getKey().equals("growBackRate")) {
+        Label spinnerLabel = new Label(entry.getKey());
+        Spinner<Double> numberSpinner = new Spinner<>();
+        numberSpinner.setEditable(true);
+        SpinnerValueFactory.DoubleSpinnerValueFactory valueFactory = new DoubleSpinnerValueFactory(
+            0,
+            100, entry.getValue(), 0.1);
+        numberSpinner.setValueFactory(valueFactory);
+        numberSpinner.setPrefWidth(80);
+        numberSpinner.setUserData(entry.getKey());
+        HBox hbox = new HBox(SETTINGS_BOX_SPACING);
+        hbox.getChildren().addAll(spinnerLabel, numberSpinner);
+        numberSpinners.add(numberSpinner);
+        root.getChildren().add(hbox);
+      }
     }
   }
 
