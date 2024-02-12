@@ -12,7 +12,7 @@
        1 - TREE (The cell contains a tree that is not burning.)
        2 - BURNING The cell contains a tree that is burning. -->
   <initial_states>0</initial_states>
-  <neighborhood_type>cardinal</neighborhood_type>
+  <neighborhood_type>VonNeumann</neighborhood_type>
   <parameters>
     <probTreeIgnites>.05</probTreeIgnites> <!-- The probability of a tree in a cell catching fire if a tree in a neighboring cell is on fire.-->
     <probTreeCreated>.2</probTreeCreated> <!-- The probability of that a tree is created-->

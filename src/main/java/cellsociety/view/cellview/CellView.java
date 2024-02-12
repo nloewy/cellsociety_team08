@@ -46,7 +46,7 @@ public abstract class CellView {
 
   public void toggleStrokeWidth(boolean onOff) {
     if (onOff) {
-      shape.setStrokeWidth(3);
+      shape.setStrokeWidth(2);
     } else {
       shape.setStrokeWidth(0);
     }

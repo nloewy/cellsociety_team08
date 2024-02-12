@@ -1,9 +1,12 @@
 package cellsociety.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +25,8 @@ import javafx.stage.Stage;
 
 public class Settings {
 
+  private final ResourceBundle avaliableOptions;
+
   private final Stage settingsPanel;
   private final Scene scene;
   private final VBox root;
@@ -29,24 +34,36 @@ public class Settings {
   private final Button saveParametersButton;
   private List<String> avaliableEdgeTypes;
   private List<String> avaliableCellOutlines;
+  private List<String> avaliableLanguages;
 
   private ComboBox<String> edgeTypeComboBox;
+  private HBox edgeBox;
   private ComboBox<String> outlineTypeComboBox;
+  private HBox outlineBox;
+  private ComboBox<String> languageComboBox;
+  private HBox languageBox;
 
   private String edge;
   private String outline;
+  private String language;
+
+  private static final String OPTIONS_PACKAGE = "cellsociety.avaliableOptions";
 
 
-  public Settings(String defaultEdge, Map<String, Double> parameters,
+  public Settings(String defaultLanguage, String defaultEdge, Map<String, Double> parameters,
       EventHandler<ActionEvent> applyButtonHandler) {
+
+    avaliableOptions = ResourceBundle.getBundle(OPTIONS_PACKAGE);
     settingsPanel = new Stage();
     settingsPanel.setTitle("Parameter Settings");
 
     this.edge = defaultEdge;
     this.outline = "On";
     this.parameters = parameters;
+    this.language = defaultLanguage;
     initializeEdgeTypes();
     initializeOutlineTypes();
+    initializeLanguages();
 
     root = new VBox(10);
     root.setPadding(new Insets(10));
@@ -54,13 +71,17 @@ public class Settings {
     settingsPanel.setScene(scene);
 
     setPanelFields();
+//    setComboBox(defaultEdge, "Edge Type: ", avaliableEdgeTypes, edgeTypeComboBox, edgeBox);
+//    setComboBox(outline, "Outline Type: ", avaliableCellOutlines, outlineTypeComboBox, outlineBox);
     setEditEdge(defaultEdge);
     setEditOutline(outline);
+    setEditLanguage(defaultLanguage);
 
     saveParametersButton = new Button("Apply");
     saveParametersButton.setOnAction(applyButtonHandler);
     root.getChildren().add(saveParametersButton);
   }
+
 
   private void initializeEdgeTypes() {
     avaliableEdgeTypes = new ArrayList<>();
@@ -72,6 +93,12 @@ public class Settings {
     avaliableCellOutlines = new ArrayList<>();
     avaliableCellOutlines.add("On");
     avaliableCellOutlines.add("Off");
+  }
+
+  private void initializeLanguages(){
+    avaliableLanguages = new ArrayList<>();
+    String languages = avaliableOptions.getString("languages");
+    avaliableLanguages.addAll(Arrays.stream(languages.split(" ")).toList());
   }
 
   private void setEditEdge(String defaultEdge) {
@@ -86,7 +113,6 @@ public class Settings {
     edgeTypeComboBox.setOnAction(event -> {
       String selectedEdgeType = edgeTypeComboBox.getSelectionModel().getSelectedItem();
       System.out.println("Selected edge type: " + selectedEdgeType);
-      // You can associate the selected edge type with a label here
     });
     root.getChildren().add(edgeTypeBox);
   }
@@ -103,10 +129,44 @@ public class Settings {
     outlineTypeComboBox.setOnAction(event -> {
       String selectedOutlineType = outlineTypeComboBox.getSelectionModel().getSelectedItem();
       System.out.println("Selected outline type: " + selectedOutlineType);
-      // You can associate the selected edge type with a label here
     });
     root.getChildren().add(outlineTypeBox);
   }
+
+  private void setEditLanguage(String defaultLanguage) {
+    HBox languageBox = new HBox(10); // Create an HBox to contain the label and the ComboBox
+    Label languageLabel = new Label("Language: ");
+
+    languageComboBox = new ComboBox<>(FXCollections.observableList(avaliableLanguages));
+    languageComboBox.getSelectionModel().select(defaultLanguage); // Set default selection
+
+    languageBox.getChildren().addAll(languageLabel,languageComboBox);
+
+    languageComboBox.setOnAction(event -> {
+      String selectedLanguage = languageComboBox.getSelectionModel().getSelectedItem();
+      System.out.println("Selected language: " + selectedLanguage);
+    });
+    root.getChildren().add(languageBox);
+  }
+//
+//  private void setComboBox(String defaultValue, String label, List<String> options, ComboBox<String> dropdown, HBox box) {
+//    box = new HBox(10); // Create an HBox to contain the label and the ComboBox
+//    Label comboBoxLabel = new Label(label);
+//
+//    dropdown = new ComboBox<>(FXCollections.observableList(options));
+//    dropdown.getSelectionModel().select(defaultValue); // Set default selection
+//
+//    box.getChildren().addAll(comboBoxLabel, dropdown);
+//
+//    ComboBox<String> finalDropdown = dropdown;
+//    dropdown.setOnAction(event -> {
+//      String selectedValue = finalDropdown.getSelectionModel().getSelectedItem();
+//      System.out.println("Selected " + label + ": " + selectedValue);
+//      // You can associate the selected value with a label here
+//    });
+//    root.getChildren().add(box);
+//  }
+
 
   private void setPanelFields() {
     for (Entry<String, Double> entry : parameters.entrySet()) {
@@ -146,9 +206,17 @@ public class Settings {
             if (child.equals(outlineTypeComboBox)) {
               ComboBox<String> outlineDropdown = (ComboBox<String>) child;
               outline = outlineDropdown.getValue();
+              System.out.println(outline);
             } else if (child.equals(edgeTypeComboBox)) {
+              System.out.println("in edge type save");
               ComboBox<String> edgeDropdown = (ComboBox<String>) child;
               edge = edgeDropdown.getValue();
+              System.out.println(edge);
+            } else if (child.equals(languageComboBox)) {
+              System.out.println("in language save");
+              ComboBox<String> languageDropdown = (ComboBox<String>) child;
+              language = languageDropdown.getValue();
+              System.out.println("insettings:" + language);
             }
           }
         }
@@ -159,7 +227,7 @@ public class Settings {
   }
 
   public boolean getOutlineType() {
-    return outline == "On";
+    return outline.equals("On");
   }
 
   public void showSettingsPanel() {
@@ -176,6 +244,10 @@ public class Settings {
 
   public String getNewEdgeType() {
     return edge;
+  }
+
+  public String getNewLanguage(){
+    return language;
   }
 
 }
