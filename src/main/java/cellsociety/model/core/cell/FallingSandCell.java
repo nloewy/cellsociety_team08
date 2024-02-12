@@ -30,60 +30,77 @@ public class FallingSandCell extends Cell<FallingSandCell> {
   }
 
 
-
-
   /**
-   * Handles transition of open cell in PercolationSimulation. Open cells with at least
-   * neighersPercolatedRequired will become percolated, and otherwise will remain open.
+   * Handles transition of sand cell in Falling Sand Cell percolation. These sand cells will move
+   * downward, replacing empty cells or water cells when possible, each timestep.
    */
   private void handleSandCell() {
     FallingSandCell bestOption = null;
     double bestSlope = 0;
-    for(FallingSandCell cell : getNeighbors()) {
+    for (FallingSandCell cell : getNeighbors()) {
       double newSlope = (cell.getCentroid().getRow() - getCentroid().getRow()) /
           (cell.getCentroid().getCol() - getCentroid().getCol());
-      if (cell.getCentroid().getRow() > getCentroid().getRow() && Math.abs(newSlope) > bestSlope) {
+      if (cell.getCentroid().getRow() > getCentroid().getRow()
+          && Math.abs(newSlope) > bestSlope) {
         bestOption = cell;
         bestSlope = Math.abs(newSlope);
+
       }
     }
-    if (bestOption.getNextState() == FallingSandSimulation.WATER){
+    if (bestOption == null) {
+      setNextState(getCurrentState());
+      return;
+    }
+    if (bestOption.getCurrentState() == FallingSandSimulation.WATER) {
       setNextState(FallingSandSimulation.WATER);
       bestOption.setNextState(FallingSandSimulation.SAND);
-    }
-    else if(bestOption.getNextState() == FallingSandSimulation.EMPTY) {
+    } else if (bestOption.getCurrentState() == FallingSandSimulation.EMPTY) {
       bestOption.setNextState(FallingSandSimulation.SAND);
-    }
-    else
+      setNextState(FallingSandSimulation.EMPTY);
+      setCurrentState(FallingSandSimulation.EMPTY);
+
+    } else {
       setNextState(getCurrentState());
     }
+  }
 
+  /**
+   * Handles transition of water cell, so it randomly moves horizontally or downward into an empty
+   * space
+   */
   private void handleWaterCell() {
     List<FallingSandCell> options = new ArrayList<>();
     for (FallingSandCell cell : getNeighbors()) {
-      if (cell.getCentroid().getRow() >= getLocation().getRow()) {
-        options.add(cell);
+      if (cell.getCentroid().getRow() >= getCentroid().getRow()) {
+        if (cell.getCurrentState() == FallingSandSimulation.EMPTY
+            && cell.getNextState() == PLACEHOLDER) {
+          options.add(cell);
+        }
       }
     }
-    if(options.isEmpty()) {
-      setNextState(getCurrentState());
-    }
     Collections.shuffle(options);
-    FallingSandCell nextCell = options.get(0);
+    int index = 0;
+    while (index < options.size() && options.get(index).getNextState() != PLACEHOLDER) {
+      index++;
+    }
+    if (index == options.size()) {
+      setNextState(getCurrentState());
+      return;
+    }
+    FallingSandCell nextCell = options.get(index);
     if (nextCell.getNextState() == PLACEHOLDER) {
       if (nextCell.getCurrentState() == FallingSandSimulation.EMPTY) {
         nextCell.setNextState(FallingSandSimulation.WATER);
-        setNextState(FallingSandSimulation.EMPTY);
+        setCurrentState(FallingSandSimulation.EMPTY);
       }
     }
 
   }
 
 
-
   /**
-   * Represents a timestep update for a PercolationCell. Calls the proper helper function for
-   * transitioning based on the state of the Percolation Cell being updated.
+   * Represents a timestep update for a Falling Sand Cell. Calls the proper helper function for
+   * transitioning based on the state of the Falling Sand Cell being updated.
    */
   @Override
   public void transition() {
@@ -92,17 +109,10 @@ public class FallingSandCell extends Cell<FallingSandCell> {
       handleSandCell();
     } else if (getCurrentState() == FallingSandSimulation.WATER) {
       handleWaterCell();
-    }
-    else{
+    } else {
       setNextState(getCurrentState());
     }
-    System.out.println("=>"+getNextState());
+    System.out.println("=>" + getNextState());
   }
 
-  public void setParams(Map<String, Double> params){
-  }
-
-  public String getText() {
-    return "";
-  }
 }

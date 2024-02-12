@@ -21,77 +21,84 @@
 }
 
 /* Percolation */
-.empty-site{
+.empty-site {
   -fx-fill: white;
 }
 
-.full-site{
+.full-site {
   -fx-fill: skyblue;
 }
 
-.blocked-site{
+.blocked-site {
   -fx-fill: black;
 }
 
 /* Wator */
-.empty-water{
+.empty-water {
   -fx-fill: darkblue;
 }
 
-.fish{
+.fish {
   -fx-fill: palevioletred;
 }
 
-.shark{
+.shark {
   -fx-fill: gold;
 }
 
 /* Schelling */
-.agent{
+.agent {
   -fx-fill: crimson;
 }
 
-.agentX{
-  -fx-fill: dodgerblue	;
+.agentX {
+  -fx-fill: dodgerblue;
 }
 
-.no-agent{
+.no-agent {
   -fx-fill: white;
 }
+
 /*
 Sugar
  */
 
-.sugar-0{
+.sugar-0 {
   -fx-fill: red;
 }
 
-.sugar-1{
+.sugar-1 {
   -fx-fill: orange;
 }
 
-.sugar-2{
+.sugar-2 {
   -fx-fill: yellow;
 }
-.sugar-3{
+
+.sugar-3 {
   -fx-fill: blue;
 }
-.sugar-4{
+
+.sugar-4 {
   -fx-fill: green;
 }
+
 /*
 Falling Sand
  */
 
-.empty{
+.empty {
   -fx-fill: white;
 }
-.sand{
+
+.sand {
   -fx-fill: yellow;
 }
-.water{
+
+.water {
   -fx-fill: blue;
 }
-.metal{
+
+.metal {
   -fx-fill: black;
 }

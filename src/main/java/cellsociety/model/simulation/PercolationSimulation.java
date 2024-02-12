@@ -19,9 +19,7 @@ public class PercolationSimulation extends Simulation<PercolationCell> {
 
   public static final int OPEN = 0;
   public static final int PERCOLATED = 1;
-  //public static final int BLOCKED = 2;
-
-  private int percolatedNeighbors;
+  private final int percolatedNeighbors;
 
 
   /**
@@ -43,9 +41,10 @@ public class PercolationSimulation extends Simulation<PercolationCell> {
 
   /**
    * Creates list of PercolationCell objects to be passed into grid
-   * @param col number of columns in grid for simulation
+   *
+   * @param col       number of columns in grid for simulation
    * @param stateList list of all cell's states in row major order
-   * @param shape Shape object representing the shape of the cell as represented on 2d plane
+   * @param shape     Shape object representing the shape of the cell as represented on 2d plane
    * @return list of initialized PercolationCells
    */
 

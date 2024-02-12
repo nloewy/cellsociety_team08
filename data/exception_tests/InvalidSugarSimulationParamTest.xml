@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<simulation>
+  <type>Sugar</type>
+  <title>Sugar Scape Simulation</title>
+  <author>Judy He</author>
+  <file_description>This file configures the Sugar Scape Simulation.</file_description>
+  <display_description> TBD</display_description>
+  <width>12</width>
+  <height>11</height>
+  <!-- state represents sugar level
+        -->
+  <initial_states>1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 2 2 1 2 3 3 3 3 2 1 1 1 2 2 1 2 3 4 4 3 2 1 1 1 2 2 1 2 3 4 4 3 2 1 1 2 2 2 1 2 3 3 3 3 2 2 2 3 3 3 1 2 2 2 2 2 2 2 2 3 4 4 1 2 2 2 2 2 2 2 2 3 3 4 3 3 2 2 2 2 2 2 2 3 3 3 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1</initial_states>
+  <neighborhood_type>Moore</neighborhood_type>
+  <parameters>
+    <minVision> 1 </minVision>
+    <maxVision> 3 </maxVision>
+    <minMetabolism> 1 </minMetabolism>
+    <maxMetabolism> 6 </maxMetabolism>
+    <minInitialSugar> 5 </minInitialSugar>
+    <maxInitialSugar> 25 </maxInitialSugar>
+    <growBackRate> 1 </growBackRate>
+    <numAgents> 133 </numAgents>
+  </parameters>
+  <slider>1</slider>
+  <language>English</language>
+  <cell_shape>hexagon</cell_shape>
+  <grid_edge_type>Warped</grid_edge_type>
+  <random_configuration_by_total_states>
+  </random_configuration_by_total_states>
+</simulation>

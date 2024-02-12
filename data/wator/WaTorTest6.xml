@@ -21,7 +21,7 @@
     <energyBoost>1</energyBoost>
     <initialEnergy>5</initialEnergy>
   </parameters>
-  <slider>1</slider>
+  <slider>3</slider>
   <language>English</language>
   <cell_shape>square</cell_shape>
   <grid_edge_type>Normal</grid_edge_type>

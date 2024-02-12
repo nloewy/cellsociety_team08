@@ -55,6 +55,23 @@ import javafx.util.Duration;
 
 public class Controller {
 
+  //paths (will stay)
+  public static final String TEXT_CONFIGURATION = "cellsociety.Text";
+  public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
+  public static final String DATA_FILE_EXTENSION = "*.xml";
+  public static final String FIRE = "Fire";
+  public static final String GAME_OF_LIFE = "GameOfLife";
+  public static final String PERCOLATION = "Percolation";
+  public static final String SCHELLING = "Schelling";
+  public static final String WATOR = "Wator";
+  public static final String SUGAR = "Sugar";
+  public static final String FALLING = "Falling";
+  public static final String UPLOAD_FILE_TEXT_KEY = "uploadFile";
+  public static final String SECOND_DELAY_KEY = "SECOND_DELAY";
+  public static final String FILE_SAVED_KEY = "fileSaved";
+  public static final String UPLOAD_FILE_WINDOW_TITLE_KEY = "uploadFileWindowTitle";
+  public static final String ABOUT_MIN_HEIGHT_KEY = "ABOUT_MIN_HEIGHT";
+//  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
   private Stage stage;
   private SimulationPage simulationPage;
   private XmlParser xmlParser;
@@ -66,28 +83,7 @@ public class Controller {
   private FileChooser fileChooser;
   private Settings settingsPanel;
   private Boolean settingsChanged = false;
-
-
   private int sliderStart;
-  //paths (will stay)
-  public static final String TEXT_CONFIGURATION = "cellsociety.Text";
-  public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
-  public static final String DATA_FILE_EXTENSION = "*.xml";
-//  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
-
-  public static final String FIRE = "Fire";
-  public static final String GAME_OF_LIFE = "GameOfLife";
-  public static final String PERCOLATION = "Percolation";
-  public static final String SCHELLING = "Schelling";
-  public static final String WATOR = "Wator";
-  public static final String SUGAR = "Sugar";
-
-  public static final String FALLING = "Falling";
-  public static final String UPLOAD_FILE_TEXT_KEY = "uploadFile";
-  public static final String SECOND_DELAY_KEY = "SECOND_DELAY";
-  public static final String FILE_SAVED_KEY = "fileSaved";
-  public static final String UPLOAD_FILE_WINDOW_TITLE_KEY = "uploadFileWindowTitle";
-  public static final String ABOUT_MIN_HEIGHT_KEY = "ABOUT_MIN_HEIGHT";
 
   /**
    * Constructs the controller class
@@ -118,9 +114,9 @@ public class Controller {
       animation.getKeyFrames()
           .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
       animation.play();
-    }
-    catch (InvalidFileFormatException | InvalidValueException | InvalidCellStateException | InputMissingParametersException | InvalidGridBoundsException e){
-      showMessage(AlertType.ERROR,e.getMessage());
+    } catch (InvalidFileFormatException | InvalidValueException | InvalidCellStateException |
+             InputMissingParametersException | InvalidGridBoundsException e) {
+      showMessage(AlertType.ERROR, e.getMessage());
       Platform.exit();
     }
   }
@@ -135,7 +131,8 @@ public class Controller {
   }
 
 
-  private void parseFile(String filePath) throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException, InputMissingParametersException, InvalidCellStateException {
+  private void parseFile(String filePath)
+      throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException, InputMissingParametersException, InvalidCellStateException {
     xmlParser = new XmlParser();
     xmlParser.readXml(filePath);
   }
@@ -146,6 +143,7 @@ public class Controller {
 
   /**
    * Opens a dialog box for user to choose the xml file they want to run
+   *
    * @return returns the datafile the user selected
    */
   private File chooseFile() {
@@ -162,8 +160,8 @@ public class Controller {
         xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
     loadSimulationScene();
-
-    settingsPanel = new Settings(xmlParser.getGridEdgeType(), xmlParser.getParameters(), event -> onApplyClicked());
+    settingsPanel = new Settings(xmlParser.getGridEdgeType(), xmlParser.getParameters(),
+        event -> onApplyClicked());
   }
 
   private void onApplyClicked() {
@@ -192,6 +190,7 @@ public class Controller {
 
   /**
    * Sets up the simulation model component
+   *
    * @param numRows          the integer number of rows in the simulation grid
    * @param numCols          the integer number of columns in the simulation grid
    * @param neighborhoodType the neighborhood type object
@@ -269,6 +268,7 @@ public class Controller {
 
   /**
    * makes the map of event handlers to pass into the simulation view
+   *
    * @return returns the map of handler name to the event handler
    */
   private Map<String, EventHandler<ActionEvent>> makeHandlersMap() {
@@ -305,7 +305,7 @@ public class Controller {
       }
       xmlParser.setStates(newStates);
 
-      if (settingsChanged){
+      if (settingsChanged) {
         xmlParser.setParameters(settingsPanel.getNewParameters());
       }
 
@@ -368,6 +368,7 @@ public class Controller {
 
   /**
    * Shows a message dialog box according to the type and message text arguments
+   *
    * @param type    an AlertType object that specifies the type of the message
    * @param message a string that contains the content of the message
    */

@@ -63,6 +63,22 @@ public class XmlParser {
       Arrays.asList(FIRE_NAME, GAMEOFLIFE_NAME, PERCOLATION_NAME, SCHELLING_NAME, WATOR_NAME,
           SUGAR_NAME, FALLING_NAME));
 
+  // define valid parameters for each simulation
+  public static final Set<String> FIRE_PARAMETERS = new HashSet<>(
+      Arrays.asList("probTreeIgnites", "probTreeCreated", "neighborsToIgnite"));
+  public static final Set<String> GAMEOFLIFE_PARAMETERS = new HashSet<>(
+      Arrays.asList("aliveToAliveMin", "aliveToAliveMax", "deadToAliveMin", "deadToAliveMax"));
+  public static final Set<String> PERCOLATION_PARAMETERS = new HashSet<>(
+      List.of("percolatedNeighbors"));
+  public static final Set<String> SCHELLING_PARAMETERS = new HashSet<>(
+      List.of("proportionNeededToStay"));
+  public static final Set<String> WATOR_PARAMETERS = new HashSet<>(
+      Arrays.asList("fishAgeOfReproduction", "sharkAgeOfReproduction", "energyBoost",
+          "initialEnergy"));
+  public static final Set<String> SUGAR_PARAMETERS = new HashSet<>(
+      Arrays.asList("minVision", "maxVision", "minMetabolism", "maxMetabolism", "minInitialSugar",
+          "maxInitialSugar", "growBackRate", "numAgents"));
+
   // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
       Arrays.asList("adjacent", "cardinal", "Moore", "VonNeumann"));
@@ -72,8 +88,8 @@ public class XmlParser {
   // define valid grid edge types
   public static final Set<String> GRID_EDGE_TYPES = new HashSet<>(
       Arrays.asList("Normal", "Warped"));
-  // define valid cell states for Fire simulation
 
+  // define valid cell states for Fire simulation
   public static final Set<String> FIRE_CELL_STATES = new HashSet<>(
       Arrays.asList("0", "1", "2"));
   // define valid cell states for GameOfLife simulation
@@ -138,10 +154,9 @@ public class XmlParser {
   private String language;
   private String cellShape;
   private String gridEdgeType;
-
   private String sliderInitial;
   private Map<String, Integer> randomConfigurationTotalStates;
-  private int totalNumStates;
+  private int totalNumCells;
 
   /**
    * Constructor for initializing the states ArrayList and parameters HashMap
@@ -436,6 +451,42 @@ public class XmlParser {
   }
 
   /**
+   * Retrieves sliderInitial instance variable
+   *
+   * @return slider, the initial value of the slider in the GUI
+   */
+  public String getSliderInitial() {
+    return sliderInitial;
+  }
+
+  /**
+   * Updates sliderInitial instance variable
+   *
+   * @param sliderInitial, the initial value of the slider in the GUI
+   */
+  public void setSliderInitial(String sliderInitial) {
+    this.sliderInitial = sliderInitial;
+  }
+
+  /**
+   * Retrieves totalNumCells instance variable
+   *
+   * @return totalNumCells, the total number of cells used in the given simulation
+   */
+  public int getTotalNumCells() {
+    return totalNumCells;
+  }
+
+  /**
+   * Updates totalNumCells instance variable
+   *
+   * @param totalNumCells, the total number of cells used in the given simulation
+   */
+  public void setTotalNumCells(int totalNumCells) {
+    this.totalNumCells = totalNumCells;
+  }
+
+  /**
    * Read an XML configuration file, initializing all attributes in the XmlParser
    *
    * @param path, the path to the XML configuration file being read
@@ -567,7 +618,6 @@ public class XmlParser {
     // parse initial states
     parseStates(element.getElementsByTagName(INITIAL_STATES_FIELD_NAME).item(0));
 
-
     // parse parameters
     parseParameters(element.getElementsByTagName(PARAMETERS_FIELD_NAME).item(0));
 
@@ -575,7 +625,7 @@ public class XmlParser {
     parseRandomConfig(element.getElementsByTagName(RANDOM_CONFIG_FIELD_NAME)
         .item(0));
 
-    totalNumStates = states.size();
+    totalNumCells = states.size();
 
   }
 
@@ -603,21 +653,8 @@ public class XmlParser {
     // validate essential input parameters that define the simulation
     validateEssentialInputs();
 
-    // check if only width or height is given.
-    // If so, update the other based on the total number of states read
-    if (width == 0) {
-      width = totalNumStates / height;
-    } else if (height == 0) {
-      height = totalNumStates / width;
-    }
-
-    // Check if grid dimension is valid, throw exception otherwise
-    if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
-        || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumStates) {
-      throw new InvalidGridBoundsException(
-          String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
-              totalNumStates));
-    }
+    // validate parameters that define the dynamics of the simulation
+    validateFunctionalParameters();
   }
 
   /**
@@ -643,11 +680,13 @@ public class XmlParser {
   }
 
   /**
-   * Validate inputs for the essential simulation parameters
+   * Validate inputs for the parameters defining the simulation
    *
-   * @throws InvalidValueException when value is negative or does not exist
+   * @throws InvalidValueException      when value is negative or does not exist
+   * @throws InvalidGridBoundsException when the user loads a configuration file that has cell
+   *                                    locations specified outside the grid’s bounds
    */
-  private void validateEssentialInputs() throws InvalidValueException {
+  private void validateEssentialInputs() throws InvalidValueException, InvalidGridBoundsException {
     // check if width or height is negative
     if (width < 0 || height < 0) {
       throw new InvalidValueException(
@@ -676,12 +715,48 @@ public class XmlParser {
   }
 
   /**
+   * Validate parameters that define the dynamics of the simulation
+   */
+  private void validateFunctionalParameters() {
+    // check if only width or height is given.
+    // If so, update the other based on the total number of cells read
+    if (width == 0) {
+      width = totalNumCells / height;
+    } else if (height == 0) {
+      height = totalNumCells / width;
+    }
+
+    // check if grid dimension is valid, throw exception otherwise
+    if (randomConfigurationTotalStates.isEmpty() && width * height != states.size()
+        || !randomConfigurationTotalStates.isEmpty() && width * height != totalNumCells) {
+      throw new InvalidGridBoundsException(
+          String.format(resourceBundle.getString("InvalidGridBounds"), width, height,
+              totalNumCells));
+    }
+
+    // check if numAgents is larger than size of grid for Sugar Simulation
+    String sugarCheckParam = "numAgents";
+    if (type.equals(SUGAR_NAME) && parameters.get(sugarCheckParam) > totalNumCells) {
+      throw new InvalidValueException(
+          String.format(resourceBundle.getString("SugarSimulationParamValueError"),
+              parameters.get(sugarCheckParam),
+              totalNumCells));
+    }
+
+    // if random configurations exist, set the state of each cell by the random configurations
+    if (!randomConfigurationTotalStates.isEmpty()) {
+      setRandomlyConfiguredStates();
+    }
+
+  }
+
+  /**
    * Obtain a file's extension for checking whether it is an XML file
    *
    * @param fileName, name of file
    * @return file extension
    */
-  public String getFileExtension(String fileName) {
+  private String getFileExtension(String fileName) {
     int dotIndex = fileName.lastIndexOf('.');
     return fileName.substring(dotIndex + 1);
   }
@@ -735,12 +810,15 @@ public class XmlParser {
     for (int i = 0; i < parametersNodeList.getLength(); i++) {
       Node parameterNode = parametersNodeList.item(i);
       String name = parameterNode.getNodeName();
+      // check if parameter name is valid for given simulation
+
       String valueString = parameterNode.getTextContent();
       // check if parameter value is not given (empty). If yes, assign default value.
       if (valueString.isEmpty()) {
         valueString = assignDefaultValueToParameter(name);
       }
       Double value = Double.parseDouble(valueString);
+      // check for negative values
       if (value < 0) {
         throw new InvalidValueException(
             String.format(resourceBundle.getString("NegativeParameterValueError"), name));
@@ -763,7 +841,6 @@ public class XmlParser {
     if (randomConfigNodeList.getLength() == 0) {
       return;
     }
-    List<Integer> resultList = new ArrayList<>();
     for (int i = 0; i < randomConfigNodeList.getLength(); i++) {
       Node currRandConfigNode = randomConfigNodeList.item(i);
       String name = currRandConfigNode.getNodeName();
@@ -774,6 +851,13 @@ public class XmlParser {
       }
       randomConfigurationTotalStates.put(name, value);
     }
+  }
+
+  /**
+   * Set the state for each cell in the simulation according to the random configuration parameters
+   */
+  private void setRandomlyConfiguredStates() {
+    List<Integer> resultList = new ArrayList<>();
     Pattern pattern = Pattern.compile("num(\\d+)");
     for (Map.Entry<String, Integer> entry : randomConfigurationTotalStates.entrySet()) {
       String key = entry.getKey();
@@ -788,77 +872,54 @@ public class XmlParser {
     }
     Collections.shuffle(resultList, new Random());
     states = resultList;
-
   }
+
 
   /**
    * Return the default value of a given parameter
    *
    * @param name, name of the parameter
    * @return default value of the parameter
+   * @throws InvalidValueException when simulation type does not exist or a parameter does not exist
+   *                               for given simulation
    */
-  private String assignDefaultValueToParameter(String name) {
+  private String assignDefaultValueToParameter(String name) throws InvalidValueException {
+    return switch (type) {
+      case FIRE_NAME -> findDefaultParameter(FIRE_PARAMETERS, name);
+      case GAMEOFLIFE_NAME -> findDefaultParameter(GAMEOFLIFE_PARAMETERS, name);
+      case PERCOLATION_NAME -> findDefaultParameter(PERCOLATION_PARAMETERS, name);
+      case SCHELLING_NAME -> findDefaultParameter(SCHELLING_PARAMETERS, name);
+      case WATOR_NAME -> findDefaultParameter(WATOR_PARAMETERS, name);
+      case SUGAR_NAME -> findDefaultParameter(SUGAR_PARAMETERS, name);
+      default -> throw new InvalidValueException(
+          String.format(resourceBundle.getString("NonExistentSimulationType"), type));
+    };
+  }
+
+  /**
+   * Find default value for a given parameter in the given simulation's set of parameters
+   *
+   * @param parameters, list of valid parameters for the give simulation
+   * @param name,       name of the parameter with missing value
+   * @return String default value for the given parameter
+   * @throws InvalidValueException when the given parameter does not exist for given simulation
+   */
+  private String findDefaultParameter(Set<String> parameters, String name)
+      throws InvalidValueException {
     ResourceBundle defaultParametersResourceBundle = ResourceBundle.getBundle(
         DEFAULT_RESOURCE_PACKAGE + "DefaultParameters");
-
-    return switch (this.type) {
-      case FIRE_NAME -> {
-        if (name.equals("probTreeIgnites")) {
-          yield defaultParametersResourceBundle.getString("probTreeIgnites");
-        } else if (name.equals("probTreeCreated")) {
-          yield defaultParametersResourceBundle.getString("probTreeCreated");
-        }
-        yield defaultParametersResourceBundle.getString("neighborsToIgnite");
+    for (String parameter : parameters) {
+      if (name.equals(parameter) && name.equals("agentProportion")) {
+        int agentProportion = (int) Math.round(
+            Double.parseDouble(defaultParametersResourceBundle.getString("agentProportion"))
+                * getHeight() * getWidth());
+        return Integer.toString(agentProportion);
+      } else if (name.equals(parameter)) {
+        return defaultParametersResourceBundle.getString(parameter);
       }
-      case GAMEOFLIFE_NAME -> {
-        if (name.equals("aliveToAliveMin")) {
-          yield defaultParametersResourceBundle.getString("aliveToAliveMin");
-        } else if (name.equals("aliveToAliveMax")) {
-          yield defaultParametersResourceBundle.getString("aliveToAliveMax");
-        } else if (name.equals("deadToAliveMin")) {
-          yield defaultParametersResourceBundle.getString("deadToAliveMin");
-        }
-        yield defaultParametersResourceBundle.getString("deadToAliveMax");
-      }
-      case PERCOLATION_NAME -> defaultParametersResourceBundle.getString("percolatedNeighbors");
-      case SCHELLING_NAME -> defaultParametersResourceBundle.getString("proportionNeededToStay");
-      case WATOR_NAME -> {
-        if (name.equals("fishAgeOfReproduction")) {
-          yield defaultParametersResourceBundle.getString("fishAgeOfReproduction");
-        } else if (name.equals("sharkAgeOfReproduction")) {
-          yield defaultParametersResourceBundle.getString("sharkAgeOfReproduction");
-        } else if (name.equals("energyBoost")) {
-          yield defaultParametersResourceBundle.getString("energyBoost");
-        }
-        yield defaultParametersResourceBundle.getString("initialEnergy");
-      }
-      case SUGAR_NAME -> {
-        if (name.equals("minVision")) {
-          yield defaultParametersResourceBundle.getString("minVision");
-        } else if (name.equals("maxVision")) {
-          yield defaultParametersResourceBundle.getString("maxVision");
-        } else if (name.equals("minInitialSugar")) {
-          yield defaultParametersResourceBundle.getString("minInitialSugar");
-        }
-        else if (name.equals("maxInitialSugar")) {
-          yield defaultParametersResourceBundle.getString("maxInitialSugar");
-        }
-        else if (name.equals("minMetabolism")) {
-          yield defaultParametersResourceBundle.getString("minMetabolism");
-        }
-        else if (name.equals("maxMetabolism")) {
-          yield defaultParametersResourceBundle.getString("maxMetabolism");
-        }else if (name.equals("growBackRate")) {
-          yield defaultParametersResourceBundle.getString("growBackRate");
-        }
-          else {
-            yield  Integer.toString((int) Math.round(Double.parseDouble
-                (defaultParametersResourceBundle.getString("agentProportion"))
-                *getHeight()*getWidth()));
-        }
-      }
-      default -> "";
-    };
+    }
+    throw new InvalidValueException(
+        String.format(resourceBundle.getString("NonExistentMissingParameter"), name, type));
   }
 
   /**
@@ -1043,8 +1104,8 @@ public class XmlParser {
    *
    * @param doc,  Document object being written to
    * @param path, specified path to which the new file will be stored
-   * @throws TransformerException, exception handling potential errors from converting to XML file
-   *                               format
+   * @throws InvalidFileFormatException, when errors occur from converting to XML file format
+   * @throws SavingFileException,        when errors occur during saving the XML file
    */
   private void writeXml(Document doc, String path) throws InvalidFileFormatException,
       SavingFileException {
@@ -1068,6 +1129,4 @@ public class XmlParser {
     }
 
   }
-
-
 }

@@ -17,16 +17,16 @@ import java.util.List;
 
 public class Grid<T extends Cell> {
 
-  private int myNumRows;
-  private int myNumCols;
-  private List<T> myGrid;
+  private final int myNumRows;
+  private final int myNumCols;
+  private final List<T> myGrid;
 
   /**
    * Constructs a cell object
    *
-   * @param rows      is the number of rows in the grid
-   * @param cols      is the number of columns in the grid
-   * @param cellList  a list of the cells in row-major order
+   * @param rows     is the number of rows in the grid
+   * @param cols     is the number of columns in the grid
+   * @param cellList a list of the cells in row-major order
    */
   public Grid(int rows, int cols, List<T> cellList) {
     myNumRows = rows;

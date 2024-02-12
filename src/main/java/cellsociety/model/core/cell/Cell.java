@@ -17,11 +17,10 @@ import java.util.Map;
 public abstract class Cell<T extends Cell<T>> {
 
   public static final int PLACEHOLDER = -1;
-  private int myCurrentState;
-
-  private int myNextState;
   private final Point myLocation;
   private final List<Point> myVertices;
+  private int myCurrentState;
+  private int myNextState;
   private List<T> myNeighbors;
 
   /**
@@ -64,6 +63,13 @@ public abstract class Cell<T extends Cell<T>> {
   }
 
   /**
+   * @param state, the new value of the cell's current state
+   */
+  public void setCurrentState(int state) {
+    myCurrentState = state;
+  }
+
+  /**
    * @return the integer representation of the cell's next state (following update)
    */
   public int getNextState() {
@@ -88,7 +94,13 @@ public abstract class Cell<T extends Cell<T>> {
     myNextState = PLACEHOLDER;
   }
 
-  public abstract String getText();
+  /**
+   * Sets text to be displayed for specific cell
+   * @return the new text (or emoji) displayed in cell
+   */
+  public String getText() {
+    return "";
+  }
 
   /**
    * Given an integer representing a target state, determines the number of neighboring cells that
@@ -163,10 +175,25 @@ public abstract class Cell<T extends Cell<T>> {
     myNeighbors = neighborhood;
   }
 
+
+  /**
+   * Calculates euclidian distance from current cell to another cell
+   * @param cell, a cell object
+   * @return distance, euclidian distance from centroid of one cell to another
+   */
   public double distance(T cell) {
-    if(cell==null){ return Integer.MAX_VALUE;}
-    return Math.pow((getCentroid().getCol()-cell.getCentroid().getCol()),2) + Math.pow((getCentroid().getRow()-cell.getCentroid().getRow()),2);
+    if (cell == null) {
+      return Integer.MAX_VALUE;
+    }
+    return Math.pow((getCentroid().getCol() - cell.getCentroid().getCol()), 2) + Math.pow(
+        (getCentroid().getRow() - cell.getCentroid().getRow()), 2);
   }
+
+  /**
+   * Checks if two objects are both cells at the same location
+   * @param other, another object, probably a cell
+   * @return true if and only if this and other are both cells at the same location
+   */
   @Override
   public boolean equals(Object other) {
     if (this == other) {
@@ -183,12 +210,21 @@ public abstract class Cell<T extends Cell<T>> {
         other1.getCentroid().getCol() == getCentroid().getCol());
   }
 
+  /**
+   * Gets hashcode of cell object (the hashcode of its centroid), as all cell objects have unique
+   * centroids.
+   * @return
+   */
   @Override
   public int hashCode() {
     return getCentroid().hashCode();
   }
 
 
+  /**
+   * Updates parameters of simulation
+   * @param newParameters, map of param name to param value for all needed parameters
+   */
   public void setParams(Map<String, Double> newParameters) {
   }
 }

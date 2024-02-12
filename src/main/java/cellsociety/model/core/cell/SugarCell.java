@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-;
-
 /**
  * Represents an extension of the Cell, and serves as the atomic unit of the Wator Simulation.
  * Contains extra instance variables that typical cells do not have, referencing energy and age.
@@ -71,6 +69,13 @@ public class SugarCell extends Cell<SugarCell> {
     myNextAgentSugar = PLACEHOLDER;
   }
 
+  /**
+   * Updates instance variables of agent
+   * @param state, the amount of open sugar available at the cell
+   * @param sugar, the amount of sugar the agent occupying the cell has, or -1 if no agent
+   * @param vision, the vision the agent occupying the cell has, or -1 if no agent
+   * @param metabolism, the metabolism the agent occupying the cell has, or -1 if no agent
+   */
   public void setNextStateAgentSugarVisionMetabolism(int state, int sugar, int vision,
       int metabolism) {
     setNextState(state);
@@ -80,6 +85,16 @@ public class SugarCell extends Cell<SugarCell> {
 
   }
 
+  /**
+   * Recursive function that takes in a cell, and returns all the cells that are in the legal
+   * movement directions, that are at no more than vision units away. X and Y default to
+   * Double.MAX_VALUE on the first simulation
+   * @param x, direction of movement from original cell to current cell in x direction
+   * @param y direction of movement from original cell to current cell in y direction
+   * @param remainingVision, vision left (since it is recursive)
+   * @param ignoreMe, original cell called on the function
+   * @return set, a set of all cells that are visible to the current cell.
+   */
   private Set<SugarCell> getVisibleNeighbors(double x, double y, int remainingVision,
       SugarCell ignoreMe) {
     Set<SugarCell> set = new HashSet<>();
@@ -101,6 +116,10 @@ public class SugarCell extends Cell<SugarCell> {
     return set;
   }
 
+  /**
+   * @return bestOption, the Cell that the current agent is going to move to. This is the visible
+   * cell with the most open sugar available (with ties broken by distance).
+   */
   private SugarCell getFutureCell() {
 
     Set<SugarCell> neighborsInVision = getVisibleNeighbors(Double.MAX_VALUE, Double.MAX_VALUE,
@@ -120,10 +139,13 @@ public class SugarCell extends Cell<SugarCell> {
         }
       }
     }
-
     return bestOption;
   }
 
+  /**
+   * Handles transition of a cell in the Sugarscape simulation, calling appropriate helper methods
+   * when needed.
+   */
   @Override
   public void transition() {
     if (myCurrentAgentSugar > 0) {
@@ -158,12 +180,20 @@ public class SugarCell extends Cell<SugarCell> {
     }
   }
 
+
+  /**
+   * @return candy/sugar emoji or empty string, depending on cell type
+   */
   public String getText() {
     if (myCurrentAgentSugar > 0) {
       return "\uD83C\uDF6C";
     }
     return "";
   }
+
+  /**
+   * @param params, new simulation parameters for the SugarScape Simulation
+   */
 
   public void setParams(Map<String, Double> params) {
     sugarGrowBackRate = (int) Math.floor(params.get("growBackRate"));

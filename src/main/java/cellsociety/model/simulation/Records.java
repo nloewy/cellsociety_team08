@@ -1,8 +1,5 @@
 package cellsociety.model.simulation;
 
-import cellsociety.model.neighborhood.Neighborhood;
-import java.util.Map;
-
 public class Records {
 
   public record GameOfLifeRecord(int aliveToAliveMin, int aliveToAliveMax, int deadToAliveMin,
@@ -28,6 +25,7 @@ public class Records {
                             int energyBoost, String gridType, String cellShape) {
 
   }
+
   public record FallingSandRecord(String gridType, String cellShape) {
 
   }
@@ -35,7 +33,9 @@ public class Records {
   public record SugarRecord(int minVision, int maxVision, int minInitialSugar, int maxInitialSugar,
                             int minMetabolism,
                             int maxMetabolism, int growBackRate, int numAgents, String gridType,
-                            String cellShape){}
+                            String cellShape) {
+
+  }
 }
 
 
