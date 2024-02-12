@@ -3,7 +3,6 @@ package cellsociety.model.simulation;
 import cellsociety.model.core.cell.FireCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.SimulationRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

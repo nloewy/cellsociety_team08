@@ -36,12 +36,12 @@ This project implements a cellular automata simulator.
 
  * Interesting data files:
    * Test XML configuration files:
-     * [Sugar simulation test 1](data/sugar/SugarTest1.xml) 
+     * [Sugar simulation test 1](data/sugar/SugarTestSmallHex.xml) 
      * [Game of Life simulation Glider](data/gameoflife/GameOfLifeGlider.xml)
      * [Game of Life simulation Toad](data/gameoflife/GameOfLifeToad.xml)
      * [Game of Life simulation Blinker](data/gameoflife/GameOfLifeBlinker.xml)
      * [Fire simulation test 1](data/fire/FireSmallSimulation1.xml)
-     * [Falling Sand simulation test 1](data/falling/FallingTest1.xml)
+     * [Falling Sand simulation test 1](data/falling/FallingTestWaterAbsorbsSand.xml)
      * [WaTor simulation test 1](data/wator/WaTorTest1.xml)
      * [Schelling simulation test 1](data/schelling/SchellingTest1.xml)
      * [Percolation simulation test 1](data/percolation/PercolationTest1.xml)

@@ -16,12 +16,12 @@ import java.util.Set;
 public class SugarCell extends Cell<SugarCell> {
 
 
+  private final int myCapacity;
   private int myCurrentVision;
   private int myNextVision;
   private int myNextAgentSugar;
   private int sugarMetabolism;
   private int sugarGrowBackRate;
-  private final int myCapacity;
   private int myCurrentAgentSugar;
 
   /**

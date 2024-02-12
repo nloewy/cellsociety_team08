@@ -4,7 +4,7 @@
   <title>Falling Sand/Water Simulation</title>
   <author>Judy He</author>
   <file_description>This file configures the Falling Sand/Water Simulation.</file_description>
-  <display_description> </display_description>
+  <display_description>The falling sand/water/metal simulation is a computational model that simulates the behavior of various granular materials, including sand, water, and metal particles, as they interact and flow within a virtual environment.</display_description>
   <width>50</width>
   <height>50</height>
   <!-- 0 - EMPTY

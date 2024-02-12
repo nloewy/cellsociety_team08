@@ -23,7 +23,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -35,6 +34,7 @@ import javafx.scene.text.Text;
  */
 
 public class SimulationPage {
+
   public static final String SCENE_HEIGHT_KEY = "SCENE_HEIGHT";
   public static final String SCENE_WIDTH_KEY = "SCENE_WIDTH";
   public static final String GRID_HEIGHT_KEY = "GRID_HEIGHT";
@@ -79,11 +79,12 @@ public class SimulationPage {
   public static final String MULTI_SIMULATION_BUTTON = "AddSimulationButton";
   private final Scene scene;
   private final Group root;
-  private CellView[][] board;
   private final ResourceBundle configProperties;
   private final SimulationGraph graph;
   private final Map<Integer, Integer> stateCount;
   private final Map<String, Double> gridProperties;
+  private final Group boardDisplay;
+  private CellView[][] board;
   private Button newSimulationButton;
   private Button simulationInfoButton;
   private Button startSimulationButton;
@@ -98,7 +99,6 @@ public class SimulationPage {
   private Label speedLabel;
   private ResourceBundle buttonLabels;
   private ResourceBundle textProperties;
-  private final Group boardDisplay;
 
   /**
    * Constructs the view component of the simulation
@@ -110,7 +110,8 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String defaultLanguage, int defaultSpeed, String simulationType, String simulationName, int numRows,
+  public SimulationPage(String defaultLanguage, int defaultSpeed, String simulationType,
+      String simulationName, int numRows,
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
@@ -229,7 +230,6 @@ public class SimulationPage {
    * @param eventHandlers a map of event handlers for the buttons
    */
   private void initializeButtons(Map<String, EventHandler<ActionEvent>> eventHandlers) {
-
 
     newSimulationButton = makeButton(buttonLabels.getString(NEW_SIMULATION_BUTTON_KEY),
         eventHandlers.get("newSimulationHandler"),
@@ -404,7 +404,7 @@ public class SimulationPage {
   }
 
   private void setButtonConfig(String language) {
-    buttonLabels = ResourceBundle.getBundle(switch (language){
+    buttonLabels = ResourceBundle.getBundle(switch (language) {
       case "French" -> FRENCH_BUTTON;
       case "German" -> GERMAN_BUTTON;
       case "Spanish" -> SPANISH_BUTTON;
@@ -413,7 +413,7 @@ public class SimulationPage {
     });
   }
 
-  public void switchButtonLanguage(String language){
+  public void switchButtonLanguage(String language) {
     setButtonConfig(language);
     updateButtons();
   }

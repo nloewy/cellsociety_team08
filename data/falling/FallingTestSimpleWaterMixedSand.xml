@@ -4,14 +4,14 @@
   <title>Falling Sand/Water Simulation</title>
   <author>Judy He</author>
   <file_description>This file configures the Falling Sand/Water Simulation.</file_description>
-  <display_description> </display_description>
+  <display_description>The falling sand/water/metal simulation is a computational model that simulates the behavior of various granular materials, including sand, water, and metal particles, as they interact and flow within a virtual environment.</display_description>
   <width>11</width>
   <height>11</height>
   <!-- 0 - EMPTY
        1 - SAND
        2 - WATER
        3 - METAL -->
-  <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 1 1 1 1 1 1 2 2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 2 2 2 2 2 3 0 0 0 0 3 2 2 2 2 2 3 0 0 3 3 3 3 3 3 3 3 3 3 3</initial_states>
+  <initial_states>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 2 1 2 1 0 0 0 0 0 0 1 2 1 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 2 2 2 2 2 3 0 0 0 0 3 2 2 2 2 2 3 0 0 3 3 3 3 3 3 3 3 3 3 3</initial_states>
   <neighborhood_type>Moore</neighborhood_type>
   <parameters>
   </parameters>
