@@ -44,6 +44,7 @@ This project implements a cellular automata simulator.
  * Known Bugs:
 
  * Features implemented:
+   * **Multiple simulations**: Users can move windows for each simulation around as they wish; each simulation is controlled by a separate controller, therefore independent from other simulations running at the same time.
 
  * Features unimplemented:
 

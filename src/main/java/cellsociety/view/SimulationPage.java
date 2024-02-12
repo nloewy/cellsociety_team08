@@ -71,7 +71,7 @@ public class SimulationPage {
 
   public static final String STYLESHEET = "StyleSheet.css";
   //button label keys
-  public static final String NEW_SIMULATION_BUTTON_KEY = "NewSimulationButton";
+  public static final String NEW_SIMULATION_BUTTON_KEY = "SwitchSimulation";
   public static final String RESET_BUTTON_KEY = "ResetButton";
   public static final String START_BUTTON_KEY = "StartButton";
   public static final String PAUSE_BUTTON_KEY = "PauseButton";
@@ -114,7 +114,7 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(int defaultSpeed, String simulationType, String simulationName, int numRows,
+  public SimulationPage(String defaultLanguage, int defaultSpeed, String simulationType, String simulationName, int numRows,
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
@@ -135,7 +135,7 @@ public class SimulationPage {
     scene = new Scene(root, configDouble(SCENE_WIDTH_KEY),
         configDouble(SCENE_HEIGHT_KEY));
 
-    buttonLabels = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "buttonLabelsEnglish");
+    setButtonConfig(defaultLanguage);
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
 
@@ -395,7 +395,7 @@ public class SimulationPage {
     speedLabel.setText(textProperties.getString(SPEED_LABEL_TEXT_KEY));
   }
 
-  public void switchButtonConfig(String language) {
+  private void setButtonConfig(String language) {
     buttonLabels = ResourceBundle.getBundle(switch (language){
       case "French" -> FRENCH_BUTTON;
       case "German" -> GERMAN_BUTTON;
@@ -403,6 +403,10 @@ public class SimulationPage {
       case "Mandarin" -> MANDARIN_BUTTON;
       default -> ENGLISH_BUTTON;
     });
+  }
+
+  public void switchButtonLanguage(String language){
+    setButtonConfig(language);
     updateButtons();
   }
 
