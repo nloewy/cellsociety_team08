@@ -125,9 +125,11 @@ public class Controller {
   }
 
 
-  private void parseFile(String filePath)
-      throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException,
-      InputMissingParametersException, InvalidCellStateException {
+  private void parseFile(String filePath) throws InvalidValueException,
+      InvalidFileFormatException,
+      InvalidGridBoundsException,
+      InputMissingParametersException,
+      InvalidCellStateException {
     xmlParser = new XmlParser();
     xmlParser.readXml(filePath);
   }
@@ -383,13 +385,14 @@ public class Controller {
   }
 
   private void switchLanguage(String language) {
-    this.textConfig = ResourceBundle.getBundle(switch (language) {
-      case "French" -> FRENCH_TEXT;
-      case "German" -> GERMAN_TEXT;
-      case "Spanish" -> SPANISH_TEXT;
-      case "Mandarin" -> MANDARIN_TEXT;
-      default -> TEXT_CONFIGURATION;
-    });
+    this.textConfig = ResourceBundle.getBundle(
+        switch (language) {
+          case "French" -> FRENCH_TEXT;
+          case "German" -> GERMAN_TEXT;
+          case "Spanish" -> SPANISH_TEXT;
+          case "Mandarin" -> MANDARIN_TEXT;
+          default -> TEXT_CONFIGURATION;
+        });
     simulationPage.switchTextConfig(this.textConfig);
     simulationPage.switchButtonLanguage(language);
   }
