@@ -40,13 +40,13 @@ public abstract class CellView {
 
   private void setStroke(Shape shape) {
     shape.setStroke(Color.BLACK); //TODO: read color from css file
-    shape.setStrokeWidth(3);
+    shape.setStrokeWidth(2);
     shape.setStrokeType(StrokeType.OUTSIDE);
   }
 
   public void toggleStrokeWidth(boolean onOff) {
     if (onOff) {
-      shape.setStrokeWidth(3);
+      shape.setStrokeWidth(2);
     } else {
       shape.setStrokeWidth(0);
     }

@@ -57,6 +57,11 @@ public class Controller {
 
   //paths (will stay)
   public static final String TEXT_CONFIGURATION = "cellsociety.Text";
+  public static final String FRENCH_TEXT = "cellsociety.TextFrench";
+  public static final String GERMAN_TEXT = "cellsociety.TextGerman";
+  public static final String MANDARIN_TEXT = "cellsociety.TextMandarin";
+  public static final String SPANISH_TEXT = "cellsociety.TextSpanish";
+
   public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   public static final String DATA_FILE_EXTENSION = "*.xml";
   public static final String FIRE = "Fire";
@@ -160,7 +165,7 @@ public class Controller {
         xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
     loadSimulationScene();
-    settingsPanel = new Settings(xmlParser.getGridEdgeType(), xmlParser.getParameters(),
+    settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(), xmlParser.getParameters(),
         event -> onApplyClicked());
   }
 
@@ -171,6 +176,7 @@ public class Controller {
     simulationModel.setParams(settingsPanel.getNewParameters());
     simulationModel.setEdgeType(settingsPanel.getNewEdgeType());
     simulationPage.toggleOnOffCellOutlines(settingsPanel.getOutlineType());
+    switchLanguage(settingsPanel.getNewLanguage());
   }
 
   /**
@@ -250,7 +256,7 @@ public class Controller {
       allVertices.add(iter.next().getVertices());
     }
 
-    simulationPage = new SimulationPage(xmlParser.getType(), xmlParser.getTitle(),
+    simulationPage = new SimulationPage(xmlParser.getInitialSlider(), xmlParser.getType(), xmlParser.getTitle(),
         xmlParser.getHeight(), xmlParser.getWidth(), handlers, simulationModel.getIterator(),
         allVertices);
     stage.setScene(simulationPage.getSimulationScene());
@@ -280,7 +286,12 @@ public class Controller {
     map.put("pauseSimulationHandler", event -> onPauseSimulation());
     map.put("resetSimulationHandler", event -> onResetSimulation());
     map.put("settingsHandler", event -> onSettingsClicked());
+    map.put("multiSimulationHandler", event -> createParallelWindow());
     return map;
+  }
+
+  private void createParallelWindow() {
+    Controller newController = new Controller();
   }
 
   private void onSettingsClicked() {
@@ -321,6 +332,7 @@ public class Controller {
 
   private void onStartSimulation() {
     simulationRunning = true;
+    animation.setRate(simulationPage.getSliderValue());
   }
 
   private void onInfoButtonClicked() {
@@ -347,13 +359,18 @@ public class Controller {
 
 
   private void onNewSimulationClicked() {
-    simulationRunning = false;
-    File dataFile = chooseFile();
-    if (dataFile == null) {
-      return;
+    try {
+      simulationRunning = false;
+      File dataFile = chooseFile();
+      if (dataFile == null) {
+        return;
+      }
+      parseFile(dataFile.getPath());
+      setSimulation();
+    } catch (InvalidFileFormatException | InvalidValueException | InvalidCellStateException |
+             InputMissingParametersException | InvalidGridBoundsException e) {
+      showMessage(AlertType.ERROR, e.getMessage());
     }
-    parseFile(dataFile.getPath());
-    setSimulation();
   }
 
   private void onResetSimulation() {
@@ -391,4 +408,18 @@ public class Controller {
         .setAll(new ExtensionFilter("Data Files", extensionAccepted));
     return result;
   }
+
+  private void switchLanguage(String language){
+    System.out.println("Language selected: " + language); // Print language value
+    this.textConfig = ResourceBundle.getBundle(switch (language){
+      case "French" -> FRENCH_TEXT;
+      case "German" -> GERMAN_TEXT;
+      case "Spanish" -> SPANISH_TEXT;
+      case "Mandarin" -> MANDARIN_TEXT;
+      default -> TEXT_CONFIGURATION;
+    });
+    simulationPage.switchTextConfig(this.textConfig);
+    simulationPage.switchButtonConfig(language);
+  }
+
 }

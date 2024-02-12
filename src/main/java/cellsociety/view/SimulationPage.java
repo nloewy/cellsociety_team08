@@ -19,10 +19,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TitledPane;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -61,6 +63,12 @@ public class SimulationPage {
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+  public static final String FRENCH_BUTTON = "cellsociety.buttonLabelsFrench";
+  public static final String GERMAN_BUTTON = "cellsociety.buttonLabelsGerman";
+  public static final String SPANISH_BUTTON = "cellsociety.buttonLabelsSpanish";
+  public static final String MANDARIN_BUTTON = "cellsociety.buttonLabelsMandarin";
+  public static final String ENGLISH_BUTTON = "cellsociety.buttonLabelsEnglish";
+
   public static final String STYLESHEET = "StyleSheet.css";
   //button label keys
   public static final String NEW_SIMULATION_BUTTON_KEY = "NewSimulationButton";
@@ -70,6 +78,10 @@ public class SimulationPage {
   public static final String ABOUT_BUTTON_KEY = "SimulationInfoButton";
   public static final String SAVE_BUTTON_KEY = "SaveSimulationButton";
   public static final String SPEED_LABEL_TEXT_KEY = "speedLabel";
+  public static final String SHOW_GRAPH_BUTTON_KEY = "ShowGraph";
+  public static final String CLOSE_GRAPH_BUTTON_KEY = "CloseGraph";
+  public static final String SETTINGS_BUTTON_KEY = "Settings";
+  public static final String MULTI_SIMULATION_BUTTON = "AddSimulationButton";
   private final Scene scene;
   private final Group root;
   private final CellView[][] board;
@@ -81,12 +93,13 @@ public class SimulationPage {
   private Button resetSimulationButton;
   private Button simulationGraphButton;
   private Button settingsButton;
+  private Button addSimulationButton;
   private final Text simulationTitleDisplay;
   private Slider speedSlider;
   private Label speedLabel;
-  private final ResourceBundle buttonLabels;
+  private ResourceBundle buttonLabels;
   private final ResourceBundle configProperties;
-  private final ResourceBundle textProperties;
+  private ResourceBundle textProperties;
   private final SimulationGraph graph;
   private final Map<Integer, Integer> stateCount;
   private final Map<String, Double> gridProperties;
@@ -101,7 +114,7 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String simulationType, String simulationName, int numRows,
+  public SimulationPage(int defaultSpeed, String simulationType, String simulationName, int numRows,
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
@@ -161,7 +174,7 @@ public class SimulationPage {
     updateView(gridIterator);
 
     initializeButtons(eventHandlers);
-    initializeSlider();
+    initializeSlider(defaultSpeed);
 
     simulationTitleDisplay = new Text(simulationName);
     simulationTitleDisplay.setId("simulation-title");
@@ -179,6 +192,7 @@ public class SimulationPage {
         resetSimulationButton,
         simulationGraphButton,
         settingsButton,
+        addSimulationButton,
         simulationTitleDisplay,
         speedSlider,
         speedLabel
@@ -189,10 +203,10 @@ public class SimulationPage {
   /**
    * set up the speed slider and the speed label
    */
-  private void initializeSlider() {
+  private void initializeSlider(int defaultSpeed) {
     speedSlider = new Slider(configInt(SPEED_SLIDER_MIN_KEY),
         (configInt(SPEED_SLIDER_MAX_KEY)),
-        (configInt(SLIDER_DEFAULT_KEY)));
+        defaultSpeed);
     speedSlider.setLayoutX(configInt(BUTTON_START_X_KEY));
     speedSlider.setLayoutY(configInt(SPEED_SLIDER_Y_KEY));
 
@@ -234,10 +248,11 @@ public class SimulationPage {
         eventHandlers.get("resetSimulationHandler"),
         configInt(BUTTON_START_X_KEY),
         configInt(RESET_BUTTON_Y_KEY));
-    simulationGraphButton = new Button("Show Graph");
+    simulationGraphButton = new Button(buttonLabels.getString(SHOW_GRAPH_BUTTON_KEY));
     simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
-    settingsButton = makeButton("Settings", eventHandlers.get("settingsHandler"),
+    settingsButton = makeButton(buttonLabels.getString(SETTINGS_BUTTON_KEY), eventHandlers.get("settingsHandler"),
         configInt(BUTTON_START_X_KEY), 600);
+    addSimulationButton = makeButton(buttonLabels.getString(MULTI_SIMULATION_BUTTON), eventHandlers.get("multiSimulationHandler"),configInt(BUTTON_START_X_KEY), 650);
   }
 
   public Button getSettingsButton() {
@@ -251,12 +266,12 @@ public class SimulationPage {
   public void toggleGraphVisibility() {
     if (graph.getGraphSection().isVisible()) {
       graph.getGraphSection().setVisible(false);
-      simulationGraphButton.setText("Show Graph");
+      simulationGraphButton.setText(buttonLabels.getString(SHOW_GRAPH_BUTTON_KEY));
       closeGraph();
     } else {
       graph.getGraphSection().setVisible(true);
       showGraph();
-      simulationGraphButton.setText("Close Graph");
+      simulationGraphButton.setText(buttonLabels.getString(CLOSE_GRAPH_BUTTON_KEY));
     }
   }
 
@@ -285,6 +300,9 @@ public class SimulationPage {
     speedSlider.valueProperty().addListener(speedSliderHandler);
   }
 
+  public double getSliderValue(){
+    return speedSlider.getValue();
+  }
 
   /**
    * updates the speed label of the speed slider
@@ -370,6 +388,34 @@ public class SimulationPage {
    */
   public Double configDouble(String key) {
     return Double.parseDouble(configProperties.getString(key));
+  }
+
+  public void switchTextConfig(ResourceBundle textConfig){
+    textProperties = textConfig;
+    speedLabel.setText(textProperties.getString(SPEED_LABEL_TEXT_KEY));
+  }
+
+  public void switchButtonConfig(String language) {
+    buttonLabels = ResourceBundle.getBundle(switch (language){
+      case "French" -> FRENCH_BUTTON;
+      case "German" -> GERMAN_BUTTON;
+      case "Spanish" -> SPANISH_BUTTON;
+      case "Mandarin" -> MANDARIN_BUTTON;
+      default -> ENGLISH_BUTTON;
+    });
+    updateButtons();
+  }
+
+  private void updateButtons() {
+    newSimulationButton.setText(buttonLabels.getString(NEW_SIMULATION_BUTTON_KEY));
+    simulationInfoButton.setText(buttonLabels.getString(ABOUT_BUTTON_KEY));
+    startSimulationButton.setText(buttonLabels.getString(START_BUTTON_KEY));
+    saveSimulationButton.setText(buttonLabels.getString(SAVE_BUTTON_KEY));
+    pauseSimulationButton.setText(buttonLabels.getString(PAUSE_BUTTON_KEY));
+    resetSimulationButton.setText(buttonLabels.getString(RESET_BUTTON_KEY));
+    simulationGraphButton.setText(buttonLabels.getString(SHOW_GRAPH_BUTTON_KEY));
+    settingsButton.setText(buttonLabels.getString(SETTINGS_BUTTON_KEY));
+    addSimulationButton.setText(buttonLabels.getString(MULTI_SIMULATION_BUTTON));
   }
 
 }
