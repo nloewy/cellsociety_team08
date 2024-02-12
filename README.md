@@ -11,7 +11,7 @@ This project implements a cellular automata simulator.
 
  * Finish Date: February 12, 2024
 
- * Hours Spent: 200
+ * Hours Spent: 240 (approx 3-6 hrs / day / person)
 
 
 ### Attributions
@@ -75,6 +75,7 @@ This project implements a cellular automata simulator.
  * Noteworthy Features:
    * Cell shape may be changed to hexagon 
    * Visualize simulation through graphs
+   * Neighbor calculation independent of shape and simulation type
 
 ### Assignment Impressions
 
