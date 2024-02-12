@@ -23,11 +23,10 @@ import javafx.stage.Stage;
 
 public class Settings {
 
-  private static final String OPTIONS_PACKAGE = "cellsociety.avaliableOptions";
   public static final int SETTINGS_BOX_SPACING = 10;
   public static final int SETTINGS_SCENE_WIDTH = 350;
-  public static final int SETTINGS_SCENE_HEIGHT= 400;
-
+  public static final int SETTINGS_SCENE_HEIGHT = 400;
+  private static final String OPTIONS_PACKAGE = "cellsociety.avaliableOptions";
   private final ResourceBundle avaliableOptions;
   private final Stage settingsPanel;
   private final Scene scene;
@@ -41,8 +40,8 @@ public class Settings {
   private ComboBox<String> outlineTypeComboBox;
   private ComboBox<String> languageComboBox;
   private String edge;
-  private List<Spinner<Double>> numberSpinners = new ArrayList<>();
-  private List<ComboBox<String>> comboBoxes = new ArrayList<>();
+  private final List<Spinner<Double>> numberSpinners = new ArrayList<>();
+  private final List<ComboBox<String>> comboBoxes = new ArrayList<>();
   private String outline;
   private String language;
 
@@ -79,7 +78,7 @@ public class Settings {
     outlineTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableCellOutlines));
     languageComboBox = new ComboBox<>(FXCollections.observableList(avaliableLanguages));
     setComboBox(edge, "Edge Type: ", edgeTypeComboBox);
-    setComboBox(outline, "Outline Type: ",outlineTypeComboBox);
+    setComboBox(outline, "Outline Type: ", outlineTypeComboBox);
     setComboBox(language, "Select Language: ", languageComboBox);
   }
 

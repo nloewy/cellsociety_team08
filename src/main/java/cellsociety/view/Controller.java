@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -173,7 +172,8 @@ public class Controller {
    *                               simulation is using
    * @return returns the neighborhood object
    */
-  private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) throws IllegalStateException {
+  private Neighborhood getNeighborhoodObject(String neighborhoodTypeString)
+      throws IllegalStateException {
     return switch (neighborhoodTypeString) {
       case "Moore" -> new MooreNeighborhood();
       case "ExtendedMoore" -> new ExtendedMooreNeighborhood();
@@ -197,13 +197,17 @@ public class Controller {
     SimulationRecord record = new SimulationRecord(xmlParser.getParameters(), gridType, cellShape);
     simulationRunning = false;
     simulationModel = switch (simulationType) {
-      case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, record);
-      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case GAME_OF_LIFE ->
+          new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case PERCOLATION ->
+          new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, record);
       case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList, record);
-      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case SCHELLING ->
+          new SchellingSimulation(numRows, numCols, neighborhoodType, stateList, record);
       case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList, record);
       case SUGAR -> new SugarSimulation(numRows, numCols, neighborhoodType, stateList, record);
-      case FALLING -> new FallingSandSimulation(numRows, numCols, neighborhoodType, stateList,record);
+      case FALLING ->
+          new FallingSandSimulation(numRows, numCols, neighborhoodType, stateList, record);
       default -> null;
     };
   }
@@ -220,7 +224,8 @@ public class Controller {
       allVertices.add(iter.next().getVertices());
     }
 
-    simulationPage = new SimulationPage(xmlParser.getLanguage(), xmlParser.getInitialSlider(), xmlParser.getType(), xmlParser.getTitle(),
+    simulationPage = new SimulationPage(xmlParser.getLanguage(), xmlParser.getInitialSlider(),
+        xmlParser.getType(), xmlParser.getTitle(),
         xmlParser.getHeight(), xmlParser.getWidth(), handlers, simulationModel.getIterator(),
         allVertices);
     stage.setScene(simulationPage.getSimulationScene());
