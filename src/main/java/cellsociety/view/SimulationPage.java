@@ -81,6 +81,7 @@ public class SimulationPage {
   public static final String SHOW_GRAPH_BUTTON_KEY = "ShowGraph";
   public static final String CLOSE_GRAPH_BUTTON_KEY = "CloseGraph";
   public static final String SETTINGS_BUTTON_KEY = "Settings";
+  public static final String MULTI_SIMULATION_BUTTON = "AddSimulationButton";
   private final Scene scene;
   private final Group root;
   private final CellView[][] board;
@@ -92,6 +93,7 @@ public class SimulationPage {
   private Button resetSimulationButton;
   private Button simulationGraphButton;
   private Button settingsButton;
+  private Button addSimulationButton;
   private final Text simulationTitleDisplay;
   private Slider speedSlider;
   private Label speedLabel;
@@ -190,6 +192,7 @@ public class SimulationPage {
         resetSimulationButton,
         simulationGraphButton,
         settingsButton,
+        addSimulationButton,
         simulationTitleDisplay,
         speedSlider,
         speedLabel
@@ -245,10 +248,11 @@ public class SimulationPage {
         eventHandlers.get("resetSimulationHandler"),
         configInt(BUTTON_START_X_KEY),
         configInt(RESET_BUTTON_Y_KEY));
-    simulationGraphButton = new Button("Show Graph");
+    simulationGraphButton = new Button(buttonLabels.getString(SHOW_GRAPH_BUTTON_KEY));
     simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
-    settingsButton = makeButton("Settings", eventHandlers.get("settingsHandler"),
+    settingsButton = makeButton(buttonLabels.getString(SETTINGS_BUTTON_KEY), eventHandlers.get("settingsHandler"),
         configInt(BUTTON_START_X_KEY), 600);
+    addSimulationButton = makeButton(buttonLabels.getString(MULTI_SIMULATION_BUTTON), eventHandlers.get("multiSimulationHandler"),configInt(BUTTON_START_X_KEY), 650);
   }
 
   public Button getSettingsButton() {
@@ -411,6 +415,7 @@ public class SimulationPage {
     resetSimulationButton.setText(buttonLabels.getString(RESET_BUTTON_KEY));
     simulationGraphButton.setText(buttonLabels.getString(SHOW_GRAPH_BUTTON_KEY));
     settingsButton.setText(buttonLabels.getString(SETTINGS_BUTTON_KEY));
+    addSimulationButton.setText(buttonLabels.getString(MULTI_SIMULATION_BUTTON));
   }
 
 }

@@ -286,7 +286,12 @@ public class Controller {
     map.put("pauseSimulationHandler", event -> onPauseSimulation());
     map.put("resetSimulationHandler", event -> onResetSimulation());
     map.put("settingsHandler", event -> onSettingsClicked());
+    map.put("multiSimulationHandler", event -> createParallelWindow());
     return map;
+  }
+
+  private void createParallelWindow() {
+    Controller newController = new Controller();
   }
 
   private void onSettingsClicked() {
