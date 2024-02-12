@@ -26,7 +26,6 @@ public class SchellingCellView extends CellView {
       case 0 -> getCss("no-agent");
       case 1 -> getCss("agentX");
       case 2 -> getCss("agent");
-
       default -> throw new IllegalStateException("Unexpected value: " + state);
     }
   }

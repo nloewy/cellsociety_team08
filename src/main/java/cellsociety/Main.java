@@ -1,6 +1,7 @@
 package cellsociety;
 
 import cellsociety.view.Controller;
+import java.util.Random;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -27,6 +28,11 @@ public class Main extends Application {
    * necessary!
    */
   public static void main(String[] args) {
+    String s = "";
+    for(int i = 0; i<2500; i++) {
+      s=s+new Random().nextInt(3)+" ";
+    }
+    System.out.print(s);
     launch(args);
   }
   /**
