@@ -4,7 +4,7 @@ import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.SugarCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.Records.SugarRecord;
+import cellsociety.model.simulation.SimulationRecord;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,19 +42,21 @@ public class SugarSimulation extends Simulation<SugarCell> {
    *                   parameters can be found in the SugarCell class
    */
 
+
   public SugarSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      SugarRecord r) {
+      SimulationRecord r) {
     super(hoodType, r.gridType());
-    minVision = r.minVision();
-    maxVision = r.maxVision();
-    minInitialSugar = r.minInitialSugar();
-    maxInitialSugar = r.maxInitialSugar();
-    minMetabolism = r.minMetabolism();
-    maxMetabolism = r.maxMetabolism();
-    growBackRate = r.growBackRate();
-    numAgents = r.numAgents();
+    minVision = (int) Math.floor(r.params().get("minVision"));
+    maxVision = (int) Math.floor(r.params().get("maxVision"));
+    minInitialSugar = (int) Math.floor(r.params().get("minInitialSugar"));
+    maxInitialSugar = (int) Math.floor(r.params().get("maxInitialSugar"));
+    minMetabolism = (int) Math.floor(r.params().get("minMetabolism"));
+    maxMetabolism = (int) Math.floor(r.params().get("maxMetabolism"));
+    growBackRate = (int) Math.floor(r.params().get("growBackRate"));
+    numAgents = (int) Math.floor(r.params().get("numAgents"));
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
+
 
   /**
    * Creates list of WatorCells objects to be passed into grid

@@ -118,7 +118,6 @@ public class FireCell extends Cell<FireCell> {
       }
       default:
         break;
-      //TODO: check if exception needed
     }
   }
 }

@@ -35,8 +35,6 @@ import javafx.scene.text.Text;
  */
 
 public class SimulationPage {
-
-  //config file number keys
   public static final String SCENE_HEIGHT_KEY = "SCENE_HEIGHT";
   public static final String SCENE_WIDTH_KEY = "SCENE_WIDTH";
   public static final String GRID_HEIGHT_KEY = "GRID_HEIGHT";
@@ -46,6 +44,7 @@ public class SimulationPage {
   public static final String BUTTON_START_X_KEY = "BUTTON_START_X";
   public static final String TITLE_X_OFFSET_KEY = "TITLE_X_OFFSET";
   public static final String TITLE_Y_OFFSET_KEY = "TITLE_Y_OFFSET";
+  public static final String TITLE_FONT_SIZE_KEY = "TITLE_FONT_SIZE";
   public static final String NEW_SIMULATION_BUTTON_Y_KEY = "NEW_SIMULATION_BUTTON_Y";
   public static final String INFO_BUTTON_Y_KEY = "INFO_BUTTON_Y";
   public static final String START_BUTTON_Y_KEY = "START_BUTTON_Y";
@@ -56,8 +55,6 @@ public class SimulationPage {
   public static final String SPEED_SLIDER_Y_KEY = "SPEED_SLIDER_Y";
   public static final String SPEED_SLIDER_MIN_KEY = "SLIDER_MIN";
   public static final String SPEED_SLIDER_MAX_KEY = "SLIDER_MAX";
-  public static final String SLIDER_DEFAULT_KEY = "SLIDER_DEFAULT";
-  //paths
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
@@ -82,8 +79,7 @@ public class SimulationPage {
   public static final String MULTI_SIMULATION_BUTTON = "AddSimulationButton";
   private final Scene scene;
   private final Group root;
-  private final CellView[][] board;
-  private final Text simulationTitleDisplay;
+  private CellView[][] board;
   private final ResourceBundle configProperties;
   private final SimulationGraph graph;
   private final Map<Integer, Integer> stateCount;
@@ -98,9 +94,11 @@ public class SimulationPage {
   private Button settingsButton;
   private Button addSimulationButton;
   private Slider speedSlider;
+  private Text simulationTitleDisplay;
   private Label speedLabel;
   private ResourceBundle buttonLabels;
   private ResourceBundle textProperties;
+  private final Group boardDisplay;
 
   /**
    * Constructs the view component of the simulation
@@ -116,27 +114,64 @@ public class SimulationPage {
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
+    stateCount = new HashMap<>();
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
-
-    gridProperties = new HashMap<>();
-    gridProperties.put("gridStartX", configDouble(GRID_START_X_KEY));
-    gridProperties.put("gridStartY", configDouble(GRID_START_Y_KEY));
-
-    gridProperties.put("gridWidth", configDouble(GRID_WIDTH_KEY));
-    gridProperties.put("gridHeight", configDouble(GRID_HEIGHT_KEY));
-
-    stateCount = new HashMap<>();
+    gridProperties = fillGridProperties();
     graph = new SimulationGraph(stateCount);
-
     root = new Group();
-    scene = new Scene(root, configDouble(SCENE_WIDTH_KEY),
-        configDouble(SCENE_HEIGHT_KEY));
-
+    boardDisplay = new Group();
+    scene = new Scene(root, configDouble(SCENE_WIDTH_KEY), configDouble(SCENE_HEIGHT_KEY));
     setButtonConfig(defaultLanguage);
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
+    initializeBoard(simulationType, numRows, numCols, allVertices);
+    initializeButtons(eventHandlers);
+    initializeSlider(defaultSpeed);
+    initializeTitleDisplay(simulationName);
+    updateView(gridIterator);
+    addToRoot();
+  }
 
+  private void addToRoot() {
+    root.getChildren().addAll(
+        boardDisplay,
+        newSimulationButton,
+        simulationInfoButton,
+        startSimulationButton,
+        saveSimulationButton,
+        pauseSimulationButton,
+        resetSimulationButton,
+        simulationGraphButton,
+        settingsButton,
+        addSimulationButton,
+        simulationTitleDisplay,
+        speedSlider,
+        speedLabel
+    );
+  }
+
+  private Map<String, Double> fillGridProperties() {
+    final Map<String, Double> gridProperties;
+    gridProperties = new HashMap<>();
+    gridProperties.put("gridStartX", configDouble(GRID_START_X_KEY));
+    gridProperties.put("gridStartY", configDouble(GRID_START_Y_KEY));
+    gridProperties.put("gridWidth", configDouble(GRID_WIDTH_KEY));
+    gridProperties.put("gridHeight", configDouble(GRID_HEIGHT_KEY));
+    return gridProperties;
+  }
+
+  private void initializeTitleDisplay(String simulationName) {
+    simulationTitleDisplay = new Text(simulationName);
+    simulationTitleDisplay.setId("simulation-title");
+    simulationTitleDisplay.getStyleClass().add("simulation-title");
+    simulationTitleDisplay.setX(configInt(TITLE_X_OFFSET_KEY));
+    simulationTitleDisplay.setY(configInt(TITLE_Y_OFFSET_KEY));
+    simulationTitleDisplay.setFont(new Font(configInt(TITLE_FONT_SIZE_KEY)));
+  }
+
+  private void initializeBoard(String simulationType, int numRows, int numCols,
+      List<List<Point>> allVertices) throws IllegalStateException {
     board = new CellView[numRows][numCols];
     int ind = 0;
     for (int row = 0; row < numRows; row++) {
@@ -161,40 +196,13 @@ public class SimulationPage {
           default -> throw new IllegalStateException("Unexpected value: " + simulationType);
         };
 
-        Shape shape = board[row][col].getCellGraphic();
-        root.getChildren().add(shape);
-        root.getChildren().add(board[row][col].getTextBox());
         board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
         board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
+        boardDisplay.getChildren().add(board[row][col].getCellGraphic());
+        boardDisplay.getChildren().add(board[row][col].getTextBox());
         ind++;
       }
     }
-    updateView(gridIterator);
-
-    initializeButtons(eventHandlers);
-    initializeSlider(defaultSpeed);
-
-    simulationTitleDisplay = new Text(simulationName);
-    simulationTitleDisplay.setId("simulation-title");
-    simulationTitleDisplay.getStyleClass().add("simulation-title");
-    simulationTitleDisplay.setX(configInt(TITLE_X_OFFSET_KEY));
-    simulationTitleDisplay.setY(configInt(TITLE_Y_OFFSET_KEY));
-    simulationTitleDisplay.setFont(new Font(40));
-
-    root.getChildren().addAll(
-        newSimulationButton,
-        simulationInfoButton,
-        startSimulationButton,
-        saveSimulationButton,
-        pauseSimulationButton,
-        resetSimulationButton,
-        simulationGraphButton,
-        settingsButton,
-        addSimulationButton,
-        simulationTitleDisplay,
-        speedSlider,
-        speedLabel
-    );
   }
 
 
@@ -207,7 +215,6 @@ public class SimulationPage {
         defaultSpeed);
     speedSlider.setLayoutX(configInt(BUTTON_START_X_KEY));
     speedSlider.setLayoutY(configInt(SPEED_SLIDER_Y_KEY));
-
     speedLabel = new Label(
         textProperties.getString(SPEED_LABEL_TEXT_KEY) + (int) speedSlider.getValue());
     speedLabel.setLayoutX(configInt(BUTTON_START_X_KEY));
@@ -222,6 +229,8 @@ public class SimulationPage {
    * @param eventHandlers a map of event handlers for the buttons
    */
   private void initializeButtons(Map<String, EventHandler<ActionEvent>> eventHandlers) {
+
+
     newSimulationButton = makeButton(buttonLabels.getString(NEW_SIMULATION_BUTTON_KEY),
         eventHandlers.get("newSimulationHandler"),
         configInt(BUTTON_START_X_KEY),
@@ -354,9 +363,8 @@ public class SimulationPage {
 
     while (gridIterator.hasNext()) {
       Cell c = gridIterator.next();
-      Point location = c.getLocation();
-      int col = (int) location.getCol();
-      int row = (int) location.getRow();
+      int col = (int) c.getLocation().getCol();
+      int row = (int) c.getLocation().getRow();
       int state = c.getCurrentState();
       board[row][col].updateState(state, c.getText());
       if (!stateCount.containsKey(state)) {
@@ -366,7 +374,6 @@ public class SimulationPage {
       board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
       board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
     }
-
     graph.updateGraph(stateCount);
   }
 
@@ -389,6 +396,7 @@ public class SimulationPage {
   public Double configDouble(String key) {
     return Double.parseDouble(configProperties.getString(key));
   }
+
 
   public void switchTextConfig(ResourceBundle textConfig) {
     textProperties = textConfig;

@@ -25,8 +25,8 @@ public abstract class CellView {
     for (Point vertex : vertices) {
       shape.getPoints().addAll(width * vertex.getCol() + gridProperties.get("gridStartX"),
           height * vertex.getRow() + gridProperties.get("gridStartY"));
-      boxLocationX += width * vertex.getCol() + gridProperties.get("gridStartX");
-      boxLocationY += height * vertex.getRow() + gridProperties.get("gridStartY");
+      boxLocationX += (int) (width * vertex.getCol() + gridProperties.get("gridStartX"));
+      boxLocationY += (int) (height * vertex.getRow() + gridProperties.get("gridStartY"));
     }
     boxLocationX /= vertices.size();
     boxLocationY /= vertices.size();
@@ -65,10 +65,8 @@ public abstract class CellView {
     return shape;
   }
 
-  // Getter for the text box
   public Label getTextBox() {
     return textBox;
-
   }
 
   public double getBoxLocationX() {

@@ -3,7 +3,7 @@ package cellsociety.model.simulation;
 import cellsociety.model.core.cell.SchellingCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.Records.SchellingRecord;
+import cellsociety.model.simulation.SimulationRecord;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,15 +42,16 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
    *                   parameters can be found in the SchellingCell class
    */
   public SchellingSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      SchellingRecord r) {
+      SimulationRecord r) {
     super(hoodType, r.gridType());
     myCellsToMoveA = new ArrayList<>();
     myCellsToMoveB = new ArrayList<>();
     myEmptyCellsA = new ArrayList<>();
     myEmptyCellsB = new ArrayList<>();
-    proportionNeededToStay = r.proportionNeededToStay();
+    proportionNeededToStay = (int) Math.floor(r.params().get("proportionNeededToStay"));
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
+
 
   /**
    * Creates list of SchellingCells objects to be passed into grid
