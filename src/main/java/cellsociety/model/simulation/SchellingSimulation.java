@@ -61,6 +61,7 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
    * @return list of initialized SchellingCells
    */
 
+  @Override
   public List<SchellingCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<SchellingCell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();

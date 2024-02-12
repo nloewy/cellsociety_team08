@@ -65,6 +65,7 @@ public class SugarSimulation extends Simulation<SugarCell> {
    * @return list of initialized WatorCells
    */
 
+  @Override
   public List<SugarCell> cellMaker(int col, List<Integer> stateList,
       Shape shape) {
     List<SugarCell> cellList = new ArrayList<>();
