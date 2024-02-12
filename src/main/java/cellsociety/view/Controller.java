@@ -257,8 +257,7 @@ public class Controller {
       allVertices.add(iter.next().getVertices());
     }
 
-    simulationPage = new SimulationPage(xmlParser.getInitialSlider(), xmlParser.getType(),
-        xmlParser.getTitle(),
+    simulationPage = new SimulationPage(xmlParser.getLanguage(), xmlParser.getInitialSlider(), xmlParser.getType(), xmlParser.getTitle(),
         xmlParser.getHeight(), xmlParser.getWidth(), handlers, simulationModel.getIterator(),
         allVertices);
     stage.setScene(simulationPage.getSimulationScene());
@@ -320,6 +319,8 @@ public class Controller {
 
       if (settingsChanged) {
         xmlParser.setParameters(settingsPanel.getNewParameters());
+        xmlParser.setLanguage(settingsPanel.getNewLanguage());
+        xmlParser.setGridEdgeType(settingsPanel.getNewEdgeType());
       }
 
       xmlParser.createXml("savedSimulation" + xmlParser.getType(),
@@ -419,7 +420,7 @@ public class Controller {
       default -> TEXT_CONFIGURATION;
     });
     simulationPage.switchTextConfig(this.textConfig);
-    simulationPage.switchButtonConfig(language);
+    simulationPage.switchButtonLanguage(language);
   }
 
 }

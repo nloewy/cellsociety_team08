@@ -310,6 +310,10 @@ public class XmlParser {
     return gridEdgeType;
   }
 
+  public void setGridEdgeType(String edgeType){
+    this.gridEdgeType = edgeType;
+  }
+
   /**
    * Retrieves states instance variable
    *

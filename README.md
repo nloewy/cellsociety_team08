@@ -60,6 +60,10 @@ This project implements a cellular automata simulator.
    * None
 
  * Features implemented:
+<<<<<<< HEAD
+   * **Multiple simulations**: Users can move windows for each simulation around as they wish; each simulation is controlled by a separate controller, therefore independent from other simulations running at the same time.
+
+=======
    * Simulations: Falling Sand, Fire, Game of Life (Blinker, Toad, Glider), Percolation, Schelling, Sugar, WaTor
    * Run multiple simulations at the same time in different windows
    * Program can be in different languages
@@ -68,6 +72,7 @@ This project implements a cellular automata simulator.
    * Option to speed up, pause, save the simulation 
    * Option to change cell shape to hexagon
    * Option to display a graph demonstrating the status of each state in the simulation 
+>>>>>>> 504c6dbd95aca85883479a41d39611532a2713fc
  * Features unimplemented:
    * Cell Shape Customization - Allow customization of the shape and appearance of cells based on their state (e.g., circles, rectangles, or images like sharks or fire).
    * Change color of cells
