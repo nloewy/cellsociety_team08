@@ -401,13 +401,15 @@ public class SimulationPage {
   }
 
   private void setButtonConfig(String language) {
-    buttonLabels = ResourceBundle.getBundle(switch (language) {
-      case "French" -> FRENCH_BUTTON;
-      case "German" -> GERMAN_BUTTON;
-      case "Spanish" -> SPANISH_BUTTON;
-      case "Mandarin" -> MANDARIN_BUTTON;
-      default -> ENGLISH_BUTTON;
-    });
+    buttonLabels = ResourceBundle.getBundle(
+      switch (language) {
+        case "French" -> FRENCH_BUTTON;
+        case "German" -> GERMAN_BUTTON;
+        case "Spanish" -> SPANISH_BUTTON;
+        case "Mandarin" -> MANDARIN_BUTTON;
+        default -> ENGLISH_BUTTON;
+      }
+    );
   }
 
   public void switchButtonLanguage(String language) {

@@ -159,7 +159,9 @@ public class SugarCell extends Cell<SugarCell> {
         if (newAgentSugar > 0) {
           nextCell.setNextStateAgentSugarVisionMetabolism(0, newAgentSugar, myCurrentVision,
               sugarMetabolism);
-        } else { //we assume that if an agent goes to a new cell and dies, that new cell is unavailable for the timestep
+        } else {
+          //we assume that if an agent goes to a new cell and dies,
+          // that new cell is unavailable for the timestep
           nextCell.setNextStateAgentSugarVisionMetabolism(
               Math.min(myCapacity,
                   nextCell.getCurrentState() + sugarGrowBackRate),

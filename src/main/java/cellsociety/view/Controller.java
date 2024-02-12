@@ -414,7 +414,7 @@ public class Controller {
   }
 
   private void switchLanguage(String language) {
-    this.textConfig = ResourceBundle.getBundle( switch (language) {
+    this.textConfig = ResourceBundle.getBundle(switch (language) {
       case "French" -> FRENCH_TEXT;
       case "German" -> GERMAN_TEXT;
       case "Spanish" -> SPANISH_TEXT;
