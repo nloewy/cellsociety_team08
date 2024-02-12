@@ -125,6 +125,7 @@ public class Settings {
       HBox hbox = new HBox(SETTINGS_BOX_SPACING);
       hbox.getChildren().addAll(spinnerLabel, numberSpinner);
       numberSpinners.add(numberSpinner);
+      root.getChildren().add(hbox);
     }
   }
 
