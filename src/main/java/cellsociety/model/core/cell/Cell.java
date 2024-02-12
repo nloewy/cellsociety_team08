@@ -49,11 +49,6 @@ public abstract class Cell<T extends Cell<T>> {
    */
   public void initializeNeighbors(Neighborhood hoodType, Grid grid) {
     myNeighbors = hoodType.getNeighbors(grid, this);
-    System.out.println(getLocation().getRow() + "," + getLocation().getCol());
-    for(Cell neighbor : myNeighbors) {
-      System.out.println(neighbor.getLocation().getRow() + "," + neighbor.getLocation().getCol());
-    }
-    System.out.println("__________");
   }
 
   /**
@@ -102,6 +97,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Sets text to be displayed for specific cell
+   *
    * @return the new text (or emoji) displayed in cell
    */
   public String getText() {
@@ -184,6 +180,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Calculates euclidian distance from current cell to another cell
+   *
    * @param cell, a cell object
    * @return distance, euclidian distance from centroid of one cell to another
    */
@@ -197,6 +194,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Checks if two objects are both cells at the same location
+   *
    * @param other, another object, probably a cell
    * @return true if and only if this and other are both cells at the same location
    */
@@ -219,6 +217,7 @@ public abstract class Cell<T extends Cell<T>> {
   /**
    * Gets hashcode of cell object (the hashcode of its centroid), as all cell objects have unique
    * centroids.
+   *
    * @return
    */
   @Override
@@ -229,6 +228,7 @@ public abstract class Cell<T extends Cell<T>> {
 
   /**
    * Updates parameters of simulation
+   *
    * @param newParameters, map of param name to param value for all needed parameters
    */
   public void setParams(Map<String, Double> newParameters) {

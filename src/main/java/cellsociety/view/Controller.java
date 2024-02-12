@@ -77,7 +77,7 @@ public class Controller {
   public static final String FILE_SAVED_KEY = "fileSaved";
   public static final String UPLOAD_FILE_WINDOW_TITLE_KEY = "uploadFileWindowTitle";
   public static final String ABOUT_MIN_HEIGHT_KEY = "ABOUT_MIN_HEIGHT";
-//  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
+  //  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
   private Stage stage;
   private SimulationPage simulationPage;
   private XmlParser xmlParser;
@@ -160,13 +160,13 @@ public class Controller {
   private void setSimulation() {
     String neighborhoodTypeString = xmlParser.getNeighborhoodType();
     Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
-    System.out.println(neighborhoodTypeString);
     loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType,
         xmlParser.getStates(), xmlParser.getType(), xmlParser.getGridEdgeType(),
         xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
     loadSimulationScene();
-    settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(), xmlParser.getParameters(),
+    settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(),
+        xmlParser.getParameters(),
         event -> onApplyClicked());
   }
 
@@ -207,7 +207,6 @@ public class Controller {
    */
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType, String gridType, String cellShape) {
-    xmlParser.getParameters().forEach((key, value) -> System.out.println(key + ": " + value));
 
     simulationRunning = false;
     simulationModel = switch (simulationType) {
@@ -258,7 +257,8 @@ public class Controller {
       allVertices.add(iter.next().getVertices());
     }
 
-    simulationPage = new SimulationPage(xmlParser.getInitialSlider(), xmlParser.getType(), xmlParser.getTitle(),
+    simulationPage = new SimulationPage(xmlParser.getInitialSlider(), xmlParser.getType(),
+        xmlParser.getTitle(),
         xmlParser.getHeight(), xmlParser.getWidth(), handlers, simulationModel.getIterator(),
         allVertices);
     stage.setScene(simulationPage.getSimulationScene());
@@ -327,7 +327,6 @@ public class Controller {
 
       showMessage(AlertType.INFORMATION, String.format(textConfig.getString(FILE_SAVED_KEY)));
     } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
@@ -411,9 +410,8 @@ public class Controller {
     return result;
   }
 
-  private void switchLanguage(String language){
-    System.out.println("Language selected: " + language); // Print language value
-    this.textConfig = ResourceBundle.getBundle(switch (language){
+  private void switchLanguage(String language) {
+    this.textConfig = ResourceBundle.getBundle(switch (language) {
       case "French" -> FRENCH_TEXT;
       case "German" -> GERMAN_TEXT;
       case "Spanish" -> SPANISH_TEXT;

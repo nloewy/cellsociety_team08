@@ -1,7 +1,6 @@
 package cellsociety.model.core.cell;
 
 import cellsociety.model.core.shape.Shape;
-import cellsociety.model.simulation.SugarSimulation;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
@@ -22,7 +21,7 @@ public class SugarCell extends Cell<SugarCell> {
   private int myNextAgentSugar;
   private int sugarMetabolism;
   private int sugarGrowBackRate;
-  private int myCapacity;
+  private final int myCapacity;
   private int myCurrentAgentSugar;
 
   /**
@@ -72,9 +71,10 @@ public class SugarCell extends Cell<SugarCell> {
 
   /**
    * Updates instance variables of agent
-   * @param state, the amount of open sugar available at the cell
-   * @param sugar, the amount of sugar the agent occupying the cell has, or -1 if no agent
-   * @param vision, the vision the agent occupying the cell has, or -1 if no agent
+   *
+   * @param state,      the amount of open sugar available at the cell
+   * @param sugar,      the amount of sugar the agent occupying the cell has, or -1 if no agent
+   * @param vision,     the vision the agent occupying the cell has, or -1 if no agent
    * @param metabolism, the metabolism the agent occupying the cell has, or -1 if no agent
    */
   public void setNextStateAgentSugarVisionMetabolism(int state, int sugar, int vision,
@@ -90,10 +90,13 @@ public class SugarCell extends Cell<SugarCell> {
    * Recursive function that takes in a cell, and returns all the cells that are in the legal
    * movement directions, that are at no more than vision units away. X and Y default to
    * Double.MAX_VALUE on the first simulation
-   * @param x, direction of movement from original cell to current cell in x direction
-   * @param y direction of movement from original cell to current cell in y direction
+   *
+   * @param x,               direction of movement from original cell to current cell in x
+   *                         direction
+   * @param y                direction of movement from original cell to current cell in y
+   *                         direction
    * @param remainingVision, vision left (since it is recursive)
-   * @param ignoreMe, original cell called on the function
+   * @param ignoreMe,        original cell called on the function
    * @return set, a set of all cells that are visible to the current cell.
    */
   private Set<SugarCell> getVisibleNeighbors(double x, double y, int remainingVision,

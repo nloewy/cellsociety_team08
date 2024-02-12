@@ -1,10 +1,8 @@
 package cellsociety.model.neighborhood;
 
-import cellsociety.Point;
 import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.grid.Grid;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Represents a neighborhood where neighbors are characterized as points that share a common vertex
@@ -31,7 +29,8 @@ public class ExtendedMooreNeighborhood extends MooreNeighborhood {
     Iterator<Cell> iter = grid.iterator();
     while (iter.hasNext()) {
       Cell neighbor = iter.next();
-      if (super.isValidNeighbor(neighbor, cell2, grid) && super.isValidNeighbor(neighbor, cell1, grid)) {
+      if (super.isValidNeighbor(neighbor, cell2, grid) && super.isValidNeighbor(neighbor, cell1,
+          grid)) {
         return true;
       }
     }

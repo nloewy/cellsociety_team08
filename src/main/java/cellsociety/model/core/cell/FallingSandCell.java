@@ -5,7 +5,6 @@ import cellsociety.model.simulation.FallingSandSimulation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents an extension of the Cell, and serves as the atomic unit of the Falling Sand
@@ -104,7 +103,6 @@ public class FallingSandCell extends Cell<FallingSandCell> {
    */
   @Override
   public void transition() {
-    System.out.print(getCurrentState());
     if (getCurrentState() == FallingSandSimulation.SAND) {
       handleSandCell();
     } else if (getCurrentState() == FallingSandSimulation.WATER) {
@@ -112,7 +110,6 @@ public class FallingSandCell extends Cell<FallingSandCell> {
     } else {
       setNextState(getCurrentState());
     }
-    System.out.println("=>" + getNextState());
   }
 
 }
