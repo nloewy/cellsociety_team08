@@ -16,15 +16,9 @@ import cellsociety.model.simulation.FallingSandSimulation;
 import cellsociety.model.simulation.FireSimulation;
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import cellsociety.model.simulation.PercolationSimulation;
-import cellsociety.model.simulation.Records.FallingSandRecord;
-import cellsociety.model.simulation.Records.FireRecord;
-import cellsociety.model.simulation.Records.GameOfLifeRecord;
-import cellsociety.model.simulation.Records.PercolationRecord;
-import cellsociety.model.simulation.Records.SchellingRecord;
-import cellsociety.model.simulation.Records.SugarRecord;
-import cellsociety.model.simulation.Records.WatorRecord;
 import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.Simulation;
+import cellsociety.model.simulation.SimulationRecord;
 import cellsociety.model.simulation.SugarSimulation;
 import cellsociety.model.simulation.WatorSimulation;
 import java.io.File;
@@ -208,39 +202,16 @@ public class Controller {
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType, String gridType, String cellShape) {
 
+    SimulationRecord record = new SimulationRecord(xmlParser.getParameters(), gridType, cellShape);
     simulationRunning = false;
     simulationModel = switch (simulationType) {
-      case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList,
-          new GameOfLifeRecord(xmlParser.getParameters().get("aliveToAliveMin").intValue(),
-              xmlParser.getParameters().get("aliveToAliveMax").intValue(),
-              xmlParser.getParameters().get("deadToAliveMin").intValue(),
-              xmlParser.getParameters().get("deadToAliveMax").intValue(), gridType, cellShape));
-      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList,
-          new PercolationRecord(xmlParser.getParameters().get("percolatedNeighbors").intValue(),
-              gridType, cellShape));
-      case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList,
-          new FireRecord(xmlParser.getParameters().get("neighborsToIgnite").intValue(),
-              xmlParser.getParameters().get("probTreeIgnites"),
-              xmlParser.getParameters().get("probTreeCreated"), gridType, cellShape));
-      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList,
-          new SchellingRecord(xmlParser.getParameters().get("proportionNeededToStay"), gridType,
-              cellShape));
-      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
-          new WatorRecord(xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
-              xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
-              xmlParser.getParameters().get("initialEnergy").intValue(),
-              xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape));
-      case SUGAR -> new SugarSimulation(numRows, numCols, neighborhoodType, stateList,
-          new SugarRecord(xmlParser.getParameters().get("minVision").intValue(),
-              xmlParser.getParameters().get("maxVision").intValue(),
-              xmlParser.getParameters().get("minInitialSugar").intValue(),
-              xmlParser.getParameters().get("maxInitialSugar").intValue(),
-              xmlParser.getParameters().get("minMetabolism").intValue(),
-              xmlParser.getParameters().get("maxMetabolism").intValue(),
-              xmlParser.getParameters().get("growBackRate").intValue(),
-              xmlParser.getParameters().get("numAgents").intValue(), gridType, cellShape));
-      case FALLING -> new FallingSandSimulation(numRows, numCols, neighborhoodType, stateList,
-          new FallingSandRecord(gridType, cellShape));
+      case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case SUGAR -> new SugarSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case FALLING -> new FallingSandSimulation(numRows, numCols, neighborhoodType, stateList,record);
       default -> null;
     };
   }

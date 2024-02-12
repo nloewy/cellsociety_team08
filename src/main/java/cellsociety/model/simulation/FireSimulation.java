@@ -3,7 +3,7 @@ package cellsociety.model.simulation;
 import cellsociety.model.core.cell.FireCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.Records.FireRecord;
+import cellsociety.model.simulation.SimulationRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +38,13 @@ public class FireSimulation extends Simulation<FireCell> {
    *                   parameters can be found in the FireCell class
    */
   public FireSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      FireRecord r) {
+      SimulationRecord r) {
     super(hoodType, r.gridType());
-    this.neighborsToIgnite = r.neighborsToIgnite();
-    this.probTreeIgnites = r.probTreeIgnites();
-    this.probTreeCreated = r.probTreeCreated();
+    this.neighborsToIgnite = (int) Math.floor(r.params().get("neighborsToIgnite"));
+    this.probTreeIgnites = r.params().get("probTreeIgnites");
+    this.probTreeCreated = r.params().get("probTreeCreated");
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
-
 
   /**
    * Creates list of FireCell objects to be passed into grid
