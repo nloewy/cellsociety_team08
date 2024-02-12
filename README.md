@@ -40,7 +40,7 @@ This project implements a cellular automata simulator.
      * [Game of Life simulation Glider](data/gameoflife/GameOfLifeGlider.xml)
      * [Game of Life simulation Toad](data/gameoflife/GameOfLifeToad.xml)
      * [Game of Life simulation Blinker](data/gameoflife/GameOfLifeBlinker.xml)
-     * [Fire simulation test 1](data/fire/FireTest1.xml)
+     * [Fire simulation test 1](data/fire/FireSmallSimulation1.xml)
      * [Falling Sand simulation test 1](data/falling/FallingTest1.xml)
      * [WaTor simulation test 1](data/wator/WaTorTest1.xml)
      * [Schelling simulation test 1](data/schelling/SchellingTest1.xml)
