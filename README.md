@@ -52,7 +52,8 @@ This project implements a cellular automata simulator.
 ### Notes/Assumptions
 
  * Assumptions or Simplifications:
-   * Simplification
+   * Simplification 
+     * Settings and simulation title are always in English
      * To run multiple simulations at the same time, we approached this feature by simply displaying multiple windows, each running a different simulation, rather than keeping one window that is running multiple simulations simultaneously.
    * Assumptions
      * Grid will always be a lattice grid of polygon-shaped cells. This is a tradeoff
