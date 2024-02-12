@@ -739,6 +739,12 @@ public class XmlParser {
     }
   }
 
+
+  public int getInitialSlider() {
+    return Integer.parseInt(sliderInitial);
+  }
+
+
   /**
    * Set the state for each cell in the simulation according to the random configuration parameters
    */
