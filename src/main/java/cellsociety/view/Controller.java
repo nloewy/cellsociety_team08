@@ -163,7 +163,6 @@ public class Controller {
     loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType,
         xmlParser.getStates(), xmlParser.getType(), xmlParser.getGridEdgeType(),
         xmlParser.getCellShape());
-    System.out.println(xmlParser.getType());
     loadSimulationScene();
     settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(),
         xmlParser.getParameters(),

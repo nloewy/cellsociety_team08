@@ -21,7 +21,6 @@ public class SchellingCellView extends CellView {
    */
   @Override
   public void setColors(int state) {
-    System.out.println("curr state: " + state);
     switch (state) {
       case 0 -> getCss("no-agent");
       case 1 -> getCss("agentX");
