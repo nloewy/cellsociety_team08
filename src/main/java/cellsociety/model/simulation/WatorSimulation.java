@@ -59,6 +59,7 @@ public class WatorSimulation extends Simulation<WatorCell> {
    * @return list of initialized WatorCells
    */
 
+  @Override
   public List<WatorCell> cellMaker(int col, List<Integer> stateList,
       Shape shape) {
     List<WatorCell> cellList = new ArrayList<>();

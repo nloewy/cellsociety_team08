@@ -1,5 +1,7 @@
 # Cell Society Design Final
+
 ### Team 08
+
 ### Noah Loewy, Alisha Zhang, Judy Lee
 
 ## Team Roles and Responsibilities
@@ -41,7 +43,6 @@ grid, to be hidden from other classes.
 5. New Cell Colors
 6. Simulations
 
-
 ## High-level Design
 
 #### Core Classes
@@ -50,16 +51,16 @@ Our project has the following Core Classes:
 
 **Cell**:
 
-The `Cell` class represents a singular unit in a Cellular Automata simulation. There are two types of
-information encapsulated in the Cell class: the location of the `Cell`, as well as the current state
-of the `Cell`. The data pertaining to location is necessary to examine the cell in the context of the
-other cells around it, such as its vertices on a unit grid and its neighbors. State data is required
-for the transition function. We recognize that it would be optimal (by the Single Responsibility
-Principle) to turn state into its own class, and we unfortunately did not have enough time to make
-this adjustment. The `Cell` class is an active class, and holds the logic for transitioning from one
-generation to the next without other dependencies. The general `Cell` class is an abstraction, and its 
-children classes, each with their own `tranasition` function, hold the logic for transitioning based 
-on the type of cell.
+The `Cell` class represents a singular unit in a Cellular Automata simulation. There are two types
+of information encapsulated in the Cell class: the location of the `Cell`, as well as the current
+state of the `Cell`. The data pertaining to location is necessary to examine the cell in the context
+of the other cells around it, such as its vertices on a unit grid and its neighbors. State data is
+required for the transition function. We recognize that it would be optimal (by the Single
+Responsibility Principle) to turn state into its own class, and we unfortunately did not have enough
+time to make this adjustment. The `Cell` class is an active class, and holds the logic for
+transitioning from one generation to the next without other dependencies. The general `Cell` class
+is an abstraction, and its children classes, each with their own `tranasition` function, hold the
+logic for transitioning based on the type of cell.
 
 **Grid**
 
@@ -67,14 +68,16 @@ The `Grid` is an abstraction that represents a Collection of cells on a plane. I
 is represented as a List of Cell objects in row major order. However, we encapsulate the
 implementation of the Grid by using an iterator to access the physical grid. We also include
 multiple types of Grid, which behave the same except for their edge policy. This edge policy is
-defined in the `containsVertex` method, which is called in order to determine if a list of
-vertices "contains" a given input vertex. Although this seems rather trivial, the abstraction allows
-us to incorporate unique edge policies, such as the "Warped" grid we implement by using modular
-arithmetic. Including this method in the `Grid` is necessary for handling edge cases, such as in the
-Warped Grid, where the edge policy may cause vertices that are not necessarily "adjacent" to be
-treated as such. Every `Simulation` object has a `Grid` instance variable (note: not the actual list
-of `Cell` objects, but rather the object as a whole). This allows for the View to access the `Grid`
-indirectly, using the iterator.
+defined in the `vertexEqual` method, which is called in order to determine if two vertices are
+considered the same under a given edge policy. Although this seems rather trivial, the abstraction
+allows us to incorporate unique edge policies, such as the "Warped" grid we implement by using
+modular arithmetic. For example, in a square NxN grid, the Warped version of vertexEqual would
+consider the vertices (0,0) and (N,0) to be equal, but the normal Grid version of the method would
+not. Including this method in the `Grid` is necessary for handling edge cases, such as in the Warped
+Grid, where the edge policy may cause vertices that are not necessarily "adjacent" to be treated as
+such. Every`Simulation` object has a `Grid` instance variable (note: not the actual list of `Cell`
+objects, but rather the object as a whole). This allows for the View to access the `Grid`indirectly,
+using the iterator.
 
 **Shape**
 
@@ -144,6 +147,16 @@ configuration file.
 
 #### Features Affected by Assumptions
 
+1. We assume that the Grid will always be a lattice grid of polygon-shaped cells. This is a tradeoff
+   we deemed necessary, however, as doing this allowed us to use the Vertices to represent the
+   location of Cells, and not have the `getNeighbors` method be dependent on the shape of the cell.
+2. There are some minor assumptions we make in the transition functions for Wator Cells and
+   FallingSand Cells. We assume that if a shark is next to a fish, he will always eat the fish. In a
+   sense, although everything occurs at the same time, the movement of shark's is prioritized first.
+   Additionally, with falling Sand Cells, we assume that sand movement is prioritized first.
+   Furthermore, if two blocks of sand is falling on top of each other into water, the water will "
+   make a wave" and separate the sand.
+
 ## Significant differences from Original Plan
 
 Our group spent a lot of time developing a plan with as many abstractions as possible, so the number
@@ -171,6 +184,7 @@ object's `neighbors`.
 #### Easy to Add Features
 
 **Neighborhood Types**
+
 To create a new `Neighborhood` type, create a class that extends `Neighborhood`, and implement
 a `isValidNeighbor(Cell cell1, Cell cell2, Grid grid)`function. This function returns whether or not
 two cells are adjacent, under the definition of the neighborhood you are creating. Additionally, you
@@ -180,24 +194,58 @@ classes `getNeighborhoodObject` function to instantiate the object. Due to the a
 factor, solely the definition of neighborhood provided.
 
 **Cell Shapes**
-Creating a new shape is also a relatively simple process, as a result of the abstraction of the 
-`Shape` interface. To do this, you must create a class that implements `Shape` and give it a 
-`getVertices()` method. This method will get the vertices of the `Cell` object on that shape, 
-assuming that each cell is centered around the positive unit square. This method assumes that the 
-grid has some sort of lattice pattern, but can handle cases where the pattern is somewhat complex. 
+
+Creating a new shape is also a relatively simple process, as a result of the abstraction of the
+`Shape` interface. To do this, you must create a class that implements `Shape` and give it a
+`getVertices()` method. This method will get the vertices of the `Cell` object on that shape,
+assuming that each cell is centered around the positive unit square. This method assumes that the
+grid has some sort of lattice pattern, but can handle cases where the pattern is somewhat complex.
 To handle complex patterns, such as hexagons, where there is a slight offset every other column, you
 must assign each vertex Point a `columnOffset` to account for this. This is necessary for when the
-Warped Grid is used and the two edges do not "align". This works for every polygon, but the offsets 
-must be handled with care. Additionally, add a case to the switch statement in the `Simulation` 
+Warped Grid is used and the two edges do not "align". This works for every polygon, but the offsets
+must be handled with care. Additionally, add a case to the switch statement in the `Simulation`
 `getCellShape` method.
 
 **Languages**
 
+To add new languages, simply add properties files for the new language you would like to add,
+emulating the buttonLabels_____.properties, and the Text_____.properties. Add switch statements in
+the `Controller` method `switchLanguage` and `SimulationPage` method `switchButtonConfig`. Then, the
+buttons and text should be displayed in the language of your choice!
+
 **Grid Type (edge policy)**
-As a result of abstracting the `Grid`, adding a new edge policy is a relatively simple endeavor. To create a new policy, write a class that extends `Grid` and implement the  
-**New Cell Colors**
+
+As a result of abstracting the `Grid`, adding a new edge policy is a relatively simple endeavor. To
+create a new policy, write a class that extends `Grid` and implement the `vertexEqual` method, which
+should return true if two vertices should be considered the same under the given edge policy. For
+non edge-vertices, the method would likely just call the `Grid` version of the method. Again, for
+initialization purposes, another case should be added to the switch statement in the `Simulation`
+class `initializeMyGrid` method.
+
 **Simulations**
 
+Adding `Simulation` objects require slightly more involvement then the others, but is still
+relatively easy to do.
+
+1. Add a Records object for that Simulation in the `Records` class, and call it in the constructor
+   for the new `Simulation` in the `Controller` classes `loadSimulationScene` method
+2. Update the allowed states and parameter values as a final variable in XmlParser. We wanted to
+   move this to the model, but did not have enough time move the input validation to be there.
+3. Update the properties file with the necessary state colors of your choice, and create an
+   extension of CellView for your `Simulation` that's getCss method uses the proper colors.
+4. Create an extension of `Simulation`, implementing the `cellMaker` method which will call your new
+   Cell's constructor, and a `transitionFunction` which iterates through the grid, and calls the
+   Cell's `transition` function on each cell
+5. Create an extension of `Cell`, implementing the `transition` method with the logic of your new
+   automata's transition function.
 
 #### Other Features not yet Done
 
+1. Options to change colors of states dynamically. This can be done easily, however, by parsing the
+   CSS file, and creating a state to color map. When a new color is selected for a state, the map
+   can be updated. CellView would read from this map, eliminating the need for the subclasses
+   of `CellView` as well.
+2. We did not have time to complete the extension regarding custom cell designs. We did start to
+   implement emojis that can be displayed on each cell (such as the fire emoji on fire cells). This
+   can be finalized by updating the size of the `Label` object in Cell View, and making the emoji's
+   for each state in a configuration file instead of hardcoding them.
