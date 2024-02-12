@@ -40,18 +40,18 @@ public class WarpedGrid<T extends Cell<T>> extends Grid<T> {
    * wrap-around positions; false otherwise.
    */
   @Override
-  public boolean containsVertex(Point vtx, List<Point> vertices) {
-    if (super.containsVertex(vtx, vertices)) {
+  public boolean vertexEqual(Point vtx1, Point vtx2) {
+    if (super.vertexEqual(vtx1, vtx2)) {
       return true;
     }
     double colOffset = 0;
     if (getNumRows()%2==1) {
-      colOffset = vtx.getColOffset();
+      colOffset = vtx1.getColOffset();
     }
     final double[][] translations = {{getNumRows(), colOffset}, {-getNumRows(),
         colOffset}, {0, getNumCols()}, {0, -getNumCols()}};
     for (int i = 0; i < translations.length; i++) {
-      if (super.containsVertex(vtx.translate(translations[i][0], translations[i][1]), vertices)) {
+      if (super.vertexEqual(vtx1.translate(translations[i][0], translations[i][1]), vtx2)) {
         return true;
       }
     }

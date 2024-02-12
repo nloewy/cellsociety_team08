@@ -170,13 +170,31 @@ object's `neighbors`.
 
 #### Easy to Add Features
 
-
 **Neighborhood Types**
-To create a new neighborhood type, create a class that extends `Neighborhood`, and implement a `isValidNeighbor(Cell cell1, Cell cell2, Grid grid)` function. This function should rely on the vertices of the two cells to determine if they are neighbors. This will involve iterating through the grid and looking for vertices that are "adjacent", which can be checked using the grid's `containsVertex` function.  
+To create a new `Neighborhood` type, create a class that extends `Neighborhood`, and implement
+a `isValidNeighbor(Cell cell1, Cell cell2, Grid grid)`function. This function returns whether or not
+two cells are adjacent, under the definition of the neighborhood you are creating. Additionally, you
+would need to add the new Neighborhood type to the switch statement located in the `Controller`
+classes `getNeighborhoodObject` function to instantiate the object. Due to the abstraction of
+`Neighborhood` in our design, this does not depend on Cell Shape, simulation type, or any other
+factor, solely the definition of neighborhood provided.
 
 **Cell Shapes**
+Creating a new shape is also a relatively simple process, as a result of the abstraction of the 
+`Shape` interface. To do this, you must create a class that implements `Shape` and give it a 
+`getVertices()` method. This method will get the vertices of the `Cell` object on that shape, 
+assuming that each cell is centered around the positive unit square. This method assumes that the 
+grid has some sort of lattice pattern, but can handle cases where the pattern is somewhat complex. 
+To handle complex patterns, such as hexagons, where there is a slight offset every other column, you
+must assign each vertex Point a `columnOffset` to account for this. This is necessary for when the
+Warped Grid is used and the two edges do not "align". This works for every polygon, but the offsets 
+must be handled with care. Additionally, add a case to the switch statement in the `Simulation` 
+`getCellShape` method.
+
 **Languages**
+
 **Grid Type (edge policy)**
+As a result of abstracting the `Grid`, adding a new edge policy is a relatively simple endeavor. To create a new policy, write a class that extends `Grid` and implement the  
 **New Cell Colors**
 **Simulations**
 
