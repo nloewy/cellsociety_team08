@@ -162,6 +162,7 @@ public class Controller {
         xmlParser.getCellShape());
     System.out.println(xmlParser.getType());
     loadSimulationScene();
+
     settingsPanel = new Settings(xmlParser.getGridEdgeType(), xmlParser.getParameters(), event -> onApplyClicked());
   }
 
@@ -250,7 +251,7 @@ public class Controller {
       allVertices.add(iter.next().getVertices());
     }
 
-    simulationPage = new SimulationPage(xmlParser.getType(), xmlParser.getTitle(),
+    simulationPage = new SimulationPage(xmlParser.getInitialSlider(), xmlParser.getType(), xmlParser.getTitle(),
         xmlParser.getHeight(), xmlParser.getWidth(), handlers, simulationModel.getIterator(),
         allVertices);
     stage.setScene(simulationPage.getSimulationScene());
@@ -320,6 +321,7 @@ public class Controller {
 
   private void onStartSimulation() {
     simulationRunning = true;
+    animation.setRate(simulationPage.getSliderValue());
   }
 
   private void onInfoButtonClicked() {

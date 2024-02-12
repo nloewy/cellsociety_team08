@@ -104,7 +104,7 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String simulationType, String simulationName, int numRows,
+  public SimulationPage(int defaultSpeed, String simulationType, String simulationName, int numRows,
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
@@ -164,7 +164,7 @@ public class SimulationPage {
     updateView(gridIterator);
 
     initializeButtons(eventHandlers);
-    initializeSlider();
+    initializeSlider(defaultSpeed);
 
     simulationTitleDisplay = new Text(simulationName);
     simulationTitleDisplay.setId("simulation-title");
@@ -192,10 +192,10 @@ public class SimulationPage {
   /**
    * set up the speed slider and the speed label
    */
-  private void initializeSlider() {
+  private void initializeSlider(int defaultSpeed) {
     speedSlider = new Slider(configInt(SPEED_SLIDER_MIN_KEY),
         (configInt(SPEED_SLIDER_MAX_KEY)),
-        (configInt(SLIDER_DEFAULT_KEY)));
+        defaultSpeed);
     speedSlider.setLayoutX(configInt(BUTTON_START_X_KEY));
     speedSlider.setLayoutY(configInt(SPEED_SLIDER_Y_KEY));
 
@@ -287,6 +287,9 @@ public class SimulationPage {
     speedSlider.valueProperty().addListener(speedSliderHandler);
   }
 
+  public double getSliderValue(){
+    return speedSlider.getValue();
+  }
 
   /**
    * updates the speed label of the speed slider
