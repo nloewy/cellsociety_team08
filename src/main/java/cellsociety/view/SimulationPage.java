@@ -101,6 +101,7 @@ public class SimulationPage {
   private Label speedLabel;
   private ResourceBundle buttonLabels;
   private ResourceBundle textProperties;
+  private Group boardDisplay;
 
   /**
    * Constructs the view component of the simulation
@@ -130,6 +131,7 @@ public class SimulationPage {
     graph = new SimulationGraph(stateCount);
 
     root = new Group();
+    boardDisplay = new Group();
     scene = new Scene(root, configDouble(SCENE_WIDTH_KEY),
         configDouble(SCENE_HEIGHT_KEY));
 
@@ -161,14 +163,14 @@ public class SimulationPage {
           default -> throw new IllegalStateException("Unexpected value: " + simulationType);
         };
 
-        Shape shape = board[row][col].getCellGraphic();
-        root.getChildren().add(shape);
-        root.getChildren().add(board[row][col].getTextBox());
         board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
         board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
+        boardDisplay.getChildren().add(board[row][col].getCellGraphic());
+        boardDisplay.getChildren().add(board[row][col].getTextBox());
         ind++;
       }
     }
+    root.getChildren().add(boardDisplay);
     updateView(gridIterator);
 
     initializeButtons(eventHandlers);
