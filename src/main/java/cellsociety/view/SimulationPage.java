@@ -19,12 +19,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TitledPane;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -85,6 +83,11 @@ public class SimulationPage {
   private final Scene scene;
   private final Group root;
   private final CellView[][] board;
+  private final Text simulationTitleDisplay;
+  private final ResourceBundle configProperties;
+  private final SimulationGraph graph;
+  private final Map<Integer, Integer> stateCount;
+  private final Map<String, Double> gridProperties;
   private Button newSimulationButton;
   private Button simulationInfoButton;
   private Button startSimulationButton;
@@ -94,15 +97,10 @@ public class SimulationPage {
   private Button simulationGraphButton;
   private Button settingsButton;
   private Button addSimulationButton;
-  private final Text simulationTitleDisplay;
   private Slider speedSlider;
   private Label speedLabel;
   private ResourceBundle buttonLabels;
-  private final ResourceBundle configProperties;
   private ResourceBundle textProperties;
-  private final SimulationGraph graph;
-  private final Map<Integer, Integer> stateCount;
-  private final Map<String, Double> gridProperties;
 
   /**
    * Constructs the view component of the simulation
@@ -250,9 +248,11 @@ public class SimulationPage {
         configInt(RESET_BUTTON_Y_KEY));
     simulationGraphButton = new Button(buttonLabels.getString(SHOW_GRAPH_BUTTON_KEY));
     simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
-    settingsButton = makeButton(buttonLabels.getString(SETTINGS_BUTTON_KEY), eventHandlers.get("settingsHandler"),
+    settingsButton = makeButton(buttonLabels.getString(SETTINGS_BUTTON_KEY),
+        eventHandlers.get("settingsHandler"),
         configInt(BUTTON_START_X_KEY), 600);
-    addSimulationButton = makeButton(buttonLabels.getString(MULTI_SIMULATION_BUTTON), eventHandlers.get("multiSimulationHandler"),configInt(BUTTON_START_X_KEY), 650);
+    addSimulationButton = makeButton(buttonLabels.getString(MULTI_SIMULATION_BUTTON),
+        eventHandlers.get("multiSimulationHandler"), configInt(BUTTON_START_X_KEY), 650);
   }
 
   public Button getSettingsButton() {
@@ -300,7 +300,7 @@ public class SimulationPage {
     speedSlider.valueProperty().addListener(speedSliderHandler);
   }
 
-  public double getSliderValue(){
+  public double getSliderValue() {
     return speedSlider.getValue();
   }
 
@@ -390,13 +390,13 @@ public class SimulationPage {
     return Double.parseDouble(configProperties.getString(key));
   }
 
-  public void switchTextConfig(ResourceBundle textConfig){
+  public void switchTextConfig(ResourceBundle textConfig) {
     textProperties = textConfig;
     speedLabel.setText(textProperties.getString(SPEED_LABEL_TEXT_KEY));
   }
 
   public void switchButtonConfig(String language) {
-    buttonLabels = ResourceBundle.getBundle(switch (language){
+    buttonLabels = ResourceBundle.getBundle(switch (language) {
       case "French" -> FRENCH_BUTTON;
       case "German" -> GERMAN_BUTTON;
       case "Spanish" -> SPANISH_BUTTON;

@@ -34,10 +34,8 @@ public class WarpedGrid<T extends Cell<T>> extends Grid<T> {
    * returns true. Otherwise, it returns false, indicating that the vertex is not contained within
    * the grid or its wrap-around positions.
    *
-   * @param vtx      The vertex point to be checked.
-   * @param vertices The list of vertices to check against.
-   * @return true if the vertex is contained within the specified list of vertices or its
-   * wrap-around positions; false otherwise.
+   * @param vtx1,vtx2 One vertex point to be checked.
+   * @return true if the vertex is the same under grid-policy of warping, false otherwise.
    */
   @Override
   public boolean vertexEqual(Point vtx1, Point vtx2) {
@@ -45,7 +43,7 @@ public class WarpedGrid<T extends Cell<T>> extends Grid<T> {
       return true;
     }
     double colOffset = 0;
-    if (getNumRows()%2==1) {
+    if (getNumRows() % 2 == 1) {
       colOffset = vtx1.getColOffset();
     }
     final double[][] translations = {{getNumRows(), colOffset}, {-getNumRows(),

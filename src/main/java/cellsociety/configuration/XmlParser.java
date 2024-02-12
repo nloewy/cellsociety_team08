@@ -112,14 +112,14 @@ public class XmlParser {
       Arrays.asList("0", "1", "2", "3"));
 
   public static final Map<String, Set<String>> SIMULATION_CELL_STATES = new HashMap<>() {{
-      put(FIRE_NAME, FIRE_CELL_STATES);
-      put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
-      put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
-      put(SCHELLING_NAME, SCHELLING_CELL_STATES);
-      put(WATOR_NAME, WATOR_CELL_STATES);
-      put(SUGAR_NAME, SUGAR_CELL_STATES);
-      put(FALLING_NAME, FALLING_CELL_STATES);
-    }};
+    put(FIRE_NAME, FIRE_CELL_STATES);
+    put(GAMEOFLIFE_NAME, GAMEOFLIFE_CELL_STATES);
+    put(PERCOLATION_NAME, PERCOLATION_CELL_STATES);
+    put(SCHELLING_NAME, SCHELLING_CELL_STATES);
+    put(WATOR_NAME, WATOR_CELL_STATES);
+    put(SUGAR_NAME, SUGAR_CELL_STATES);
+    put(FALLING_NAME, FALLING_CELL_STATES);
+  }};
 
   // define names for the field as written in the XML configuration files
   public static final String TYPE_FIELD_NAME = "type";
@@ -155,7 +155,7 @@ public class XmlParser {
   private String cellShape;
   private String gridEdgeType;
   private String sliderInitial;
-  private Map<String, Integer> randomConfigurationTotalStates;
+  private final Map<String, Integer> randomConfigurationTotalStates;
   private int totalNumCells;
 
   /**
@@ -373,7 +373,6 @@ public class XmlParser {
   public Map<String, Integer> getRandomConfigurationTotalStates() {
     return randomConfigurationTotalStates;
   }
-
 
 
   /**

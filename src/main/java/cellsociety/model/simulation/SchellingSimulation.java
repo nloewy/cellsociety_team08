@@ -25,11 +25,11 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
   public static final int TEMP_TO_MOVE = 3;
   public static final int TEMP_EMPTY_A = 4;
   public static final int TEMP_EMPTY_B = 5;
-  private List<SchellingCell> myCellsToMoveA;
-  private List<SchellingCell> myCellsToMoveB;
-  private List<SchellingCell> myEmptyCellsA;
-  private List<SchellingCell> myEmptyCellsB;
-  private double proportionNeededToStay;
+  private final List<SchellingCell> myCellsToMoveA;
+  private final List<SchellingCell> myCellsToMoveB;
+  private final List<SchellingCell> myEmptyCellsA;
+  private final List<SchellingCell> myEmptyCellsB;
+  private final double proportionNeededToStay;
 
   /**
    * Initializes a SchellingSimulation object
@@ -76,8 +76,9 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
    * Updates next state of cells so that in a random order, cells that are not satisfied can move to
    * empty cells that will satisfy them.
    *
-   * @param emptyList, a list of empty cells which would satisfy the agents in toMoveList.
-   * @param toMoveList, a list of cells that would be satisfied if they move to a cell in empty list
+   * @param emptyList,  a list of empty cells which would satisfy the agents in toMoveList.
+   * @param toMoveList, a list of cells that would be satisfied if they move to a cell in empty
+   *                    list
    */
   private void moveCells(List<SchellingCell> emptyList, List<SchellingCell> toMoveList) {
     Collections.shuffle(emptyList);
@@ -113,17 +114,14 @@ public class SchellingSimulation extends Simulation<SchellingCell> {
       if (currentCell.getNextState() == TEMP_EMPTY_A) {
         currentCell.setCurrentState(EMPTY);
         myEmptyCellsA.add(currentCell);
-      }
-      else if (currentCell.getNextState() == TEMP_EMPTY_B) {
+      } else if (currentCell.getNextState() == TEMP_EMPTY_B) {
         myEmptyCellsB.add(currentCell);
         currentCell.setCurrentState(EMPTY);
-      }
-      else if (currentCell.getNextState() == TEMP_TO_MOVE && currentCell.getCurrentState()==GROUP_A) {
+      } else if (currentCell.getNextState() == TEMP_TO_MOVE
+          && currentCell.getCurrentState() == GROUP_A) {
         myCellsToMoveA.add(currentCell);
         currentCell.setCurrentState(GROUP_A);
-      }
-      else if (currentCell.getNextState()!=currentCell.getCurrentState()){
-        System.out.println(currentCell.getNextState());
+      } else if (currentCell.getNextState() != currentCell.getCurrentState()) {
         myCellsToMoveB.add(currentCell);
         currentCell.setNextState(TEMP_TO_MOVE);
 

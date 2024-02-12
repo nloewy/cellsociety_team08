@@ -45,6 +45,7 @@ public abstract class Simulation<T extends Cell> {
 
   /**
    * Updates the method for calculating neighbors on edges
+   *
    * @param newEdgeType, a string representing the new edge type.
    */
   public void setEdgeType(String newEdgeType) {
@@ -60,8 +61,9 @@ public abstract class Simulation<T extends Cell> {
 
   /**
    * Initializes grid object
-   * @param row, number of rows in simulation
-   * @param col, number of columns in simulation
+   *
+   * @param row,      number of rows in simulation
+   * @param col,      number of columns in simulation
    * @param cellList, all cells in simulation, listed in row major order
    */
   public void initializeMyGrid(int row, int col, List<T> cellList) {
@@ -139,6 +141,7 @@ public abstract class Simulation<T extends Cell> {
 
   /**
    * Calls the update parameters method for each individual cell in the simulation
+   *
    * @param newParameters, the updated parameter values
    */
   public void setParams(Map<String, Double> newParameters) {
