@@ -2,9 +2,9 @@
 <!-- References: https://en.wikipedia.org/wiki/Conway's_Game_of_Life-->
 <simulation>
     <type>GameOfLife</type>
-    <title>Conway's Game of Life Simulation: PentaDecathalon</title>
-    <author>Judy He</author>
-    <file_description>This file configures the PentaDecathalon pattern for Game of Life simulation.</file_description>
+    <title>Conway's Game of Life Simulation: Pentadecathalon</title>
+    <author>Noah Loewy</author>
+    <file_description>This file configures the Pentadecathalon pattern for Game of Life simulation.</file_description>
     <display_description>The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970. Its evolution is determined by its initial state, requiring no further input. It is Turing complete and can simulate a universal constructor or any other Turing machine. The glider, discovered by Richard K. Guy in 1969, is the smallest, most common, and first-discovered spaceship in Game of Life. Gliders consist of 5 cells traveling diagonally across the grid at a speed of c/4. They are significant because they are easily produced, can be collided to form complex patterns, and are used to transmit information over long distances.</display_description>
     <width>11</width>
     <height>18</height>
