@@ -23,6 +23,7 @@ public abstract class Cell<T extends Cell<T>> {
   private int myNextState;
   private List<T> myNeighbors;
 
+
   /**
    * Constructs a Generic Cell object. Note that Cell is an abstract class. This is because all
    * simulations use a specific kind of Cell, but they all share common methods.
