@@ -28,17 +28,14 @@ public class VonNeumannNeighborhood extends Neighborhood {
    */
   @Override
   public boolean isValidNeighbor(Cell cell1, Cell cell2, Grid grid) {
-    List<Point> vertices = cell1.getVertices();
-    List<Point> vertices2 = cell2.getVertices();
-    for (Point vtx : vertices) {
-      for (Point vtx2 : vertices2) {
-        if (grid.vertexEqual(vtx, vtx2) &&
+    List<Point[]> verticesPairs = getPairwiseVertices(cell1, cell2);
+    for (Point[] verticesPair : verticesPairs) {
+        if (grid.vertexEqual(verticesPair[0], verticesPair[1]) &&
             (cell2.getCentroid().getCol() == cell1.getCentroid().getCol()
                 || cell2.getCentroid().getRow() == cell1.getCentroid().getRow())) {
           return true;
         }
       }
-    }
     return false;
   }
 }
