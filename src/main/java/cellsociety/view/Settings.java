@@ -35,11 +35,8 @@ public class Settings {
   private List<String> avaliableCellOutlines;
   private List<String> avaliableLanguages;
   private ComboBox<String> edgeTypeComboBox;
-  private HBox edgeBox;
   private ComboBox<String> outlineTypeComboBox;
-  private HBox outlineBox;
   private ComboBox<String> languageComboBox;
-  private HBox languageBox;
   private String edge;
   private String outline;
   private String language;
@@ -97,7 +94,8 @@ public class Settings {
   }
 
   private void setEditEdge(String defaultEdge) {
-    HBox edgeTypeBox = new HBox(10); // Create an HBox to contain the label and the ComboBox
+    // Create an HBox to contain the label and the ComboBox
+    HBox edgeTypeBox = new HBox(10);
     Label edgeTypeLabel = new Label("Edge Type");
 
     edgeTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableEdgeTypes));

@@ -112,10 +112,15 @@ public class SimulationPage {
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String defaultLanguage, int defaultSpeed, String simulationType, String simulationName, int numRows,
+  public SimulationPage(String defaultLanguage,
+      int defaultSpeed,
+      String simulationType,
+      String simulationName,
+      int numRows,
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
+
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
 
@@ -396,7 +401,7 @@ public class SimulationPage {
   }
 
   private void setButtonConfig(String language) {
-    buttonLabels = ResourceBundle.getBundle(switch (language){
+    buttonLabels = ResourceBundle.getBundle(switch (language) {
       case "French" -> FRENCH_BUTTON;
       case "German" -> GERMAN_BUTTON;
       case "Spanish" -> SPANISH_BUTTON;
@@ -405,7 +410,7 @@ public class SimulationPage {
     });
   }
 
-  public void switchButtonLanguage(String language){
+  public void switchButtonLanguage(String language) {
     setButtonConfig(language);
     updateButtons();
   }

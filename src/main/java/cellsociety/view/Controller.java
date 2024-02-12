@@ -89,7 +89,6 @@ public class Controller {
   private FileChooser fileChooser;
   private Settings settingsPanel;
   private Boolean settingsChanged = false;
-  private int sliderStart;
 
   /**
    * Constructs the controller class
@@ -137,8 +136,11 @@ public class Controller {
   }
 
 
-  private void parseFile(String filePath)
-      throws InvalidValueException, InvalidFileFormatException, InvalidGridBoundsException, InputMissingParametersException, InvalidCellStateException {
+  private void parseFile(String filePath) throws InvalidValueException,
+      InvalidFileFormatException,
+      InvalidGridBoundsException,
+      InputMissingParametersException,
+      InvalidCellStateException {
     xmlParser = new XmlParser();
     xmlParser.readXml(filePath);
   }
@@ -256,7 +258,8 @@ public class Controller {
       allVertices.add(iter.next().getVertices());
     }
 
-    simulationPage = new SimulationPage(xmlParser.getLanguage(), xmlParser.getInitialSlider(), xmlParser.getType(), xmlParser.getTitle(),
+    simulationPage = new SimulationPage(xmlParser.getLanguage(), xmlParser.getInitialSlider(),
+        xmlParser.getType(), xmlParser.getTitle(),
         xmlParser.getHeight(), xmlParser.getWidth(), handlers, simulationModel.getIterator(),
         allVertices);
     stage.setScene(simulationPage.getSimulationScene());
@@ -411,7 +414,7 @@ public class Controller {
   }
 
   private void switchLanguage(String language) {
-    this.textConfig = ResourceBundle.getBundle(switch (language) {
+    this.textConfig = ResourceBundle.getBundle( switch (language) {
       case "French" -> FRENCH_TEXT;
       case "German" -> GERMAN_TEXT;
       case "Spanish" -> SPANISH_TEXT;
