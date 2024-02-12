@@ -3,7 +3,7 @@ package cellsociety.model.simulation;
 import cellsociety.model.core.cell.LifeCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.Records.GameOfLifeRecord;
+import cellsociety.model.simulation.SimulationRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,12 +36,13 @@ public class GameOfLifeSimulation extends Simulation<LifeCell> {
    *                   parameters can be found in the LifeCell class
    */
   public GameOfLifeSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      GameOfLifeRecord r) {
+      SimulationRecord r) {
     super(hoodType, r.gridType());
-    this.aliveToAliveMin = r.aliveToAliveMin();
-    this.aliveToAliveMax = r.aliveToAliveMax();
-    this.deadToAliveMin = r.deadToAliveMin();
-    this.deadToAliveMax = r.deadToAliveMax();
+    r.params().get("probTreeIgnites");
+    this.aliveToAliveMin = (int) Math.floor(r.params().get("aliveToAliveMin"));
+    this.aliveToAliveMax = (int) Math.floor(r.params().get("aliveToAliveMax"));
+    this.deadToAliveMin = (int) Math.floor(r.params().get("deadToAliveMin"));
+    this.deadToAliveMax = (int) Math.floor(r.params().get("deadToAliveMax"));
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 

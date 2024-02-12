@@ -4,7 +4,7 @@ import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.FallingSandCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.Records.FallingSandRecord;
+import cellsociety.model.simulation.SimulationRecord;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +36,7 @@ public class FallingSandSimulation extends Simulation<FallingSandCell> {
    */
 
   public FallingSandSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      FallingSandRecord r) {
+      SimulationRecord r) {
     super(hoodType, r.gridType());
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }

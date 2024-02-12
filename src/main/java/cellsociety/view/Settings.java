@@ -10,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -24,6 +23,9 @@ import javafx.stage.Stage;
 
 public class Settings {
 
+  public static final int SETTINGS_BOX_SPACING = 10;
+  public static final int SETTINGS_SCENE_WIDTH = 350;
+  public static final int SETTINGS_SCENE_HEIGHT = 400;
   private static final String OPTIONS_PACKAGE = "cellsociety.avaliableOptions";
   private final ResourceBundle avaliableOptions;
   private final Stage settingsPanel;
@@ -38,6 +40,8 @@ public class Settings {
   private ComboBox<String> outlineTypeComboBox;
   private ComboBox<String> languageComboBox;
   private String edge;
+  private final List<Spinner<Double>> numberSpinners = new ArrayList<>();
+  private final List<ComboBox<String>> comboBoxes = new ArrayList<>();
   private String outline;
   private String language;
 
@@ -53,25 +57,29 @@ public class Settings {
     this.outline = "On";
     this.parameters = parameters;
     this.language = defaultLanguage;
-    initializeEdgeTypes();
-    initializeOutlineTypes();
-    initializeLanguages();
 
-    root = new VBox(10);
+    root = new VBox(SETTINGS_BOX_SPACING);
     root.setPadding(new Insets(10));
-    scene = new Scene(root, 350, 400);
+    scene = new Scene(root, SETTINGS_SCENE_WIDTH, SETTINGS_SCENE_HEIGHT);
     settingsPanel.setScene(scene);
-
     setPanelFields();
-//    setComboBox(defaultEdge, "Edge Type: ", avaliableEdgeTypes, edgeTypeComboBox, edgeBox);
-//    setComboBox(outline, "Outline Type: ", avaliableCellOutlines, outlineTypeComboBox, outlineBox);
-    setEditEdge(defaultEdge);
-    setEditOutline(outline);
-    setEditLanguage(defaultLanguage);
+    createComboBoxes();
 
     saveParametersButton = new Button("Apply");
     saveParametersButton.setOnAction(applyButtonHandler);
     root.getChildren().add(saveParametersButton);
+  }
+
+  private void createComboBoxes() {
+    initializeEdgeTypes();
+    initializeOutlineTypes();
+    initializeLanguages();
+    edgeTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableEdgeTypes));
+    outlineTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableCellOutlines));
+    languageComboBox = new ComboBox<>(FXCollections.observableList(avaliableLanguages));
+    setComboBox(edge, "Edge Type: ", edgeTypeComboBox);
+    setComboBox(outline, "Outline Type: ", outlineTypeComboBox);
+    setComboBox(language, "Select Language: ", languageComboBox);
   }
 
 
@@ -93,60 +101,15 @@ public class Settings {
     avaliableLanguages.addAll(Arrays.stream(languages.split(" ")).toList());
   }
 
-  private void setEditEdge(String defaultEdge) {
-    // Create an HBox to contain the label and the ComboBox
-    HBox edgeTypeBox = new HBox(10);
-    Label edgeTypeLabel = new Label("Edge Type");
-
-    edgeTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableEdgeTypes));
-    edgeTypeComboBox.getSelectionModel().select(defaultEdge); // Set default selection
-
-    edgeTypeBox.getChildren().addAll(edgeTypeLabel, edgeTypeComboBox);
-
-    root.getChildren().add(edgeTypeBox);
+  private void setComboBox(String defaultValue, String label, ComboBox<String> dropdown) {
+    HBox box = new HBox();
+    Label comboBoxLabel = new Label(label);
+    dropdown.getSelectionModel().select(defaultValue); // Set default selection
+    box.getChildren().addAll(comboBoxLabel, dropdown);
+    ComboBox<String> finalDropdown = dropdown;
+    root.getChildren().add(box);
+    comboBoxes.add(finalDropdown);
   }
-
-  private void setEditOutline(String defaultOutline) {
-    HBox outlineTypeBox = new HBox(10); // Create an HBox to contain the label and the ComboBox
-    Label outlineTypeLabel = new Label("Outline Type");
-
-    outlineTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableCellOutlines));
-    outlineTypeComboBox.getSelectionModel().select(defaultOutline); // Set default selection
-
-    outlineTypeBox.getChildren().addAll(outlineTypeLabel, outlineTypeComboBox);
-
-    root.getChildren().add(outlineTypeBox);
-  }
-
-  private void setEditLanguage(String defaultLanguage) {
-    HBox languageBox = new HBox(10); // Create an HBox to contain the label and the ComboBox
-    Label languageLabel = new Label("Language: ");
-
-    languageComboBox = new ComboBox<>(FXCollections.observableList(avaliableLanguages));
-    languageComboBox.getSelectionModel().select(defaultLanguage); // Set default selection
-
-    languageBox.getChildren().addAll(languageLabel, languageComboBox);
-
-    root.getChildren().add(languageBox);
-  }
-//
-//  private void setComboBox(String defaultValue, String label, List<String> options, ComboBox<String> dropdown, HBox box) {
-//    box = new HBox(10); // Create an HBox to contain the label and the ComboBox
-//    Label comboBoxLabel = new Label(label);
-//
-//    dropdown = new ComboBox<>(FXCollections.observableList(options));
-//    dropdown.getSelectionModel().select(defaultValue); // Set default selection
-//
-//    box.getChildren().addAll(comboBoxLabel, dropdown);
-//
-//    ComboBox<String> finalDropdown = dropdown;
-//    dropdown.setOnAction(event -> {
-//      String selectedValue = finalDropdown.getSelectionModel().getSelectedItem();
-//      System.out.println("Selected " + label + ": " + selectedValue);
-//      // You can associate the selected value with a label here
-//    });
-//    root.getChildren().add(box);
-//  }
 
 
   private void setPanelFields() {
@@ -158,45 +121,36 @@ public class Settings {
           100, entry.getValue(), 0.1);
       numberSpinner.setValueFactory(valueFactory);
       numberSpinner.setPrefWidth(80);
-
       numberSpinner.setUserData(entry.getKey());
-
-      numberSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-        String fieldIdentifier = (numberSpinner.getUserData()).toString();
-      });
-
-      HBox hbox = new HBox(10);
-      hbox.getChildren().add(spinnerLabel);
-      hbox.getChildren().add(numberSpinner);
-
+      HBox hbox = new HBox(SETTINGS_BOX_SPACING);
+      hbox.getChildren().addAll(spinnerLabel, numberSpinner);
+      numberSpinners.add(numberSpinner);
       root.getChildren().add(hbox);
     }
   }
 
   public void saveChanges() {
-    for (Node node : root.getChildren()) {
-      if (node instanceof HBox hbox) {
-        for (Node child : hbox.getChildren()) {
-          if (child instanceof Spinner) {
-            Spinner<Double> spinner = (Spinner<Double>) child;
-            String label = (String) spinner.getUserData();
-            double value = spinner.getValue();
-            parameters.put(label, value);
-          }
-          if (child instanceof ComboBox) {
-            if (child.equals(outlineTypeComboBox)) {
-              ComboBox<String> outlineDropdown = (ComboBox<String>) child;
-              outline = outlineDropdown.getValue();
-            } else if (child.equals(edgeTypeComboBox)) {
-              ComboBox<String> edgeDropdown = (ComboBox<String>) child;
-              edge = edgeDropdown.getValue();
-            } else if (child.equals(languageComboBox)) {
-              ComboBox<String> languageDropdown = (ComboBox<String>) child;
-              language = languageDropdown.getValue();
-            }
-          }
-        }
+    extractSpinnerData();
+    extractComboBoxData();
+  }
+
+  private void extractComboBoxData() {
+    for (ComboBox<String> comboBox : comboBoxes) {
+      if (comboBox.equals(outlineTypeComboBox)) {
+        outline = comboBox.getValue();
+      } else if (comboBox.equals(edgeTypeComboBox)) {
+        edge = comboBox.getValue();
+      } else if (comboBox.equals(languageComboBox)) {
+        language = comboBox.getValue();
       }
+    }
+  }
+
+  private void extractSpinnerData() {
+    for (Spinner<Double> spinner : numberSpinners) {
+      String label = (String) spinner.getUserData();
+      double value = spinner.getValue();
+      parameters.put(label, value);
     }
   }
 

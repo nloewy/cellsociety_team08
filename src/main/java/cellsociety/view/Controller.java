@@ -16,15 +16,9 @@ import cellsociety.model.simulation.FallingSandSimulation;
 import cellsociety.model.simulation.FireSimulation;
 import cellsociety.model.simulation.GameOfLifeSimulation;
 import cellsociety.model.simulation.PercolationSimulation;
-import cellsociety.model.simulation.Records.FallingSandRecord;
-import cellsociety.model.simulation.Records.FireRecord;
-import cellsociety.model.simulation.Records.GameOfLifeRecord;
-import cellsociety.model.simulation.Records.PercolationRecord;
-import cellsociety.model.simulation.Records.SchellingRecord;
-import cellsociety.model.simulation.Records.SugarRecord;
-import cellsociety.model.simulation.Records.WatorRecord;
 import cellsociety.model.simulation.SchellingSimulation;
 import cellsociety.model.simulation.Simulation;
+import cellsociety.model.simulation.SimulationRecord;
 import cellsociety.model.simulation.SugarSimulation;
 import cellsociety.model.simulation.WatorSimulation;
 import java.io.File;
@@ -36,7 +30,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -77,7 +70,6 @@ public class Controller {
   public static final String FILE_SAVED_KEY = "fileSaved";
   public static final String UPLOAD_FILE_WINDOW_TITLE_KEY = "uploadFileWindowTitle";
   public static final String ABOUT_MIN_HEIGHT_KEY = "ABOUT_MIN_HEIGHT";
-  //  private final static FileChooser FILE_CHOOSER = makeChooser(DATA_FILE_EXTENSION);
   private Stage stage;
   private SimulationPage simulationPage;
   private XmlParser xmlParser;
@@ -96,34 +88,31 @@ public class Controller {
   public Controller() {
     try {
       stage = new Stage();
-
       textConfig = ResourceBundle.getBundle(TEXT_CONFIGURATION);
       fileChooser = makeChooser(DATA_FILE_EXTENSION);
       showMessage(AlertType.INFORMATION, String.format(textConfig.getString(UPLOAD_FILE_TEXT_KEY)));
-
       File dataFile = chooseFile();
       if (dataFile == null) {
         return;
       }
       xmlParser = new XmlParser();
       parseFile(dataFile.getPath());
-
-      setSimulation(); //loads view and model
-
-      speed = 1;
-
-      animation = new Timeline();
-      animation.setCycleCount(Timeline.INDEFINITE);
-      double frameDuration = 1.0 / (speed * simulationPage.configDouble(
-          SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
-      animation.getKeyFrames()
-          .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
-      animation.play();
+      setSimulation();
+      setAnimation();
     } catch (InvalidFileFormatException | InvalidValueException | InvalidCellStateException |
              InputMissingParametersException | InvalidGridBoundsException e) {
       showMessage(AlertType.ERROR, e.getMessage());
-      Platform.exit();
     }
+  }
+
+  private void setAnimation() {
+    animation = new Timeline();
+    animation.setCycleCount(Timeline.INDEFINITE);
+    double frameDuration = 1.0 / (simulationPage.configDouble(
+        SECOND_DELAY_KEY)); // Calculate the duration for the KeyFrame
+    animation.getKeyFrames()
+        .add(new KeyFrame(Duration.seconds(frameDuration), e -> step()));
+    animation.play();
   }
 
   private void step() {
@@ -160,15 +149,12 @@ public class Controller {
   }
 
   private void setSimulation() {
-    String neighborhoodTypeString = xmlParser.getNeighborhoodType();
-    Neighborhood neighborhoodType = getNeighborhoodObject(neighborhoodTypeString);
-    loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(), neighborhoodType,
-        xmlParser.getStates(), xmlParser.getType(), xmlParser.getGridEdgeType(),
-        xmlParser.getCellShape());
+    loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(),
+        getNeighborhoodObject(xmlParser.getNeighborhoodType()), xmlParser.getStates(),
+        xmlParser.getType(), xmlParser.getGridEdgeType(), xmlParser.getCellShape());
     loadSimulationScene();
     settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(),
-        xmlParser.getParameters(),
-        event -> onApplyClicked());
+        xmlParser.getParameters(), event -> onApplyClicked());
   }
 
   private void onApplyClicked() {
@@ -188,7 +174,8 @@ public class Controller {
    *                               simulation is using
    * @return returns the neighborhood object
    */
-  private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
+  private Neighborhood getNeighborhoodObject(String neighborhoodTypeString)
+      throws IllegalStateException {
     return switch (neighborhoodTypeString) {
       case "Moore" -> new MooreNeighborhood();
       case "ExtendedMoore" -> new ExtendedMooreNeighborhood();
@@ -209,39 +196,20 @@ public class Controller {
   private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
       List<Integer> stateList, String simulationType, String gridType, String cellShape) {
 
+    SimulationRecord record = new SimulationRecord(xmlParser.getParameters(), gridType, cellShape);
     simulationRunning = false;
     simulationModel = switch (simulationType) {
-      case GAME_OF_LIFE -> new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList,
-          new GameOfLifeRecord(xmlParser.getParameters().get("aliveToAliveMin").intValue(),
-              xmlParser.getParameters().get("aliveToAliveMax").intValue(),
-              xmlParser.getParameters().get("deadToAliveMin").intValue(),
-              xmlParser.getParameters().get("deadToAliveMax").intValue(), gridType, cellShape));
-      case PERCOLATION -> new PercolationSimulation(numRows, numCols, neighborhoodType, stateList,
-          new PercolationRecord(xmlParser.getParameters().get("percolatedNeighbors").intValue(),
-              gridType, cellShape));
-      case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList,
-          new FireRecord(xmlParser.getParameters().get("neighborsToIgnite").intValue(),
-              xmlParser.getParameters().get("probTreeIgnites"),
-              xmlParser.getParameters().get("probTreeCreated"), gridType, cellShape));
-      case SCHELLING -> new SchellingSimulation(numRows, numCols, neighborhoodType, stateList,
-          new SchellingRecord(xmlParser.getParameters().get("proportionNeededToStay"), gridType,
-              cellShape));
-      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList,
-          new WatorRecord(xmlParser.getParameters().get("fishAgeOfReproduction").intValue(),
-              xmlParser.getParameters().get("sharkAgeOfReproduction").intValue(),
-              xmlParser.getParameters().get("initialEnergy").intValue(),
-              xmlParser.getParameters().get("energyBoost").intValue(), gridType, cellShape));
-      case SUGAR -> new SugarSimulation(numRows, numCols, neighborhoodType, stateList,
-          new SugarRecord(xmlParser.getParameters().get("minVision").intValue(),
-              xmlParser.getParameters().get("maxVision").intValue(),
-              xmlParser.getParameters().get("minInitialSugar").intValue(),
-              xmlParser.getParameters().get("maxInitialSugar").intValue(),
-              xmlParser.getParameters().get("minMetabolism").intValue(),
-              xmlParser.getParameters().get("maxMetabolism").intValue(),
-              xmlParser.getParameters().get("growBackRate").intValue(),
-              xmlParser.getParameters().get("numAgents").intValue(), gridType, cellShape));
-      case FALLING -> new FallingSandSimulation(numRows, numCols, neighborhoodType, stateList,
-          new FallingSandRecord(gridType, cellShape));
+      case GAME_OF_LIFE ->
+          new GameOfLifeSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case PERCOLATION ->
+          new PercolationSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case FIRE -> new FireSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case SCHELLING ->
+          new SchellingSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case WATOR -> new WatorSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case SUGAR -> new SugarSimulation(numRows, numCols, neighborhoodType, stateList, record);
+      case FALLING ->
+          new FallingSandSimulation(numRows, numCols, neighborhoodType, stateList, record);
       default -> null;
     };
   }
@@ -318,19 +286,21 @@ public class Controller {
         newStates.add(iterator.next().getCurrentState());
       }
       xmlParser.setStates(newStates);
-
       if (settingsChanged) {
-        xmlParser.setParameters(settingsPanel.getNewParameters());
-        xmlParser.setLanguage(settingsPanel.getNewLanguage());
-        xmlParser.setGridEdgeType(settingsPanel.getNewEdgeType());
+        updateSettingsInXmlParser();
       }
-
-      xmlParser.createXml("savedSimulation" + xmlParser.getType(),
-          xmlParser.getType().toLowerCase());
-
       showMessage(AlertType.INFORMATION, String.format(textConfig.getString(FILE_SAVED_KEY)));
     } catch (Exception e) {
     }
+  }
+
+  private void updateSettingsInXmlParser() {
+    xmlParser.setParameters(settingsPanel.getNewParameters());
+    xmlParser.setLanguage(settingsPanel.getNewLanguage());
+    xmlParser.setGridEdgeType(settingsPanel.getNewEdgeType());
+    xmlParser.createXml("savedSimulation" + xmlParser.getType(),
+        xmlParser.getType().toLowerCase());
+
   }
 
 
@@ -341,12 +311,15 @@ public class Controller {
 
   private void onInfoButtonClicked() {
     Alert simulationInfo = new Alert(AlertType.INFORMATION);
-
     pauseSimulation();
-
     simulationInfo.setHeaderText(null);
     simulationInfo.setTitle(xmlParser.getTitle());
+    TextArea textArea = formatTextAreaToDisplay();
+    simulationInfo.getDialogPane().setContent(textArea);
+    simulationInfo.showAndWait();
+  }
 
+  private TextArea formatTextAreaToDisplay() {
     TextArea textArea = new TextArea();
     textArea.setEditable(false);
     textArea.setWrapText(true);
@@ -356,9 +329,7 @@ public class Controller {
             "Parameters: " + xmlParser.getParameters()
     );
     textArea.setMinHeight(simulationPage.configInt(ABOUT_MIN_HEIGHT_KEY));
-
-    simulationInfo.getDialogPane().setContent(textArea);
-    simulationInfo.showAndWait();
+    return textArea;
   }
 
 

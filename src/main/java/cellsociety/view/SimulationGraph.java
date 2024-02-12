@@ -80,7 +80,6 @@ public class SimulationGraph {
     for (XYChart.Series<Number, Number> series : lineChart.getData()) {
       series.getData().clear();
     }
-
     step = 0;
   }
 

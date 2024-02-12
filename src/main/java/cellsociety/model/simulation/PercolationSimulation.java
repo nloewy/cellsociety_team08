@@ -3,7 +3,7 @@ package cellsociety.model.simulation;
 import cellsociety.model.core.cell.PercolationCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.Records.PercolationRecord;
+import cellsociety.model.simulation.SimulationRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,9 +33,9 @@ public class PercolationSimulation extends Simulation<PercolationCell> {
    *                   parameters can be found in the PercolationCell class
    */
   public PercolationSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      PercolationRecord r) {
+      SimulationRecord r) {
     super(hoodType, r.gridType());
-    this.percolatedNeighbors = r.percolatedNeighbors();
+    this.percolatedNeighbors = (int) Math.floor(r.params().get("percolatedNeighbors"));
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
 

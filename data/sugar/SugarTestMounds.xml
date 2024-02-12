@@ -3,7 +3,7 @@
   <type>Sugar</type>
   <title>Sugar Scape Simulation</title>
   <author>Noah Loewy</author>
-  <file_description>This file configures the Sugar Scape Simulation.</file_description>
+  <file_description>This file configgures the Sugar Scape Simulation.</file_description>
   <display_description>Sugarscape is a model artificially intelligent, agent-based, social simulation following some or all rules presented by Joshua M. Epstein and Robert Axtell in their book Growing Artificial Societies.</display_description>
   <width>50</width>
   <height>50</height>

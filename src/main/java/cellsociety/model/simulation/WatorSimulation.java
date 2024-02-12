@@ -4,7 +4,6 @@ import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.WatorCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.Records.WatorRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,14 +40,15 @@ public class WatorSimulation extends Simulation<WatorCell> {
    */
 
   public WatorSimulation(int row, int col, Neighborhood hoodType, List<Integer> stateList,
-      WatorRecord r) {
+      SimulationRecord r) {
     super(hoodType, r.gridType());
-    this.fishAgeOfReproduction = r.fishAgeOfReproduction();
-    this.sharkAgeOfReproduction = r.sharkAgeOfReproduction();
-    this.initialEnergy = r.initialEnergy();
-    this.energyBoost = r.energyBoost();
+    this.fishAgeOfReproduction = (int) Math.floor(r.params().get("fishAgeOfReproduction"));
+    this.sharkAgeOfReproduction = (int) Math.floor(r.params().get("sharkAgeOfReproduction"));
+    this.initialEnergy = (int) Math.floor(r.params().get("initialEnergy"));
+    this.energyBoost = (int) Math.floor(r.params().get("energyBoost"));
     createCellsAndGrid(row, col, stateList, getCellShape(r.cellShape()), hoodType);
   }
+
 
   /**
    * Creates list of WatorCells objects to be passed into grid
