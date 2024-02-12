@@ -2,7 +2,7 @@
 <simulation>
   <type>Sugar</type>
   <title>Sugar Scape Simulation</title>
-  <author>Noah Loewy</author>
+  <author>Judy He</author>
   <file_description>This file configures the Sugar Scape Simulation.</file_description>
   <display_description>Sugarscape is a model artificially intelligent, agent-based, social simulation following some or all rules presented by Joshua M. Epstein and Robert Axtell in their book Growing Artificial Societies.</display_description>
   <width>12</width>
@@ -19,11 +19,11 @@
     <minInitialSugar> 5 </minInitialSugar>
     <maxInitialSugar> 25 </maxInitialSugar>
     <growBackRate> 1 </growBackRate>
-    <numAgents> 35 </numAgents>
+    <numAgents> 100 </numAgents>
   </parameters>
   <slider>1</slider>
   <language>English</language>
-  <cell_shape>hexagon</cell_shape>
+  <cell_shape>square</cell_shape>
   <grid_edge_type>Warped</grid_edge_type>
   <random_configuration_by_total_states>
   </random_configuration_by_total_states>
