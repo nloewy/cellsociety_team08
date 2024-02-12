@@ -421,7 +421,7 @@ public class Controller {
           case "Spanish" -> SPANISH_TEXT;
           case "Mandarin" -> MANDARIN_TEXT;
           default -> TEXT_CONFIGURATION;
-    });
+        });
     simulationPage.switchTextConfig(this.textConfig);
     simulationPage.switchButtonLanguage(language);
   }
