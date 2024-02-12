@@ -89,11 +89,9 @@ public class Controller {
   public Controller() {
     try {
       stage = new Stage();
-
       textConfig = ResourceBundle.getBundle(TEXT_CONFIGURATION);
       fileChooser = makeChooser(DATA_FILE_EXTENSION);
       showMessage(AlertType.INFORMATION, String.format(textConfig.getString(UPLOAD_FILE_TEXT_KEY)));
-
       File dataFile = chooseFile();
       if (dataFile == null) {
         return;
