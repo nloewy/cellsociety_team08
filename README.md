@@ -49,12 +49,20 @@ This project implements a cellular automata simulator.
  * Key/Mouse inputs:
    * Mouse click - interact with the GUI to generate and visualize simulations
 
-
-
 ### Notes/Assumptions
 
  * Assumptions or Simplifications:
-   * To run multiple simulations at the same time, we approached this feature by simply displaying multiple windows, each running a different simulation, rather than keeping one window that is running multiple simulations simultaneously.
+   * Simplification
+     * To run multiple simulations at the same time, we approached this feature by simply displaying multiple windows, each running a different simulation, rather than keeping one window that is running multiple simulations simultaneously.
+   * Assumptions
+     * Grid will always be a lattice grid of polygon-shaped cells. This is a tradeoff
+       we deemed necessary, however, as doing this allowed us to use the Vertices to represent the
+       location of Cells, and not have the `getNeighbors` method be dependent on the shape of the cell. 
+     * Transition functions for Wator Cells: We assume that if a shark is next to a fish, he will always eat the fish. In a
+     sense, although everything occurs at the same time, the movement of shark's is prioritized first. 
+     * Transition functions for FallingSand Cells: We assume that sand movement is prioritized first.
+     Furthermore, if two blocks of sand is falling on top of each other into water, the water will "
+     make a wave" and separate the sand.
 
  * Known Bugs: 
    * None
@@ -71,6 +79,7 @@ This project implements a cellular automata simulator.
  * Features unimplemented:
    * Cell Shape Customization - Allow customization of the shape and appearance of cells based on their state (e.g., circles, rectangles, or images like sharks or fire).
    * Change color of cells
+   * Using emoji to represent cells
 
  * Noteworthy Features:
    * Cell shape may be changed to hexagon 
@@ -79,5 +88,5 @@ This project implements a cellular automata simulator.
 ### Assignment Impressions
 
 Although this assignment has been challenging and time-demanding, we as a team agree that it was very helpful for learning how to implement a model-view-controller structure, integrate the data and backend with the frontend. Regarding data, we learned how to create XML configuration files and successfully parse and create XML files. As for the backend (the model), we were able to implement the logic behind each simulation. Lastly, for the frontend, we implemented the GUI from scratch following the view-controller architecture. 
-Furthermore, we have also learned the importance of repeatedly refactoring our code for scalability, handling errors through custom exceptions, adding meaningful JavaDoc comments, and using resource property files and named constants.
+Furthermore, we have also learned the importance of repeatedly refactoring our code for scalability, handling errors through custom exceptions, adding meaningful JavaDoc comments, and using resource property files and named constants. We are particularly proud of how abstract our model classes are. For example, the classes for neighborhood, cell shape and cell type are all independent of each other. We were able to minimize dependencies in our implementation, thereby minimizing chances of errors/bugs.
 Regarding teamwork, this assignment has been invaluable in teaching us how to collaborate through git (branching and merging) and how to decompose a large assignment in to smaller, individually manageable modules and distribute and plan tasks accordingly. 
