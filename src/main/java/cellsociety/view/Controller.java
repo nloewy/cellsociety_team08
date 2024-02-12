@@ -279,19 +279,21 @@ public class Controller {
         newStates.add(iterator.next().getCurrentState());
       }
       xmlParser.setStates(newStates);
-
       if (settingsChanged) {
-        xmlParser.setParameters(settingsPanel.getNewParameters());
-        xmlParser.setLanguage(settingsPanel.getNewLanguage());
-        xmlParser.setGridEdgeType(settingsPanel.getNewEdgeType());
+        updateSettingsInXmlParser();
       }
-
-      xmlParser.createXml("savedSimulation" + xmlParser.getType(),
-          xmlParser.getType().toLowerCase());
-
       showMessage(AlertType.INFORMATION, String.format(textConfig.getString(FILE_SAVED_KEY)));
     } catch (Exception e) {
     }
+  }
+
+  private void updateSettingsInXmlParser() {
+    xmlParser.setParameters(settingsPanel.getNewParameters());
+    xmlParser.setLanguage(settingsPanel.getNewLanguage());
+    xmlParser.setGridEdgeType(settingsPanel.getNewEdgeType());
+    xmlParser.createXml("savedSimulation" + xmlParser.getType(),
+        xmlParser.getType().toLowerCase());
+
   }
 
 
@@ -302,12 +304,15 @@ public class Controller {
 
   private void onInfoButtonClicked() {
     Alert simulationInfo = new Alert(AlertType.INFORMATION);
-
     pauseSimulation();
-
     simulationInfo.setHeaderText(null);
     simulationInfo.setTitle(xmlParser.getTitle());
+    TextArea textArea = formatTextAreaToDisplay();
+    simulationInfo.getDialogPane().setContent(textArea);
+    simulationInfo.showAndWait();
+  }
 
+  private TextArea formatTextAreaToDisplay() {
     TextArea textArea = new TextArea();
     textArea.setEditable(false);
     textArea.setWrapText(true);
@@ -317,9 +322,7 @@ public class Controller {
             "Parameters: " + xmlParser.getParameters()
     );
     textArea.setMinHeight(simulationPage.configInt(ABOUT_MIN_HEIGHT_KEY));
-
-    simulationInfo.getDialogPane().setContent(textArea);
-    simulationInfo.showAndWait();
+    return textArea;
   }
 
 
