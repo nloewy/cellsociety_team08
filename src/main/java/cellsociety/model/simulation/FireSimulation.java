@@ -55,6 +55,7 @@ public class FireSimulation extends Simulation<FireCell> {
    * @param shape     Shape object representing the shape of the cell as represented on 2d plane
    * @return list of initialized FireCells
    */
+  @Override
   public List<FireCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<FireCell> cellList = new ArrayList<>();
     Map<String, Double> params = new HashMap<>();

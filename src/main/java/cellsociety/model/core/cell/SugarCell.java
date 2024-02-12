@@ -22,7 +22,7 @@ public class SugarCell extends Cell<SugarCell> {
   private int myNextAgentSugar;
   private int sugarMetabolism;
   private int sugarGrowBackRate;
-
+  private int myCapacity;
   private int myCurrentAgentSugar;
 
   /**
@@ -41,6 +41,7 @@ public class SugarCell extends Cell<SugarCell> {
     super(initialState, row, col, shapeType);
     myCurrentVision = params.getOrDefault("vision", -1);
     myNextVision = PLACEHOLDER;
+    myCapacity = initialState;
     myCurrentAgentSugar = params.getOrDefault("sugar", -1);
     myNextAgentSugar = PLACEHOLDER;
     sugarGrowBackRate = params.get("growBackRate");
@@ -157,13 +158,13 @@ public class SugarCell extends Cell<SugarCell> {
               sugarMetabolism);
         } else { //we assume that if an agent goes to a new cell and dies, that new cell is unavailable for the timestep
           nextCell.setNextStateAgentSugarVisionMetabolism(
-              Math.min(SugarSimulation.MAX_AVAILABLE_SUGAR,
+              Math.min(myCapacity,
                   nextCell.getCurrentState() + sugarGrowBackRate),
               PLACEHOLDER,
               PLACEHOLDER, PLACEHOLDER);
         }
         setNextStateAgentSugarVisionMetabolism(
-            Math.min(sugarGrowBackRate, SugarSimulation.MAX_AVAILABLE_SUGAR), PLACEHOLDER,
+            Math.min(sugarGrowBackRate, myCapacity), PLACEHOLDER,
             PLACEHOLDER,
             PLACEHOLDER);
       } else {
@@ -173,7 +174,7 @@ public class SugarCell extends Cell<SugarCell> {
       }
     } else {
       setNextStateAgentSugarVisionMetabolism(
-          Math.min(getCurrentState() + sugarGrowBackRate, SugarSimulation.MAX_AVAILABLE_SUGAR),
+          Math.min(getCurrentState() + sugarGrowBackRate, myCapacity),
           PLACEHOLDER,
           PLACEHOLDER, PLACEHOLDER);
 

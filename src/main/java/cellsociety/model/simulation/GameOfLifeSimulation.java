@@ -54,6 +54,7 @@ public class GameOfLifeSimulation extends Simulation<LifeCell> {
    * @return list of initialized LifeCells
    */
 
+  @Override
   public List<LifeCell> cellMaker(int col, List<Integer> stateList, Shape shape) {
     List<LifeCell> cellList = new ArrayList<>();
     Map<String, Integer> params = new HashMap<>();

@@ -23,6 +23,7 @@ public abstract class Cell<T extends Cell<T>> {
   private int myNextState;
   private List<T> myNeighbors;
 
+
   /**
    * Constructs a Generic Cell object. Note that Cell is an abstract class. This is because all
    * simulations use a specific kind of Cell, but they all share common methods.
@@ -48,6 +49,11 @@ public abstract class Cell<T extends Cell<T>> {
    */
   public void initializeNeighbors(Neighborhood hoodType, Grid grid) {
     myNeighbors = hoodType.getNeighbors(grid, this);
+    System.out.println(getLocation().getRow() + "," + getLocation().getCol());
+    for(Cell neighbor : myNeighbors) {
+      System.out.println(neighbor.getLocation().getRow() + "," + neighbor.getLocation().getCol());
+    }
+    System.out.println("__________");
   }
 
   /**

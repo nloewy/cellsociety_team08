@@ -22,8 +22,6 @@ import java.util.Random;
 
 public class SugarSimulation extends Simulation<SugarCell> {
 
-
-  public static final int MAX_AVAILABLE_SUGAR = 4;
   private final int minVision;
   private final int maxVision;
   private final int minInitialSugar;
@@ -67,6 +65,7 @@ public class SugarSimulation extends Simulation<SugarCell> {
    * @return list of initialized WatorCells
    */
 
+  @Override
   public List<SugarCell> cellMaker(int col, List<Integer> stateList,
       Shape shape) {
     List<SugarCell> cellList = new ArrayList<>();

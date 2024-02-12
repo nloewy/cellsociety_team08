@@ -8,8 +8,7 @@ import javafx.stage.Stage;
 /**
  * Feel free to completely change this code or delete it entirely.
  */
-public class
-Main extends Application {
+public class Main extends Application {
 
   // kind of data files to look for
 //  public static final String DATA_FILE_EXTENSION = "*.xml";
@@ -30,7 +29,6 @@ Main extends Application {
   public static void main(String[] args) {
     launch(args);
   }
-
   /**
    * @see Application#start(Stage)
    */
