@@ -22,8 +22,6 @@ import java.util.Random;
 
 public class SugarSimulation extends Simulation<SugarCell> {
 
-
-  public static final int MAX_AVAILABLE_SUGAR = 4;
   private final int minVision;
   private final int maxVision;
   private final int minInitialSugar;

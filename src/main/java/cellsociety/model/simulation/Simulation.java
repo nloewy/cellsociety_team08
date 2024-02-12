@@ -72,9 +72,9 @@ public abstract class Simulation<T extends Cell> {
       case "Warped" -> new WarpedGrid(row, col, cellList);
       default -> throw new InvalidValueException("Edge Type Does Not Exist");
     };
-    Iterator<T> iterator = myGrid.iterator();
+    Iterator<Cell> iterator = myGrid.iterator();
     while (iterator.hasNext()) {
-      T cell = iterator.next();
+      Cell cell = iterator.next();
       cell.setNeighborhood(myNeighborhood.getNeighbors(myGrid, cell));
     }
   }

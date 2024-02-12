@@ -81,7 +81,7 @@ public class XmlParser {
 
   // define valid neighborhood types
   public static final Set<String> NEIGHBORHOOD_TYPES = new HashSet<>(
-      Arrays.asList("adjacent", "cardinal", "Moore", "VonNeumann"));
+      Arrays.asList("ExtendedMoore", "Moore", "VonNeumann"));
   // define valid cell shapes
   public static final Set<String> CELL_SHAPES = new HashSet<>(
       Arrays.asList("square", "hexagon"));
@@ -229,39 +229,12 @@ public class XmlParser {
   }
 
   /**
-   * Retrieves fileDescription instance variable
-   *
-   * @return fileDescription, the description of the XML configuration file currently being read.
-   */
-  public String getFileDescription() {
-    return fileDescription;
-  }
-
-  /**
-   * Updates fileDescription instance variable
-   *
-   * @param fileDescription, the description of the XML configuration file currently being read.
-   */
-  public void setFileDescription(String fileDescription) {
-    this.fileDescription = fileDescription;
-  }
-
-  /**
    * Retrieves displayDescription instance variable
    *
    * @return displayDescription, the description of the simulation currently being run.
    */
   public String getDisplayDescription() {
     return displayDescription;
-  }
-
-  /**
-   * Updates displayDescription instance variable
-   *
-   * @param displayDescription, the description of the simulation currently being run.
-   */
-  public void setDisplayDescription(String displayDescription) {
-    this.displayDescription = displayDescription;
   }
 
   /**
@@ -311,17 +284,6 @@ public class XmlParser {
   }
 
   /**
-   * Updates neighborHoodType instance variable
-   *
-   * @param neighborhoodType, the type of neighborhood interaction (cardinal or adjacent) used by
-   *                          the current simulation.
-   */
-  public void setNeighborhoodType(String neighborhoodType) {
-    this.neighborhoodType = neighborhoodType;
-
-  }
-
-  /**
    * Retrieves cellShape instance variable
    *
    * @return cell shape, the shape of the cells in the given simulation
@@ -346,15 +308,6 @@ public class XmlParser {
    */
   public String getGridEdgeType() {
     return gridEdgeType;
-  }
-
-  /**
-   * Updates gridEdgeType instance variable
-   *
-   * @param gridEdgeType, the grid edge type used by the given simulation
-   */
-  public void setGridEdgeType(String gridEdgeType) {
-    this.gridEdgeType = gridEdgeType;
   }
 
   /**
@@ -394,24 +347,6 @@ public class XmlParser {
   }
 
   /**
-   * Retrieve resource bundle containing the error messages in given language
-   *
-   * @return ResourceBundle, the resource bundle used by the current simulation
-   */
-  public ResourceBundle getResourceBundle() {
-    return resourceBundle;
-  }
-
-  /**
-   * Updates resourceBundle instance variable
-   *
-   * @param resourceBundle, the resource bundle used by the current simulation
-   */
-  public void setResourceBundle(ResourceBundle resourceBundle) {
-    this.resourceBundle = resourceBundle;
-  }
-
-  /**
    * Retrieves language instance variable
    *
    * @return language, the language the given simulation is in
@@ -439,52 +374,7 @@ public class XmlParser {
     return randomConfigurationTotalStates;
   }
 
-  /**
-   * Updates randomConfigurationTotalStates instance variable
-   *
-   * @param randomConfigurationTotalStates, a Hashmap mapping a state to the number of cells with
-   *                                        that state in the given simulation
-   */
-  public void setRandomConfigurationTotalStates(
-      Map<String, Integer> randomConfigurationTotalStates) {
-    this.randomConfigurationTotalStates = randomConfigurationTotalStates;
-  }
 
-  /**
-   * Retrieves sliderInitial instance variable
-   *
-   * @return slider, the initial value of the slider in the GUI
-   */
-  public String getSliderInitial() {
-    return sliderInitial;
-  }
-
-  /**
-   * Updates sliderInitial instance variable
-   *
-   * @param sliderInitial, the initial value of the slider in the GUI
-   */
-  public void setSliderInitial(String sliderInitial) {
-    this.sliderInitial = sliderInitial;
-  }
-
-  /**
-   * Retrieves totalNumCells instance variable
-   *
-   * @return totalNumCells, the total number of cells used in the given simulation
-   */
-  public int getTotalNumCells() {
-    return totalNumCells;
-  }
-
-  /**
-   * Updates totalNumCells instance variable
-   *
-   * @param totalNumCells, the total number of cells used in the given simulation
-   */
-  public void setTotalNumCells(int totalNumCells) {
-    this.totalNumCells = totalNumCells;
-  }
 
   /**
    * Read an XML configuration file, initializing all attributes in the XmlParser
@@ -627,10 +517,6 @@ public class XmlParser {
 
     totalNumCells = states.size();
 
-  }
-
-  public int getInitialSlider() {
-    return Integer.parseInt(sliderInitial);
   }
 
   /**
@@ -817,7 +703,7 @@ public class XmlParser {
       if (valueString.isEmpty()) {
         valueString = assignDefaultValueToParameter(name);
       }
-      Double value = Double.parseDouble(valueString);
+      double value = Double.parseDouble(valueString);
       // check for negative values
       if (value < 0) {
         throw new InvalidValueException(
@@ -844,7 +730,7 @@ public class XmlParser {
     for (int i = 0; i < randomConfigNodeList.getLength(); i++) {
       Node currRandConfigNode = randomConfigNodeList.item(i);
       String name = currRandConfigNode.getNodeName();
-      Integer value = Integer.parseInt(currRandConfigNode.getTextContent());
+      int value = Integer.parseInt(currRandConfigNode.getTextContent());
       if (value < 0) {
         throw new InvalidValueException(
             String.format(resourceBundle.getString("NegativeRandConfigValueError"), name));

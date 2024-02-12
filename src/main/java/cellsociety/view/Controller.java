@@ -8,6 +8,7 @@ import cellsociety.exception.InvalidFileFormatException;
 import cellsociety.exception.InvalidGridBoundsException;
 import cellsociety.exception.InvalidValueException;
 import cellsociety.model.core.cell.Cell;
+import cellsociety.model.neighborhood.ExtendedMooreNeighborhood;
 import cellsociety.model.neighborhood.MooreNeighborhood;
 import cellsociety.model.neighborhood.Neighborhood;
 import cellsociety.model.neighborhood.VonNeumannNeighborhood;
@@ -189,6 +190,7 @@ public class Controller {
   private Neighborhood getNeighborhoodObject(String neighborhoodTypeString) {
     return switch (neighborhoodTypeString) {
       case "Moore" -> new MooreNeighborhood();
+      case "ExtendedMoore" -> new ExtendedMooreNeighborhood();
       case "VonNeumann" -> new VonNeumannNeighborhood();
       default -> throw new IllegalStateException("Unexpected value: " + neighborhoodTypeString);
     };

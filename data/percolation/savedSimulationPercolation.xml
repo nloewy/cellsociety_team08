@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation>
+    <type>Percolation</type>
+    <title>Percolation Simulation</title>
+    <author>Noah Loewy</author>
+    <file_description>This file configures the Percolation Simulation.</file_description>
+    <display_description>In physics and mathematics, percolation theory describes the behavior of clustered components in random networks (Grimmett, 1999). The common intuition is movement and filtering of fluids through porous materials, for example, filtration of water through soil and permeable rocks.</display_description>
+    <width>16</width>
+    <height>16</height>
+    <neighborhood_type>Moore</neighborhood_type>
+    <grid_edge_type>Normal</grid_edge_type>
+    <cell_shape>square</cell_shape>
+    <language>English</language>
+    <slider>1</slider>
+    <initial_states>2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 1 1 1 2 0 0 0 0 0 0 0 2 0 0 0 0 2 2 2 2 0 2 2 2 0 0 0 0 0 0 0 0 2 2 2 2 0 2 2 2 2 0 0 0 0 0 2 0 2 2 2 2 2 0 0 0 2 2 0 0 0 2 2 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 2 0 0 0 0 0 2 2 2 0 2 2 2 0 2 2 2 2 2 2 2 0 2 2 2 0 0 0 0 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 2 2 2 2 2 0 2 2 2 0 2 2 2 0 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2</initial_states>
+    <parameters>
+        <percolatedNeighbors>1.0</percolatedNeighbors>
+    </parameters>
+    <random_configuration_by_total_states/>
+</simulation>
