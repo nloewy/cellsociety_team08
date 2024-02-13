@@ -354,6 +354,7 @@ public class Controller {
   }
 
   private void onResetSimulation() {
+    pauseSimulation();
     simulationModel.createCellsAndGrid(xmlParser.getHeight(), xmlParser.getWidth(),
         xmlParser.getStates(), simulationModel.getCellShape(xmlParser.getCellShape()),
         getNeighborhoodObject(
