@@ -18,9 +18,9 @@ public class SimulationGraph {
 
   public SimulationGraph(Map<Integer, Integer> stateCount) {
     step = 0;
-    NumberAxis xAxis = new NumberAxis();
-    NumberAxis yAxis = new NumberAxis();
-    lineChart = new LineChart<>(xAxis, yAxis);
+    NumberAxis xaxis = new NumberAxis();
+    NumberAxis yaxis = new NumberAxis();
+    lineChart = new LineChart<>(xaxis, yaxis);
 
     seriesMap = new HashMap<>();
 

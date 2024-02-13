@@ -2,7 +2,7 @@
 
 ### Team 08
 
-### Noah Loewy, Alisha Zhang, Judy Lee
+### Noah Loewy, Alisha Zhang, Judy He
 
 ## Team Roles and Responsibilities
 
@@ -12,7 +12,7 @@
       their children classes. In addition, Noah played a role in fixing bugs that were occuring in
       the View.
 
-* Team Member #2: Judy Lee:
+* Team Member #2: Judy He:
     * Judy was responsible for all of the classes in the configuration package. This includes the
       development of an XML Parser, handling exceptions for invalid input, and allowing users to
       save simulations and write to XML. In addition, Judy wrote more than half of our test cases
