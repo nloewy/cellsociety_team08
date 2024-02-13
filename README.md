@@ -43,7 +43,7 @@ This project implements a cellular automata simulator.
      * [Fire simulation test 1](data/fire/FireSmallSimulation1.xml)
      * [Falling Sand simulation test 1](data/falling/FallingTestWaterAbsorbsSand.xml)
      * [WaTor simulation test 1](data/wator/WaTorTest1.xml)
-     * [Schelling simulation test 1](data/schelling/SchellingRandom.xml)
+     * [Schelling simulation test 1](data/schelling/SchellingScattered.xml)
      * [Percolation simulation test 1](data/percolation/PercolationInverted.xml)
 
  * Key/Mouse inputs:

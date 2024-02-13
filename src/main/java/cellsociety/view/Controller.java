@@ -267,7 +267,7 @@ public class Controller {
   }
 
 
-  /**                                                                                            
+  /**
    * makes the map of event handlers to pass into the simulation view
    *
    * @return returns the map of handler name to the event handler
@@ -354,6 +354,7 @@ public class Controller {
   }
 
   private void onResetSimulation() {
+    pauseSimulation();
     simulationModel.createCellsAndGrid(xmlParser.getHeight(), xmlParser.getWidth(),
         xmlParser.getStates(), simulationModel.getCellShape(xmlParser.getCellShape()),
         getNeighborhoodObject(
