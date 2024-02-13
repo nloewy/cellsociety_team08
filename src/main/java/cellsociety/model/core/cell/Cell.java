@@ -96,15 +96,6 @@ public abstract class Cell<T extends Cell<T>> {
   }
 
   /**
-   * Sets text to be displayed for specific cell
-   *
-   * @return the new text (or emoji) displayed in cell
-   */
-  public String getText() {
-    return "";
-  }
-
-  /**
    * Given an integer representing a target state, determines the number of neighboring cells that
    * have a current state matching the target state.
    *

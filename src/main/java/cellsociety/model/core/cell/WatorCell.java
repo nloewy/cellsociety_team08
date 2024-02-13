@@ -300,19 +300,6 @@ public class WatorCell extends Cell<WatorCell> {
     }
   }
 
-
-  /**
-   * @return shark or fish emoji or empty string, depending on cell type
-   */
-
-  public String getText() {
-    return switch (getCurrentState()) {
-      case WatorSimulation.SHARK -> "\uD83D\uDC20";
-      case WatorSimulation.FISH -> "\uD83D\uDC1F";
-      default -> "";
-    };
-  }
-
   /**
    * @param params, new simulation parameters for the WaTor World Simulation
    */

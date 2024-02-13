@@ -30,12 +30,12 @@ public class VonNeumannNeighborhood extends Neighborhood {
   public boolean isValidNeighbor(Cell cell1, Cell cell2, Grid grid) {
     List<Point[]> verticesPairs = getPairwiseVertices(cell1, cell2);
     for (Point[] verticesPair : verticesPairs) {
-        if (grid.vertexEqual(verticesPair[0], verticesPair[1]) &&
-            (cell2.getCentroid().getCol() == cell1.getCentroid().getCol()
-                || cell2.getCentroid().getRow() == cell1.getCentroid().getRow())) {
-          return true;
-        }
+      if (grid.vertexEqual(verticesPair[0], verticesPair[1]) &&
+          (cell2.getCentroid().getCol() == cell1.getCentroid().getCol()
+              || cell2.getCentroid().getRow() == cell1.getCentroid().getRow())) {
+        return true;
       }
+    }
     return false;
   }
 }
