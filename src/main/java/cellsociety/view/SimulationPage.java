@@ -122,6 +122,7 @@ public class SimulationPage {
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
     gridProperties = fillGridProperties();
+    stateCount = new HashMap<>();
     graph = new SimulationGraph(stateCount);
     root = new Group();
     boardDisplay = new Group();

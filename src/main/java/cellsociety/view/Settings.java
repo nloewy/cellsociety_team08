@@ -21,6 +21,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * The settings class controls the settings panel of the simulation
+ * Contains language, edge type, grid/cell outline, and parameter customization
+ */
+
 public class Settings {
 
   public static final int SETTINGS_BOX_SPACING = 10;
@@ -46,7 +51,15 @@ public class Settings {
   private String language;
   private String simulationType;
 
-
+  /**
+   *
+   * @param defaultLanguage String, default language from config
+   * @param defaultEdge String, default edge from config
+   * @param parameters Map, all parameters of the current simulation
+   * @param simulationType String, type of simulation
+   * @param applyButtonHandler Event handler, sets the hook for the apply button to let controller
+   *                           handle save the changes settings
+   */
   public Settings(String defaultLanguage, String defaultEdge, Map<String, Double> parameters,
       String simulationType, EventHandler<ActionEvent> applyButtonHandler) {
 
@@ -134,6 +147,10 @@ public class Settings {
     }
   }
 
+  /**
+   * gets the data from the spinner and dropdown boxes and save it in the instance variables in
+   * settings
+   */
   public void saveChanges() {
     extractSpinnerData();
     extractComboBoxData();
@@ -159,26 +176,48 @@ public class Settings {
     }
   }
 
+  /**
+   * gets the current outline type
+   * @return boolean flag (on/off) of the outline
+   */
   public boolean getOutlineType() {
     return outline.equals("On");
   }
 
+  /**
+   * displays the settings panel
+   */
   public void showSettingsPanel() {
     settingsPanel.show();
   }
 
+  /**
+   * hides the settings panel
+   */
   public void closeSettingsPanel() {
     settingsPanel.hide();
   }
 
+  /**
+   * gets the current parameters
+   * @return Map of parameters
+   */
   public Map<String, Double> getNewParameters() {
     return parameters;
   }
 
+  /**
+   * get current edge type
+   * @return String, edge type
+   */
   public String getNewEdgeType() {
     return edge;
   }
 
+  /**
+   * gets the current language
+   * @return String, language
+   */
   public String getNewLanguage() {
     return language;
   }
