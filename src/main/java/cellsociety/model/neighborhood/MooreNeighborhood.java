@@ -27,10 +27,10 @@ public class MooreNeighborhood extends Neighborhood {
   public boolean isValidNeighbor(Cell cell1, Cell cell2, Grid grid) {
     List<Point[]> verticesPairs = getPairwiseVertices(cell1, cell2);
     for (Point[] verticesPair : verticesPairs) {
-          if (grid.vertexEqual(verticesPair[0], verticesPair[1])) {
-            return true;
-          }
-        }
+      if (grid.vertexEqual(verticesPair[0], verticesPair[1])) {
+        return true;
+      }
+    }
     return false;
   }
 }
