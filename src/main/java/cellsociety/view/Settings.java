@@ -22,8 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * The settings class controls the settings panel of the simulation
- * Contains language, edge type, grid/cell outline, and parameter customization
+ * The settings class controls the settings panel of the simulation Contains language, edge type,
+ * grid/cell outline, and parameter customization
  */
 
 public class Settings {
@@ -67,20 +67,22 @@ public class Settings {
   private ResourceBundle bundle;
   private ResourceBundle text;
   private ResourceBundle button;
+
   /**
-   *
-   * @param defaultLanguage String, default language from config
-   * @param defaultEdge String, default edge from config
-   * @param parameters Map, all parameters of the current simulation
-   * @param simulationType String, type of simulation
+   * @param defaultLanguage    String, default language from config
+   * @param defaultEdge        String, default edge from config
+   * @param parameters         Map, all parameters of the current simulation
+   * @param simulationType     String, type of simulation
    * @param applyButtonHandler Event handler, sets the hook for the apply button to let controller
    *                           handle save the changes settings
    */
   public Settings(String defaultLanguage, String defaultEdge, Map<String, Double> parameters,
       String simulationType, EventHandler<ActionEvent> applyButtonHandler) {
 
-    button = ResourceBundle.getBundle(SimulationPage.DEFAULT_RESOURCE_PACKAGE+SimulationPage.ENGLISH_BUTTON);
-    bundle = ResourceBundle.getBundle(SimulationPage.DEFAULT_RESOURCE_PACKAGE+SimulationPage.CONFIG_RESOURCE_FILE);
+    button = ResourceBundle.getBundle(
+        SimulationPage.DEFAULT_RESOURCE_PACKAGE + SimulationPage.ENGLISH_BUTTON);
+    bundle = ResourceBundle.getBundle(
+        SimulationPage.DEFAULT_RESOURCE_PACKAGE + SimulationPage.CONFIG_RESOURCE_FILE);
     text = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
 
     avaliableOptions = ResourceBundle.getBundle(OPTIONS_PACKAGE);
@@ -155,7 +157,8 @@ public class Settings {
         numberSpinner.setEditable(true);
         SpinnerValueFactory.DoubleSpinnerValueFactory valueFactory = new DoubleSpinnerValueFactory(
             Integer.parseInt(bundle.getString(VALUE_FACTORY_MIN_KEY)),
-            Integer.parseInt(bundle.getString(VALUE_FACTORY_MAX_KEY)), entry.getValue(), Double.parseDouble(bundle.getString(AMOUNT_STEP_BY_KEY)));
+            Integer.parseInt(bundle.getString(VALUE_FACTORY_MAX_KEY)), entry.getValue(),
+            Double.parseDouble(bundle.getString(AMOUNT_STEP_BY_KEY)));
         numberSpinner.setValueFactory(valueFactory);
         numberSpinner.setPrefWidth(Integer.parseInt(bundle.getString(VALUE_FACTORY_WIDTH)));
         numberSpinner.setUserData(entry.getKey());
@@ -198,6 +201,7 @@ public class Settings {
 
   /**
    * gets the current outline type
+   *
    * @return boolean flag (on/off) of the outline
    */
   public boolean getOutlineType() {
@@ -220,6 +224,7 @@ public class Settings {
 
   /**
    * gets the current parameters
+   *
    * @return Map of parameters
    */
   public Map<String, Double> getNewParameters() {
@@ -228,6 +233,7 @@ public class Settings {
 
   /**
    * get current edge type
+   *
    * @return String, edge type
    */
   public String getNewEdgeType() {
@@ -236,6 +242,7 @@ public class Settings {
 
   /**
    * gets the current language
+   *
    * @return String, language
    */
   public String getNewLanguage() {

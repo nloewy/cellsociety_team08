@@ -106,10 +106,10 @@ public class SimulationPage {
   /**
    * Constructs the view component of the simulation
    *
-   * @param params         parameters for simulaton page, including type of simulation, grid
-   *                       dimensions, and initial speed slider value
-   * @param eventHandlers  the map of event handlers for buttons
-   * @param gridIterator   and iterator of the grid model for Cell model objects
+   * @param params        parameters for simulaton page, including type of simulation, grid
+   *                      dimensions, and initial speed slider value
+   * @param eventHandlers the map of event handlers for buttons
+   * @param gridIterator  and iterator of the grid model for Cell model objects
    */
   public SimulationPage(Map<String, String> params,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
@@ -294,7 +294,6 @@ public class SimulationPage {
   }
 
   /**
-   *
    * @param onOffCellOutlines
    */
   public void toggleOnOffCellOutlines(boolean onOffCellOutlines) {
@@ -316,6 +315,7 @@ public class SimulationPage {
 
   /**
    * gets the value from the speed slider
+   *
    * @return double, speed
    */
   public double getSliderValue() {
@@ -406,6 +406,7 @@ public class SimulationPage {
 
   /**
    * switches the config file used for getting text
+   *
    * @param textConfig the new text config being switched to
    */
   public void switchTextConfig(ResourceBundle textConfig) {
@@ -416,18 +417,19 @@ public class SimulationPage {
 
   private void setButtonConfig(String language) {
     buttonLabels = ResourceBundle.getBundle(
-      switch (language) {
-        case "French" -> DEFAULT_RESOURCE_PACKAGE + FRENCH_BUTTON;
-        case "German" -> DEFAULT_RESOURCE_PACKAGE + GERMAN_BUTTON;
-        case "Spanish" -> DEFAULT_RESOURCE_PACKAGE + SPANISH_BUTTON;
-        case "Mandarin" -> DEFAULT_RESOURCE_PACKAGE + MANDARIN_BUTTON;
-        default -> DEFAULT_RESOURCE_PACKAGE + ENGLISH_BUTTON;
-      }
+        switch (language) {
+          case "French" -> DEFAULT_RESOURCE_PACKAGE + FRENCH_BUTTON;
+          case "German" -> DEFAULT_RESOURCE_PACKAGE + GERMAN_BUTTON;
+          case "Spanish" -> DEFAULT_RESOURCE_PACKAGE + SPANISH_BUTTON;
+          case "Mandarin" -> DEFAULT_RESOURCE_PACKAGE + MANDARIN_BUTTON;
+          default -> DEFAULT_RESOURCE_PACKAGE + ENGLISH_BUTTON;
+        }
     );
   }
 
   /**
    * switch configuration file used for the buttons labels according to the language
+   *
    * @param language String, language used for current simulation
    */
   public void switchButtonLanguage(String language) {
