@@ -267,7 +267,7 @@ public class Controller {
   }
 
 
-  /**
+  /**                                                                                            
    * makes the map of event handlers to pass into the simulation view
    *
    * @return returns the map of handler name to the event handler

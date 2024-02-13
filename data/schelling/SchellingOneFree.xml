@@ -2,22 +2,22 @@
 <!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
 <simulation>
   <type>Schelling</type>
-  <title>Schelling Simulation</title>
+  <title>Schelling Simulation: Empty States</title>
   <author>Noah Loewy</author>
   <file_description>This file configures the Schelling Simulation.</file_description>
   <display_description>Schelling's model of segregation is an agent-based model developed by economist Thomas Schelling. The model demonstrates how mild preference for being with similar individuals within a community could lead to a highly segregated society, excluding external variables. The model operates on an N×N grid, with two groups of agents, each representing individuals or households. Agents have an in-group preference p, for the fraction of their neighbors to be from the same group. They move to vacant spots if the fraction falls below their preference, contributing to segregation.</display_description>
-  <width>2</width>
-  <height>2</height>
+  <width>3</width>
+  <height>3</height>
   <!-- 0 - agent 0
        1 - agent X
        2 - EMPTY
         -->
-  <initial_states>0 2 2 1</initial_states>
+  <initial_states>1 2 1 2 1 2 1 2 0</initial_states>
   <neighborhood_type>Moore</neighborhood_type>
   <parameters>
-    <proportionNeededToStay>.5</proportionNeededToStay>
+    <proportionNeededToStay>1</proportionNeededToStay>
   </parameters>
-  <slider>1</slider>
+  <slider>5</slider>
   <language>English</language>
   <cell_shape>square</cell_shape>
   <grid_edge_type>Normal</grid_edge_type>
