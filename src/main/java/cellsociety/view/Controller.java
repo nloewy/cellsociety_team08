@@ -81,6 +81,7 @@ public class Controller {
   private FileChooser fileChooser;
   private Settings settingsPanel;
   private Boolean settingsChanged = false;
+  private Save savePanel;
 
   /**
    * Constructs the controller class
@@ -155,6 +156,23 @@ public class Controller {
     loadSimulationScene();
     settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(),
         xmlParser.getParameters(), event -> onApplyClicked());
+    savePanel = new Save(xmlParser.getTitle(), xmlParser.getAuthor(),
+        xmlParser.getDisplayDescription(), "", event -> onApplySaveClicked());
+  }
+
+  private void onApplySaveClicked() {
+    savePanel.updateValues();
+    savePanel.hideSavePanel();
+    String title = savePanel.getTitle();
+    String author = savePanel.getAuthor();
+    String description = savePanel.getDescription();
+    String file = savePanel.getSaveLocation();
+    xmlParser.setTitle(title);
+    xmlParser.setAuthor(author);
+    xmlParser.setDescription(description);
+    xmlParser.createXml(file + xmlParser.getType(),
+        xmlParser.getType().toLowerCase());
+
   }
 
   private void onApplyClicked() {
@@ -279,20 +297,10 @@ public class Controller {
    * pressed
    */
   private void onSaveSimulation() {
-    try {
-      ArrayList<Integer> newStates = new ArrayList<>();
-      Iterator<Cell> iterator = simulationModel.getIterator();
-      while (iterator.hasNext()) {
-        newStates.add(iterator.next().getCurrentState());
-      }
-      xmlParser.setStates(newStates);
-      if (settingsChanged) {
-        updateSettingsInXmlParser();
-      }
-      showMessage(AlertType.INFORMATION, String.format(textConfig.getString(FILE_SAVED_KEY)));
-    } catch (Exception e) {
-    }
+    pauseSimulation();
+    savePanel.showSavePanel();
   }
+
 
   private void updateSettingsInXmlParser() {
     xmlParser.setParameters(settingsPanel.getNewParameters());

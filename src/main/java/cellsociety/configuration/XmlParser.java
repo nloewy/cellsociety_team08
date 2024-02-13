@@ -1024,4 +1024,13 @@ public class XmlParser {
     }
 
   }
+
+  /**
+   * Updates description instance variable
+   *
+   * @param description, the description of the simulation currently being run.
+   */
+  public void setDescription(String description) {
+    displayDescription = description;
+  }
 }
