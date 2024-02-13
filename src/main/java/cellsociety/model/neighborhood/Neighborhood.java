@@ -44,13 +44,14 @@ public abstract class Neighborhood<T extends Cell> {
     List<Point[]> vtxPairs = new ArrayList<>();
     List<Point> vertices1 = cell1.getVertices();
     List<Point> vertices2 = cell2.getVertices();
-    for(Point vtx1 : vertices1) {
-      for(Point vtx2 : vertices2) {
-        vtxPairs.add(new Point[]{vtx1,vtx2});
+    for (Point vtx1 : vertices1) {
+      for (Point vtx2 : vertices2) {
+        vtxPairs.add(new Point[]{vtx1, vtx2});
       }
     }
     return vtxPairs;
   }
+
   /**
    * Abstract method that determines if two cells are neighbors under a certain grid. The
    * implementation of this method is dependent on the type of neighborhood being used.

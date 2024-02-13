@@ -4,7 +4,6 @@ import cellsociety.model.core.cell.Cell;
 import cellsociety.model.core.cell.FallingSandCell;
 import cellsociety.model.core.shape.Shape;
 import cellsociety.model.neighborhood.Neighborhood;
-import cellsociety.model.simulation.SimulationRecord;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

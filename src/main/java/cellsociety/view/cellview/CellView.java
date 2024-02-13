@@ -3,8 +3,6 @@ package cellsociety.view.cellview;
 import cellsociety.Point;
 import java.util.List;
 import java.util.Map;
-import javafx.geometry.Bounds;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
@@ -17,10 +15,6 @@ import javafx.scene.shape.StrokeType;
 public abstract class CellView {
 
   private final Polygon shape;
-  private final Label textBox;
-
-  private int boxLocationX;
-  private int boxLocationY;
 
   /**
    * Constructs a cell view object
@@ -35,13 +29,8 @@ public abstract class CellView {
     for (Point vertex : vertices) {
       shape.getPoints().addAll(width * vertex.getCol() + gridProperties.get("gridStartX"),
           height * vertex.getRow() + gridProperties.get("gridStartY"));
-      boxLocationX += (int) (width * vertex.getCol() + gridProperties.get("gridStartX"));
-      boxLocationY += (int) (height * vertex.getRow() + gridProperties.get("gridStartY"));
     }
-    boxLocationX /= vertices.size();
-    boxLocationY /= vertices.size();
     setStroke(shape);
-    textBox = new Label("X");
   }
 
   private void setStroke(Shape shape) {
@@ -71,11 +60,9 @@ public abstract class CellView {
   /**
    * Update cell status and color according to its new state
    * @param state int, the new state the cell is going into
-   * @param text String, the text set onto the cell
    */
-  public void updateState(int state, String text) {
+  public void updateState(int state) {
     getCellGraphic().getStyleClass().clear();
-    textBox.setText(text);
     setColors(state);
   }
 
@@ -96,32 +83,4 @@ public abstract class CellView {
     return shape;
   }
 
-  /**
-   * gets the label of the cell
-   * @return textbox object
-   */
-  public Label getTextBox() {
-    return textBox;
-  }
-
-  /**
-   * gets the x coordinate of the textbox
-   * @return double, the x coordinate
-   */
-  public double getBoxLocationX() {
-
-    Bounds textBounds = textBox.getLayoutBounds();
-    double textBoxWidth = textBounds.getWidth();
-    return boxLocationX - textBoxWidth;
-  }
-
-  /**
-   * gets the y coordniate of the textbox
-   * @return double, the y coordinate.
-   */
-  public double getBoxLocationY() {
-    Bounds textBounds = textBox.getLayoutBounds();
-    double textBoxHeight = textBounds.getHeight();
-    return boxLocationY - textBoxHeight;
-  }
 }

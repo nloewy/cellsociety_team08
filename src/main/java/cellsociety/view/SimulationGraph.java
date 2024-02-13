@@ -68,14 +68,6 @@ public class SimulationGraph {
     step++;
   }
 
-  public LineChart<Number, Number> getLineChart() {
-    return lineChart;
-  }
-
-//  public void updateGraph(int step, int[] cellCounts) {
-//    series.getData().add(new XYChart.Data<>(step, cellCounts));
-//  }
-
   public void resetGraph() {
     for (XYChart.Series<Number, Number> series : lineChart.getData()) {
       series.getData().clear();

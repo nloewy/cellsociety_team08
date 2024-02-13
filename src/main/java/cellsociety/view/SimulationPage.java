@@ -81,7 +81,7 @@ public class SimulationPage {
   private final Group root;
   private final ResourceBundle configProperties;
   private final SimulationGraph graph;
-  private final Map<Integer, Integer> stateCount;
+  private Map<Integer, Integer> stateCount;
   private final Map<String, Double> gridProperties;
   private final Group boardDisplay;
   private CellView[][] board;
@@ -118,7 +118,7 @@ public class SimulationPage {
       int numCols,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
-
+    stateCount = new HashMap<>();
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
     gridProperties = fillGridProperties();
@@ -200,11 +200,7 @@ public class SimulationPage {
               new FallingCellView(width, height, allVertices.get(ind), gridProperties);
           default -> throw new IllegalStateException("Unexpected value: " + simulationType);
         };
-
-        board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
-        board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
         boardDisplay.getChildren().add(board[row][col].getCellGraphic());
-        boardDisplay.getChildren().add(board[row][col].getTextBox());
         ind++;
       }
     }
@@ -370,13 +366,11 @@ public class SimulationPage {
       int col = (int) c.getLocation().getCol();
       int row = (int) c.getLocation().getRow();
       int state = c.getCurrentState();
-      board[row][col].updateState(state, c.getText());
+      board[row][col].updateState(state);
       if (!stateCount.containsKey(state)) {
         stateCount.put(state, 0);
       }
       stateCount.replace(state, stateCount.get(state) + 1);
-      board[row][col].getTextBox().setLayoutX(board[row][col].getBoxLocationX());
-      board[row][col].getTextBox().setLayoutY(board[row][col].getBoxLocationY());
     }
     graph.updateGraph(stateCount);
   }
