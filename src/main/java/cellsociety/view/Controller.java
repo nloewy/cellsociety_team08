@@ -257,7 +257,7 @@ public class Controller {
   }
 
   private Map<String, String> getParamsForSimulationPage() {
-    Map<String,String> params = new HashMap<>();
+    Map<String, String> params = new HashMap<>();
     params.put("Language", xmlParser.getLanguage());
     params.put("InitialSlider", Integer.toString(xmlParser.getInitialSlider()));
     params.put("Simulation", xmlParser.getType());
