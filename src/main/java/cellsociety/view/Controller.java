@@ -67,7 +67,6 @@ public class Controller {
   public static final String FALLING = "Falling";
   public static final String UPLOAD_FILE_TEXT_KEY = "uploadFile";
   public static final String SECOND_DELAY_KEY = "SECOND_DELAY";
-  public static final String FILE_SAVED_KEY = "fileSaved";
   public static final String UPLOAD_FILE_WINDOW_TITLE_KEY = "uploadFileWindowTitle";
   public static final String ABOUT_MIN_HEIGHT_KEY = "ABOUT_MIN_HEIGHT";
   private Stage stage;
@@ -151,8 +150,9 @@ public class Controller {
   private void setSimulation() {
     loadSimulationModel();
     loadSimulationScene();
+
     settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(),
-        xmlParser.getParameters(), event -> onApplyClicked());
+        xmlParser.getParameters(), xmlParser.getType(), event -> onApplyClicked());
     savePanel = new Save(xmlParser.getTitle(), xmlParser.getAuthor(),
         xmlParser.getDisplayDescription(), "", event -> onApplySaveClicked());
   }
@@ -169,7 +169,6 @@ public class Controller {
     xmlParser.setDescription(description);
     xmlParser.createXml(file + xmlParser.getType(),
         xmlParser.getType().toLowerCase());
-
   }
 
   private void onApplyClicked() {
@@ -261,6 +260,7 @@ public class Controller {
     params.put("Language", xmlParser.getLanguage());
     params.put("InitialSlider", Integer.toString(xmlParser.getInitialSlider()));
     params.put("Simulation", xmlParser.getType());
+    params.put("SimulationName", xmlParser.getTitle());
     params.put("Height", Integer.toString(xmlParser.getHeight()));
     params.put("Width", Integer.toString(xmlParser.getWidth()));
     return params;
@@ -299,14 +299,12 @@ public class Controller {
   }
 
   /**
-   * saves the current state of the simulation as a new xml file when the save simulation button is
-   * pressed
+   * show edit save window, let user edit information for the file they are saving.
    */
   private void onSaveSimulation() {
     pauseSimulation();
     savePanel.showSavePanel();
   }
-
 
 
   private void onStartSimulation() {

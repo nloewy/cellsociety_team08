@@ -2,18 +2,18 @@
 <!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
 <simulation>
   <type>Wator</type>
-  <title>WaTor Simulation</title>
-  <author>Noah Loewy</author>
+  <title>WaTor Simulation: basic</title>
+  <author>Alisha Zhang</author>
   <file_description>This file configures the WaTor Simulation.</file_description>
   <display_description>Wator is a simulation based on a discrete model of predator-prey interaction. It was originally described by Alexander K. Dewdney in the Scientific American magazine. It simulates the hypothetical toroidal Planet Wa-Tor (Water Torus) whose surface is entirely covered with water, occupied by two species: fish and sharks. The sharks are the predators that eat the fish. Fish move randomly, reproduce according to a certain rate, lives on a never ending supply of plankton, and die if eaten by shark; while sharks move randomly, lose energy by moving, and gain energy by eating fish, and spawn offspring if energy is sufficient. </display_description>
-  <width>7</width>
-  <height>9</height>
+  <width>2</width>
+  <height>2</height>
   <!--
     0 - empty
     1 - fish
     2 - shark
         -->
-  <initial_states>1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</initial_states>
+  <initial_states>1 1 2 0</initial_states>
   <neighborhood_type>VonNeumann</neighborhood_type>
   <parameters>
     <fishAgeOfReproduction>1</fishAgeOfReproduction>
@@ -21,7 +21,7 @@
     <energyBoost>1</energyBoost>
     <initialEnergy>5</initialEnergy>
   </parameters>
-  <slider>1</slider>
+  <slider>3</slider>
   <language>English</language>
   <cell_shape>square</cell_shape>
   <grid_edge_type>Normal</grid_edge_type>
