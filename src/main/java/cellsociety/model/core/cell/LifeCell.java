@@ -104,16 +104,5 @@ public class LifeCell extends Cell<LifeCell> {
     deadToAliveMax = (int) Math.floor(params.get("deadToAliveMax"));
   }
 
-  /**
-   * @return angel or devil emoji, or empty string, depending on cell type
-   */
-
-  public String getText() {
-    return switch (getCurrentState()) {
-      case GameOfLifeSimulation.ALIVE -> "\uD83D\uDC7C";
-      case GameOfLifeSimulation.DEAD -> "\uD83D\uDC7B";
-      default -> "";
-    };
-  }
 }
 

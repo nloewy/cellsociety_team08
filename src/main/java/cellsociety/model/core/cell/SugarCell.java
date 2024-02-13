@@ -186,17 +186,6 @@ public class SugarCell extends Cell<SugarCell> {
     }
   }
 
-
-  /**
-   * @return candy/sugar emoji or empty string, depending on cell type
-   */
-  public String getText() {
-    if (myCurrentAgentSugar > 0) {
-      return "\uD83C\uDF6C";
-    }
-    return "";
-  }
-
   /**
    * @param params, new simulation parameters for the SugarScape Simulation
    */
