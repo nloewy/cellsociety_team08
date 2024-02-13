@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * this class is the saving simulation screen object
+ */
 public class Save {
 
   public static final int SETTINGS_BOX_SPACING = 10;
@@ -29,6 +32,14 @@ public class Save {
   private String saveLocation;
 
 
+  /**
+   * initializes the saving screen
+   * @param title String, title of simulation being saved
+   * @param author String, author of simulation being saved
+   * @param description String, description of simulation being saved
+   * @param saveLocation String, location to save to
+   * @param applyButtonHandler, event handler, handles the apply button click
+   */
   public Save(String title, String author, String description, String saveLocation,
       EventHandler<ActionEvent> applyButtonHandler) {
     this.title = title;
@@ -60,13 +71,20 @@ public class Save {
     );
   }
 
+  /**
+   * displays the edit saving screen
+   */
   public void showSavePanel() {
     savePanel.show();
   }
 
+  /**
+   * hides the edit saving screen
+   */
   public void hideSavePanel() {
     savePanel.hide();
   }
+
 
   private TextField createTextField(String labelText, String defaultValue) {
     TextField textField = new TextField(defaultValue);
@@ -74,6 +92,9 @@ public class Save {
     return textField;
   }
 
+  /**
+   * changes the title, author, description and location to the new input value
+   */
   public void updateValues() {
     title = titleTextField.getText();
     author = authorTextField.getText();
@@ -81,18 +102,34 @@ public class Save {
     saveLocation = saveLocationTextField.getText();
   }
 
+  /**
+   * gets the current title
+   * @return String, title of the config file
+   */
   public String getTitle() {
     return title;
   }
 
+  /**
+   * gets the current author
+   * @return String, name of the author
+   */
   public String getAuthor() {
     return author;
   }
 
+  /**
+   * gets the description of the simulation
+   * @return String, current description
+   */
   public String getDescription() {
     return description;
   }
 
+  /**
+   * gets the location for the file to be saved to
+   * @return String, the location
+   */
   public String getSaveLocation() {
     return saveLocation;
   }

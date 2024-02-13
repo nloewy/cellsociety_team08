@@ -292,6 +292,10 @@ public class SimulationPage {
     root.getChildren().remove(graph.getGraphSection());
   }
 
+  /**
+   *
+   * @param onOffCellOutlines
+   */
   public void toggleOnOffCellOutlines(boolean onOffCellOutlines) {
     for (int row = 0; row < board.length; row++) {
       for (int col = 0; col < board[0].length; col++) {
@@ -309,6 +313,10 @@ public class SimulationPage {
     speedSlider.valueProperty().addListener(speedSliderHandler);
   }
 
+  /**
+   * gets the value from the speed slider
+   * @return double, speed
+   */
   public double getSliderValue() {
     return speedSlider.getValue();
   }
@@ -395,11 +403,15 @@ public class SimulationPage {
     return Double.parseDouble(configProperties.getString(key));
   }
 
-
+  /**
+   * switches the config file used for getting text
+   * @param textConfig the new text config being switched to
+   */
   public void switchTextConfig(ResourceBundle textConfig) {
     textProperties = textConfig;
     speedLabel.setText(textProperties.getString(SPEED_LABEL_TEXT_KEY));
   }
+
 
   private void setButtonConfig(String language) {
     buttonLabels = ResourceBundle.getBundle(
@@ -413,6 +425,10 @@ public class SimulationPage {
     );
   }
 
+  /**
+   * switch configuration file used for the buttons labels according to the language
+   * @param language String, language used for current simulation
+   */
   public void switchButtonLanguage(String language) {
     setButtonConfig(language);
     updateButtons();
