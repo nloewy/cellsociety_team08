@@ -80,7 +80,6 @@ public class Controller {
   private ResourceBundle textConfig;
   private FileChooser fileChooser;
   private Settings settingsPanel;
-  private Boolean settingsChanged = false;
   private Save savePanel;
 
   /**
@@ -174,7 +173,6 @@ public class Controller {
   }
 
   private void onApplyClicked() {
-    settingsChanged = true;
     settingsPanel.saveChanges();
     settingsPanel.closeSettingsPanel();
     simulationModel.setParams(settingsPanel.getNewParameters());
@@ -182,6 +180,7 @@ public class Controller {
     simulationPage.toggleOnOffCellOutlines(settingsPanel.getOutlineType());
     switchLanguage(settingsPanel.getNewLanguage());
   }
+
 
   /**
    * gets the neighborhood object based on the neighborhood type string
@@ -277,7 +276,7 @@ public class Controller {
   }
 
   private void createParallelWindow() {
-    Controller newController = new Controller();
+    new Controller();
   }
 
   private void onSettingsClicked() {
@@ -298,15 +297,6 @@ public class Controller {
     savePanel.showSavePanel();
   }
 
-
-  private void updateSettingsInXmlParser() {
-    xmlParser.setParameters(settingsPanel.getNewParameters());
-    xmlParser.setLanguage(settingsPanel.getNewLanguage());
-    xmlParser.setGridEdgeType(settingsPanel.getNewEdgeType());
-    xmlParser.createXml("savedSimulation" + xmlParser.getType(),
-        xmlParser.getType().toLowerCase());
-
-  }
 
 
   private void onStartSimulation() {
