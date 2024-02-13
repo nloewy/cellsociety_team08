@@ -310,7 +310,7 @@ public class XmlParser {
     return gridEdgeType;
   }
 
-  public void setGridEdgeType(String edgeType){
+  public void setGridEdgeType(String edgeType) {
     this.gridEdgeType = edgeType;
   }
 
@@ -1023,5 +1023,14 @@ public class XmlParser {
       throw new SavingFileException(resourceBundle.getString("DocumentCreationError"), e);
     }
 
+  }
+
+  /**
+   * Updates description instance variable
+   *
+   * @param description, the description of the simulation currently being run.
+   */
+  public void setDescription(String description) {
+    displayDescription = description;
   }
 }
