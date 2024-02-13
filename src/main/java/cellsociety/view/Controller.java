@@ -240,10 +240,10 @@ public class Controller {
       allVertices.add(iter.next().getVertices());
     }
 
-    simulationPage = new SimulationPage(xmlParser.getLanguage(), xmlParser.getInitialSlider(),
-        xmlParser.getType(), xmlParser.getTitle(),
-        xmlParser.getHeight(), xmlParser.getWidth(), handlers, simulationModel.getIterator(),
-        allVertices);
+    getParamsForSimulationPage();
+
+    simulationPage = new SimulationPage(getParamsForSimulationPage(), handlers,
+        simulationModel.getIterator(), allVertices);
     stage.setScene(simulationPage.getSimulationScene());
     stage.show();
 
@@ -254,6 +254,16 @@ public class Controller {
       animation.setDelay(Duration.seconds(frameDuration));
       simulationPage.updateSpeedLabel(speed);
     });
+  }
+
+  private Map<String, String> getParamsForSimulationPage() {
+    Map<String,String> params = new HashMap<>();
+    params.put("Language", xmlParser.getLanguage());
+    params.put("InitialSlider", Integer.toString(xmlParser.getInitialSlider()));
+    params.put("Simulation", xmlParser.getType());
+    params.put("Height", Integer.toString(xmlParser.getHeight()));
+    params.put("Width", Integer.toString(xmlParser.getWidth()));
+    return params;
   }
 
 
