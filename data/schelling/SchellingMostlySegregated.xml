@@ -2,7 +2,7 @@
 <!-- References: https://courses.cs.duke.edu/compsci308/spring24/assign/02_simulation/nifty/shiflet-fire/ -->
 <simulation>
     <type>Schelling</type>
-    <title>Schelling Simulation</title>
+    <title>Schelling Simulation: Mostly Segregated</title>
     <author>Judy He</author>
     <file_description>This file configures the Schelling Simulation.</file_description>
     <display_description>Schelling's model of segregation is an agent-based model developed by economist Thomas Schelling. The model demonstrates how mild preference for being with similar individuals within a community could lead to a highly segregated society, excluding external variables. The model operates on an N×N grid, with two groups of agents, each representing individuals or households. Agents have an in-group preference p, for the fraction of their neighbors to be from the same group. They move to vacant spots if the fraction falls below their preference, contributing to segregation.</display_description>
