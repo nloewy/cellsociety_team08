@@ -127,7 +127,7 @@ public class SimulationPage {
         Integer.parseInt(params.get("Width")), allVertices);
     initializeButtons(eventHandlers);
     initializeSlider(Integer.parseInt(params.get("InitialSlider")));
-    initializeTitleDisplay(params.get("Simulation"));
+    initializeTitleDisplay(params.get("SimulationName"));
     updateView(gridIterator);
     addToRoot();
   }
