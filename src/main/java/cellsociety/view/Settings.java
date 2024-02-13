@@ -36,7 +36,7 @@ public class Settings {
   private static final String VALUE_FACTORY_MAX_KEY = "valueFactoryMax";
   private static final String AMOUNT_STEP_BY_KEY = "amountStepBy";
   private static final String VALUE_FACTORY_WIDTH = "valueFactoryWidth";
-  private static final String PADDING_KEY = "padding";
+  public static final String PADDING_KEY = "padding";
   private static final String EDGE_TYPE_KEY = "edgeType";
   private static final String OUTLINE_TYPE_KEY = "outlineType";
   private static final String SELECT_LANGUAGE_KEY = "selectLanguage";
