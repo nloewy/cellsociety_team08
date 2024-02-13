@@ -111,7 +111,6 @@ public class SimulationPage {
   public SimulationPage(Map<String, String> params,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
-    stateCount = new HashMap<>();
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
     configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
     gridProperties = fillGridProperties();
