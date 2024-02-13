@@ -15,7 +15,7 @@
   <initial_states>1 2 1 2 1 2 1 2 0</initial_states>
   <neighborhood_type>VonNeumann</neighborhood_type>
   <parameters>
-    <proportionNeededToStay>1</proportionNeededToStay>
+    <proportionNeededToStay>.5</proportionNeededToStay>
   </parameters>
   <slider>5</slider>
   <language>English</language>
