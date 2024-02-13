@@ -26,6 +26,7 @@ public class SimulationGraph {
 
   /**
    * constructs the graph object
+   *
    * @param stateCount map of existing states and the number of cells in that state
    */
   public SimulationGraph(Map<Integer, Integer> stateCount) {
@@ -56,13 +57,15 @@ public class SimulationGraph {
 
   private void addSeries(int state) {
     XYChart.Series<Number, Number> series = new XYChart.Series<>();
-    series.setName(ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION).getString(STATE_KEY) + state);
+    series.setName(
+        ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION).getString(STATE_KEY) + state);
     lineChart.getData().add(series);
     seriesMap.put(state, series);
   }
 
   /**
    * updates the graph by creating new node on the graph according to new state counts
+   *
    * @param stateCount map of existing states and the number of cells in that state
    */
   public void updateGraph(Map<Integer, Integer> stateCount) {
@@ -93,6 +96,7 @@ public class SimulationGraph {
 
   /**
    * gets the graph view
+   *
    * @return the stackpane contianing the graph
    */
   public StackPane getGraphSection() {

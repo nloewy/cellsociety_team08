@@ -47,16 +47,19 @@ public class Save {
 
   /**
    * initializes the saving screen
-   * @param title String, title of simulation being saved
-   * @param author String, author of simulation being saved
-   * @param description String, description of simulation being saved
-   * @param saveLocation String, location to save to
+   *
+   * @param title               String, title of simulation being saved
+   * @param author              String, author of simulation being saved
+   * @param description         String, description of simulation being saved
+   * @param saveLocation        String, location to save to
    * @param applyButtonHandler, event handler, handles the apply button click
    */
   public Save(String title, String author, String description, String saveLocation,
       EventHandler<ActionEvent> applyButtonHandler) {
-    this.config = ResourceBundle.getBundle(SimulationPage.DEFAULT_RESOURCE_PACKAGE + SimulationPage.CONFIG_RESOURCE_FILE);
-    this.buttons = ResourceBundle.getBundle(SimulationPage.DEFAULT_RESOURCE_PACKAGE + SimulationPage.ENGLISH_BUTTON);
+    this.config = ResourceBundle.getBundle(
+        SimulationPage.DEFAULT_RESOURCE_PACKAGE + SimulationPage.CONFIG_RESOURCE_FILE);
+    this.buttons = ResourceBundle.getBundle(
+        SimulationPage.DEFAULT_RESOURCE_PACKAGE + SimulationPage.ENGLISH_BUTTON);
     this.textbundle = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
 
     this.title = title;
@@ -67,14 +70,16 @@ public class Save {
 
     root = new VBox(Integer.parseInt(config.getString(SETTINGS_BOX_SPACING_KEY)));
     root.setPadding(new Insets(Integer.parseInt(config.getString(Settings.PADDING_KEY))));
-    scene = new Scene(root, Integer.parseInt(config.getString(SETTINGS_SCENE_WIDTH_KEY)), Integer.parseInt(config.getString(SETTINGS_SCENE_HEIGHT_KEY)));
+    scene = new Scene(root, Integer.parseInt(config.getString(SETTINGS_SCENE_WIDTH_KEY)),
+        Integer.parseInt(config.getString(SETTINGS_SCENE_HEIGHT_KEY)));
     savePanel.setScene(scene);
     savePanel.setTitle(buttons.getString(SimulationPage.SAVE_BUTTON_KEY));
 
     titleTextField = createTextField(textbundle.getString(DEFAULT_TITLE_KEY), title);
     authorTextField = createTextField(textbundle.getString(DEFAULT_AUTHOR_KEY), author);
     descriptionTextField = createTextField(textbundle.getString(DEFAULT_DES_KEY), description);
-    saveLocationTextField = createTextField(textbundle.getString(DEFAULT_LOCATION_KEY), saveLocation);
+    saveLocationTextField = createTextField(textbundle.getString(DEFAULT_LOCATION_KEY),
+        saveLocation);
 
     Button saveButton = new Button(buttons.getString(SAVE_BUTTON_KEY));
 
@@ -121,6 +126,7 @@ public class Save {
 
   /**
    * gets the current title
+   *
    * @return String, title of the config file
    */
   public String getTitle() {
@@ -129,6 +135,7 @@ public class Save {
 
   /**
    * gets the current author
+   *
    * @return String, name of the author
    */
   public String getAuthor() {
@@ -137,6 +144,7 @@ public class Save {
 
   /**
    * gets the description of the simulation
+   *
    * @return String, current description
    */
   public String getDescription() {
@@ -145,6 +153,7 @@ public class Save {
 
   /**
    * gets the location for the file to be saved to
+   *
    * @return String, the location
    */
   public String getSaveLocation() {
