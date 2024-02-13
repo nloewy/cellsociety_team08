@@ -103,19 +103,12 @@ public class SimulationPage {
   /**
    * Constructs the view component of the simulation
    *
-   * @param simulationType a string that specifies the simulation type
-   * @param simulationName a string that specifies the name of the simulation
-   * @param numRows        the integer number of rows in the grid
-   * @param numCols        the integer number of columns in the grid
+   * @param params         parameters for simulaton page, including type of simulation, grid
+   *                       dimensions, and initial speed slider value
    * @param eventHandlers  the map of event handlers for buttons
    * @param gridIterator   and iterator of the grid model for Cell model objects
    */
-  public SimulationPage(String defaultLanguage,
-      int defaultSpeed,
-      String simulationType,
-      String simulationName,
-      int numRows,
-      int numCols,
+  public SimulationPage(Map<String, String> params,
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
     stateCount = new HashMap<>();
@@ -126,13 +119,14 @@ public class SimulationPage {
     root = new Group();
     boardDisplay = new Group();
     scene = new Scene(root, configDouble(SCENE_WIDTH_KEY), configDouble(SCENE_HEIGHT_KEY));
-    setButtonConfig(defaultLanguage);
+    setButtonConfig(params.get("Language"));
     scene.getStylesheets()
         .add(getClass().getResource(DEFAULT_RESOURCE_FOLDER + STYLESHEET).toExternalForm());
-    initializeBoard(simulationType, numRows, numCols, allVertices);
+    initializeBoard(params.get("Simulation"), Integer.parseInt(params.get("Height")),
+        Integer.parseInt(params.get("Width")), allVertices);
     initializeButtons(eventHandlers);
-    initializeSlider(defaultSpeed);
-    initializeTitleDisplay(simulationName);
+    initializeSlider(Integer.parseInt(params.get("InitialSlider")));
+    initializeTitleDisplay(params.get("Simulation"));
     updateView(gridIterator);
     addToRoot();
   }
