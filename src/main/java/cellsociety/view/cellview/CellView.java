@@ -3,8 +3,6 @@ package cellsociety.view.cellview;
 import cellsociety.Point;
 import java.util.List;
 import java.util.Map;
-import javafx.geometry.Bounds;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
