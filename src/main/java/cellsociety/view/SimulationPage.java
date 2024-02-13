@@ -53,16 +53,19 @@ public class SimulationPage {
   public static final String RESET_BUTTON_Y_KEY = "RESET_BUTTON_Y";
   public static final String SPEED_LABEL_Y_KEY = "SPEED_LABEL_Y";
   public static final String SPEED_SLIDER_Y_KEY = "SPEED_SLIDER_Y";
+  public static final String SETTINGS_BUTTON_Y_KEY = "SETTINGS_BUTTON_Y";
+  public static final String ADD_SIMULATION_BUTTON_Y_KEY = "ADD_SIMULATION_BUTTON_Y";
   public static final String SPEED_SLIDER_MIN_KEY = "SLIDER_MIN";
   public static final String SPEED_SLIDER_MAX_KEY = "SLIDER_MAX";
   public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.";
+  public static final String CONFIG_RESOURCE_FILE = "config";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
-  public static final String FRENCH_BUTTON = "cellsociety.buttonLabelsFrench";
-  public static final String GERMAN_BUTTON = "cellsociety.buttonLabelsGerman";
-  public static final String SPANISH_BUTTON = "cellsociety.buttonLabelsSpanish";
-  public static final String MANDARIN_BUTTON = "cellsociety.buttonLabelsMandarin";
-  public static final String ENGLISH_BUTTON = "cellsociety.buttonLabelsEnglish";
+  public static final String FRENCH_BUTTON = "buttonLabelsFrench";
+  public static final String GERMAN_BUTTON = "buttonLabelsGerman";
+  public static final String SPANISH_BUTTON = "buttonLabelsSpanish";
+  public static final String MANDARIN_BUTTON = "buttonLabelsMandarin";
+  public static final String ENGLISH_BUTTON = "buttonLabelsEnglish";
 
   public static final String STYLESHEET = "StyleSheet.css";
   //button label keys
@@ -112,7 +115,7 @@ public class SimulationPage {
       Map<String, EventHandler<ActionEvent>> eventHandlers,
       Iterator<Cell> gridIterator, List<List<Point>> allVertices) {
     textProperties = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
-    configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "config");
+    configProperties = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + CONFIG_RESOURCE_FILE);
     gridProperties = fillGridProperties();
     stateCount = new HashMap<>();
     graph = new SimulationGraph(stateCount);
@@ -252,19 +255,24 @@ public class SimulationPage {
     simulationGraphButton.setOnAction(event -> toggleGraphVisibility());
     settingsButton = makeButton(buttonLabels.getString(SETTINGS_BUTTON_KEY),
         eventHandlers.get("settingsHandler"),
-        configInt(BUTTON_START_X_KEY), 600);
+        configInt(BUTTON_START_X_KEY),
+        configInt(SETTINGS_BUTTON_Y_KEY));
     addSimulationButton = makeButton(buttonLabels.getString(MULTI_SIMULATION_BUTTON),
-        eventHandlers.get("multiSimulationHandler"), configInt(BUTTON_START_X_KEY), 650);
+        eventHandlers.get("multiSimulationHandler"),
+        configInt(BUTTON_START_X_KEY),
+        configInt(ADD_SIMULATION_BUTTON_Y_KEY));
   }
 
-  public Button getSettingsButton() {
-    return settingsButton;
-  }
-
+  /**
+   * clears graph for reset
+   */
   public void resetGraph() {
     graph.resetGraph();
   }
 
+  /**
+   * show and hide the graph according to its visibility boolean flag
+   */
   public void toggleGraphVisibility() {
     if (graph.getGraphSection().isVisible()) {
       graph.getGraphSection().setVisible(false);
@@ -409,11 +417,11 @@ public class SimulationPage {
   private void setButtonConfig(String language) {
     buttonLabels = ResourceBundle.getBundle(
       switch (language) {
-        case "French" -> FRENCH_BUTTON;
-        case "German" -> GERMAN_BUTTON;
-        case "Spanish" -> SPANISH_BUTTON;
-        case "Mandarin" -> MANDARIN_BUTTON;
-        default -> ENGLISH_BUTTON;
+        case "French" -> DEFAULT_RESOURCE_PACKAGE + FRENCH_BUTTON;
+        case "German" -> DEFAULT_RESOURCE_PACKAGE + GERMAN_BUTTON;
+        case "Spanish" -> DEFAULT_RESOURCE_PACKAGE + SPANISH_BUTTON;
+        case "Mandarin" -> DEFAULT_RESOURCE_PACKAGE + MANDARIN_BUTTON;
+        default -> DEFAULT_RESOURCE_PACKAGE + ENGLISH_BUTTON;
       }
     );
   }

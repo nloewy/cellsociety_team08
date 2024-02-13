@@ -32,6 +32,20 @@ public class Settings {
   public static final int SETTINGS_SCENE_WIDTH = 350;
   public static final int SETTINGS_SCENE_HEIGHT = 400;
   private static final String OPTIONS_PACKAGE = "cellsociety.avaliableOptions";
+  private static final String VALUE_FACTORY_MIN_KEY = "valueFactoryMin";
+  private static final String VALUE_FACTORY_MAX_KEY = "valueFactoryMax";
+  private static final String AMOUNT_STEP_BY_KEY = "amountStepBy";
+  private static final String VALUE_FACTORY_WIDTH = "valueFactoryWidth";
+  private static final String PADDING_KEY = "padding";
+  private static final String EDGE_TYPE_KEY = "edgeType";
+  private static final String OUTLINE_TYPE_KEY = "outlineType";
+  private static final String SELECT_LANGUAGE_KEY = "selectLanguage";
+  private static final String SETTINGS_TITLE_KEY = "settingsTitle";
+  private static final String EDGE_NORMAL_KEY = "edgeNormal";
+  private static final String EDGE_WARPED_KEY = "edgeWarped";
+  private static final String OUTLINE_ON_KEY = "outlineOn";
+  private static final String OUTLINE_OFF_KEY = "outlineOff";
+  private static final String APPLY_BUTTON_KEY = "ApplyButton";
   private final ResourceBundle avaliableOptions;
   private final Stage settingsPanel;
   private final Scene scene;
@@ -50,7 +64,9 @@ public class Settings {
   private String outline;
   private String language;
   private String simulationType;
-
+  private ResourceBundle bundle;
+  private ResourceBundle text;
+  private ResourceBundle button;
   /**
    *
    * @param defaultLanguage String, default language from config
@@ -63,9 +79,13 @@ public class Settings {
   public Settings(String defaultLanguage, String defaultEdge, Map<String, Double> parameters,
       String simulationType, EventHandler<ActionEvent> applyButtonHandler) {
 
+    button = ResourceBundle.getBundle(SimulationPage.DEFAULT_RESOURCE_PACKAGE+SimulationPage.ENGLISH_BUTTON);
+    bundle = ResourceBundle.getBundle(SimulationPage.DEFAULT_RESOURCE_PACKAGE+SimulationPage.CONFIG_RESOURCE_FILE);
+    text = ResourceBundle.getBundle(Controller.TEXT_CONFIGURATION);
+
     avaliableOptions = ResourceBundle.getBundle(OPTIONS_PACKAGE);
     settingsPanel = new Stage();
-    settingsPanel.setTitle("Parameter Settings");
+    settingsPanel.setTitle(text.getString(SETTINGS_TITLE_KEY));
 
     this.simulationType = simulationType;
     this.edge = defaultEdge;
@@ -74,13 +94,13 @@ public class Settings {
     this.language = defaultLanguage;
 
     root = new VBox(SETTINGS_BOX_SPACING);
-    root.setPadding(new Insets(10));
+    root.setPadding(new Insets(Integer.parseInt(bundle.getString(PADDING_KEY))));
     scene = new Scene(root, SETTINGS_SCENE_WIDTH, SETTINGS_SCENE_HEIGHT);
     settingsPanel.setScene(scene);
     setPanelFields();
     createComboBoxes();
 
-    saveParametersButton = new Button("Apply");
+    saveParametersButton = new Button(button.getString(APPLY_BUTTON_KEY));
     saveParametersButton.setOnAction(applyButtonHandler);
     root.getChildren().add(saveParametersButton);
   }
@@ -92,22 +112,22 @@ public class Settings {
     edgeTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableEdgeTypes));
     outlineTypeComboBox = new ComboBox<>(FXCollections.observableList(avaliableCellOutlines));
     languageComboBox = new ComboBox<>(FXCollections.observableList(avaliableLanguages));
-    setComboBox(edge, "Edge Type: ", edgeTypeComboBox);
-    setComboBox(outline, "Outline Type: ", outlineTypeComboBox);
-    setComboBox(language, "Select Language: ", languageComboBox);
+    setComboBox(edge, text.getString(EDGE_TYPE_KEY), edgeTypeComboBox);
+    setComboBox(outline, text.getString(OUTLINE_TYPE_KEY), outlineTypeComboBox);
+    setComboBox(language, text.getString(SELECT_LANGUAGE_KEY), languageComboBox);
   }
 
 
   private void initializeEdgeTypes() {
     avaliableEdgeTypes = new ArrayList<>();
-    avaliableEdgeTypes.add("Normal");
-    avaliableEdgeTypes.add("Warped");
+    avaliableEdgeTypes.add(avaliableOptions.getString(EDGE_NORMAL_KEY));
+    avaliableEdgeTypes.add(avaliableOptions.getString(EDGE_WARPED_KEY));
   }
 
   private void initializeOutlineTypes() {
     avaliableCellOutlines = new ArrayList<>();
-    avaliableCellOutlines.add("On");
-    avaliableCellOutlines.add("Off");
+    avaliableCellOutlines.add(avaliableOptions.getString(OUTLINE_ON_KEY));
+    avaliableCellOutlines.add(avaliableOptions.getString(OUTLINE_OFF_KEY));
   }
 
   private void initializeLanguages() {
@@ -134,10 +154,10 @@ public class Settings {
         Spinner<Double> numberSpinner = new Spinner<>();
         numberSpinner.setEditable(true);
         SpinnerValueFactory.DoubleSpinnerValueFactory valueFactory = new DoubleSpinnerValueFactory(
-            0,
-            100, entry.getValue(), 0.1);
+            Integer.parseInt(bundle.getString(VALUE_FACTORY_MIN_KEY)),
+            Integer.parseInt(bundle.getString(VALUE_FACTORY_MAX_KEY)), entry.getValue(), Double.parseDouble(bundle.getString(AMOUNT_STEP_BY_KEY)));
         numberSpinner.setValueFactory(valueFactory);
-        numberSpinner.setPrefWidth(80);
+        numberSpinner.setPrefWidth(Integer.parseInt(bundle.getString(VALUE_FACTORY_WIDTH)));
         numberSpinner.setUserData(entry.getKey());
         HBox hbox = new HBox(SETTINGS_BOX_SPACING);
         hbox.getChildren().addAll(spinnerLabel, numberSpinner);
