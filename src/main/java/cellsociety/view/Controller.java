@@ -150,9 +150,7 @@ public class Controller {
   }
 
   private void setSimulation() {
-    loadSimulationModel(xmlParser.getHeight(), xmlParser.getWidth(),
-        getNeighborhoodObject(xmlParser.getNeighborhoodType()), xmlParser.getStates(),
-        xmlParser.getType(), xmlParser.getGridEdgeType(), xmlParser.getCellShape());
+    loadSimulationModel();
     loadSimulationScene();
     settingsPanel = new Settings(xmlParser.getLanguage(), xmlParser.getGridEdgeType(),
         xmlParser.getParameters(), event -> onApplyClicked());
@@ -204,16 +202,15 @@ public class Controller {
 
   /**
    * Sets up the simulation model component
-   *
-   * @param numRows          the integer number of rows in the simulation grid
-   * @param numCols          the integer number of columns in the simulation grid
-   * @param neighborhoodType the neighborhood type object
-   * @param stateList        a list that specifies the initial state of all cells in the grid
-   * @param simulationType   a string that specifies the simulation type
    */
-  private void loadSimulationModel(int numRows, int numCols, Neighborhood neighborhoodType,
-      List<Integer> stateList, String simulationType, String gridType, String cellShape) {
-
+  private void loadSimulationModel() {
+    int numRows = xmlParser.getHeight();
+    int numCols = xmlParser.getWidth();
+    Neighborhood neighborhoodType = getNeighborhoodObject(xmlParser.getNeighborhoodType());
+    List<Integer> stateList = xmlParser.getStates();
+    String simulationType = xmlParser.getType();
+    String gridType = xmlParser.getGridEdgeType();
+    String cellShape = xmlParser.getCellShape();
     SimulationRecord record = new SimulationRecord(xmlParser.getParameters(), gridType, cellShape);
     simulationRunning = false;
     simulationModel = switch (simulationType) {
